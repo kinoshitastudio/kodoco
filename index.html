@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>しがキッズ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg: #f0ede8;
+  --card: #ffffff;
+  --green: #2d6a4f;
+  --green-light: #e8f5ee;
+  --green-mid: #40916c;
+  --green-tag-bg: #d8ede3;
+  --orange: #e07a3a;
+  --text: #1a1a18;
+  --text-sub: #6b7280;
+  --text-light: #9ca3af;
+  --border: #e5e0d8;
+  --radius: 16px;
+}
+html, body { height: 100%; font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; }
+#app { display: flex; flex-direction: column; height: 100vh; max-width: 430px; margin: 0 auto; background: var(--bg); position: relative; overflow: hidden; }
+
+/* =====================
+   ONBOARDING
+   ===================== */
+#onboarding {
+  position: absolute; inset: 0; background: var(--bg); z-index: 200;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.ob-screen { display: none; flex-direction: column; height: 100%; }
+.ob-screen.active { display: flex; }
+
+.ob-header { padding: 20px 24px 0; display: flex; align-items: center; justify-content: space-between; }
+.ob-progress { display: flex; gap: 6px; }
+.ob-prog-dot { height: 4px; width: 24px; border-radius: 2px; background: var(--border); transition: background .3s; }
+.ob-prog-dot.done { background: var(--green); }
+.ob-skip { font-size: 13px; color: var(--text-light); cursor: pointer; padding: 4px; }
+
+.ob-body { flex: 1; display: flex; flex-direction: column; padding: 32px 24px 0; overflow-y: auto; }
+.ob-body::-webkit-scrollbar { display: none; }
+.ob-emoji { font-size: 52px; margin-bottom: 16px; }
+.ob-title { font-size: 24px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+.ob-sub { font-size: 14px; color: var(--text-sub); line-height: 1.6; margin-bottom: 32px; }
+
+/* Step 1 - 何人 */
+.count-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.count-btn {
+  aspect-ratio: 1; border-radius: var(--radius); border: 2px solid var(--border);
+  background: var(--card); font-size: 22px; font-weight: 700; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; transition: all .2s; color: var(--text);
+}
+.count-btn span { font-size: 11px; font-weight: 400; color: var(--text-sub); }
+.count-btn.selected { border-color: var(--green); background: var(--green-light); color: var(--green); }
+.count-btn.selected span { color: var(--green-mid); }
+
+/* Step 2 - 何歳 */
+.children-ages { display: flex; flex-direction: column; gap: 20px; }
+.child-row { background: var(--card); border-radius: var(--radius); padding: 16px; }
+.child-row-label { font-size: 13px; color: var(--text-sub); margin-bottom: 12px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.age-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.age-btn {
+  padding: 10px 4px; border-radius: 10px; border: 1.5px solid var(--border);
+  background: var(--bg); font-size: 13px; font-weight: 500; cursor: pointer;
+  text-align: center; transition: all .2s; color: var(--text); font-family: inherit;
+}
+.age-btn.selected { border-color: var(--green); background: var(--green); color: #fff; }
+.age-btn-more { grid-column: span 4; display: flex; flex-wrap: wrap; gap: 8px; }
+.age-btn-more .age-btn { flex: 1; min-width: calc(25% - 6px); }
+
+/* Step 3 - 誰と */
+.who-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.who-btn {
+  padding: 18px 12px; border-radius: var(--radius); border: 2px solid var(--border);
+  background: var(--card); cursor: pointer; text-align: center; transition: all .2s;
+  font-family: inherit;
+}
+.who-btn .who-icon { font-size: 28px; margin-bottom: 6px; }
+.who-btn .who-label { font-size: 13px; font-weight: 600; color: var(--text); display: block; }
+.who-btn .who-sub { font-size: 11px; color: var(--text-sub); }
+.who-btn.selected { border-color: var(--green); background: var(--green-light); }
+.who-btn.selected .who-label { color: var(--green); }
+
+.ob-footer { padding: 20px 24px calc(env(safe-area-inset-bottom, 0px) + 20px); flex-shrink: 0; }
+.ob-next {
+  width: 100%; padding: 16px; border-radius: 14px; border: none;
+  background: var(--green); color: #fff; font-size: 16px; font-weight: 700;
+  font-family: inherit; cursor: pointer; transition: opacity .2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.ob-next:disabled { opacity: 0.4; }
+.ob-back { width: 100%; padding: 12px; border-radius: 14px; border: none;
+  background: none; color: var(--text-sub); font-size: 14px; font-family: inherit; cursor: pointer; margin-top: 8px; }
+
+/* Welcome animation */
+#ob-welcome { background: var(--green); }
+#ob-welcome .ob-body { align-items: center; justify-content: center; text-align: center; }
+#ob-welcome .ob-title { color: #fff; font-size: 28px; }
+#ob-welcome .ob-sub { color: rgba(255,255,255,0.8); }
+#ob-welcome .ob-emoji { animation: bounce 1s ease infinite alternate; }
+@keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+.ob-welcome-skip { color: rgba(255,255,255,0.7); font-size: 14px; text-align: center; padding: 16px; cursor: pointer; }
+
+/* =====================
+   MAIN APP
+   ===================== */
+#main-app { display: none; flex-direction: column; height: 100%; }
+#main-app.visible { display: flex; }
+
+.topbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px 8px; background: var(--bg); flex-shrink: 0; }
+.topbar-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--card); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+
+.tab-content { flex: 1; overflow: hidden; display: none; flex-direction: column; }
+.tab-content.active { display: flex; }
+.scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.scroll-area::-webkit-scrollbar { display: none; }
+
+.bottom-nav { display: flex; background: var(--card); border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: env(safe-area-inset-bottom, 0); }
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 0 8px; cursor: pointer; border: none; background: none; color: var(--text-sub); transition: color .2s; }
+.nav-item.active { color: var(--green); }
+.nav-item svg { width: 22px; height: 22px; }
+.nav-item span { font-size: 10px; font-weight: 500; }
+
+/* =====================
+   HOME
+   ===================== */
+.home-header { padding: 4px 16px 12px; }
+.season-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.season-badge { font-size: 12px; color: var(--green); font-weight: 500; display: flex; align-items: center; gap: 4px; }
+.child-switcher { display: flex; gap: 6px; align-items: center; }
+.child-switcher-label { font-size: 11px; color: var(--text-light); margin-right: 4px; }
+.add-child-btn {
+  width: 28px; height: 28px; border-radius: 50%; border: 1.5px dashed var(--green-mid);
+  background: none; color: var(--green-mid); font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all .2s; flex-shrink: 0;
+}
+.add-child-btn:hover { background: var(--green-light); }
+.child-badge {
+  padding: 5px 12px; border-radius: 20px; background: var(--card); color: var(--text-sub);
+  font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); transition: all .2s;
+  display: flex; align-items: center; gap: 4px;
+}
+.child-badge.active { background: var(--green); color: #fff; border-color: var(--green); }
+.child-badge:not(.active):hover { border-color: var(--green-mid); color: var(--green-mid); }
+.spot-count-badge { font-size: 10px; background: rgba(255,255,255,0.3); padding: 1px 5px; border-radius: 10px; }
+.child-badge:not(.active) .spot-count-badge { background: var(--green-tag-bg); color: var(--green-mid); }
+.home-title { font-size: 26px; font-weight: 700; }
+.home-sub { font-size: 13px; color: var(--text-sub); margin-top: 2px; }
+
+/* Weather */
+.weather-card { margin: 0 16px 12px; background: var(--card); border-radius: var(--radius); padding: 14px; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+.weather-title { font-size: 12px; color: var(--text-sub); margin-bottom: 10px; font-weight: 500; }
+.weather-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.weather-day { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 2px; border-radius: 10px; cursor: pointer; transition: background .15s; position: relative; }
+.weather-day.today { background: #fff8f0; }
+.weather-day.today::after { content: ''; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); width: 18px; height: 3px; background: var(--orange); border-radius: 2px; }
+.weather-day.weekend .wd-dow { color: var(--green); font-weight: 700; }
+.weather-day.selected { background: var(--green-light); border-radius: 10px; }
+.wd-dow { font-size: 9px; color: var(--text-sub); font-weight: 500; }
+.wd-date { font-size: 11px; font-weight: 700; }
+.wd-icon { font-size: 15px; line-height: 1.2; }
+.wd-temp { font-size: 8px; color: var(--orange); font-weight: 600; }
+.wd-cond { font-size: 8px; color: var(--text-light); }
+
+/* Context */
+.context-card { margin: 0 16px 12px; background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+.context-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.context-title { font-size: 15px; font-weight: 700; }
+.context-reset { font-size: 12px; color: var(--text-sub); cursor: pointer; }
+.context-q { font-size: 12px; color: var(--text-sub); margin-bottom: 6px; font-weight: 500; }
+.toggle-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.toggle-btn { padding: 12px 8px; border-radius: 12px; border: none; background: #f5f3f0; color: var(--text-sub); font-size: 13px; font-family: inherit; font-weight: 500; cursor: pointer; transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.toggle-btn.active { background: var(--green); color: #fff; }
+
+/* Cat chips */
+.cat-chips { display: flex; gap: 8px; padding: 0 16px 12px; overflow-x: auto; }
+.cat-chips::-webkit-scrollbar { display: none; }
+.cat-chip { flex-shrink: 0; padding: 7px 14px; border-radius: 20px; background: var(--card); border: 1.5px solid var(--border); font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all .2s; }
+.cat-chip.active { background: var(--green); border-color: var(--green); color: #fff; }
+
+/* Section */
+.section-header { display: flex; justify-content: space-between; align-items: center; padding: 4px 16px 10px; }
+.section-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+.section-sub { font-size: 11px; color: var(--text-sub); }
+.more-link { font-size: 13px; color: var(--green); font-weight: 500; }
+
+/* Spot card */
+.spot-card { margin: 0 16px 12px; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,0.07); cursor: pointer; transition: transform .15s; }
+.spot-card:active { transform: scale(0.98); }
+.spot-photo { height: 160px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; position: relative; overflow: hidden; }
+.spot-photo-inner { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.spot-emoji { font-size: 36px; }
+.spot-photo-note { font-size: 10px; display: flex; align-items: center; gap: 4px; opacity: 0.7; }
+.spot-photo-arrow { position: absolute; bottom: 10px; right: 10px; width: 28px; height: 28px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.rec-badge { position: absolute; top: 10px; left: 10px; background: rgba(255,255,255,0.95); color: var(--orange); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+.spot-info { padding: 12px 14px 14px; }
+.spot-name-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+.spot-name { font-size: 17px; font-weight: 700; }
+.heart-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-light); padding: 0 0 0 8px; transition: color .2s; flex-shrink: 0; }
+.heart-btn.liked { color: #e85d7a; }
+.spot-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.spot-cat { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; border: 1px solid; }
+.spot-cat.park { color: var(--green); background: var(--green-light); border-color: #b8e0ca; }
+.spot-cat.indoor { color: #c05c1a; background: #fef3e8; border-color: #fdd9b0; }
+.spot-cat.cafe { color: #7c5c2e; background: #fdf6e8; border-color: #f0d9a0; }
+.spot-cat.museum { color: #4f56c8; background: #eef0ff; border-color: #c8caff; }
+.spot-loc { font-size: 12px; color: var(--text-sub); }
+.spot-desc { font-size: 13px; color: var(--text-sub); line-height: 1.6; margin-bottom: 10px; }
+.sense-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+.sense-tag { font-size: 11px; padding: 4px 9px; border-radius: 20px; background: var(--green-tag-bg); color: var(--green-mid); font-weight: 600; }
+.keyword-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+.keyword-tag { font-size: 11px; padding: 3px 9px; border-radius: 20px; background: #eef0ff; color: #4f56c8; font-weight: 500; }
+.more-kw { font-size: 11px; color: var(--text-light); font-weight: 600; padding: 3px 0; }
+.facility-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 6px; }
+.facility-tag { font-size: 11px; padding: 3px 9px; border-radius: 20px; background: #f5f3f0; color: var(--text-sub); }
+.spot-price { font-size: 12px; color: var(--orange); font-weight: 600; }
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.spot-card { animation: fadeInUp 0.3s ease both; }
+.spot-card:nth-child(1) { animation-delay: 0s; }
+.spot-card:nth-child(2) { animation-delay: 0.06s; }
+.spot-card:nth-child(3) { animation-delay: 0.12s; }
+.spot-card:nth-child(4) { animation-delay: 0.18s; }
+.spot-card:nth-child(5) { animation-delay: 0.24s; }
+.skeleton-card {
+  margin: 0 16px 12px; background: var(--card); border-radius: var(--radius);
+  overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+}
+.skeleton-photo {
+  height: 160px;
+  background: linear-gradient(90deg, #f0ede8 25%, #e8e4de 50%, #f0ede8 75%);
+  background-size: 400px 100%;
+  animation: shimmer 1.2s infinite;
+}
+.skeleton-body { padding: 14px; }
+.skeleton-line {
+  height: 14px; border-radius: 7px; margin-bottom: 10px;
+  background: linear-gradient(90deg, #f0ede8 25%, #e8e4de 50%, #f0ede8 75%);
+  background-size: 400px 100%;
+  animation: shimmer 1.2s infinite;
+}
+.skeleton-line.short { width: 40%; }
+.skeleton-line.mid { width: 65%; }
+.loading-text {
+  text-align: center; padding: 8px; font-size: 12px; color: var(--text-light);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-spinner {
+  width: 14px; height: 14px; border: 2px solid var(--border);
+  border-top-color: var(--green); border-radius: 50%;
+  animation: spin 0.7s linear infinite; display: inline-block;
+}
+.spot-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+.detail-btn { padding: 9px 18px; background: var(--green); color: #fff; border: none; border-radius: 20px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: opacity .2s; }
+.detail-btn:active { opacity: 0.8; }
+.spot-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+.detail-btn { padding: 9px 18px; background: var(--green); color: #fff; border: none; border-radius: 20px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: opacity .2s; }
+.detail-btn:active { opacity: 0.8; }
+
+.footer-credit { text-align: center; padding: 20px 16px 32px; }
+.footer-credit p { font-size: 11px; color: var(--text-light); line-height: 1.8; }
+.footer-credit strong { color: var(--text-sub); }
+
+/* =====================
+   MAP TAB
+   ===================== */
+#map-container { flex: 1; position: relative; }
+#map { height: 100%; width: 100%; }
+.map-count { position: absolute; bottom: 12px; right: 10px; background: var(--card); padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 999; }
+
+/* =====================
+   SAGASU TAB
+   ===================== */
+.search-bar-wrap { padding: 12px 16px; display: flex; gap: 8px; flex-shrink: 0; }
+.search-bar { flex: 1; display: flex; align-items: center; gap: 8px; background: var(--card); border: 1.5px solid var(--border); border-radius: 12px; padding: 10px 14px; }
+.search-bar input { border: none; background: none; font-size: 14px; font-family: inherit; color: var(--text); width: 100%; outline: none; }
+.search-bar input::placeholder { color: var(--text-light); }
+.filter-btn { width: 44px; height: 44px; background: var(--card); border: 1.5px solid var(--border); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+.list-header { padding: 0 16px 10px; font-size: 14px; font-weight: 700; }
+.list-header span { color: var(--text-sub); font-weight: 400; font-size: 12px; }
+
+/* =====================
+   FAVORITES TAB
+   ===================== */
+.empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 40px 32px; }
+.empty-icon { font-size: 48px; opacity: 0.3; }
+.empty-title { font-size: 16px; font-weight: 600; color: var(--text-sub); }
+.empty-sub { font-size: 13px; color: var(--text-light); text-align: center; line-height: 1.6; }
+.empty-btn { margin-top: 8px; padding: 12px 28px; border: 1.5px solid var(--text); border-radius: 12px; background: none; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; }
+
+/* =====================
+   DIARY TAB
+   ===================== */
+.diary-header { padding: 16px 16px 0; }
+.diary-title { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+.step-dots { display: flex; align-items: center; gap: 6px; margin-bottom: 20px; }
+.step-dot { height: 4px; width: 24px; border-radius: 2px; background: var(--border); transition: all .3s; }
+.step-dot.active { background: var(--green); width: 36px; }
+.step-label { font-size: 11px; color: var(--text-light); margin-left: 4px; }
+.form-section { margin: 0 16px 12px; background: var(--card); border-radius: var(--radius); padding: 16px; }
+.form-section-title { font-size: 14px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+.form-input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; background: var(--bg); color: var(--text); outline: none; transition: border-color .2s; }
+.form-input:focus { border-color: var(--green); }
+.select-wrap { position: relative; }
+.form-select { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; background: var(--bg); color: var(--text-sub); outline: none; appearance: none; cursor: pointer; margin-bottom: 10px; }
+.select-wrap::after { content: '▾'; position: absolute; right: 14px; top: 13px; color: var(--text-sub); pointer-events: none; }
+.feeling-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.feeling-btn { padding: 12px 6px; border: 1.5px solid var(--border); border-radius: 12px; background: var(--bg); font-size: 13px; font-family: inherit; cursor: pointer; text-align: center; transition: all .2s; }
+.feeling-btn.active { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 600; }
+.tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag-btn { padding: 6px 12px; border: 1.5px solid var(--border); border-radius: 20px; background: none; font-size: 12px; font-family: inherit; cursor: pointer; transition: all .2s; }
+.tag-btn.active { border-color: var(--green); background: var(--green-tag-bg); color: var(--green-mid); font-weight: 600; }
+.action-btn-full { margin: 0 16px 12px; width: calc(100% - 32px); padding: 16px; background: var(--green); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; }
+.action-btn-back { display: block; text-align: center; padding: 10px; color: var(--text-sub); font-size: 14px; cursor: pointer; background: none; border: none; font-family: inherit; width: 100%; }
+
+/* =====================
+   DETAIL OVERLAY
+   ===================== */
+.detail-overlay {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%);
+  width: 100%; max-width: 430px; height: 100vh; background: var(--bg); z-index: 100;
+  display: flex; flex-direction: column;
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -4px 32px rgba(0,0,0,0.15);
+}
+.detail-overlay.open { transform: translateX(-50%) translateY(0); }
+.detail-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 10px auto 4px; flex-shrink: 0; }
+.detail-topbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; flex-shrink: 0; }
+.detail-back { display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; background: none; border: none; font-family: inherit; color: var(--text); }
+.detail-scroll { flex: 1; overflow-y: auto; }
+.detail-scroll::-webkit-scrollbar { display: none; }
+.detail-gallery { height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; position: relative; }
+.gallery-dots { display: flex; gap: 5px; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); }
+.gallery-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); }
+.gallery-dot.active { background: white; width: 18px; border-radius: 3px; }
+.detail-rec { position: absolute; top: 10px; left: 10px; background: rgba(255,255,255,0.95); color: var(--orange); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+.detail-body { padding: 16px; }
+.detail-cat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.detail-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.detail-desc { font-size: 14px; color: var(--text-sub); line-height: 1.7; margin-bottom: 14px; }
+.detail-sense { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 16px; }
+.d-section { background: var(--card); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; }
+.d-section-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.play-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.play-tag { font-size: 12px; padding: 4px 12px; border-radius: 20px; background: #eef0ff; color: #4f56c8; }
+.highlight-box { background: #fffbf0; border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #92600a; line-height: 1.6; display: flex; gap: 8px; }
+.google-rating { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.stars { color: #f59e0b; font-size: 18px; }
+.rating-num { font-size: 20px; font-weight: 700; }
+.rating-count { font-size: 12px; color: var(--text-sub); }
+.api-note { font-size: 11px; color: var(--text-light); display: flex; align-items: center; gap: 4px; }
+.congestion-bars { display: flex; align-items: flex-end; gap: 3px; height: 50px; margin-bottom: 8px; }
+.cbar { flex: 1; border-radius: 3px 3px 0 0; background: var(--green-light); }
+.cbar.high { background: #b0d8c4; }
+.cbar-labels { display: flex; justify-content: space-between; font-size: 9px; color: var(--text-light); }
+.info-rows { display: flex; flex-direction: column; gap: 12px; }
+.info-row { display: flex; align-items: flex-start; gap: 12px; }
+.info-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+.info-label { font-size: 11px; color: var(--text-light); }
+.info-val { font-size: 14px; font-weight: 500; }
+.info-val.green { color: var(--green); }
+.action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.action-btn { padding: 14px; border-radius: 12px; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.action-btn.outline { background: var(--card); border: 1.5px solid var(--text); color: var(--text); }
+.action-btn.fill { background: var(--green); border: none; color: white; }
+.voice-section { background: var(--card); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; }
+.voice-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.voice-title { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+.post-btn { padding: 7px 14px; border: 1.5px solid var(--green); border-radius: 20px; background: none; color: var(--green); font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; }
+.age-tabs { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 14px; padding-bottom: 2px; }
+.age-tabs::-webkit-scrollbar { display: none; }
+.age-tab { flex-shrink: 0; padding: 6px 12px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--bg); font-size: 12px; font-family: inherit; cursor: pointer; white-space: nowrap; transition: all .2s; }
+.age-tab.active { background: var(--green); border-color: var(--green); color: white; font-weight: 600; }
+.voice-empty { text-align: center; padding: 20px; color: var(--text-light); }
+.voice-empty-icon { font-size: 32px; opacity: 0.3; margin-bottom: 8px; }
+.voice-empty-text { font-size: 13px; line-height: 1.6; }
+
+/* Settings overlay */
+.settings-overlay { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; height: 100vh; background: var(--bg); z-index: 150; display: none; flex-direction: column; }
+.settings-overlay.open { display: flex; }
+.settings-header { padding: 16px; display: flex; align-items: center; justify-content: space-between; background: var(--card); border-bottom: 1px solid var(--border); }
+.settings-title { font-size: 18px; font-weight: 700; }
+.settings-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-sub); }
+.settings-body { flex: 1; overflow-y: auto; padding: 20px 16px; }
+.settings-section-title { font-size: 13px; color: var(--text-sub); font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+.settings-card { background: var(--card); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; }
+.child-setting-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.child-setting-row:last-child { border-bottom: none; padding-bottom: 0; }
+.child-setting-info { display: flex; align-items: center; gap: 10px; }
+.child-setting-emoji { font-size: 22px; }
+.child-setting-name { font-size: 14px; font-weight: 600; }
+.child-setting-age { font-size: 12px; color: var(--text-sub); }
+.settings-reset-btn { padding: 12px; border-radius: 10px; border: 1.5px solid #e57373; background: none; color: #e57373; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; width: 100%; }
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- =====================
+     ONBOARDING
+     ===================== -->
+<div id="onboarding">
+
+  <!-- Welcome -->
+  <div id="ob-welcome" class="ob-screen active">
+    <div class="ob-body">
+      <div class="ob-emoji">🌿</div>
+      <div class="ob-title">しがキッズへ<br>ようこそ</div>
+      <div class="ob-sub">滋賀県の子連れおでかけスポットを<br>お子さんの年齢に合わせてご紹介します</div>
+    </div>
+    <div class="ob-footer">
+      <button class="ob-next" onclick="goOb(1)">はじめる →</button>
+      <div class="ob-welcome-skip" onclick="skipOnboarding()">スキップして始める</div>
+    </div>
+  </div>
+
+  <!-- Step 1: 何人? -->
+  <div id="ob-step1" class="ob-screen">
+    <div class="ob-header">
+      <div class="ob-progress">
+        <div class="ob-prog-dot done"></div>
+        <div class="ob-prog-dot"></div>
+        <div class="ob-prog-dot"></div>
+      </div>
+      <div class="ob-skip" onclick="skipOnboarding()">スキップ</div>
+    </div>
+    <div class="ob-body">
+      <div class="ob-emoji">👨‍👩‍👧</div>
+      <div class="ob-title">お子さんは<br>何人いますか？</div>
+      <div class="ob-sub">人数に合わせておすすめを<br>カスタマイズします</div>
+      <div class="count-btns">
+        <button class="count-btn" onclick="selectCount(1)"><span style="font-size:28px;">1</span><span>1人</span></button>
+        <button class="count-btn" onclick="selectCount(2)"><span style="font-size:28px;">2</span><span>2人</span></button>
+        <button class="count-btn" onclick="selectCount(3)"><span style="font-size:28px;">3+</span><span>3人以上</span></button>
+      </div>
+    </div>
+    <div class="ob-footer">
+      <button class="ob-next" id="ob-next1" onclick="goOb(2)" disabled>次へ →</button>
+      <button class="ob-back" onclick="goOb(0)">← 戻る</button>
+    </div>
+  </div>
+
+  <!-- Step 2: 何歳? -->
+  <div id="ob-step2" class="ob-screen">
+    <div class="ob-header">
+      <div class="ob-progress">
+        <div class="ob-prog-dot done"></div>
+        <div class="ob-prog-dot done"></div>
+        <div class="ob-prog-dot"></div>
+      </div>
+      <div class="ob-skip" onclick="skipOnboarding()">スキップ</div>
+    </div>
+    <div class="ob-body">
+      <div class="ob-emoji">🎂</div>
+      <div class="ob-title">それぞれ<br>何歳ですか？</div>
+      <div class="ob-sub">名前は不要です。年齢だけで<br>ぴったりのスポットを見つけます</div>
+      <div class="children-ages" id="childrenAgesContainer"></div>
+    </div>
+    <div class="ob-footer">
+      <button class="ob-next" id="ob-next2" onclick="goOb(3)" disabled>次へ →</button>
+      <button class="ob-back" onclick="goOb(1)">← 戻る</button>
+    </div>
+  </div>
+
+  <!-- Step 3: 今日は誰と -->
+  <div id="ob-step3" class="ob-screen">
+    <div class="ob-header">
+      <div class="ob-progress">
+        <div class="ob-prog-dot done"></div>
+        <div class="ob-prog-dot done"></div>
+        <div class="ob-prog-dot done"></div>
+      </div>
+    </div>
+    <div class="ob-body">
+      <div class="ob-emoji">✅</div>
+      <div class="ob-title">登録完了！<br>今日は誰と行く？</div>
+      <div class="ob-sub">複数いる場合、今日のメインのお子さんを<br>選んでください。あとから変更できます</div>
+      <div class="who-btns" id="whoBtns"></div>
+    </div>
+    <div class="ob-footer">
+      <button class="ob-next" onclick="finishOnboarding()">アプリを始める 🎉</button>
+      <button class="ob-back" onclick="goOb(2)">← 戻る</button>
+    </div>
+  </div>
+
+</div><!-- end onboarding -->
+
+<!-- =====================
+     MAIN APP
+     ===================== -->
+<div id="main-app">
+
+  <div class="topbar">
+    <button class="topbar-btn" onclick="openSettings()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg>
+    </button>
+    <button class="topbar-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+    </button>
+  </div>
+
+  <!-- HOME -->
+  <div id="tab-home" class="tab-content active">
+    <div class="scroll-area">
+      <div class="home-header">
+        <div class="season-row">
+          <div class="season-badge">🌿 春のおでかけ</div>
+          <div class="child-switcher" id="childSwitcher"></div>
+        </div>
+        <div class="home-title">こんにちは</div>
+        <div class="home-sub" id="homeSubText">今週はどこ行こう？滋賀のおでかけスポットを探そう</div>
+      </div>
+
+      <div class="weather-card">
+        <div class="weather-title">今週の天気（大津市）</div>
+        <div class="weather-days" id="weatherDays"></div>
+      </div>
+
+      <div class="context-card">
+        <div class="context-header">
+          <div class="context-title">今日の状況は？</div>
+          <div class="context-reset" onclick="resetContext()">× リセット</div>
+        </div>
+        <div class="context-q">天気は？</div>
+        <div class="toggle-row">
+          <button class="toggle-btn" onclick="toggleCtx(this,'weather')">🌧 雨</button>
+          <button class="toggle-btn active" onclick="toggleCtx(this,'weather')">☀️ 晴れ</button>
+        </div>
+        <div class="context-q">お子さんの機嫌は？</div>
+        <div class="toggle-row">
+          <button class="toggle-btn" onclick="toggleCtx(this,'mood')">😴 ぐずり気味</button>
+          <button class="toggle-btn active" onclick="toggleCtx(this,'mood')">😄 元気いっぱい</button>
+        </div>
+        <div class="context-q">外出できる時間は？</div>
+        <div class="toggle-row">
+          <button class="toggle-btn" onclick="toggleCtx(this,'time')">⏱ 1〜2時間</button>
+          <button class="toggle-btn active" onclick="toggleCtx(this,'time')">🌅 半日</button>
+        </div>
+      </div>
+
+      <div class="cat-chips">
+        <div class="cat-chip active" onclick="filterCat(this)">🌳 公園</div>
+        <div class="cat-chip" onclick="filterCat(this)">🏠 室内遊び場</div>
+        <div class="cat-chip" onclick="filterCat(this)">☕ カフェ</div>
+        <div class="cat-chip" onclick="filterCat(this)">🎨 体験</div>
+        <div class="cat-chip" onclick="filterCat(this)">🏊 水遊び</div>
+      </div>
+
+      <div class="section-header">
+        <div>
+          <div class="section-title">✨ 今日のおすすめ</div>
+          <div class="section-sub" id="pickSub">今の状況に合わせてピックアップしました</div>
+        </div>
+        <div class="more-link">もっと見る ›</div>
+      </div>
+
+      <div id="spotList"></div>
+
+      <div class="footer-credit"><p>UX Design by <strong>tkinoshita.studio</strong><br>Created with Perplexity Computer</p></div>
+    </div>
+  </div>
+
+  <!-- MAP -->
+  <div id="tab-map" class="tab-content">
+    <div id="map-container">
+      <div id="map"></div>
+      <div class="map-count" id="mapCount">16件</div>
+    </div>
+    <div class="footer-credit" style="flex-shrink:0;padding:10px 16px 14px;"><p>UX Design by <strong>tkinoshita.studio</strong><br>Created with Perplexity Computer</p></div>
+  </div>
+
+  <!-- SAGASU -->
+  <div id="tab-sagasu" class="tab-content">
+    <div class="search-bar-wrap">
+      <div class="search-bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="スポット名・エリアで検索..." id="searchInput" oninput="doSearch()">
+      </div>
+      <button class="filter-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+      </button>
+    </div>
+    <div class="list-header">すべてのスポット <span id="searchCount">16件</span></div>
+    <div class="scroll-area" id="sagasuList"></div>
+  </div>
+
+  <!-- FAVORITES -->
+  <div id="tab-fav" class="tab-content">
+    <div class="scroll-area" id="favList">
+      <div class="empty-state">
+        <div class="empty-icon">♡</div>
+        <div class="empty-title">まだお気に入りがありません</div>
+        <div class="empty-sub">スポットの♡をタップして追加しよう</div>
+        <button class="empty-btn" onclick="switchTab('sagasu')">スポットを探す</button>
+      </div>
+    </div>
+    <div class="footer-credit" style="flex-shrink:0;padding:10px 16px 14px;"><p>UX Design by <strong>tkinoshita.studio</strong><br>Created with Perplexity Computer</p></div>
+  </div>
+
+  <!-- DIARY -->
+  <div id="tab-diary" class="tab-content">
+    <div class="scroll-area">
+      <div class="diary-header">
+        <div class="diary-title">📖 スポットを投稿</div>
+        <div class="step-dots">
+          <div class="step-dot active" id="d1"></div>
+          <div class="step-dot" id="d2"></div>
+          <div class="step-dot" id="d3"></div>
+          <span class="step-label" id="dLabel">ステップ 1/3</span>
+        </div>
+      </div>
+      <div id="diary-step1">
+        <div class="form-section">
+          <div class="form-section-title">📍 場所の情報</div>
+          <input class="form-input" type="text" placeholder="スポット名" style="margin-bottom:10px;">
+          <div class="select-wrap" style="margin-bottom:10px;">
+            <select class="form-select"><option value="">カテゴリを選択</option><option>公園</option><option>室内遊び場</option><option>カフェ・レストラン</option><option>ミュージアム・体験</option><option>水遊び</option></select>
+          </div>
+          <div class="select-wrap">
+            <select class="form-select"><option value="">エリアを選択</option><option>大津市</option><option>草津市</option><option>守山市</option><option>栗東市</option><option>野洲市</option><option>近江八幡市</option><option>彦根市</option><option>長浜市</option></select>
+          </div>
+          <input class="form-input" type="text" placeholder="住所（任意）">
+        </div>
+        <button class="action-btn-full" onclick="diaryNext(2)">次へ →</button>
+      </div>
+      <div id="diary-step2" style="display:none;">
+        <div class="form-section">
+          <div class="form-section-title">💬 どうだった？</div>
+          <div class="feeling-row" style="margin-bottom:16px;">
+            <button class="feeling-btn" onclick="pickFeeling(this)">😊<br>よかった</button>
+            <button class="feeling-btn" onclick="pickFeeling(this)">😐<br>まあまあ</button>
+            <button class="feeling-btn" onclick="pickFeeling(this)">😓<br>いまいち</button>
+          </div>
+          <textarea class="form-input" rows="3" placeholder="一言コメント（50字以内）" style="resize:none;"></textarea>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">🏷 感覚タグ</div>
+          <div class="tag-row">
+            <button class="tag-btn" onclick="this.classList.toggle('active')">🌿 自然感あり</button>
+            <button class="tag-btn" onclick="this.classList.toggle('active')">🔇 静かめ</button>
+            <button class="tag-btn" onclick="this.classList.toggle('active')">🔊 にぎやか</button>
+            <button class="tag-btn" onclick="this.classList.toggle('active')">🏃 走り回れる</button>
+            <button class="tag-btn" onclick="this.classList.toggle('active')">👶 抱っこでOK</button>
+            <button class="tag-btn" onclick="this.classList.toggle('active')">🏗 施設感つよい</button>
+          </div>
+        </div>
+        <button class="action-btn-full" onclick="diaryNext(3)">次へ →</button>
+        <button class="action-btn-back" onclick="diaryNext(1)">← 戻る</button>
+      </div>
+      <div id="diary-step3" style="display:none;">
+        <div class="form-section">
+          <div class="form-section-title">📋 詳細（任意）</div>
+          <div style="font-size:12px;color:var(--text-sub);margin-bottom:10px;">対象年齢</div>
+          <div class="tag-row" style="margin-bottom:16px;" id="diaryAgeTags"></div>
+          <div style="font-size:12px;color:var(--text-sub);margin-bottom:10px;">設備</div>
+          <div class="tag-row">
+            <button class="tag-btn" onclick="this.classList.toggle('active')">おむつ替え</button>
+            <button class="tag-btn" onclick="this.classList.toggle('active')">授乳室</button>
+            <button class="tag-btn" onclick="this.classList.toggle('active')">ベビーカーOK</button>
+            <button class="tag-btn" onclick="this.classList.toggle('active')">駐車場あり</button>
+            <button class="tag-btn" onclick="this.classList.toggle('active')">無料</button>
+            <button class="tag-btn" onclick="this.classList.toggle('active')">雨の日OK</button>
+            <button class="tag-btn" onclick="this.classList.toggle('active')">飲食可</button>
+          </div>
+        </div>
+        <button class="action-btn-full" onclick="submitDiary()" style="background:#40916c;">✓ 投稿する</button>
+        <button class="action-btn-back" onclick="diaryNext(2)">← 戻る</button>
+      </div>
+      <div style="height:24px;"></div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-item active" id="nav-home" onclick="switchTab('home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>ホーム</span>
+    </button>
+    <button class="nav-item" id="nav-map" onclick="switchTab('map')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      <span>地図</span>
+    </button>
+    <button class="nav-item" id="nav-sagasu" onclick="switchTab('sagasu')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>さがす</span>
+    </button>
+    <button class="nav-item" id="nav-fav" onclick="switchTab('fav')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <span>お気に入り</span>
+    </button>
+    <button class="nav-item" id="nav-diary" onclick="switchTab('diary')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      <span>日記</span>
+    </button>
+  </nav>
+</div><!-- end main-app -->
+
+<!-- DETAIL OVERLAY -->
+<div id="dimmer" onclick="closeDetail()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:99;opacity:0;transition:opacity 0.35s;"></div>
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-handle"></div>
+  <div class="detail-topbar">
+    <button class="detail-back" onclick="closeDetail()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      <span id="detailNavTitle"></span>
+    </button>
+    <button class="heart-btn" style="font-size:22px;" id="detailHeart" onclick="toggleDetailHeart()">♡</button>
+  </div>
+  <div class="detail-scroll">
+    <div class="detail-gallery" id="detailGallery">
+      <div class="detail-rec" id="detailRecBadge"></div>
+      <div style="font-size:52px;" id="detailEmoji"></div>
+      <div style="font-size:10px;opacity:0.7;">📷 本リリース時はGoogle写真が表示されます</div>
+      <div class="gallery-dots">
+        <div class="gallery-dot active"></div><div class="gallery-dot"></div><div class="gallery-dot"></div><div class="gallery-dot"></div><div class="gallery-dot"></div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-cat-row">
+        <span class="spot-cat park" id="detailCat"></span>
+        <span style="font-size:12px;color:var(--text-sub);" id="detailLoc"></span>
+      </div>
+      <div class="detail-title" id="detailTitle"></div>
+      <div class="detail-desc" id="detailDesc"></div>
+      <div class="detail-sense" id="detailSenseTags"></div>
+
+      <div class="d-section">
+        <div class="d-section-title">🧩 遊具・あそび</div>
+        <div class="play-tags" id="detailPlayTags"></div>
+        <div class="highlight-box"><span>💡</span><span id="detailHighlight"></span></div>
+      </div>
+
+      <div class="d-section">
+        <div class="d-section-title">⭐ Googleの評価</div>
+        <div class="google-rating">
+          <div class="stars">★★★★☆</div>
+          <div class="rating-num" id="detailRating">4.0</div>
+          <div class="rating-count">・ -- 件</div>
+        </div>
+        <div class="api-note">📷 本リリース時はGoogle口コミが表示されます</div>
+      </div>
+
+      <div class="d-section">
+        <div class="d-section-title">📊 混雑状況</div>
+        <div class="congestion-bars" id="congBars"></div>
+        <div class="cbar-labels"><span>9時</span><span>12時</span><span>15時</span><span>18時</span></div>
+        <div class="api-note" style="margin-top:8px;">📷 本リリース時はリアルタイム混雑データが表示されます</div>
+      </div>
+
+      <div class="d-section">
+        <div class="info-rows">
+          <div class="info-row"><span class="info-icon">📍</span><div><div class="info-label">住所</div><div class="info-val" id="di-addr"></div></div></div>
+          <div class="info-row"><span class="info-icon">🕐</span><div><div class="info-label">営業時間</div><div class="info-val" id="di-hours"></div></div></div>
+          <div class="info-row"><span class="info-icon">📅</span><div><div class="info-label">定休日</div><div class="info-val" id="di-closed"></div></div></div>
+          <div class="info-row"><span class="info-icon">¥</span><div><div class="info-label">料金</div><div class="info-val green" id="di-price"></div></div></div>
+        </div>
+      </div>
+
+      <div class="action-btns">
+        <button class="action-btn outline">🌐 公式サイト ↗</button>
+        <button class="action-btn fill">✈ ナビで行く</button>
+      </div>
+
+      <div class="voice-section">
+        <div class="voice-header">
+          <div class="voice-title">💬 パパママの声 <span style="color:var(--text-sub);font-weight:400;font-size:13px;">(0件)</span></div>
+          <button class="post-btn">声を投稿</button>
+        </div>
+        <div class="age-tabs" id="detailAgeTabs"></div>
+        <div class="voice-empty">
+          <div class="voice-empty-icon">👥</div>
+          <div class="voice-empty-text" id="voiceEmptyText">まだ声がありません<br>最初の声を投稿してみましょう</div>
+        </div>
+      </div>
+      <div class="footer-credit"><p>UX Design by <strong>tkinoshita.studio</strong><br>Created with Perplexity Computer</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS OVERLAY -->
+<div class="settings-overlay" id="settingsOverlay">
+  <div class="settings-header">
+    <span class="settings-title">⚙️ 設定</span>
+    <button class="settings-close" onclick="closeSettings()">✕</button>
+  </div>
+  <div class="settings-body">
+    <div class="settings-section-title">お子さん情報</div>
+    <div class="settings-card" id="settingsChildren"></div>
+    <div class="settings-section-title" style="margin-top:20px;">リセット</div>
+    <div class="settings-card">
+      <button class="settings-reset-btn" onclick="resetAll()">🔄 登録情報をリセットして最初からやり直す</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD CHILD MODAL -->
+<div id="addChildModal" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.5);align-items:flex-end;justify-content:center;">
+  <div style="background:var(--bg);border-radius:20px 20px 0 0;padding:24px;width:100%;max-width:430px;box-shadow:0 -4px 32px rgba(0,0,0,0.2);">
+    <div style="width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px;"></div>
+    <div style="font-size:18px;font-weight:700;margin-bottom:6px;">👤 お子さんを追加</div>
+    <div style="font-size:13px;color:var(--text-sub);margin-bottom:20px;">友人のお子さんなど、何歳のスポットを探しますか？</div>
+    <div style="font-size:12px;color:var(--text-sub);margin-bottom:10px;font-weight:500;">年齢を選択</div>
+    <div id="addChildAgeGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;"></div>
+    <button id="addChildConfirm" onclick="confirmAddChild()" disabled style="width:100%;padding:14px;background:var(--green);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;opacity:0.4;transition:opacity .2s;">追加する</button>
+    <button onclick="hideAddChildModal()" style="width:100%;padding:12px;background:none;border:none;color:var(--text-sub);font-size:14px;font-family:inherit;cursor:pointer;margin-top:6px;">キャンセル</button>
+  </div>
+</div>
+</div><!-- end app -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+// =====================
+// DATA
+// =====================
+const SPOTS = [
+  // ── 公園 ──────────────────────────────────────────
+  {
+    id:'yabashi', emoji:'🌳', name:'矢橋帰帆島公園', cat:'公園', catClass:'park',
+    loc:'草津市', addr:'滋賀県草津市矢橋町地先', hours:'常時開放', closed:'なし', price:'入園無料',
+    desc:'琵琶湖に浮かぶ人工島の広大な公園。ピラミッド型ネット遊具やブランコ、芝生広場があり、0歳の散歩から小学生まで楽しめます。',
+    sense:['🌿 自然感あり','🏃 走り回れる','👶 抱っこでOK'],
+    keywords:['ピラミッド型ネット遊具','大型ブランコ','ローラーすべり台','芝生広場','サイクリングコース'],
+    facilities:['駐車場あり','無料','ベビーカーOK'],
+    play:['ピラミッド型ネット遊具','大型ブランコ','ローラーすべり台','芝生広場','サイクリングコース'],
+    highlight:'ベビーカーでも回りやすい。琵琶湖の景色が最高。早朝は空いていて気持ちいい。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#c8ede0,#a8d8c4)',
+    ageGroups:[0,1,2,3,4,5,6,7], lat:35.0112, lng:135.9483
+  },
+  {
+    id:'biwako', emoji:'🌳', name:'びわこ地球市民の森', cat:'公園', catClass:'park',
+    loc:'守山市', addr:'滋賀県守山市今浜町2146', hours:'9:00〜17:00', closed:'月曜', price:'無料',
+    desc:'守山市の広大な県営公園。大型コンビネーション遊具や冒険の森があり、自然の中でのびのび遊べます。',
+    sense:['🌿 自然感あり','🔇 静かめ','🏃 走り回れる'],
+    keywords:['大型コンビネーション遊具','冒険の森（木製アスレチック）','ターザンロープ','砂場'],
+    facilities:['駐車場あり','無料','ベビーカーOK'],
+    play:['大型コンビネーション遊具','冒険の森（木製アスレチック）','ターザンロープ','砂場','バーベキューエリア'],
+    highlight:'平日は空いていてゆったり。木製アスレチックは子どもが大興奮。自然の中を散歩するだけでも気持ちいい。',
+    rating:4.1, galleryBg:'linear-gradient(135deg,#d0ebd8,#b4d8bc)',
+    ageGroups:[1,2,3,4,5,6,7], lat:35.0701, lng:135.9891
+  },
+  {
+    id:'kusatsugawa', emoji:'🌿', name:'草津川跡地公園 de愛ひろば', cat:'公園', catClass:'park',
+    loc:'草津市', addr:'滋賀県草津市草津3丁目', hours:'9:00〜21:00', closed:'第2火曜', price:'入場無料',
+    desc:'旧草津川の跡地を活用した新しい公園。芝生広場やカフェがあり、地域イベントも頻繁に開催。子連れでのんびり過ごせます。',
+    sense:['🌿 自然感あり','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['芝生広場','カフェ','地域イベント','水遊び場（夏季）'],
+    facilities:['無料','ベビーカーOK','飲食可'],
+    play:['芝生広場','カフェエリア','水遊び場（夏季限定）','地域マルシェ（定期開催）'],
+    highlight:'広い芝生でピクニック気分。カフェのクレープが美味しい。子どもが走り回れる。',
+    rating:4.3, galleryBg:'linear-gradient(135deg,#e8f0c8,#d0e4a8)',
+    ageGroups:[0,1,2,3,4], lat:35.0156, lng:135.9268
+  },
+  {
+    id:'otsu_park', emoji:'🌳', name:'皇子が丘公園', cat:'公園', catClass:'park',
+    loc:'大津市', addr:'滋賀県大津市御陵町1-1', hours:'常時開放', closed:'なし', price:'無料',
+    desc:'大津市中心部の丘陵公園。大型すべり台とじゃぶじゃぶ池（夏季）があり、近隣の子育て家族に愛されています。',
+    sense:['🌿 自然感あり','🔇 静かめ','🏃 走り回れる'],
+    keywords:['大型すべり台','芝生広場','じゃぶじゃぶ池（夏季）','アスレチック'],
+    facilities:['無料','ベビーカーOK','駐車場あり'],
+    play:['大型すべり台','芝生広場','じゃぶじゃぶ池（夏季）','アスレチック'],
+    highlight:'夏のじゃぶじゃぶ池が大人気。駐車場近くて便利。週末は家族連れで賑わう。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#d0f0d8,#b0e0b8)',
+    ageGroups:[0,1,2,3,4,5,6], lat:35.0089, lng:135.8598
+  },
+  {
+    id:'moriyama_park', emoji:'🌊', name:'守山市民運動公園', cat:'公園', catClass:'park',
+    loc:'守山市', addr:'滋賀県守山市古高町540', hours:'9:00〜17:00', closed:'月曜', price:'無料',
+    desc:'守山市の総合運動公園。広い芝生と大型複合遊具が揃い、子どもが1日中遊べます。夏は水遊びエリアも開設。',
+    sense:['🌿 自然感あり','🏃 走り回れる','🔊 にぎやか'],
+    keywords:['大型複合遊具','芝生広場','水遊びエリア（夏季）','ジョギングコース'],
+    facilities:['駐車場あり','無料','ベビーカーOK','飲食可'],
+    play:['大型複合遊具','芝生広場','水遊びエリア（夏季）','ターザンロープ','砂場'],
+    highlight:'夏の水遊びが人気。複合遊具は年齢別エリアで安心。',
+    rating:4.0, galleryBg:'linear-gradient(135deg,#c8e8f8,#a8d0f0)',
+    ageGroups:[0,1,2,3,4,5,6,7], lat:35.0523, lng:135.9934
+  },
+
+  // ── 室内遊び場 ────────────────────────────────────
+  {
+    id:'asoble', emoji:'🏠', name:'ASOBLEオーミー大津テラス店', cat:'室内遊び場', catClass:'indoor',
+    loc:'大津市', addr:'滋賀県大津市打出浜2-1', hours:'10:00〜18:00', closed:'不定休', price:'子ども500円/30分〜',
+    desc:'大津市の室内遊び場。ボールプールやトランポリン、おままごとコーナーなど多彩な遊びが楽しめます。雨の日でも安心。',
+    sense:['🏗 施設感つよい','🔊 にぎやか','👶 抱っこでOK'],
+    keywords:['ボールプール','トランポリン','おままごとコーナー','室内砂場'],
+    facilities:['おむつ替え','授乳室','雨の日OK','駐車場あり'],
+    play:['ボールプール','トランポリン','おままごとコーナー','室内砂場','キッズカー'],
+    highlight:'0歳から入れる。雨の日の定番。週末は混むので平日狙いがおすすめ。',
+    rating:3.9, galleryBg:'linear-gradient(135deg,#fce8d0,#f8d4b0)',
+    ageGroups:[0,1,2,3], lat:35.0145, lng:135.8612
+  },
+  {
+    id:'otsu_child', emoji:'🍼', name:'大津市子育て交流施設 ほっとステーション', cat:'室内遊び場', catClass:'indoor',
+    loc:'大津市', addr:'滋賀県大津市浜大津4丁目', hours:'10:00〜16:00', closed:'日・月・祝', price:'無料',
+    desc:'0〜3歳向けの子育て支援施設。授乳室・おむつ替え完備で、ねんね期のお子さんも安心して過ごせます。親同士の交流の場にも。',
+    sense:['🏗 施設感つよい','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['0〜3歳専用','授乳室','おむつ替え','親子交流','スタッフ常駐'],
+    facilities:['無料','おむつ替え','授乳室','ベビーカーOK','雨の日OK'],
+    play:['マット遊びエリア','ハイハイコーナー','絵本・おもちゃ','親子体操（定期開催）'],
+    highlight:'0歳でも安心して遊べる。スタッフが常駐していて相談もできる。同じ月齢の親と仲良くなれる。',
+    rating:4.4, galleryBg:'linear-gradient(135deg,#fce8f8,#f8d0f0)',
+    ageGroups:[0,1,2,3], lat:35.0067, lng:135.8689
+  },
+  {
+    id:'challenge_museum', emoji:'🔬', name:'チャレンジミュージアム', cat:'室内遊び場', catClass:'indoor',
+    loc:'甲賀市', addr:'滋賀県甲賀市水口町水口5600', hours:'9:30〜17:00', closed:'月曜', price:'大人300円・子ども100円',
+    desc:'「やってみよう！わくわく未来チャレンジ」をコンセプトにした体験型ミュージアム。見て・触れて・体験しながら学べます。',
+    sense:['🏗 施設感つよい','🔊 にぎやか','🏃 走り回れる'],
+    keywords:['科学体験','工作コーナー','デジタル体験','自然学習'],
+    facilities:['駐車場あり','雨の日OK','おむつ替え'],
+    play:['科学実験コーナー','工作体験','デジタル体験ゾーン','自然学習展示'],
+    highlight:'雨の日でも1日楽しめる。スタッフが実験を教えてくれる。小学生になっても来られる。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#e0f0ff,#c0d8f8)',
+    ageGroups:[3,4,5,6,7,8,9,10], lat:34.9723, lng:136.1634
+  },
+
+  // ── カフェ・レストラン ────────────────────────────
+  {
+    id:'chalet', emoji:'☕', name:'シャーレ水ヶ浜', cat:'カフェ・レストラン', catClass:'cafe',
+    loc:'近江八幡市', addr:'滋賀県近江八幡市長命寺町水ヶ浜182-8', hours:'11:00〜17:00', closed:'不定休', price:'ランチ1,000円〜',
+    desc:'琵琶湖湖畔ぎりぎりのログハウス風カフェ。テラス席から琵琶湖を望む絶景が人気。ホットサンドとカレーが定番メニュー。',
+    sense:['🌿 自然感あり','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['琵琶湖テラス席','ホットサンド','カレー','湖畔カフェ'],
+    facilities:['駐車場あり','テラス席','飲食可'],
+    play:['テラスで琵琶湖を眺める','水辺の散歩','アヒルに会える'],
+    highlight:'テラスから琵琶湖が目の前。週末は混むので早めに到着推奨。水辺に降りれて子どもが大喜び。',
+    rating:4.4, galleryBg:'linear-gradient(135deg,#d0e8f8,#b0d0f0)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1523, lng:136.0812
+  },
+  {
+    id:'loco_cafe', emoji:'☕', name:'子育て応援カフェ LOCO', cat:'カフェ・レストラン', catClass:'cafe',
+    loc:'米原市', addr:'滋賀県米原市', hours:'10:00〜16:00', closed:'日・月', price:'ドリンク500円〜',
+    desc:'ママたちのためのコミュニティーカフェ。赤ちゃんと一緒のお出かけに必要なものがほとんど揃っています。',
+    sense:['🏗 施設感つよい','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['授乳室完備','キッズスペース','ベビーリクライニングチェア','ママ会'],
+    facilities:['おむつ替え','授乳室','ベビーカーOK','雨の日OK','キッズスペース'],
+    play:['キッズスペース','絵本コーナー','ママ向けワークショップ'],
+    highlight:'新生児から使えるベビーリクライニングチェアが◎。ママ同士の交流の場として人気。',
+    rating:4.5, galleryBg:'linear-gradient(135deg,#fce8e8,#f8d0d0)',
+    ageGroups:[0,1,2,3], lat:35.3156, lng:136.2812
+  },
+  {
+    id:'higoro', emoji:'🍽', name:'higoro TERRACE（ヒゴロテラス）', cat:'カフェ・レストラン', catClass:'cafe',
+    loc:'近江八幡市', addr:'滋賀県近江八幡市佐波江町242-1', hours:'11:00〜16:00（11〜4月）/11:00〜17:00（5〜10月）', closed:'火曜', price:'ランチ1,200円〜',
+    desc:'琵琶湖湖畔の食堂カフェ。滋賀県産食材を使った「地産地消」の定食が人気。子どもイスやぬりえ・絵本も完備。',
+    sense:['🌿 自然感あり','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['地産地消ランチ','琵琶湖ビュー','子どもイス','おむつ替えシート'],
+    facilities:['駐車場あり','おむつ替え','飲食可','子どもイス'],
+    play:['ぬりえ・絵本コーナー','大きな窓から田園風景'],
+    highlight:'週替わり定食が美味しい。大きな窓から田園風景が見える。子どもに優しい接客が嬉しい。',
+    rating:4.3, galleryBg:'linear-gradient(135deg,#f0e8d0,#e8d4b0)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1378, lng:136.0545
+  },
+  {
+    id:'ichigo_milk', emoji:'🍓', name:'カフェ＆BBQ いちごとミルク', cat:'カフェ・レストラン', catClass:'cafe',
+    loc:'長浜市', addr:'滋賀県長浜市', hours:'11:00〜17:00（土日祝10:30〜18:00）', closed:'月曜', price:'スイーツ600円〜',
+    desc:'農園育ちのイチゴを使ったスイーツとBBQが楽しめる体験型カフェ。屋内BBQブースで天候を気にせず楽しめます。',
+    sense:['🌿 自然感あり','🔊 にぎやか','🏃 走り回れる'],
+    keywords:['いちごスイーツ','屋内BBQ','体験型カフェ','テイクアウト'],
+    facilities:['駐車場あり','飲食可','雨の日OK'],
+    play:['いちごスイーツ体験','屋内BBQ','フルーツ狩り（季節限定）'],
+    highlight:'いちごスイーツが絶品。屋内BBQなので雨でも安心。子どもが自分でBBQする体験が好評。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#fce8e8,#f8c8c8)',
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.3823, lng:136.2456
+  },
+  {
+    id:'makino', emoji:'🍇', name:'マキノピックランド', cat:'カフェ・レストラン', catClass:'cafe',
+    loc:'高島市', addr:'滋賀県高島市マキノ町海津2352', hours:'9:00〜17:00', closed:'不定休', price:'果物狩り600円〜',
+    desc:'季節ごとの果物狩りが楽しめる体験型農園。さくらんぼ・ブルーベリー・ぶどう・りんごと年間通して楽しめます。',
+    sense:['🌿 自然感あり','🔊 にぎやか','🏃 走り回れる'],
+    keywords:['果物狩り','ブルーベリー','ぶどう','りんご','さくらんぼ'],
+    facilities:['駐車場あり','飲食可'],
+    play:['果物狩り（季節により異なる）','直売所でお買い物'],
+    highlight:'子どもが自分で収穫する体験は特別。食べ放題プランも人気。季節ごとに来られる。',
+    rating:4.3, galleryBg:'linear-gradient(135deg,#e8f0d0,#d0e4a8)',
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.4823, lng:136.0234
+  },
+
+  // ── ミュージアム・体験 ────────────────────────────
+  {
+    id:'mentai', emoji:'🏛', name:'めんたいパークびわ湖', cat:'ミュージアム・体験', catClass:'museum',
+    loc:'野洲市', addr:'滋賀県野洲市吉川4187', hours:'9:30〜17:30', closed:'不定休', price:'入場無料',
+    desc:'明太子のテーマパーク。2階には0-2歳専用の遊び場があり、授乳室も完備。フードコーナーで明太子グルメも楽しめます。',
+    sense:['🏗 施設感つよい','🔊 にぎやか','👶 抱っこでOK'],
+    keywords:['0-2歳専用遊び場','明太子工場見学','めんたいフードコーナー','ミニゲームコーナー'],
+    facilities:['駐車場あり','おむつ替え','授乳室','雨の日OK','飲食可'],
+    play:['0-2歳専用遊び場（2階）','明太子工場見学（ガラス越し）','めんたいフードコーナー','ミニゲームコーナー','お土産ショップ'],
+    highlight:'授乳室が2階にあり静か。工場見学は子どもウケ抜群。明太子おにぎり絶品。',
+    rating:4.0, galleryBg:'linear-gradient(135deg,#cfe0f8,#b0c8f0)',
+    ageGroups:[0,1,2,3], lat:35.0756, lng:136.0012
+  },
+  {
+    id:'nagahama_rail', emoji:'🚂', name:'長浜鉄道スクエア', cat:'ミュージアム・体験', catClass:'museum',
+    loc:'長浜市', addr:'滋賀県長浜市北船町1-41', hours:'9:30〜17:00', closed:'月曜', price:'大人300円・小学生100円',
+    desc:'日本最古の駅舎を活用した鉄道博物館。本物の機関車や客車が間近で見られ、乗り物好きな子どもに大人気。',
+    sense:['🏗 施設感つよい','🔇 静かめ','🔊 にぎやか'],
+    keywords:['本物の機関車展示','旧長浜駅舎','鉄道ジオラマ','SL見学'],
+    facilities:['駐車場あり','雨の日OK'],
+    play:['機関車・客車展示','鉄道ジオラマ','歴史展示','旧駅舎見学'],
+    highlight:'本物の機関車に乗れる体験が人気。雨の日でも楽しめる。長浜の街散策とセットで。',
+    rating:4.1, galleryBg:'linear-gradient(135deg,#e8d8f0,#d0b8e8)',
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.3782, lng:136.2698
+  },
+  {
+    id:'shigaraki', emoji:'🦝', name:'信楽陶苑 たぬき村', cat:'ミュージアム・体験', catClass:'museum',
+    loc:'甲賀市', addr:'滋賀県甲賀市信楽町長野1131', hours:'9:00〜17:00', closed:'水曜', price:'絵付け体験1,500円〜',
+    desc:'信楽焼で有名なたぬき村。どこを見てもたぬきだらけ！信楽焼の絵付け体験ができ、オリジナル作品を持ち帰れます。',
+    sense:['🌿 自然感あり','🔊 にぎやか','🏗 施設感つよい'],
+    keywords:['信楽焼絵付け体験','たぬきオブジェ','お土産ショップ','陶芸体験'],
+    facilities:['駐車場あり','飲食可','雨の日OK'],
+    play:['絵付け体験','たぬきオブジェ巡り','陶芸体験','お土産選び'],
+    highlight:'世界最大のたぬきがいる！絵付け体験は小さい子でも楽しめる。家族の記念品にも最適。',
+    rating:4.0, galleryBg:'linear-gradient(135deg,#f0e0d0,#e0c8b0)',
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:34.8923, lng:136.0234
+  },
+  {
+    id:'biwako_cruise', emoji:'🚢', name:'琵琶湖汽船ミシガン', cat:'ミュージアム・体験', catClass:'museum',
+    loc:'大津市', addr:'滋賀県大津市浜大津5丁目1-1', hours:'10:30〜', closed:'運航日要確認', price:'大人2,500円〜・子ども1,250円〜',
+    desc:'赤いパドルが目印の大型観光船。琵琶湖を優雅にクルーズし、最上階スカイデッキから360°の絶景を楽しめます。',
+    sense:['🌿 自然感あり','🔊 にぎやか','🏗 施設感つよい'],
+    keywords:['琵琶湖クルーズ','スカイデッキ','360°絶景','大型観光船'],
+    facilities:['おむつ替え','授乳室','飲食可'],
+    play:['デッキからの絶景鑑賞','船内レストラン','船内イベント'],
+    highlight:'非日常感が最高。子どもは船の操舵室見学が人気。天気のいい日は最高の思い出に。',
+    rating:4.3, galleryBg:'linear-gradient(135deg,#c8e0f8,#a8c8f0)',
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.0089, lng:135.8723
+  }
+];
+
+
+// =====================
+// STATE// =====================
+// STATE
+// =====================
+let state = {
+  children: [],    // [{age: 1}, {age: 3}]
+  activeChild: 0,  // index
+  likes: [],       // spot ids
+  currentDetail: null,
+  weather: 'sunny' // 'sunny' | 'rainy'
+};
+
+const AGE_GROUPS = [
+  { label:'ねんね期', emoji:'🍼', ages:[0], color:'#fce8d8', sense:['👶 抱っこでOK','🔇 静かめ','🏗 施設感つよい'] },
+  { label:'よちよち期', emoji:'🐣', ages:[1,2], color:'#fef3e8', sense:['👶 抱っこでOK','🌿 自然感あり','🏗 施設感つよい'] },
+  { label:'あんよ・探検期', emoji:'🧒', ages:[3,4], color:'#e8f5ee', sense:['🏃 走り回れる','🌿 自然感あり','🔊 にぎやか'] },
+  { label:'冒険期', emoji:'🏃', ages:[5,6,7], color:'#e8eeff', sense:['🏃 走り回れる','🌿 自然感あり'] },
+  { label:'自立期', emoji:'⛰', ages:[8,9,10], color:'#f0f0f8', sense:['🏃 走り回れる'] }
+];
+
+function getAgeGroup(age) {
+  return AGE_GROUPS.find(g => g.ages.includes(age)) || AGE_GROUPS[2];
+}
+
+function getAgeBadge(age) {
+  const g = getAgeGroup(age);
+  return `${g.emoji} ${age}歳`;
+}
+
+// =====================
+// LOCALSTORAGE
+// =====================
+function saveState() {
+  localStorage.setItem('shigakids_state', JSON.stringify(state));
+}
+function loadState() {
+  const s = localStorage.getItem('shigakids_state');
+  if (s) {
+    state = JSON.parse(s);
+    // 古いstateにないフィールドを補完
+    if (state.weather === undefined) state.weather = 'sunny';
+    if (state.likes === undefined) state.likes = [];
+    if (state.activeChild === undefined) state.activeChild = 0;
+    return true;
+  }
+  return false;
+}
+
+// =====================
+// ONBOARDING
+// =====================
+let ob_count = 0;
+let ob_ages = [];
+let ob_activeChild = 0;
+
+function goOb(step) {
+  document.querySelectorAll('.ob-screen').forEach(s => s.classList.remove('active'));
+  const screens = ['ob-welcome','ob-step1','ob-step2','ob-step3'];
+  const el = document.getElementById(screens[step] || 'ob-welcome');
+  if (el) el.classList.add('active');
+  if (step === 2) buildAgeSelectors();
+  if (step === 3) buildWhoScreen();
+}
+
+function selectCount(n) {
+  ob_count = n;
+  ob_ages = new Array(n).fill(null);
+  document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  document.getElementById('ob-next1').disabled = false;
+}
+
+function buildAgeSelectors() {
+  const cont = document.getElementById('childrenAgesContainer');
+  cont.innerHTML = '';
+  const ordinals = ['1人目','2人目','3人目'];
+  const emojis = ['👶','🧒','🧒'];
+  for (let i = 0; i < ob_count; i++) {
+    const div = document.createElement('div');
+    div.className = 'child-row';
+    div.innerHTML = `<div class="child-row-label">${emojis[i]} ${ordinals[i]}のお子さん</div><div class="age-grid" id="age-grid-${i}"></div>`;
+    cont.appendChild(div);
+    const grid = div.querySelector(`#age-grid-${i}`);
+    for (let a = 0; a <= 10; a++) {
+      const btn = document.createElement('button');
+      btn.className = 'age-btn';
+      btn.textContent = a + '歳';
+      btn.onclick = () => {
+        grid.querySelectorAll('.age-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        ob_ages[i] = a;
+        checkAgesComplete();
+      };
+      grid.appendChild(btn);
+    }
+  }
+}
+
+function checkAgesComplete() {
+  const done = ob_ages.every(a => a !== null);
+  document.getElementById('ob-next2').disabled = !done;
+}
+
+function buildWhoScreen() {
+  const cont = document.getElementById('whoBtns');
+  cont.innerHTML = '';
+  const ordinals = ['1人目','2人目','3人目'];
+  for (let i = 0; i < ob_count; i++) {
+    const age = ob_ages[i];
+    const g = getAgeGroup(age);
+    const btn = document.createElement('button');
+    btn.className = 'who-btn';
+    btn.innerHTML = `<div class="who-icon">${g.emoji}</div><span class="who-label">${ordinals[i]}</span><span class="who-sub">${age}歳・${g.label}</span>`;
+    btn.onclick = () => {
+      document.querySelectorAll('.who-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      ob_activeChild = i;
+    };
+    cont.appendChild(btn);
+  }
+  // auto-select first
+  cont.children[0] && cont.children[0].click();
+  // if single child, no need to choose
+  if (ob_count === 1) cont.children[0].style.pointerEvents = 'none';
+}
+
+function finishOnboarding() {
+  state.children = ob_ages.map(a => ({ age: a }));
+  state.activeChild = ob_activeChild;
+  state.likes = [];
+  saveState();
+  startApp();
+}
+
+function skipOnboarding() {
+  state.children = [{ age: 2 }];
+  state.activeChild = 0;
+  state.likes = [];
+  saveState();
+  startApp();
+}
+
+function startApp() {
+  document.getElementById('onboarding').style.display = 'none';
+  const ma = document.getElementById('main-app');
+  ma.style.display = 'flex';
+  ma.classList.add('visible');
+  initHome();
+  buildSagasuList();
+  buildDiaryAgeTags();
+}
+
+// =====================
+// APP INIT
+// =====================
+document.addEventListener('DOMContentLoaded', () => {
+  // Version check: clear old cache if schema changed
+  const APP_VERSION = 'v2.8';
+  if (localStorage.getItem('shigakids_version') !== APP_VERSION) {
+    localStorage.removeItem('shigakids_state');
+    localStorage.setItem('shigakids_version', APP_VERSION);
+  }
+
+  if (loadState() && state.children.length > 0) {
+    document.getElementById('onboarding').style.display = 'none';
+    const ma = document.getElementById('main-app');
+    ma.style.display = 'flex';
+    initHome();
+    buildSagasuList();
+    buildDiaryAgeTags();
+  } else {
+    document.getElementById('main-app').style.display = 'none';
+  }
+});
+
+// =====================
+// HOME
+// =====================
+function initHome() {
+  buildChildSwitcher();
+  updateHomeText();
+  // Delay slightly to ensure DOM is ready
+  requestAnimationFrame(() => {
+    buildWeather();
+    buildSpotList();
+  });
+}
+
+function buildChildSwitcher() {
+  const cont = document.getElementById('childSwitcher');
+  cont.innerHTML = '';
+  state.children.forEach((c, i) => {
+    const spotCount = SPOTS.filter(s => s.ageGroups.includes(c.age)).length;
+    const b = document.createElement('div');
+    b.className = 'child-badge' + (i === state.activeChild ? ' active' : '');
+    const label = c.isGuest ? `👤 ${c.age}歳` : getAgeBadge(c.age);
+    b.innerHTML = `${label}<span class="spot-count-badge">${spotCount}</span>`;
+    b.onclick = () => {
+      state.activeChild = i;
+      saveState();
+      buildChildSwitcher();
+      buildSpotList();
+      updateHomeText();
+    };
+    cont.appendChild(b);
+  });
+  // + add child button
+  if (state.children.length < 6) {
+    const addBtn = document.createElement('button');
+    addBtn.className = 'add-child-btn';
+    addBtn.textContent = '+';
+    addBtn.title = '友人のお子さんを追加';
+    addBtn.onclick = () => showAddChildModal();
+    cont.appendChild(addBtn);
+  }
+}
+
+function updateHomeText() {
+  const child = state.children[state.activeChild];
+  if (!child) return;
+  const g = getAgeGroup(child.age);
+  document.getElementById('homeSubText').textContent =
+    `${child.age}歳（${g.label}）向けのスポットを探そう`;
+  document.getElementById('pickSub').textContent =
+    `${child.age}歳のお子さんに合わせてピックアップしました`;
+}
+
+function buildWeather() {
+  const data = [
+    { dow:'日', date:'3/22', icon:'🌦', hi:15, lo:4, cond:'雨', today:true, weekend:true },
+    { dow:'月', date:'3/23', icon:'🌦', hi:16, lo:8, cond:'雨' },
+    { dow:'火', date:'3/24', icon:'☁️', hi:16, lo:6, cond:'曇' },
+    { dow:'水', date:'3/25', icon:'🌧', hi:14, lo:7, cond:'雨' },
+    { dow:'木', date:'3/26', icon:'🌦', hi:19, lo:10, cond:'雨' },
+    { dow:'金', date:'3/27', icon:'☁️', hi:21, lo:7, cond:'曇' },
+    { dow:'土', date:'3/28', icon:'🌧', hi:14, lo:12, cond:'雨', weekend:true },
+  ];
+  const cont = document.getElementById('weatherDays');
+  cont.innerHTML = '';
+  data.forEach((d, i) => {
+    const el = document.createElement('div');
+    el.className = 'weather-day' + (d.today?' today':'') + (d.weekend?' weekend':'') + (i===0?' selected':'');
+    el.innerHTML = `<div class="wd-dow">${d.dow}</div><div class="wd-date">${d.date}</div><div class="wd-icon">${d.icon}</div><div class="wd-temp">${d.hi}°/${d.lo}°</div><div class="wd-cond">${d.cond}</div>`;
+    el.onclick = () => {
+      document.querySelectorAll('.weather-day').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+    };
+    cont.appendChild(el);
+  });
+}
+
+function buildSpotList() {
+  const child = state.children[state.activeChild];
+  const age = child ? child.age : 2;
+  const g = getAgeGroup(age);
+  const cont = document.getElementById('spotList');
+  cont.innerHTML = '';
+
+  // Active category chip
+  const activeChip = document.querySelector('.cat-chip.active');
+  const chipText = activeChip ? activeChip.textContent.trim() : '';
+  const catMap = {
+    '🌳 公園': '公園', '🏠 室内遊び場': '室内遊び場',
+    '☕ カフェ': 'カフェ・レストラン', '🎨 体験': 'ミュージアム・体験', '🏊 水遊び': '水遊び'
+  };
+  const filterCatName = catMap[chipText] || null;
+
+  // Active context
+  const getActive = (group) => {
+    const btn = document.querySelector(`.toggle-row:nth-of-type(${group}) .toggle-btn.active`);
+    return btn ? btn.textContent.trim() : '';
+  };
+
+  let filtered = SPOTS.filter(s => s.ageGroups.includes(age));
+  if (filterCatName) filtered = filtered.filter(s => s.cat === filterCatName);
+
+  // Weather filter: state.weather で確実に判定
+  if (state.weather === 'rainy') {
+    // 雨なら公園を問答無用で除外
+    filtered = filtered.filter(s => s.catClass !== 'park');
+    // 雨の日OKを上位に
+    filtered.sort((a, b) => {
+      const aOK = a.facilities.includes('雨の日OK') ? -1 : 0;
+      const bOK = b.facilities.includes('雨の日OK') ? -1 : 0;
+      return aOK - bOK;
+    });
+  }
+
+  if (filtered.length === 0) {
+    cont.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--text-light);font-size:14px;">このカテゴリのスポットは準備中です</div>';
+    return;
+  }
+
+  filtered.forEach((s) => {
+    const isRec = s.ageGroups.includes(age);
+    cont.appendChild(buildSpotCard(s, isRec, age, g));
+  });
+}
+
+function buildSpotCard(s, isRec, age, g) {
+  const liked = state.likes.includes(s.id);
+  const div = document.createElement('div');
+  div.className = 'spot-card';
+  div.style.cursor = 'pointer';
+  div.onclick = (e) => { if (!e.target.closest('.heart-btn') && !e.target.closest('.detail-btn')) openDetail(s.id); };
+
+  const kwShow = s.keywords.slice(0, 3);
+  const kwMore = s.keywords.length - 3;
+
+  div.innerHTML = `
+    <div class="spot-photo" style="background:${s.galleryBg};">
+      ${isRec ? `<div class="rec-badge">◎ ${age}歳のお子様に特におすすめ</div>` : ''}
+      <div class="spot-photo-inner">
+        <div class="spot-emoji">${s.emoji}</div>
+        <div class="spot-photo-note">📷 本リリース時はGoogle写真が表示されます</div>
+      </div>
+      <div class="spot-photo-arrow">›</div>
+    </div>
+    <div class="spot-info">
+      <div class="spot-name-row">
+        <div class="spot-name">${s.emoji} ${s.name}</div>
+        <button class="heart-btn ${liked?'liked':''}" data-id="${s.id}" onclick="event.stopPropagation();toggleHeart(this,'${s.id}')">${liked?'♥':'♡'}</button>
+      </div>
+      <div class="spot-meta">
+        <span class="spot-cat ${s.catClass}">${s.cat}</span>
+        <span class="spot-loc">📍 ${s.loc}</span>
+      </div>
+      <div class="spot-desc">${s.desc}</div>
+      <div class="sense-tags">${s.sense.map(t=>`<span class="sense-tag">${t}</span>`).join('')}</div>
+      <div class="keyword-tags">
+        ${kwShow.map(k=>`<span class="keyword-tag">${k}</span>`).join('')}
+        ${kwMore>0?`<span class="more-kw">+${kwMore}</span>`:''}
+      </div>
+      <div class="facility-tags">${s.facilities.map(f=>`<span class="facility-tag">${f}</span>`).join('')}</div>
+      <div class="spot-card-footer">
+        <div class="spot-price">⏰ ${s.price}</div>
+        <button class="detail-btn" onclick="openDetail('${s.id}')">詳細を見る →</button>
+      </div>
+    </div>`;
+  return div;
+}
+
+// =====================
+// TABS
+// =====================
+function triggerSpotRefresh() {
+  const cont = document.getElementById('spotList');
+  // Show skeleton
+  cont.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    cont.innerHTML += `
+      <div class="skeleton-card">
+        <div class="skeleton-photo"></div>
+        <div class="skeleton-body">
+          <div class="skeleton-line" style="width:55%;"></div>
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line mid"></div>
+          <div class="skeleton-line" style="width:80%;"></div>
+        </div>
+      </div>`;
+  }
+  cont.innerHTML += '<div class="loading-text"><span class="loading-spinner"></span>読み込み中...</div>';
+  setTimeout(() => { buildSpotList(); }, 600);
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('nav-' + tab).classList.add('active');
+  if (tab === 'map') initMap();
+  if (tab === 'fav') renderFavList();
+}
+
+// =====================
+// CONTEXT
+// =====================
+function toggleCtx(btn, group) {
+  btn.closest('.toggle-row').querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (group === 'weather') {
+    state.weather = btn.textContent.includes('雨') ? 'rainy' : 'sunny';
+    saveState();
+    // 雨を選んだとき、公園チップがアクティブなら室内遊び場に自動切替
+    if (state.weather === 'rainy') {
+      const chips = document.querySelectorAll('.cat-chip');
+      const activeChip = document.querySelector('.cat-chip.active');
+      if (activeChip && activeChip.textContent.includes('公園')) {
+        chips.forEach(c => c.classList.remove('active'));
+        chips.forEach(c => { if (c.textContent.includes('室内遊び場')) c.classList.add('active'); });
+      }
+    }
+    // 晴れに戻したとき、公園チップをデフォルトに戻す
+    if (state.weather === 'sunny') {
+      const chips = document.querySelectorAll('.cat-chip');
+      const activeChip = document.querySelector('.cat-chip.active');
+      if (!activeChip) {
+        chips.forEach(c => c.classList.remove('active'));
+        chips[0] && chips[0].classList.add('active');
+      }
+    }
+  }
+  triggerSpotRefresh();
+}
+function resetContext() {
+  document.querySelectorAll('#tab-home .context-card .toggle-row').forEach(row => {
+    row.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  });
+  state.weather = 'sunny';
+  // カテゴリを公園に戻す
+  const chips = document.querySelectorAll('.cat-chip');
+  chips.forEach(c => c.classList.remove('active'));
+  chips[0] && chips[0].classList.add('active');
+  saveState();
+  triggerSpotRefresh();
+}
+function filterCat(chip) {
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  triggerSpotRefresh();
+}
+
+// =====================
+// LIKES
+// =====================
+function toggleHeart(btn, id) {
+  const liked = state.likes.includes(id);
+  if (liked) { state.likes = state.likes.filter(x => x !== id); btn.classList.remove('liked'); btn.textContent = '♡'; }
+  else { state.likes.push(id); btn.classList.add('liked'); btn.textContent = '♥'; }
+  saveState();
+  // sync all heart buttons for this spot across the page
+  document.querySelectorAll(`.heart-btn[data-id="${id}"]`).forEach(b => {
+    if (b !== btn) { b.classList.toggle('liked', !liked); b.textContent = liked ? '♡' : '♥'; }
+  });
+  if (document.getElementById('tab-fav').classList.contains('active')) renderFavList();
+}
+
+function renderFavList() {
+  const cont = document.getElementById('favList');
+  cont.innerHTML = '';
+  const child = state.children[state.activeChild];
+  const age = child ? child.age : 2;
+  const g = getAgeGroup(age);
+  const likedSpots = SPOTS.filter(s => state.likes.includes(s.id));
+  if (likedSpots.length === 0) {
+    cont.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">♡</div>
+        <div class="empty-title">まだお気に入りがありません</div>
+        <div class="empty-sub">スポットの♡をタップして追加しよう</div>
+        <button class="empty-btn" onclick="switchTab('sagasu')">スポットを探す</button>
+      </div>`;
+    return;
+  }
+  const header = document.createElement('div');
+  header.style.cssText = 'padding:16px 16px 8px;font-size:15px;font-weight:700;';
+  header.textContent = `お気に入り ${likedSpots.length}件`;
+  cont.appendChild(header);
+  likedSpots.forEach(s => {
+    const isRec = s.ageGroups.includes(age);
+    cont.appendChild(buildSpotCard(s, isRec, age, g));
+  });
+  const credit = document.createElement('div');
+  credit.className = 'footer-credit';
+  credit.innerHTML = '<p>UX Design by <strong>tkinoshita.studio</strong><br>Created with Perplexity Computer</p>';
+  cont.appendChild(credit);
+}
+function toggleDetailHeart() {
+  const btn = document.getElementById('detailHeart');
+  const id = state.currentDetail;
+  toggleHeart(btn, id);
+}
+
+// =====================
+// MAP
+// =====================
+let mapInitialized = false;
+function initMap() {
+  if (mapInitialized) return;
+  mapInitialized = true;
+  const map = L.map('map', { center:[35.03,135.90], zoom:11, zoomControl:false });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap' }).addTo(map);
+  SPOTS.forEach(s => {
+    const icon = L.divIcon({ html:`<div style="font-size:24px;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">${s.emoji}</div>`, className:'', iconSize:[32,32], iconAnchor:[16,16] });
+    L.marker([s.lat, s.lng], { icon }).addTo(map)
+      .bindPopup(`<b>${s.name}</b><br>${s.loc}`)
+      .on('click', () => openDetail(s.id));
+  });
+  document.getElementById('mapCount').textContent = `${SPOTS.length}件`;
+}
+
+// =====================
+// SAGASU
+// =====================
+function buildSagasuList() {
+  renderSagasuCards(SPOTS);
+}
+function doSearch() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = SPOTS.filter(s =>
+    s.name.includes(q) || s.loc.includes(q) || s.cat.includes(q) ||
+    s.desc.includes(q) || s.keywords.some(k => k.includes(q))
+  );
+  renderSagasuCards(filtered);
+  document.getElementById('searchCount').textContent = `${filtered.length}件`;
+}
+function renderSagasuCards(spots) {
+  const cont = document.getElementById('sagasuList');
+  cont.innerHTML = '';
+  const child = state.children[state.activeChild];
+  const age = child ? child.age : 2;
+  const g = getAgeGroup(age);
+  spots.forEach(s => {
+    const isRec = s.ageGroups.includes(age);
+    cont.appendChild(buildSpotCard(s, isRec, age, g));
+  });
+  if (spots.length === 0) {
+    cont.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--text-light);">スポットが見つかりませんでした</div>';
+  }
+}
+
+// =====================
+// DIARY
+// =====================
+function buildDiaryAgeTags() {
+  const cont = document.getElementById('diaryAgeTags');
+  if (!cont) return;
+  cont.innerHTML = '';
+  for (let a = 0; a <= 10; a++) {
+    const btn = document.createElement('button');
+    btn.className = 'tag-btn';
+    btn.textContent = a + '歳';
+    btn.onclick = () => btn.classList.toggle('active');
+    cont.appendChild(btn);
+  }
+}
+function diaryNext(step) {
+  [1,2,3].forEach(i => {
+    const el = document.getElementById('diary-step' + i);
+    if (el) el.style.display = i === step ? 'block' : 'none';
+    const dot = document.getElementById('d' + i);
+    if (dot) dot.className = 'step-dot' + (i === step ? ' active' : '');
+  });
+  document.getElementById('dLabel').textContent = `ステップ ${step}/3`;
+  document.querySelector('#tab-diary .scroll-area').scrollTop = 0;
+}
+function pickFeeling(btn) {
+  btn.closest('.feeling-row').querySelectorAll('.feeling-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function submitDiary() {
+  alert('投稿ありがとうございます！🎉\n\nみんなのパパママの声が、次に来る家族の役に立ちます。');
+  diaryNext(1);
+}
+
+// =====================
+// DETAIL
+// =====================
+function openDetail(id) {
+  const s = SPOTS.find(x => x.id === id);
+  if (!s) return;
+  state.currentDetail = id;
+  const child = state.children[state.activeChild];
+  const age = child ? child.age : 2;
+
+  document.getElementById('detailNavTitle').textContent = s.name;
+  document.getElementById('detailTitle').textContent = s.name;
+  document.getElementById('detailEmoji').textContent = s.emoji;
+  document.getElementById('detailCat').textContent = s.cat;
+  document.getElementById('detailCat').className = `spot-cat ${s.catClass}`;
+  document.getElementById('detailLoc').textContent = '📍 ' + s.loc;
+  document.getElementById('detailDesc').textContent = s.desc;
+  document.getElementById('detailGallery').style.background = s.galleryBg;
+  document.getElementById('detailHighlight').textContent = s.highlight;
+  document.getElementById('detailRating').textContent = s.rating;
+  document.getElementById('di-addr').textContent = s.addr;
+  document.getElementById('di-hours').textContent = s.hours;
+  document.getElementById('di-closed').textContent = s.closed;
+  document.getElementById('di-price').textContent = s.price;
+
+  const isRec = s.ageGroups.includes(age);
+  const recBadge = document.getElementById('detailRecBadge');
+  recBadge.textContent = isRec ? `◎ ${age}歳のお子様に特におすすめ` : '';
+  recBadge.style.display = isRec ? '' : 'none';
+
+  document.getElementById('detailSenseTags').innerHTML = s.sense.map(t=>`<span class="sense-tag">${t}</span>`).join('');
+  document.getElementById('detailPlayTags').innerHTML = s.play.map(p=>`<span class="play-tag">${p}</span>`).join('');
+
+  const liked = state.likes.includes(id);
+  const hb = document.getElementById('detailHeart');
+  hb.textContent = liked ? '♥' : '♡';
+  hb.className = 'heart-btn' + (liked ? ' liked' : '');
+  hb.style.fontSize = '22px';
+
+  buildCongBars();
+  buildDetailAgeTabs(age);
+
+  const overlay = document.getElementById('detailOverlay');
+  const dimmer = document.getElementById('dimmer');
+  overlay.classList.add('open');
+  overlay.querySelector('.detail-scroll').scrollTop = 0;
+  dimmer.style.display = 'block';
+  requestAnimationFrame(() => { dimmer.style.opacity = '1'; });
+}
+function closeDetail() {
+  const overlay = document.getElementById('detailOverlay');
+  const dimmer = document.getElementById('dimmer');
+  overlay.classList.remove('open');
+  dimmer.style.opacity = '0';
+  setTimeout(() => { dimmer.style.display = 'none'; }, 350);
+}
+function buildCongBars() {
+  const heights = [8,12,20,32,48,60,72,68,55,38,22,12];
+  const cont = document.getElementById('congBars');
+  cont.innerHTML = '';
+  heights.forEach(h => {
+    const bar = document.createElement('div');
+    bar.className = 'cbar' + (h > 50 ? ' high' : '');
+    bar.style.height = h + 'px';
+    cont.appendChild(bar);
+  });
+}
+function buildDetailAgeTabs(currentAge) {
+  const cont = document.getElementById('detailAgeTabs');
+  cont.innerHTML = '';
+  const tabs = [
+    { label:'📋 すべて', group: null },
+    { label:'🍼 0歳', group:0 },
+    { label:'🐣 1〜2歳', group:1 },
+    { label:'🧒 3〜4歳', group:2 },
+    { label:'🏃 5〜7歳', group:3 },
+    { label:'⛰ 8〜10歳', group:4 },
+  ];
+  const childGroup = getAgeGroupIndex(currentAge);
+  tabs.forEach((t, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'age-tab' + (i === childGroup + 1 ? ' active' : '') + (i === 0 && childGroup === -1 ? ' active' : '');
+    btn.textContent = t.label;
+    btn.onclick = () => {
+      cont.querySelectorAll('.age-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const ageLabel = t.label.replace(/[📋🍼🐣🧒🏃⛰]\s/,'');
+      document.getElementById('voiceEmptyText').textContent =
+        t.group === null ? 'まだ声がありません\n最初の声を投稿してみましょう' :
+        `${ageLabel}のパパママの声はまだありません\n最初の声を投稿してみましょう`;
+    };
+    cont.appendChild(btn);
+  });
+}
+function getAgeGroupIndex(age) {
+  return AGE_GROUPS.findIndex(g => g.ages.includes(age));
+}
+
+// =====================
+// SETTINGS
+// =====================
+function openSettings() {
+  renderSettingsChildren();
+  document.getElementById('settingsOverlay').classList.add('open');
+}
+function renderSettingsChildren() {
+  const cont = document.getElementById('settingsChildren');
+  cont.innerHTML = '';
+  if (state.children.length === 0) {
+    cont.innerHTML = '<div style="padding:16px;color:var(--text-light);font-size:13px;text-align:center;">お子さんが登録されていません</div>';
+    return;
+  }
+  state.children.forEach((c, i) => {
+    const g = getAgeGroup(c.age);
+    const row = document.createElement('div');
+    row.className = 'child-setting-row';
+
+    const info = document.createElement('div');
+    info.className = 'child-setting-info';
+    const guestLabel = c.isGuest ? '<span style="font-size:10px;color:#9ca3af;font-weight:400;">（追加）</span>' : '';
+    info.innerHTML = '<span class="child-setting-emoji">' + g.emoji + '</span>'
+      + '<div>'
+      + '<div class="child-setting-name">' + (i+1) + '人目のお子さん ' + guestLabel + '</div>'
+      + '<div class="child-setting-age">' + c.age + '歳・' + g.label + '</div>'
+      + '</div>';
+
+    const delBtn = document.createElement('button');
+    delBtn.title = '削除';
+    delBtn.textContent = '✕';
+    delBtn.style.cssText = 'width:28px;height:28px;border-radius:50%;border:1.5px solid #e57373;background:none;color:#e57373;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;';
+    delBtn.addEventListener('click', function() { removeChild(i); });
+
+    row.appendChild(info);
+    row.appendChild(delBtn);
+    cont.appendChild(row);
+  });
+}
+function removeChild(index) {
+  if (state.children.length <= 1) {
+    alert('最低1人のお子さんが必要です。\n「最初からやり直す」でリセットできます。');
+    return;
+  }
+  state.children.splice(index, 1);
+  if (state.activeChild >= state.children.length) {
+    state.activeChild = state.children.length - 1;
+  }
+  saveState();
+  renderSettingsChildren();
+  buildChildSwitcher();
+  buildSpotList();
+  updateHomeText();
+}
+function closeSettings() {
+  document.getElementById('settingsOverlay').classList.remove('open');
+}
+function resetAll() {
+  if (confirm('登録情報をリセットしますか？\nオンボーディングから再スタートします。')) {
+    localStorage.removeItem('shigakids_state');
+    state = { children: [], activeChild: 0, likes: [], currentDetail: null };
+    // Hide main app, show onboarding
+    document.getElementById('main-app').style.display = 'none';
+    document.getElementById('onboarding').style.display = 'flex';
+    // Reset onboarding state
+    ob_count = 0; ob_ages = []; ob_activeChild = 0;
+    document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('ob-next1').disabled = true;
+    closeSettings();
+    goOb(0);
+  }
+}
+
+// ── ADD CHILD MODAL ──
+let pendingGuestAge = null;
+
+function showAddChildModal() {
+  pendingGuestAge = null;
+  const grid = document.getElementById('addChildAgeGrid');
+  grid.innerHTML = '';
+  for (let a = 0; a <= 10; a++) {
+    const btn = document.createElement('button');
+    btn.style.cssText = 'padding:10px 4px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);font-size:13px;font-weight:500;cursor:pointer;text-align:center;transition:all .2s;font-family:inherit;';
+    btn.textContent = a + '歳';
+    btn.onclick = () => {
+      grid.querySelectorAll('button').forEach(b => {
+        b.style.background = 'var(--bg)'; b.style.color = 'var(--text)'; b.style.borderColor = 'var(--border)';
+      });
+      btn.style.background = 'var(--green)'; btn.style.color = '#fff'; btn.style.borderColor = 'var(--green)';
+      pendingGuestAge = a;
+      const confirm = document.getElementById('addChildConfirm');
+      confirm.disabled = false; confirm.style.opacity = '1';
+    };
+    grid.appendChild(btn);
+  }
+  const modal = document.getElementById('addChildModal');
+  modal.style.display = 'flex';
+}
+
+function hideAddChildModal() {
+  document.getElementById('addChildModal').style.display = 'none';
+}
+
+function confirmAddChild() {
+  if (pendingGuestAge === null) return;
+  state.children.push({ age: pendingGuestAge, isGuest: true });
+  state.activeChild = state.children.length - 1;
+  saveState();
+  hideAddChildModal();
+  buildChildSwitcher();
+  buildSpotList();
+  updateHomeText();
+}
+</script>
+</body>
+</html>
