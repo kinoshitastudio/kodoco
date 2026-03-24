@@ -22,8 +22,8 @@
   --border: #e5e0d8;
   --radius: 16px;
 }
-html, body { height: 100%; font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; }
-#app { display: flex; flex-direction: column; height: 100vh; max-width: 430px; margin: 0 auto; background: var(--bg); position: relative; overflow: hidden; }
+html, body { height: 100%; height: 100dvh; font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; }
+#app { display: flex; flex-direction: column; height: -webkit-fill-available; height: 100vh; height: 100dvh; padding-bottom: 0; max-width: 430px; margin: 0 auto; background: var(--bg); position: relative; overflow: hidden; }
 
 /* =====================
    ONBOARDING
@@ -31,8 +31,9 @@ html, body { height: 100%; font-family: 'Noto Sans JP', sans-serif; background: 
 #onboarding {
   position: absolute; inset: 0; background: var(--bg); z-index: 200;
   display: flex; flex-direction: column; overflow: hidden;
+  min-height: -webkit-fill-available;
 }
-.ob-screen { display: none; flex-direction: column; height: 100%; }
+.ob-screen { display: none; flex-direction: column; height: 100%; overflow: hidden; }
 .ob-screen.active { display: flex; }
 
 .ob-header { padding: 20px 24px 0; display: flex; align-items: center; justify-content: space-between; }
@@ -41,7 +42,8 @@ html, body { height: 100%; font-family: 'Noto Sans JP', sans-serif; background: 
 .ob-prog-dot.done { background: var(--green); }
 .ob-skip { font-size: 13px; color: var(--text-light); cursor: pointer; padding: 4px; }
 
-.ob-body { flex: 1; display: flex; flex-direction: column; padding: 32px 24px 0; overflow-y: auto; }
+.ob-body { flex: 1; display: flex; flex-direction: column; padding: 32px 24px 20px; overflow-y: auto; -webkit-overflow-scrolling: touch; min-height: 0; }
+#ob-step2 .ob-body { padding: 16px 20px 8px; }
 .ob-body::-webkit-scrollbar { display: none; }
 .ob-emoji { font-size: 52px; margin-bottom: 16px; }
 .ob-title { font-size: 24px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
@@ -60,13 +62,13 @@ html, body { height: 100%; font-family: 'Noto Sans JP', sans-serif; background: 
 .count-btn.selected span { color: var(--green-mid); }
 
 /* Step 2 - 何歳 */
-.children-ages { display: flex; flex-direction: column; gap: 20px; }
-.child-row { background: var(--card); border-radius: var(--radius); padding: 16px; }
-.child-row-label { font-size: 13px; color: var(--text-sub); margin-bottom: 12px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
-.age-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.children-ages { display: flex; flex-direction: column; gap: 10px; padding-bottom: 4px; }
+.child-row { background: var(--card); border-radius: var(--radius); padding: 12px; }
+.child-row-label { font-size: 12px; color: var(--text-sub); margin-bottom: 8px; font-weight: 500; display: flex; align-items: center; gap: 4px; }
+.age-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
 .age-btn {
-  padding: 10px 4px; border-radius: 10px; border: 1.5px solid var(--border);
-  background: var(--bg); font-size: 13px; font-weight: 500; cursor: pointer;
+  padding: 7px 2px; border-radius: 8px; border: 1.5px solid var(--border);
+  background: var(--bg); font-size: 12px; font-weight: 500; cursor: pointer;
   text-align: center; transition: all .2s; color: var(--text); font-family: inherit;
 }
 .age-btn.selected { border-color: var(--green); background: var(--green); color: #fff; }
@@ -120,8 +122,8 @@ html, body { height: 100%; font-family: 'Noto Sans JP', sans-serif; background: 
 .scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .scroll-area::-webkit-scrollbar { display: none; }
 
-.bottom-nav { display: flex; background: var(--card); border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: env(safe-area-inset-bottom, 0); }
-.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 0 8px; cursor: pointer; border: none; background: none; color: var(--text-sub); transition: color .2s; }
+.bottom-nav { display: flex; background: var(--card); border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: max(env(safe-area-inset-bottom, 16px), 16px); position: relative; z-index: 10; }
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 12px 0 10px; cursor: pointer; border: none; background: none; color: var(--text-sub); transition: color .2s; }
 .nav-item.active { color: var(--green); }
 .nav-item svg { width: 22px; height: 22px; }
 .nav-item span { font-size: 10px; font-weight: 500; }
@@ -209,6 +211,8 @@ html, body { height: 100%; font-family: 'Noto Sans JP', sans-serif; background: 
 .spot-cat.indoor { color: #c05c1a; background: #fef3e8; border-color: #fdd9b0; }
 .spot-cat.cafe { color: #7c5c2e; background: #fdf6e8; border-color: #f0d9a0; }
 .spot-cat.museum { color: #4f56c8; background: #eef0ff; border-color: #c8caff; }
+.spot-cat.restaurant { color: #b05020; background: #fff0e8; border-color: #ffd0a8; }
+.spot-cat.dog { color: #7a5c1a; background: #fff8e0; border-color: #f0d890; }
 .spot-loc { font-size: 12px; color: var(--text-sub); }
 .spot-desc { font-size: 13px; color: var(--text-sub); line-height: 1.6; margin-bottom: 10px; }
 .sense-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
@@ -330,7 +334,7 @@ html, body { height: 100%; font-family: 'Noto Sans JP', sans-serif; background: 
    ===================== */
 .detail-overlay {
   position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%);
-  width: 100%; max-width: 430px; height: 100vh; background: var(--bg); z-index: 100;
+  width: 100%; max-width: 430px; height: 100vh; height: 100dvh; background: var(--bg); z-index: 100;
   display: flex; flex-direction: column;
   transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
   border-radius: 20px 20px 0 0;
@@ -389,7 +393,7 @@ html, body { height: 100%; font-family: 'Noto Sans JP', sans-serif; background: 
 .voice-empty-text { font-size: 13px; line-height: 1.6; }
 
 /* Settings overlay */
-.settings-overlay { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; height: 100vh; background: var(--bg); z-index: 150; display: none; flex-direction: column; }
+.settings-overlay { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; height: 100vh; height: 100dvh; background: var(--bg); z-index: 150; display: none; flex-direction: column; }
 .settings-overlay.open { display: flex; }
 .settings-header { padding: 16px; display: flex; align-items: center; justify-content: space-between; background: var(--card); border-bottom: 1px solid var(--border); }
 .settings-title { font-size: 18px; font-weight: 700; }
@@ -442,9 +446,12 @@ html, body { height: 100%; font-family: 'Noto Sans JP', sans-serif; background: 
       <div class="ob-title">お子さんは<br>何人いますか？</div>
       <div class="ob-sub">人数に合わせておすすめを<br>カスタマイズします</div>
       <div class="count-btns">
-        <button class="count-btn" onclick="selectCount(1)"><span style="font-size:28px;">1</span><span>1人</span></button>
-        <button class="count-btn" onclick="selectCount(2)"><span style="font-size:28px;">2</span><span>2人</span></button>
-        <button class="count-btn" onclick="selectCount(3)"><span style="font-size:28px;">3+</span><span>3人以上</span></button>
+        <button class="count-btn" onclick="selectCount(1, this)"><span style="font-size:28px;">1</span><span>1人</span></button>
+        <button class="count-btn" onclick="selectCount(2, this)"><span style="font-size:28px;">2</span><span>2人</span></button>
+        <button class="count-btn" onclick="selectCount(3, this)"><span style="font-size:28px;">3</span><span>3人</span></button>
+      </div>
+      <div style="margin-top:12px;">
+        <button class="count-btn" onclick="selectCount(4, this)" style="width:100%;aspect-ratio:auto;padding:14px;display:flex;flex-direction:row;gap:8px;align-items:center;justify-content:center;"><span style="font-size:22px;">4+</span><span>4人以上</span></button>
       </div>
     </div>
     <div class="ob-footer">
@@ -455,7 +462,7 @@ html, body { height: 100%; font-family: 'Noto Sans JP', sans-serif; background: 
 
   <!-- Step 2: 何歳? -->
   <div id="ob-step2" class="ob-screen">
-    <div class="ob-header">
+    <div class="ob-header" style="padding-bottom:4px;">
       <div class="ob-progress">
         <div class="ob-prog-dot done"></div>
         <div class="ob-prog-dot done"></div>
@@ -464,9 +471,9 @@ html, body { height: 100%; font-family: 'Noto Sans JP', sans-serif; background: 
       <div class="ob-skip" onclick="skipOnboarding()">スキップ</div>
     </div>
     <div class="ob-body">
-      <div class="ob-emoji">🎂</div>
-      <div class="ob-title">それぞれ<br>何歳ですか？</div>
-      <div class="ob-sub">名前は不要です。年齢だけで<br>ぴったりのスポットを見つけます</div>
+      <div class="ob-emoji" style="font-size:36px;margin-bottom:8px;">🎂</div>
+      <div class="ob-title" style="font-size:20px;margin-bottom:4px;">それぞれ何歳ですか？</div>
+      <div class="ob-sub" style="font-size:13px;margin-bottom:16px;">名前は不要。年齢だけでぴったりのスポットを見つけます</div>
       <div class="children-ages" id="childrenAgesContainer"></div>
     </div>
     <div class="ob-footer">
@@ -556,6 +563,8 @@ html, body { height: 100%; font-family: 'Noto Sans JP', sans-serif; background: 
         <div class="cat-chip" onclick="filterCat(this)">🏠 室内遊び場</div>
         <div class="cat-chip" onclick="filterCat(this)">☕ カフェ</div>
         <div class="cat-chip" onclick="filterCat(this)">🎨 体験</div>
+        <div class="cat-chip" onclick="filterCat(this)">🍽 ご飯</div>
+        <div class="cat-chip" onclick="filterCat(this)">🐕 犬連れ</div>
         <div class="cat-chip" onclick="filterCat(this)">🏊 水遊び</div>
       </div>
 
@@ -768,6 +777,14 @@ html, body { height: 100%; font-family: 'Noto Sans JP', sans-serif; background: 
         </div>
       </div>
 
+      <div id="detailDogInfo" style="display:none;margin-bottom:12px;background:#fff8e0;border-radius:12px;padding:12px 14px;">
+        <div style="font-size:13px;font-weight:700;color:#7a5c1a;margin-bottom:8px;">🐕 犬連れ情報</div>
+        <div style="font-size:12px;color:#7a5c1a;line-height:1.8;" id="detailDogText"></div>
+      </div>
+      <div id="detailKidsSpace" style="display:none;margin-bottom:12px;background:#e8f8e8;border-radius:12px;padding:12px 14px;">
+        <div style="font-size:13px;font-weight:700;color:#2d6a4f;margin-bottom:4px;">🧸 キッズスペースあり</div>
+        <div style="font-size:12px;color:#2d6a4f;">子どもが遊べるキッズスペースを完備しています</div>
+      </div>
       <div class="action-btns">
         <button class="action-btn outline">🌐 公式サイト ↗</button>
         <button class="action-btn fill">✈ ナビで行く</button>
@@ -1035,9 +1052,523 @@ const SPOTS = [
     highlight:'非日常感が最高。子どもは船の操舵室見学が人気。天気のいい日は最高の思い出に。',
     rating:4.3, galleryBg:'linear-gradient(135deg,#c8e0f8,#a8c8f0)',
     ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.0089, lng:135.8723
+  },
+  // ── 公園（追加）────────────────────────────────
+  {
+    id:'kibogaoka', emoji:'🌳', name:'希望が丘文化公園', cat:'公園', catClass:'park',
+    loc:'野洲市・竜王町', addr:'滋賀県野洲市二ツ池1234', hours:'9:00〜17:00', closed:'月曜', price:'入園無料・駐車場500円',
+    desc:'滋賀県民の定番おでかけスポット。芝生の原っぱがどこまでも続き、バドミントンやフリスビーなど自由に楽しめます。本格的なフィールドアスレチックも。',
+    sense:['🌿 自然感あり','🏃 走り回れる','🔊 にぎやか'],
+    keywords:['芝生広場','フィールドアスレチック','バーベキュー','サイクリングコース'],
+    facilities:['駐車場あり','飲食可','ベビーカーOK'],
+    play:['フィールドアスレチック','芝生広場','バーベキューエリア','サイクリングコース'],
+    highlight:'とにかく広い！1日いられる。芝生でお弁当が最高。アスレチックは本格的で子どもが大興奮。',
+    rating:4.3, galleryBg:'linear-gradient(135deg,#c8ede0,#a0d8c0)',
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0234, lng:136.0123
+  },
+  {
+    id:'blueme', emoji:'🌸', name:'ブルーメの丘', cat:'公園', catClass:'park',
+    loc:'日野町', addr:'滋賀県蒲生郡日野町西大路843', hours:'10:00〜17:00', closed:'水曜', price:'大人1,000円・子ども600円',
+    desc:'ドイツの田舎町を模した体験型農業公園。四季の花畑と動物ふれあい、アスレチックタワーやジップラインが充実。お菓子作り体験も人気。',
+    sense:['🌿 自然感あり','🔊 にぎやか','🏃 走り回れる'],
+    keywords:['花畑','動物ふれあい','アスレチックタワー','ジップライン','お菓子作り体験'],
+    facilities:['駐車場あり','飲食可','おむつ替え'],
+    play:['動物ふれあいコーナー','アスレチックタワー（高さ17m）','ジップライン','季節の花畑','お菓子作り体験'],
+    highlight:'季節ごとに花の景色が変わる。動物ふれあいは小さい子でも大丈夫。BBQも楽しめる。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#f8e8f0,#f0c8e0)',
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.0089, lng:136.1234
+  },
+  {
+    id:'biwako_kodomo', emoji:'🎪', name:'びわ湖こどもの国', cat:'公園', catClass:'park',
+    loc:'高島市', addr:'滋賀県高島市今津町弘川1771-2', hours:'9:30〜17:00', closed:'月曜', price:'入場無料・駐車場500円',
+    desc:'入場料無料で1日楽しめる子どもの楽園。ふわふわ遊具やボルダリング、おもしろ自転車、水遊び場など多彩。雨の日でも屋内で遊べる施設あり。',
+    sense:['🌿 自然感あり','🏃 走り回れる','🔊 にぎやか'],
+    keywords:['ふわふわ遊具','ボルダリング','おもしろ自転車','水遊び場（夏季）','トランポリン'],
+    facilities:['駐車場あり','無料','おむつ替え','ベビーカーOK'],
+    play:['ふわふわ遊具','ボルダリング','おもしろ自転車','水遊び場（夏季）','工作教室'],
+    highlight:'入場無料なのに内容が充実。おもしろ自転車は子どもが大喜び。平日は空いていて快適。',
+    rating:4.4, galleryBg:'linear-gradient(135deg,#d0e8f8,#b0d0f0)',
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.4123, lng:136.0456
+  },
+  {
+    id:'hikone_park', emoji:'🏯', name:'彦根城・玄宮園', cat:'公園', catClass:'park',
+    loc:'彦根市', addr:'滋賀県彦根市金亀町1-1', hours:'8:30〜17:00', closed:'なし', price:'大人800円・子ども無料',
+    desc:'国宝の彦根城を中心とした公園。ひこにゃんが出迎えてくれる。玄宮園は春の桜・秋の紅葉が美しく、お城を背景にした景色が絶景。',
+    sense:['🌿 自然感あり','🔇 静かめ','🏗 施設感つよい'],
+    keywords:['国宝彦根城','ひこにゃん','玄宮園','桜の名所'],
+    facilities:['駐車場あり','飲食可'],
+    play:['ひこにゃんに会う','天守からの眺め','玄宮園の庭園散策','堀をぐるっと一周'],
+    highlight:'ひこにゃんの登場時間をチェックして行くと子どもが大喜び。お城周りの堀端の散歩が気持ちいい。',
+    rating:4.5, galleryBg:'linear-gradient(135deg,#f0e8d0,#e0d0a8)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.2762, lng:136.2515
+  },
+
+  // ── 室内遊び場（追加）───────────────────────────
+  {
+    id:'kidsusland', emoji:'🏠', name:'キッズユーエスランド 近江八幡店', cat:'室内遊び場', catClass:'indoor',
+    loc:'近江八幡市', addr:'滋賀県近江八幡市鷹飼町南3-7 イオン近江八幡店内', hours:'10:00〜19:00', closed:'不定休', price:'平日600円〜・休日800円〜',
+    desc:'イオン内の室内遊び場。スーパージャングルジムやボールプール、トランポリン、ふわふわ遊具が充実。ショッピングついでに立ち寄れる便利なロケーション。',
+    sense:['🏗 施設感つよい','🔊 にぎやか','👶 抱っこでOK'],
+    keywords:['スーパージャングルジム','ボールプール','トランポリン','ふわふわ遊具','ゲームフリープレイ'],
+    facilities:['駐車場あり','雨の日OK','おむつ替え','授乳室'],
+    play:['スーパージャングルジム','ボールプール','トランポリン','ふわふわ遊具','設置ゲームフリープレイ'],
+    highlight:'イオンの中なので買い物と合わせて行きやすい。ゲームフリープレイが嬉しい。雨の日の定番。',
+    rating:4.0, galleryBg:'linear-gradient(135deg,#fce8d0,#f8c8a0)',
+    ageGroups:[0,1,2,3,4,5,6,7], lat:35.1234, lng:136.0912
+  },
+  {
+    id:'kodomotchi', emoji:'🏠', name:'こどもっちパーク栗東', cat:'室内遊び場', catClass:'indoor',
+    loc:'栗東市', addr:'滋賀県栗東市綣2-4-5 パワーシティ栗東内', hours:'10:00〜19:00', closed:'不定休', price:'平日500円〜・休日700円〜',
+    desc:'栗東市の室内遊び場。遊具がいっぱいで0歳から遊べる。ショッピングモール内なので雨の日でも安心。授乳室・おむつ替えも完備。',
+    sense:['🏗 施設感つよい','🔊 にぎやか','👶 抱っこでOK'],
+    keywords:['大型遊具','ボールプール','ふわふわ遊具','キッズカー'],
+    facilities:['駐車場あり','雨の日OK','おむつ替え','授乳室'],
+    play:['大型複合遊具','ボールプール','ふわふわ遊具','キッズカー'],
+    highlight:'南部エリアで便利な立地。ショッピングのついでに立ち寄れる。0歳から入れる。',
+    rating:3.9, galleryBg:'linear-gradient(135deg,#e8f0ff,#c8d8f8)',
+    ageGroups:[0,1,2,3,4,5], lat:35.0012, lng:135.9845
+  },
+  {
+    id:'yanmar', emoji:'🔬', name:'ヤンマーミュージアム', cat:'室内遊び場', catClass:'indoor',
+    loc:'長浜市', addr:'滋賀県長浜市三和町6-50', hours:'10:00〜17:00', closed:'月曜', price:'大人800円・小中学生400円・幼児無料',
+    desc:'見て触って体験できる体験型ミュージアム。ものづくり体験やビオトープ、足湯なども。全身を使ったアトラクションが多く、雨の日でも思いっきり楽しめる。',
+    sense:['🏗 施設感つよい','🔊 にぎやか','🏃 走り回れる'],
+    keywords:['体験型展示','ものづくり体験','ビオトープ','足湯','シミュレーター'],
+    facilities:['駐車場あり','雨の日OK','飲食可'],
+    play:['農業機械シミュレーター','ものづくり体験','ビオトープ観察','足湯','体を使ったアトラクション'],
+    highlight:'幼児は入場無料。農業機械のシミュレーターが子どもに大人気。足湯でゆったりできる。',
+    rating:4.3, galleryBg:'linear-gradient(135deg,#e0f0e8,#c0e0d0)',
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.3891, lng:136.2734
+  },
+  {
+    id:'biwako_museum', emoji:'🐟', name:'滋賀県立琵琶湖博物館', cat:'室内遊び場', catClass:'indoor',
+    loc:'草津市', addr:'滋賀県草津市下物町1091', hours:'9:30〜17:00', closed:'月曜', price:'大人800円・高校生450円・小中学生無料',
+    desc:'滋賀が誇る大規模水族＆博物館。琵琶湖の生き物が間近で見られる水族展示が充実。子どもが喜ぶ体験コーナーも多数。',
+    sense:['🏗 施設感つよい','🔇 静かめ','🌿 自然感あり'],
+    keywords:['琵琶湖の魚','水族展示','体験学習','ディスカバリールーム'],
+    facilities:['駐車場あり','雨の日OK','おむつ替え','授乳室','飲食可'],
+    play:['水族展示（琵琶湖の生き物）','ディスカバリールーム','体験展示','図書コーナー'],
+    highlight:'小中学生は無料！大型の水槽で琵琶湖の魚が間近に見られる。1日いられる充実度。',
+    rating:4.4, galleryBg:'linear-gradient(135deg,#c8e8f8,#a0c8f0)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0156, lng:135.9623
+  },
+
+  // ── カフェ・レストラン（追加）──────────────────────
+  {
+    id:'lacolina', emoji:'🍰', name:'ラコリーナ近江八幡', cat:'カフェ・レストラン', catClass:'cafe',
+    loc:'近江八幡市', addr:'滋賀県近江八幡市北之庄町615-1', hours:'9:00〜18:00', closed:'不定休', price:'バームクーヘン500円〜',
+    desc:'たねや・クラブハリエが運営する自然共生型複合施設。草屋根のメインショップが圧巻の景観。焼きたてバームクーヘンとカフェが人気で、広大な田んぼアートも楽しめる。',
+    sense:['🌿 自然感あり','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['バームクーヘン','草屋根','田んぼアート','焼きたてスイーツ','カフェ'],
+    facilities:['駐車場あり','飲食可','ベビーカーOK','おむつ替え'],
+    play:['バームクーヘン体験','田んぼアート鑑賞','広大な庭園散策','スイーツ購入'],
+    highlight:'インスタ映え間違いなし。バームクーヘンの焼きたては絶品。広い敷地で子どもも走り回れる。',
+    rating:4.6, galleryBg:'linear-gradient(135deg,#e8f0d8,#d0e8b8)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1289, lng:136.0823
+  },
+  {
+    id:'teraitei', emoji:'🍽', name:'teraitei（テライテイ）', cat:'カフェ・レストラン', catClass:'cafe',
+    loc:'彦根市', addr:'滋賀県彦根市四番町スクエア内', hours:'11:00〜15:00・17:00〜21:00', closed:'火曜', price:'ランチ1,000円〜',
+    desc:'彦根城のお膝元、大正時代の街並み「四番町スクエア」内のカフェ。子どもたちと楽しく食事しながらリラックスできる空間。子どもイス完備。',
+    sense:['🏗 施設感つよい','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['彦根城近く','大正ロマン','子どもイス','ランチ'],
+    facilities:['駐車場あり','飲食可','子どもイス'],
+    play:['街並み散策','彦根城観光とセット','ゆったりランチ'],
+    highlight:'彦根城観光のランチにぴったり。大正時代の街並みが雰囲気抜群。子連れにやさしい接客。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#f8f0e0,#f0e0c0)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.2734, lng:136.2512
+  },
+  {
+    id:'minakuchi_cafe', emoji:'☕', name:'みなくち子どもの森 自然館カフェ', cat:'カフェ・レストラン', catClass:'cafe',
+    loc:'甲賀市', addr:'滋賀県甲賀市水口町北内貴10', hours:'9:00〜17:00', closed:'月曜', price:'入場無料・カフェ300円〜',
+    desc:'甲賀市の穴場スポット。体験型の小規模博物館に併設のカフェ。化石のトンネルやミニプラネタリウムあり。自然の中でゆったりランチができる。',
+    sense:['🌿 自然感あり','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['自然館','ミニプラネタリウム','化石トンネル','ピクニックエリア'],
+    facilities:['駐車場あり','無料','飲食可','ベビーカーOK'],
+    play:['ミニプラネタリウム','化石トンネル体験','自然観察','ピクニックエリアでランチ'],
+    highlight:'穴場スポットで空いている。入場無料なのに内容充実。自然の中でのランチが気持ちいい。',
+    rating:4.1, galleryBg:'linear-gradient(135deg,#d8f0d0,#b8e0b0)',
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:34.9678, lng:136.1712
+  },
+
+  // ── ミュージアム・体験（追加）──────────────────────
+  {
+    id:'hikone_sky', emoji:'🧗', name:'ひこねスカイアドベンチャー', cat:'ミュージアム・体験', catClass:'museum',
+    loc:'彦根市', addr:'滋賀県彦根市古沢町（JR彦根駅から徒歩15分）', hours:'10:00〜17:00', closed:'火曜', price:'2G：大人2,200円・4歳〜小学生1,100円',
+    desc:'JR彦根駅から徒歩15分。スリルや達成感を楽しめるアドベンチャー施設。4歳から体験できる2Gコースで、安全に空中冒険ができる。',
+    sense:['🌿 自然感あり','🏃 走り回れる','🔊 にぎやか'],
+    keywords:['アドベンチャー','空中アスレチック','ジップライン','クライミング'],
+    facilities:['駐車場あり'],
+    play:['空中アスレチック（2Gコース）','ジップライン','クライミング','3Gコース（上級）'],
+    highlight:'4歳から挑戦できる。達成感が最高。スタッフが丁寧にサポートしてくれるので初めてでも安心。',
+    rating:4.4, galleryBg:'linear-gradient(135deg,#e8f8e8,#c0e8c0)',
+    ageGroups:[4,5,6,7,8,9,10], lat:35.2712, lng:136.2534
+  },
+  {
+    id:'ceramic_forest', emoji:'🏺', name:'滋賀県立陶芸の森', cat:'ミュージアム・体験', catClass:'museum',
+    loc:'甲賀市', addr:'滋賀県甲賀市信楽町勅旨2188-7', hours:'9:30〜17:00', closed:'月曜', price:'展示館：大人500円・高校生以下無料',
+    desc:'信楽焼をテーマにした文化施設。屋外には多くの陶芸作品が並ぶ広場があり、定期的に陶芸体験教室も開催。自然の中でアートに触れられる。',
+    sense:['🌿 自然感あり','🔇 静かめ','🏗 施設感つよい'],
+    keywords:['陶芸体験','信楽焼','野外彫刻','ワークショップ'],
+    facilities:['駐車場あり','飲食可'],
+    play:['陶芸体験（要予約）','野外彫刻鑑賞','信楽焼展示','ワークショップ'],
+    highlight:'高校生以下無料。陶芸体験は子どもに大人気。のんびりした雰囲気がいい。',
+    rating:4.1, galleryBg:'linear-gradient(135deg,#f0e8d8,#e0d0b8)',
+    ageGroups:[3,4,5,6,7,8,9,10], lat:34.8934, lng:136.0312
+  },
+  {
+    id:'otsu_science', emoji:'🔭', name:'大津市科学館', cat:'ミュージアム・体験', catClass:'museum',
+    loc:'大津市', addr:'滋賀県大津市本丸町6-50', hours:'9:30〜17:00', closed:'月曜', price:'大人510円・高校生310円・小中学生200円・未就学児無料',
+    desc:'お手頃価格で楽しめる科学館。プラネタリウムや体験展示が充実。未就学児は無料なのでお財布にやさしい。雨の日の定番スポット。',
+    sense:['🏗 施設感つよい','🔇 静かめ','🔊 にぎやか'],
+    keywords:['プラネタリウム','体験展示','科学実験','工作'],
+    facilities:['駐車場あり','雨の日OK'],
+    play:['プラネタリウム','体験展示','科学実験コーナー','工作ワークショップ'],
+    highlight:'未就学児無料が嬉しい。プラネタリウムは迫力満点。雨の日でも親子でたっぷり楽しめる。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#e8e0f8,#d0c8f0)',
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0023, lng:135.8712
+  },
+
+  // ── 公園・自然（追加）───────────────────────────
+  {
+    id:'agripark', emoji:'🐄', name:'アグリパーク竜王', cat:'公園', catClass:'park',
+    loc:'竜王町', addr:'滋賀県蒲生郡竜王町山之上6526', hours:'9:00〜17:00', closed:'月曜', price:'入園無料・体験別料金',
+    desc:'農業体験と動物ふれあいが楽しめる公園。田植え・稲刈り・野菜収穫など季節の農業体験ができ、牛・羊・ウサギとのふれあいコーナーも人気。',
+    sense:['🌿 自然感あり','🏃 走り回れる','🔊 にぎやか'],
+    keywords:['農業体験','動物ふれあい','いちご狩り（季節限定）','田植え・稲刈り'],
+    facilities:['駐車場あり','無料','飲食可','おむつ替え'],
+    play:['動物ふれあいコーナー','農業体験（季節により異なる）','広大な芝生広場','いちご狩り（春季）'],
+    highlight:'入園無料なのに充実した内容。泥で田植えする体験は子どもが大喜び。動物が近くで見られる。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#e0f0c8,#c8e4a0)',
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.0456, lng:136.1023
+  },
+  {
+    id:'biwako_valley', emoji:'🏔', name:'びわ湖バレイ・びわ湖テラス', cat:'公園', catClass:'park',
+    loc:'大津市', addr:'滋賀県大津市木戸1547-1', hours:'9:00〜17:00', closed:'不定休', price:'ロープウェイ大人2,600円〜・3歳以下無料',
+    desc:'琵琶湖を一望できる山頂リゾート。ロープウェイで登る絶景のびわ湖テラスが人気。夏は山頂での涼しい過ごし方が魅力。',
+    sense:['🌿 自然感あり','🔇 静かめ','🏃 走り回れる'],
+    keywords:['びわ湖テラス','絶景ロープウェイ','山頂散策','3歳以下無料'],
+    facilities:['駐車場あり','飲食可'],
+    play:['ロープウェイ乗車','びわ湖テラスで絶景','山頂散策','冬はスキー・スノーボード'],
+    highlight:'3歳以下無料。山頂からの琵琶湖の景色は圧巻。夏は涼しくて最高の避暑地。',
+    rating:4.4, galleryBg:'linear-gradient(135deg,#c8d8f8,#a8bce8)',
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.1234, lng:135.9012
+  },
+  {
+    id:'karasuma_botanical', emoji:'🌸', name:'烏丸半島水生植物公園みずの森', cat:'公園', catClass:'park',
+    loc:'草津市', addr:'滋賀県草津市下物町1091-4', hours:'9:00〜17:00', closed:'月曜', price:'大人300円・中学生以下無料',
+    desc:'琵琶湖湖畔の植物園。ハスやスイレンなどの水生植物をメインに多くの植物が栽培。「水と人のふれあい」をテーマに親子でゆったり過ごせる。',
+    sense:['🌿 自然感あり','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['ハス・スイレン','水生植物','温室','琵琶湖湖畔散策'],
+    facilities:['駐車場あり','ベビーカーOK','おむつ替え'],
+    play:['水生植物観察','温室見学','湖畔散策','季節の花鑑賞'],
+    highlight:'中学生以下無料。ハスの花が咲く夏が特におすすめ。ベビーカーで回りやすい。',
+    rating:4.1, galleryBg:'linear-gradient(135deg,#d8f0e8,#b8e0d0)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0089, lng:135.9534
+  },
+  {
+    id:'nagahama_park', emoji:'🌳', name:'豊公園（長浜城跡）', cat:'公園', catClass:'park',
+    loc:'長浜市', addr:'滋賀県長浜市公園町10-10', hours:'常時開放', closed:'なし', price:'無料（長浜城歴史博物館は別途）',
+    desc:'長浜城跡を整備した公園。琵琶湖沿いに広がる芝生広場でピクニックが楽しめる。春の桜が有名で、子どもが走り回れる広大なスペースあり。',
+    sense:['🌿 自然感あり','🏃 走り回れる','🔇 静かめ'],
+    keywords:['長浜城跡','琵琶湖沿い','桜の名所','芝生広場'],
+    facilities:['駐車場あり','無料','ベビーカーOK'],
+    play:['芝生広場でピクニック','長浜城見学（有料）','琵琶湖沿い散策','春の桜鑑賞'],
+    highlight:'春の桜と琵琶湖のコラボが絶景。広い芝生でのびのび遊べる。長浜の街歩きとセット。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#f8e8f0,#f0c8e0)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.3845, lng:136.2723
+  },
+  {
+    id:'hibari_park', emoji:'🌳', name:'ひばり公園', cat:'公園', catClass:'park',
+    loc:'草津市', addr:'滋賀県草津市野路5丁目', hours:'常時開放', closed:'なし', price:'無料',
+    desc:'草津市の人気公園。大型複合遊具とじゃぶじゃぶ池（夏季）が充実。地元ファミリーに愛される定番スポット。週末はにぎわう。',
+    sense:['🌿 自然感あり','🏃 走り回れる','🔊 にぎやか'],
+    keywords:['大型複合遊具','じゃぶじゃぶ池（夏季）','砂場','広場'],
+    facilities:['無料','ベビーカーOK','駐車場あり'],
+    play:['大型複合遊具','じゃぶじゃぶ池（夏季）','砂場','芝生広場'],
+    highlight:'地元民の定番。夏のじゃぶじゃぶ池が大人気。近くのイオンとセットで行きやすい。',
+    rating:4.0, galleryBg:'linear-gradient(135deg,#d0ecd8,#b0d8b8)',
+    ageGroups:[0,1,2,3,4,5,6,7], lat:35.0034, lng:135.9423
+  },
+
+  // ── 室内遊び場（追加）────────────────────────────
+  {
+    id:'zakids_kusatsu', emoji:'🏠', name:'ザキッズ エイスクエア草津店', cat:'室内遊び場', catClass:'indoor',
+    loc:'草津市', addr:'滋賀県草津市西渋川1-23-1 エイスクエア草津SARA北館2F', hours:'10:00〜19:00', closed:'不定休', price:'1〜2歳：平日600円・休日800円／3〜12歳：平日1,000円・休日1,200円',
+    desc:'2024年4月オープン。巨大ジャングルジムやボールプール、乗り物など遊具がいっぱい。飲食物の持込OK・出入り自由が嬉しい。',
+    sense:['🏗 施設感つよい','🔊 にぎやか','👶 抱っこでOK'],
+    keywords:['巨大ジャングルジム','ボールプール','飲食持込OK','2024年オープン'],
+    facilities:['駐車場あり','雨の日OK','おむつ替え','飲食可'],
+    play:['巨大ジャングルジム','ボールプール','乗り物コーナー','フリープレイゲーム'],
+    highlight:'飲食持込OKで出入り自由。ランチを持参してゆっくり過ごせる。2024年オープンで施設がきれい。',
+    rating:4.1, galleryBg:'linear-gradient(135deg,#ffe8e8,#ffc8c8)',
+    ageGroups:[0,1,2,3,4,5,6,7,8], lat:35.0123, lng:135.9312
+  },
+  {
+    id:'crazy_bane', emoji:'🏠', name:'クレイジーバネット イオンモール草津店', cat:'室内遊び場', catClass:'indoor',
+    loc:'草津市', addr:'滋賀県草津市新浜町300 イオンモール草津3F', hours:'10:00〜20:00', closed:'不定休', price:'1〜2歳：平日600円・休日800円／3〜12歳：平日1,000円・休日1,200円',
+    desc:'2024年3月オープン。トランポリンやブロックタワー、手あそびハウスなど体を動かして遊べるアクティブゾーン。イオンモール内なので雨の日も安心。',
+    sense:['🏗 施設感つよい','🔊 にぎやか','🏃 走り回れる'],
+    keywords:['トランポリン','ブロックタワー','2024年オープン','イオンモール内'],
+    facilities:['駐車場あり','雨の日OK','おむつ替え','授乳室'],
+    play:['トランポリン','ブロックタワー','手あそびハウス','アクティブゾーン'],
+    highlight:'2024年の新スポット。トランポリンで思いっきり跳び跳ねられる。買い物ついでに寄れる。',
+    rating:4.0, galleryBg:'linear-gradient(135deg,#e8f0ff,#c0d4ff)',
+    ageGroups:[1,2,3,4,5,6,7,8], lat:35.0212, lng:135.9534
+  },
+  {
+    id:'zakids_konan', emoji:'🏠', name:'ザキッズ フレンドマート甲南店', cat:'室内遊び場', catClass:'indoor',
+    loc:'甲賀市', addr:'滋賀県甲賀市甲南町寺庄地内 フレンドマート甲南店内', hours:'10:00〜19:00', closed:'不定休', price:'平日600円〜・休日800円〜',
+    desc:'甲賀エリアの室内遊び場。0歳から遊べる全天候型。ビタミンカラーの施設内に幼児から小学生が楽しめる遊具がいっぱい。',
+    sense:['🏗 施設感つよい','🔊 にぎやか','👶 抱っこでOK'],
+    keywords:['全天候型','巨大ジャングルジム','ボールプール','0歳から'],
+    facilities:['駐車場あり','雨の日OK','おむつ替え'],
+    play:['巨大ジャングルジム','ボールプール','ふわふわ遊具','乗り物コーナー'],
+    highlight:'甲賀エリアの貴重な室内遊び場。0歳から入れる。雨の日の定番スポット。',
+    rating:3.9, galleryBg:'linear-gradient(135deg,#fff0e0,#ffe0c0)',
+    ageGroups:[0,1,2,3,4,5,6,7], lat:34.9612, lng:136.1423
+  },
+  {
+    id:'biwako_children_hall', emoji:'🏛', name:'びわこ学びの丘（大型児童館）', cat:'室内遊び場', catClass:'indoor',
+    loc:'高島市', addr:'滋賀県高島市今津町今津1640', hours:'9:00〜17:00', closed:'月曜', price:'無料',
+    desc:'琵琶湖畔にある大型児童館。「琵琶湖・水・風」をテーマに子どもたちが自ら遊びを創り出せる施設。室内工作体験や宿泊施設・キャンプ場も。',
+    sense:['🌿 自然感あり','🔇 静かめ','🏃 走り回れる'],
+    keywords:['無料','工作体験','琵琶湖畔','宿泊可能'],
+    facilities:['駐車場あり','無料','おむつ替え','飲食可'],
+    play:['工作体験','屋外アスレチック','琵琶湖を眺める','キャンプ場（宿泊可能）'],
+    highlight:'無料で1日楽しめる。琵琶湖畔の最高のロケーション。宿泊もできる家族旅行にも使える。',
+    rating:4.3, galleryBg:'linear-gradient(135deg,#c8e8f8,#a8cce8)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.4012, lng:136.0234
+  },
+  {
+    id:'hikone_science', emoji:'🔭', name:'彦根市立図書館・湖東こどもセンター', cat:'室内遊び場', catClass:'indoor',
+    loc:'彦根市', addr:'滋賀県彦根市日夏町4769', hours:'9:00〜17:00', closed:'月曜', price:'入館150円〜・未就学児無料',
+    desc:'プラネタリウムや体験展示、プロジェクションマッピングが楽しめる体験型施設。未就学児専用キッズトンネルあり。小さい子から楽しめる。',
+    sense:['🏗 施設感つよい','🔇 静かめ','🔊 にぎやか'],
+    keywords:['プラネタリウム','プロジェクションマッピング','キッズトンネル','入館150円〜'],
+    facilities:['駐車場あり','雨の日OK','おむつ替え','授乳室'],
+    play:['プラネタリウム番組','体験展示','プロジェクションマッピング','キッズトンネル（未就学児専用）'],
+    highlight:'コスパ最高。プラネタリウム番組は季節ごとに変わる。未就学児専用コーナーが嬉しい。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#e8e8f8,#d0d0f0)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.2823, lng:136.2312
+  },
+
+  // ── カフェ・レストラン（追加）────────────────────
+  {
+    id:'michinoeki_aito', emoji:'🌼', name:'道の駅 あいとうマーガレットステーション', cat:'カフェ・レストラン', catClass:'cafe',
+    loc:'東近江市', addr:'滋賀県東近江市愛東町布施323-1', hours:'9:00〜18:00', closed:'月曜', price:'食事700円〜',
+    desc:'地元直売品やお土産が充実した道の駅。レストランでは地元野菜を使った料理が楽しめる。広い芝生広場でピクニックもできる。',
+    sense:['🌿 自然感あり','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['地元野菜ランチ','道の駅','直売所','芝生広場'],
+    facilities:['駐車場あり','飲食可','おむつ替え','ベビーカーOK'],
+    play:['地元産野菜ランチ','直売所でお買い物','芝生広場でピクニック'],
+    highlight:'地元野菜がふんだんに使われたランチが美味しい。直売所でお土産も買える。',
+    rating:4.0, galleryBg:'linear-gradient(135deg,#f8f0d8,#f0e0b0)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1134, lng:136.2012
+  },
+  {
+    id:'ekimachi_nagahama', emoji:'🐟', name:'えきまちテラス長浜（長浜水族館）', cat:'カフェ・レストラン', catClass:'cafe',
+    loc:'長浜市', addr:'滋賀県長浜市北船町3-50', hours:'10:00〜19:00', closed:'不定休', price:'入場無料（水族館）',
+    desc:'長浜駅直結の複合施設。入場無料の水族館が目玉で、琵琶湖の生き物が展示されている。カフェやショップも充実。雨の日でも楽しめる。',
+    sense:['🏗 施設感つよい','🔊 にぎやか','👶 抱っこでOK'],
+    keywords:['入場無料水族館','長浜駅直結','琵琶湖の生き物','雨の日OK'],
+    facilities:['駐車場あり','雨の日OK','おむつ替え','授乳室','飲食可'],
+    play:['無料水族館見学','ショッピング','カフェでひと休み','長浜観光とセット'],
+    highlight:'水族館が無料なのに充実。長浜駅すぐで雨の日に最適。長浜城・黒壁スクエアとセットで楽しめる。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#d0e8f8,#b0cce8)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.3812, lng:136.2745
+  },
+
+  // ── ミュージアム・体験（追加）────────────────────
+  {
+    id:'omihachiman_water', emoji:'🚣', name:'近江八幡水郷めぐり', cat:'ミュージアム・体験', catClass:'museum',
+    loc:'近江八幡市', addr:'滋賀県近江八幡市北之庄町880', hours:'9:00〜15:00（要予約）', closed:'不定休', price:'大人3,500円〜・3歳以下無料',
+    desc:'手漕ぎの舟で水郷を巡る風情豊かな体験。葦が茂る水路を静かに進む体験は非日常的で記憶に残る。春の桜シーズンは特に美しい。',
+    sense:['🌿 自然感あり','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['手漕ぎ舟','水郷めぐり','葦の水路','春の桜シーズン'],
+    facilities:['駐車場あり'],
+    play:['手漕ぎ舟体験','水郷の自然観察','野鳥観察','春の桜・葦の景色'],
+    highlight:'3歳以下無料。子どもにとって舟に乗る体験は特別な思い出になる。ガイドさんの説明が面白い。',
+    rating:4.4, galleryBg:'linear-gradient(135deg,#d8f0e8,#b8dcd0)',
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.1289, lng:136.0934
+  },
+  {
+    id:'grand_snow', emoji:'⛷', name:'グランスノー奥伊吹（奥伊吹スキー場）', cat:'ミュージアム・体験', catClass:'museum',
+    loc:'米原市', addr:'滋賀県米原市甲津原奥伊吹', hours:'8:00〜17:00（シーズン中）', closed:'シーズン中無休', price:'入場無料・駐車場平日500円・休日1,000円',
+    desc:'西日本最速・最長シーズンのスキー場。入場無料で駐車場代だけで1日雪遊びを満喫できる。幼児が屋内で遊べるコーナーもあり安心。',
+    sense:['🌿 自然感あり','🔊 にぎやか','🏃 走り回れる'],
+    keywords:['スキー・スノーボード','雪遊び','入場無料','幼児屋内コーナー'],
+    facilities:['駐車場あり','飲食可','おむつ替え'],
+    play:['スキー・スノーボード','ソリ遊び','雪遊びエリア','幼児屋内プレイコーナー'],
+    highlight:'入場無料で駐車場代だけで雪遊びができる。幼児コーナーがあるので小さい子でも安心。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#e8f0f8,#d0e0f0)',
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.4123, lng:136.4012
+  },
+  {
+    id:'nagahama_roman', emoji:'🏺', name:'黒壁スクエア（ガラス体験）', cat:'ミュージアム・体験', catClass:'museum',
+    loc:'長浜市', addr:'滋賀県長浜市元浜町12-38', hours:'10:00〜17:00', closed:'不定休', price:'ガラス体験1,500円〜',
+    desc:'長浜の観光名所・黒壁スクエアでガラス細工の手作り体験ができる。サンドブラストやガラス絵付けなど子どもでも楽しめるコースあり。',
+    sense:['🏗 施設感つよい','🔇 静かめ','🏃 走り回れる'],
+    keywords:['ガラス体験','サンドブラスト','絵付け体験','長浜観光'],
+    facilities:['駐車場あり','雨の日OK'],
+    play:['ガラス絵付け体験','サンドブラスト体験','黒壁スクエア散策','お土産ショッピング'],
+    highlight:'子どもでも楽しめる体験コースがある。作った作品をお土産に持ち帰れる。長浜観光とセット。',
+    rating:4.3, galleryBg:'linear-gradient(135deg,#f0e8f8,#e0d0f0)',
+    ageGroups:[3,4,5,6,7,8,9,10], lat:35.3823, lng:136.2712
+  },
+
+  // ── ご飯・レストラン（子連れ個室・キッズスペースあり）────────────
+  {
+    id:'lobby_garden', emoji:'🍽', name:'LOBBY GARDEN by SKY TERRACE', cat:'ご飯・レストラン', catClass:'restaurant',
+    loc:'草津市', addr:'滋賀県草津市大路2丁目1-25 近鉄百貨店草津店内', hours:'11:00〜21:00', closed:'不定休', price:'ランチ1,500円〜',
+    desc:'2024年4月オープン。ベビーフェイスプラネッツが手掛けるホテルのような内観のレストラン。ドリンクバー付きで子連れランチに最適。緑あふれる空間でゆったり過ごせる。',
+    sense:['🏗 施設感つよい','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['ドリンクバー','ホテルライクな内装','近鉄百貨店内','2024年オープン'],
+    facilities:['駐車場あり','雨の日OK','おむつ替え','授乳室','子どもイス','飲食可'],
+    play:['ドリンクバーでゆっくり','ショッピングとセット'],
+    highlight:'2024年の新スポット。ドリンクバー付きで子どもも嬉しい。近鉄百貨店内なので雨でも安心。授乳室完備。',
+    dogInfo: null,
+    kidsSpace: true, privateRoom: false,
+    rating:4.1, galleryBg:'linear-gradient(135deg,#e8f8e8,#c8f0c8)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.9912, lng:135.9223
+  },
+  {
+    id:'hat_kitchen', emoji:'🍽', name:'ハットキッチン', cat:'ご飯・レストラン', catClass:'restaurant',
+    loc:'湖南市', addr:'滋賀県湖南市中央1丁目1-1', hours:'11:00〜15:00', closed:'月・火曜', price:'ランチ1,000円〜',
+    desc:'全面ガラス張りの開放感ある明るい店内。ベビーカーも通れる広さで子連れランチに最適。蜂蜜不使用の台湾カステラや無添加離乳食も取り扱い。',
+    sense:['🏗 施設感つよい','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['ベビーカーOK','無添加離乳食','開放的な店内','地元野菜'],
+    facilities:['駐車場あり','おむつ替え','ベビーカーOK','子どもイス'],
+    play:['物産コーナー'],
+    highlight:'ベビーカーで入れる広い店内。無添加離乳食が買えるのが嬉しい。子連れに優しい雰囲気。',
+    dogInfo: null,
+    kidsSpace: false, privateRoom: false,
+    rating:4.2, galleryBg:'linear-gradient(135deg,#f8f0e0,#f0e4c0)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.9634, lng:136.0812
+  },
+  {
+    id:'orisaki_restaurant', emoji:'🍽', name:'レストラン おりひめ（長浜）', cat:'ご飯・レストラン', catClass:'restaurant',
+    loc:'長浜市', addr:'滋賀県長浜市神照町（国道8号沿い）', hours:'11:00〜21:00', closed:'不定休', price:'ランチ1,000円〜',
+    desc:'北陸道長浜IC近くの独立系ファミリーレストラン。御膳・定食が充実しメニューが豊富。お子様メニューが充実していて家族連れに人気。好みがバラバラでも安心。',
+    sense:['🏗 施設感つよい','🔊 にぎやか','👶 抱っこでOK'],
+    keywords:['子どもメニュー充実','御膳・定食','ファミリーレストラン','長浜IC近く'],
+    facilities:['駐車場あり','子どもイス','飲食可'],
+    play:['充実した子どもメニュー'],
+    highlight:'ご当地ファミレス。子どもメニューが豊富で迷うほど。御膳のおかわり自由が嬉しい。',
+    dogInfo: null,
+    kidsSpace: false, privateRoom: false,
+    rating:4.0, galleryBg:'linear-gradient(135deg,#fce8e0,#f8d4c0)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.3712, lng:136.2534
+  },
+  {
+    id:'whats_lifestyle', emoji:'🍽', name:"What's The Life Style（大津）", cat:'ご飯・レストラン', catClass:'restaurant',
+    loc:'大津市', addr:'滋賀県大津市打出浜14-30 Oh!Me大津テラス内', hours:'11:00〜21:00', closed:'不定休', price:'ランチ1,200円〜',
+    desc:'大津市のカフェレストラン。ナチュラルなSlow Floorとアートフロアの2フロア構成。Oh!Me大津テラス内なのでベビーカーでそのまま入れる。授乳室・おむつ替え完備。',
+    sense:['🏗 施設感つよい','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['Oh!Me大津テラス内','ベビーカーOK','ナチュラル内装','子どもイス'],
+    facilities:['駐車場あり','おむつ替え','授乳室','ベビーカーOK','子どもイス','雨の日OK'],
+    play:['ショッピングモール内で買い物とセット'],
+    highlight:'モール内なのでアクセス抜群。授乳室がすぐ近く。ベビーカーOKで安心。',
+    dogInfo: null,
+    kidsSpace: false, privateRoom: false,
+    rating:4.0, galleryBg:'linear-gradient(135deg,#f0e8f8,#e0d8f0)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0145, lng:135.8623
+  },
+  {
+    id:'pizza_nagahama', emoji:'🍕', name:'ピッツェリア 近江八幡テラス', cat:'ご飯・レストラン', catClass:'restaurant',
+    loc:'近江八幡市', addr:'滋賀県近江八幡市北之庄町', hours:'11:30〜21:00', closed:'火曜', price:'ピザ1,500円〜',
+    desc:'全席150席の大型ピッツァ屋。イタリアから輸入した窯で焼くナポリピッツァが本格派。3階まであるフロアと1・2階テラスでBBQも。子ども連れ大歓迎。',
+    sense:['🌿 自然感あり','🔊 にぎやか','🏃 走り回れる'],
+    keywords:['本格ナポリピッツァ','テラスBBQ','3フロア','150席大型店'],
+    facilities:['駐車場あり','子どもイス','飲食可','テラス席'],
+    play:['本格ピザ体験','テラスBBQ'],
+    highlight:'子どもが喜ぶ本格ピザ。テラスでBBQもできる。大型店なので待ち時間が少ない。',
+    dogInfo: { allowed: 'テラス席のみOK', size: '全犬種', notes: 'テラスBBQ時も同伴可' },
+    kidsSpace: false, privateRoom: false,
+    rating:4.1, galleryBg:'linear-gradient(135deg,#fce8d8,#f8d0b8)',
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.1289, lng:136.0712
+  },
+
+  // ── 犬連れOK（子連れ＋犬連れ両対応）────────────────────
+  {
+    id:'nagisa_warms', emoji:'🐕', name:'なぎさWARMS（なぎさテラス）', cat:'犬連れOK', catClass:'dog',
+    loc:'大津市', addr:'滋賀県大津市打出浜15-5', hours:'11:00〜17:00', closed:'木・金曜', price:'ランチ1,000円〜',
+    desc:'石場駅から徒歩3分の琵琶湖畔カフェ。テラス席から琵琶湖と比叡山を一望。なぎさテラス内の4店舗全てがテラス席犬同伴OKという稀有なスポット。エッグベネディクトが人気。',
+    sense:['🌿 自然感あり','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['琵琶湖テラス席','犬連れOK','エッグベネディクト','なぎさテラス'],
+    facilities:['駐車場あり','テラス席','飲食可'],
+    play:['琵琶湖沿い散歩','テラスでゆっくりランチ'],
+    dogInfo: { allowed: 'テラス席のみ', size: '全犬種', notes: 'なぎさテラス4店舗すべてテラス犬OKで選択肢豊富' },
+    kidsSpace: false, privateRoom: false,
+    rating:4.2, galleryBg:'linear-gradient(135deg,#d0e8f8,#b0d0f0)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0123, lng:135.8734
+  },
+  {
+    id:'mori_no_ki', emoji:'🐕', name:'Cafe 森の木', cat:'犬連れOK', catClass:'dog',
+    loc:'高島市', addr:'滋賀県高島市安曇川町西万木1070-1', hours:'11:00〜16:00', closed:'日・月曜', price:'ランチ1,000円〜',
+    desc:'300坪の広大なドッグラン併設の隠れ家カフェ。店内も犬同伴OKで全犬種歓迎。地元旬の野菜を使った週替わり「森の木ランチ」が人気。琵琶湖から15分の自然豊かな立地。',
+    sense:['🌿 自然感あり','🔇 静かめ','🏃 走り回れる'],
+    keywords:['300坪ドッグラン','店内犬OKフルサイズ','週替わりランチ','全犬種'],
+    facilities:['駐車場あり','飲食可'],
+    play:['300坪ドッグランで思いっきり走らせる','週替わりランチ'],
+    dogInfo: { allowed: '店内・テラス両方OK', size: '全犬種OK・大型犬も歓迎', notes: '300坪の広大なドッグラン無料' },
+    kidsSpace: false, privateRoom: false,
+    rating:4.3, galleryBg:'linear-gradient(135deg,#d8ecd8,#b8d8b8)',
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.4212, lng:136.0023
+  },
+  {
+    id:'horicafe', emoji:'🐕', name:'ほりかふぇ（近江八幡）', cat:'犬連れOK', catClass:'dog',
+    loc:'近江八幡市', addr:'滋賀県近江八幡市多賀町743', hours:'10:30〜16:00', closed:'水曜', price:'ランチ2,000円〜',
+    desc:'時代劇ロケ地・八幡堀沿いの落ち着いた和風カフェレストラン。テラス席で犬同伴OK。近江牛や琵琶湖の天然魚など地元名産食材を使ったメニューが人気。',
+    sense:['🌿 自然感あり','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['八幡堀沿い','和風カフェ','近江牛','テラス犬OK'],
+    facilities:['駐車場あり','飲食可','テラス席'],
+    play:['八幡堀沿い散歩とセット','近江牛ランチ'],
+    dogInfo: { allowed: 'テラス席のみ', size: '全犬種', notes: '事前連絡推奨。八幡堀散歩とセットが◎' },
+    kidsSpace: false, privateRoom: false,
+    rating:4.3, galleryBg:'linear-gradient(135deg,#f0e8d8,#e0d4b8)',
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.1278, lng:136.0934
+  },
+  {
+    id:'rockbay', emoji:'🐕', name:'ROCK BAY GARDEN（道の駅草津）', cat:'犬連れOK', catClass:'dog',
+    loc:'草津市', addr:'滋賀県草津市下物町1431', hours:'9:00〜15:00', closed:'月曜', price:'ランチ1,000円〜',
+    desc:'道の駅草津に併設の体験農園カフェ。テラス席が犬同伴OKで、地元産野菜を使ったベジレストランMITASUが人気。いちご狩り（季節限定）とセットで楽しめる。',
+    sense:['🌿 自然感あり','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['テラス犬OK','地元野菜ランチ','いちご狩り（春季）','道の駅草津'],
+    facilities:['駐車場あり','飲食可','テラス席'],
+    play:['いちご狩り（春季）','地元野菜ランチ','農園散策'],
+    dogInfo: { allowed: 'テラス席のみ', size: '全犬種', notes: 'いちご狩りシーズン（春）は特に混む' },
+    kidsSpace: false, privateRoom: false,
+    rating:4.1, galleryBg:'linear-gradient(135deg,#e8f8d0,#d0f0b8)',
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.0167, lng:135.9534
+  },
+  {
+    id:'kusatsu_dogcafe', emoji:'🐕', name:'ドッグカフェ（草津市・ドッグラン120坪）', cat:'犬連れOK', catClass:'dog',
+    loc:'草津市', addr:'滋賀県草津市野村2丁目22-8', hours:'10:00〜17:00', closed:'不定休', price:'カフェ500円〜',
+    desc:'120坪のドッグランが併設され店内も犬OK。全犬種OKで入店料200円/1頭。犬のおもちゃや専用メニューあり。ドッグランを見ながらテラスでお茶を楽しめる。',
+    sense:['🌿 自然感あり','🔊 にぎやか','🏃 走り回れる'],
+    keywords:['120坪ドッグラン','店内犬OK','全犬種','犬用メニュー'],
+    facilities:['駐車場あり','飲食可'],
+    play:['120坪ドッグランで遊ぶ','犬用おもちゃで遊ぶ'],
+    dogInfo: { allowed: '店内・テラス両方OK', size: '全犬種OK・大型犬歓迎', notes: '入店料200円/1頭。犬用メニューあり' },
+    kidsSpace: false, privateRoom: false,
+    rating:4.0, galleryBg:'linear-gradient(135deg,#f8f0d8,#f0e4b8)',
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0034, lng:135.9412
+  },
+  {
+    id:'lamp_hakodate', emoji:'🐕', name:'パフェ専門店LAMP（びわこ箱館山）', cat:'犬連れOK', catClass:'dog',
+    loc:'高島市', addr:'滋賀県高島市今津町日置前807（びわこ箱館山内）', hours:'ゴンドラ営業時間に準ずる', closed:'不定休', price:'パフェ1,000円〜',
+    desc:'標高680mの山頂にある山小屋風パフェ専門店。犬はリード着用でゴンドラ乗車可（ケージ不要）。テラス席犬OK。近くに無料ドッグランあり（小型・大型の2区画）。',
+    sense:['🌿 自然感あり','🔇 静かめ','🏃 走り回れる'],
+    keywords:['山頂パフェ','犬ゴンドラ乗車可','無料ドッグラン','びわこ箱館山'],
+    facilities:['駐車場あり','飲食可'],
+    play:['ゴンドラで犬と山頂へ','無料ドッグラン','山頂パフェ'],
+    dogInfo: { allowed: 'テラス席OK・ゴンドラも乗車可', size: '全犬種OK（ケージ不要・リード着用）', notes: '無料ドッグラン2区画（小型・大型別）あり' },
+    kidsSpace: false, privateRoom: false,
+    rating:4.4, galleryBg:'linear-gradient(135deg,#e8e0f8,#d0c8f0)',
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.4123, lng:136.0234
   }
 ];
-
 
 // =====================
 // STATE// =====================
@@ -1103,43 +1634,60 @@ function goOb(step) {
   if (step === 3) buildWhoScreen();
 }
 
-function selectCount(n) {
+function selectCount(n, btn) {
   ob_count = n;
   ob_ages = new Array(n).fill(null);
   document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('selected'));
-  event.currentTarget.classList.add('selected');
+  if (btn) btn.classList.add('selected');
   document.getElementById('ob-next1').disabled = false;
 }
 
 function buildAgeSelectors() {
   const cont = document.getElementById('childrenAgesContainer');
   cont.innerHTML = '';
-  const ordinals = ['1人目','2人目','3人目'];
-  const emojis = ['👶','🧒','🧒'];
+  const ordinals = ['1人目','2人目','3人目','4人目','5人目','6人目'];
+  const emojis = ['🍼','🐣','🧒','🧒','🧒','🧒'];
   for (let i = 0; i < ob_count; i++) {
     const div = document.createElement('div');
     div.className = 'child-row';
-    div.innerHTML = `<div class="child-row-label">${emojis[i]} ${ordinals[i]}のお子さん</div><div class="age-grid" id="age-grid-${i}"></div>`;
+    // Build child row with label
+    const label = document.createElement('div');
+    label.className = 'child-row-label';
+    label.textContent = (emojis[i] || '🧒') + ' ' + (ordinals[i] || (i+1) + '人目') + 'のお子さん';
+    const grid = document.createElement('div');
+    grid.className = 'age-grid';
+    grid.id = 'age-grid-' + i;
+    div.appendChild(label);
+    div.appendChild(grid);
     cont.appendChild(div);
-    const grid = div.querySelector(`#age-grid-${i}`);
+    // Create age buttons
     for (let a = 0; a <= 10; a++) {
       const btn = document.createElement('button');
       btn.className = 'age-btn';
       btn.textContent = a + '歳';
-      btn.onclick = () => {
+      const idx = i; // capture correct index
+      btn.addEventListener('click', function() {
         grid.querySelectorAll('.age-btn').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
-        ob_ages[i] = a;
+        ob_ages[idx] = a;
         checkAgesComplete();
-      };
+      });
       grid.appendChild(btn);
     }
   }
 }
 
 function checkAgesComplete() {
-  const done = ob_ages.every(a => a !== null);
-  document.getElementById('ob-next2').disabled = !done;
+  const filled = ob_ages.filter(a => a !== null).length;
+  const total = ob_count;
+  const done = filled === total;
+  const btn = document.getElementById('ob-next2');
+  btn.disabled = !done;
+  if (!done && total > 1) {
+    btn.textContent = filled + '/' + total + '人 選択済み（あと' + (total - filled) + '人）';
+  } else if (done) {
+    btn.textContent = '次へ →';
+  }
 }
 
 function buildWhoScreen() {
@@ -1196,7 +1744,7 @@ function startApp() {
 // =====================
 document.addEventListener('DOMContentLoaded', () => {
   // Version check: clear old cache if schema changed
-  const APP_VERSION = 'v2.8';
+  const APP_VERSION = 'v3.6';
   if (localStorage.getItem('shigakids_version') !== APP_VERSION) {
     localStorage.removeItem('shigakids_state');
     localStorage.setItem('shigakids_version', APP_VERSION);
@@ -1302,9 +1850,12 @@ function buildSpotList() {
   const chipText = activeChip ? activeChip.textContent.trim() : '';
   const catMap = {
     '🌳 公園': '公園', '🏠 室内遊び場': '室内遊び場',
-    '☕ カフェ': 'カフェ・レストラン', '🎨 体験': 'ミュージアム・体験', '🏊 水遊び': '水遊び'
+    '☕ カフェ': 'カフェ・レストラン', '🎨 体験': 'ミュージアム・体験',
+    '🍽 ご飯': 'ご飯・レストラン', '🐕 犬連れ': '犬連れOK', '🏊 水遊び': '水遊び'
   };
   const filterCatName = catMap[chipText] || null;
+  // デバッグ用（開発中のみ）
+  // console.log('filter:', filterCatName, 'weather:', state.weather, 'age:', age);
 
   // Active context
   const getActive = (group) => {
@@ -1635,6 +2186,15 @@ function openDetail(id) {
 
   buildCongBars();
   buildDetailAgeTabs(age);
+  // 犬情報
+  const dogDiv = document.getElementById('detailDogInfo');
+  const dogText = document.getElementById('detailDogText');
+  if (s.dogInfo) {
+    dogDiv.style.display = 'block';
+    dogText.innerHTML = `<b>同伴可能エリア：</b>${s.dogInfo.allowed}<br><b>対応犬種：</b>${s.dogInfo.size}<br><b>備考：</b>${s.dogInfo.notes}`;
+  } else { dogDiv.style.display = 'none'; }
+  // キッズスペース
+  document.getElementById('detailKidsSpace').style.display = s.kidsSpace ? 'block' : 'none';
 
   const overlay = document.getElementById('detailOverlay');
   const dimmer = document.getElementById('dimmer');
@@ -1758,7 +2318,7 @@ function resetAll() {
     document.getElementById('onboarding').style.display = 'flex';
     // Reset onboarding state
     ob_count = 0; ob_ages = []; ob_activeChild = 0;
-    document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('selected')); ob_count = 0; ob_ages = [];
     document.getElementById('ob-next1').disabled = true;
     closeSettings();
     goOb(0);
