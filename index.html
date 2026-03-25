@@ -192,12 +192,32 @@ html, body {
 .section-title { font-size: 15px; font-weight: 700; }
 .route-cards { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; }
 .route-cards::-webkit-scrollbar { display: none; }
-.route-card { flex-shrink: 0; width: 200px; background: var(--card); border-radius: var(--radius-sm); padding: 12px; cursor: pointer; border: 1.5px solid var(--border); transition: all .2s; }
+.route-card { flex-shrink: 0; width: 220px; background: var(--card); border-radius: var(--radius-sm); padding: 12px; cursor: pointer; border: 1.5px solid var(--border); transition: all .2s; }
 .route-card:active { transform: scale(0.97); }
 .route-card-tag { font-size: 10px; font-weight: 700; color: var(--green); background: var(--green-light); padding: 2px 8px; border-radius: 20px; display: inline-block; margin-bottom: 6px; }
 .route-card-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
 .route-card-time { font-size: 11px; color: var(--text-sub); margin-bottom: 8px; }
 .route-card-steps { display: flex; flex-direction: column; gap: 4px; }
+/* ルートプラン詳細モーダル */
+#routeDetailModal { display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.5); align-items:flex-end; justify-content:center; }
+.route-detail-sheet { background:var(--bg); border-radius:20px 20px 0 0; width:100%; max-width:430px; max-height:88vh; overflow-y:auto; padding:0 0 calc(env(safe-area-inset-bottom,16px)+16px); }
+.route-detail-header { padding:14px 16px 0; display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.route-detail-title { font-size:18px; font-weight:700; }
+.route-detail-close { background:none; border:none; font-size:19px; cursor:pointer; color:var(--text-sub); }
+.route-detail-tag { font-size:11px; font-weight:700; color:var(--green); background:var(--green-light); padding:3px 10px; border-radius:20px; display:inline-block; margin:0 16px 14px; }
+.route-detail-time { font-size:12px; color:var(--text-sub); margin-left:6px; }
+.route-spot-item { margin:0 16px 12px; background:var(--card); border-radius:var(--radius); overflow:hidden; cursor:pointer; transition:all .15s; border:1.5px solid transparent; }
+.route-spot-item:active { transform:scale(0.98); border-color:var(--green); }
+.route-spot-inner { display:flex; }
+.route-spot-thumb { width:80px; height:80px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:26px; }
+.route-spot-info { flex:1; padding:10px 12px 10px 0; }
+.route-spot-time { font-size:10px; font-weight:700; color:var(--green); margin-bottom:2px; }
+.route-spot-name { font-size:14px; font-weight:700; margin-bottom:3px; }
+.route-spot-note { font-size:12px; color:var(--text-sub); margin-bottom:4px; }
+.route-spot-conclusion { font-size:12px; color:var(--green); font-weight:500; line-height:1.4; }
+.route-spot-arrow { font-size:13px; color:var(--text-light); display:flex; align-items:center; padding-right:10px; }
+.route-connector { display:flex; align-items:center; gap:8px; margin:0 16px 12px; font-size:11px; color:var(--text-light); }
+.route-connector-line { flex:1; height:1px; background:var(--border); }
 .route-step { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-sub); }
 .route-step-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-light); border: 1.5px solid var(--green); flex-shrink: 0; }
 
@@ -552,7 +572,13 @@ html, body {
         <div class="hero-body">
           <div class="hero-judge" id="heroJudge">今日の状況に合わせてピックアップ</div>
           <div class="hero-name" id="heroName">矢橋帰帆島公園</div>
-          <div class="hero-value" id="heroValue">親が座って見守れる設計の公園。子どもが勝手に楽しく遊んでくれる。</div>
+          <div class="hero-value" id="heroValue"></div>
+          <div style="background:rgba(255,255,255,0.15);border-radius:10px;padding:10px 12px;margin-bottom:8px;">
+            <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);letter-spacing:.08em;margin-bottom:3px;">CONCLUSION / 結論</div>
+            <div style="font-size:14px;font-weight:700;color:white;line-height:1.4;" id="heroConclusion"></div>
+          </div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:8px;display:flex;gap:6px;" id="heroReason"><span>💡</span><span id="heroReasonText"></span></div>
+          <div style="background:rgba(0,0,0,0.15);border-radius:8px;padding:7px 10px;font-size:11px;color:rgba(255,255,255,0.75);display:flex;gap:6px;margin-bottom:12px;" id="heroNg"><span>⚠️</span><span id="heroNgText"></span></div>
           <div class="hero-chips" id="heroChips"></div>
           <div class="hero-meta" id="heroMeta"></div>
           <div class="hero-cta">詳しく見る →</div>
@@ -893,6 +919,21 @@ html, body {
     <input class="form-input" type="text" id="ns-addr" placeholder="住所（任意）">
     <button onclick="submitNewSpot()" class="modal-confirm" style="opacity:1;margin-top:6px;">登録して口コミを書く</button>
     <button onclick="closeNewSpotModal()" class="modal-cancel">キャンセル</button>
+  </div>
+</div>
+
+<!-- ROUTE DETAIL MODAL -->
+<div id="routeDetailModal">
+  <div class="route-detail-sheet">
+    <div class="modal-handle" style="width:34px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 0;"></div>
+    <div class="route-detail-header">
+      <div>
+        <div class="route-detail-title" id="rdTitle"></div>
+      </div>
+      <button class="route-detail-close" onclick="closeRouteDetail()">✕</button>
+    </div>
+    <div id="rdTag"></div>
+    <div id="rdSpots"></div>
   </div>
 </div>
 
@@ -1713,6 +1754,68 @@ const VALUE_LINES = {
   lamp_hakodate: '犬をゴンドラに乗せて山頂へ。無料ドッグランも完備。'
 };
 
+// ── JUDGMENT DATA（結論・理由・NG）────────────────────────────
+const JUDGMENT = {
+  yabashi:    { conclusion:'3歳以上＋晴れ＋半日ならここがベスト', reason:'親が座って見守れる位置に遊具がある設計。子どもが自走してくれるので親が疲れない。', ng:'土日の午前中は家族連れで混雑する。夏の直射日光に注意、木陰が少ない。' },
+  biwako:     { conclusion:'自然の中でリセットしたい日の正解', reason:'木製アスレチックで子どもが夢中になる間、親は木陰でゆっくりできる。平日はほぼ貸し切り。', ng:'駐車場から遊具まで少し歩く。ベビーカーは舗装エリア限定。' },
+  kusatsugawa:{ conclusion:'草津市で半日つぶすなら一択', reason:'走り回れる芝生＋カフェ＋日陰がそろっている。0歳から利用できる。', ng:'週末のマルシェ開催日は人が増える。カフェは混むことがある。' },
+  otsu_park:  { conclusion:'大津市在住なら最も行きやすい公園', reason:'駐車場から近く、大型遊具まですぐ。夏のじゃぶじゃぶ池は子どもに大人気。', ng:'夏の水遊び時期は激混み。早朝か平日推奨。' },
+  moriyama_park:{ conclusion:'守山エリアで子どもを発散させる日の定番', reason:'芝生と遊具が充実。夏の水遊びエリアは子どもが大喜び。駐車場から遊具まで近い。', ng:'夏の水遊び時期は大混雑。週末の午前中も混む。平日推奨。' },
+  asoble:     { conclusion:'雨の日に子どもを疲れさせる最終兵器', reason:'室内なので天気関係なし。ボールプールとトランポリンで1〜2時間は持つ。', ng:'週末は混んで待ち時間が発生する。平日を強く推奨。' },
+  otsu_child: { conclusion:'0歳〜1歳のねんね期には唯一の正解', reason:'スタッフ常駐で相談もできる。同月齢の親と出会える貴重な場所。', ng:'3歳を超えると物足りなくなる。0〜2歳専用と割り切ること。' },
+  challenge_museum: { conclusion:'雨の日に知的欲求を満たしたいなら', reason:'全身を使った体験型なので飽きにくい。幼児は入場無料。', ng:'甲賀市まで遠い。往復の移動時間を含めて計画すること。' },
+  chalet:     { conclusion:'特別な日のランチはここ一択', reason:'湖畔の絶景テラスで子どもも犬もゆっくりできる。子どもが水辺を歩き回れる。', ng:'GWや週末は3時間待ちになることも。必ず早めに到着。' },
+  loco_cafe:  { conclusion:'授乳中のママが安心して外出できる場所', reason:'授乳室が静かで使いやすい。0歳を連れた初めてのおでかけにも最適。', ng:'米原市は少し遠い。近隣エリア在住でなければ目的地として計画を。' },
+  higoro:     { conclusion:'近江八幡観光のランチ候補として間違いなし', reason:'子どもイスとおむつ替えシート完備。地元野菜ランチで親も満足できる。', ng:'火曜定休。観光シーズンは予約推奨。' },
+  ichigo_milk:{ conclusion:'長浜エリアで子どもが叫ぶほど喜ぶ体験', reason:'屋内BBQなので雨でも使える。いちごスイーツで締めると子どもが大満足。', ng:'夏のBBQは暑い。春のいちごシーズンが最適。' },
+  makino:     { conclusion:'季節の体験学習を兼ねたおでかけに', reason:'自分で摘んだ果物を食べる達成感は他にない。食育にもなる。', ng:'高島市まで遠い。シーズン外は体験が限られる。事前確認必須。' },
+  mentai:     { conclusion:'0〜2歳を連れて無料で楽しむなら', reason:'0〜2歳専用遊び場は安心感が高い。授乳室が静かで使いやすい。明太子グルメも美味しい。', ng:'週末は野洲市まで遠い。混雑時は駐車場が満車になる。' },
+  nagahama_rail:{ conclusion:'乗り物好きの子どもへのご褒美おでかけ', reason:'本物の機関車に触れる体験は唯一無二。長浜の街散策とセットで半日プランにできる。', ng:'小学生以下以外は物足りないかも。駐車場は周辺コインパーキングを利用。' },
+  shigaraki:  { conclusion:'信楽エリアに来たら外せない体験スポット', reason:'日本一大きいたぬきがあり子どもが大喜び。陶芸体験は小さい子でも楽しめる。', ng:'甲賀市信楽は遠い。ドライブ目的で来る日に組み合わせるのがベスト。' },
+  biwako_cruise:{ conclusion:'非日常感を家族で共有したい日の選択', reason:'ロープウェイで山頂に着いた瞬間の景色は忘れられない。3歳以下無料。', ng:'天気が悪い日は景色が見えない。晴れた週末に絞って行くべき。' },
+  kibogaoka:  { conclusion:'滋賀で最も広い公園。迷ったらここ', reason:'どれだけ走り回っても問題ない広さ。バーベキューもできる。駐車場500円のみ。', ng:'アスレチックは一部使用禁止のものあり。事前確認推奨。' },
+  blueme:     { conclusion:'花・動物・体験の全部入り。特別な日に', reason:'季節ごとに表情が変わる。動物ふれあい・アスレチック・お菓子作りまで全部できる。', ng:'入園料がかかる。GWは激混み。冬季は一部エリアが閉鎖される。' },
+  biwako_kodomo:{ conclusion:'入場無料で1日楽しめる高島市の穴場', reason:'空いていることが多い。ふわふわ遊具と工作教室で年齢問わず楽しめる。', ng:'高島市まで距離がある。雨の日も屋内エリアがあるが狭い。' },
+  hikone_park:{ conclusion:'彦根観光とひこにゃんをセットで', reason:'ひこにゃんの登場時間に合わせれば子どもが大喜び。お堀沿い散歩も気持ちいい。', ng:'入城料がかかる。ひこにゃんの登場時間は限られる。必ず事前確認を。' },
+  hibari_park:{ conclusion:'草津市で手軽に公園遊びするなら', reason:'イオンモール草津から近く、買い物とセットで使いやすい。夏のじゃぶじゃぶ池が人気。', ng:'夏の水遊び時期は地域住民で混雑する。平日の利用推奨。' },
+  kidsusland: { conclusion:'イオン近江八幡に来たついでに確実に使える', reason:'ショッピングのついでに立ち寄れる。ゲームフリープレイが子どもに人気。', ng:'週末は大混雑。雨の日にみんなが来るため特に混む。' },
+  kodomotchi: { conclusion:'栗東・南草津エリアで雨の日の定番', reason:'ショッピングモール内なのでアクセスが楽。0歳から入れる。', ng:'施設が小さめ。3歳を超えると物足りなくなる可能性がある。' },
+  yanmar:     { conclusion:'長浜エリアで知的体験＋無料駐車場なら', reason:'農業機械シミュレーターが子どもに大人気。幼児は入場無料。足湯でパパママも休める。', ng:'長浜市まで距離がある。週末は混む。事前予約があると安心。' },
+  biwako_museum:{ conclusion:'小中学生を連れて琵琶湖を学ぶなら必須', reason:'小中学生が入場無料なのに内容が充実。琵琶湖の生き物を間近で見られる。', ng:'大人の入場料800円。ディスカバリールームは土日に混雑する。' },
+  lacolina:   { conclusion:'近江八幡観光の〆はここで間違いない', reason:'焼きたてバームクーヘンを食べながら広大な田んぼを歩ける。犬も連れて行ける屋外エリアあり。', ng:'週末は混雑が激しく、バームクーヘン購入に行列ができる。平日推奨。' },
+  teraitei:   { conclusion:'彦根城観光のランチはここが最もスムーズ', reason:'大正の街並みの中にあり観光と一体化。子どもイス完備で安心。', ng:'火曜定休。観光シーズンの昼時は席の確保が難しい。' },
+  minakuchi_cafe:{ conclusion:'甲賀市の穴場。入場無料でプラネタリウムがある', reason:'知る人ぞ知るスポット。空いていてゆったりできる。ミニプラネタリウムは子どもが喜ぶ。', ng:'甲賀市水口まで遠い。月曜定休。施設が小規模なので期待値を調整して。' },
+  hikone_sky: { conclusion:'4歳以上の冒険心がある子に確実に刺さる', reason:'達成感が得られるアドベンチャーはここだけ。スタッフが丁寧にサポートしてくれる。', ng:'4歳未満は参加不可。天候に左右される屋外施設。雨の日は中止の可能性あり。' },
+  ceramic_forest:{ conclusion:'信楽に来たなら陶芸体験はここが本場', reason:'高校生以下無料。野外彫刻を犬と散歩しながら楽しめる。', ng:'信楽ICから近いが遠い。体験は要予約のものが多い。' },
+  otsu_science:{ conclusion:'大津市で雨の日に科学体験するならここ', reason:'未就学児が無料なのにプラネタリウムが見られる。コスパ最高。', ng:'施設が小さめ。週末のプラネタリウムは満席になることがある。' },
+  agripark:   { conclusion:'農業体験を家族で経験させたいなら迷わずここ', reason:'入場無料。泥で遊ぶ田植え体験は普段できない特別な経験になる。', ng:'竜王町まで遠め。体験の開催日が季節で異なる。事前確認必須。' },
+  biwako_valley:{ conclusion:'びわ湖の絶景を子どもと共有したい日に', reason:'3歳以下無料でロープウェイに乗れる。山頂の景色は圧巻。夏は涼しい。', ng:'ロープウェイ代が高め。悪天候時は運休の可能性。晴れた日限定で計画すること。' },
+  karasuma_botanical:{ conclusion:'ベビーカー連れで琵琶湖畔を散歩したいなら', reason:'中学生以下無料。舗装された道でベビーカーで回りやすい。夏のハスが美しい。', ng:'月曜定休。展示が植物メインなので子どもが飽きやすい。短時間の立ち寄り推奨。' },
+  nagahama_park:{ conclusion:'長浜観光の起点として使いやすい', reason:'駐車場から琵琶湖まで歩いてすぐ。芝生広場で子どもが走り回れる。', ng:'桜の季節以外は特別感が薄い。長浜城に入る場合は入場料がかかる。' },
+  zakids_kusatsu:{ conclusion:'草津市で雨の日・手ぶらで使えるなら2024の新定番', reason:'飲食持込OKで出入り自由。弁当を持参してゆっくり過ごせる。', ng:'週末は混雑。1〜2歳料金と3〜12歳料金で差があるので確認を。' },
+  crazy_bane: { conclusion:'イオンモール草津内で手軽にトランポリン体験', reason:'2024年オープンでまだきれい。体を動かしたい子どもに最適。', ng:'施設が小さいため週末は混む。トランポリン体験に特化しているため滞在時間は短め。' },
+  zakids_konan:{ conclusion:'甲賀エリア唯一の選択肢。雨の日に迷わず行く', reason:'甲賀市内で室内遊び場はここだけに近い。0歳から使えて施設が清潔。', ng:'選択肢がないから行くという側面もある。週末は混雑が予想される。' },
+  biwako_children_hall:{ conclusion:'高島市まで行けるなら一番コスパが高い', reason:'入場無料で1日楽しめる。琵琶湖畔の最高のロケーション。犬も連れて行ける。', ng:'高島市今津まで遠い。公共交通機関でのアクセスは不便。車必須。' },
+  hikone_science:{ conclusion:'彦根エリアで雨の日に150円から楽しめる穴場', reason:'未就学児専用のキッズトンネルがある。プラネタリウムは季節ごとに内容が変わる。', ng:'施設が小さめ。月曜定休。駐車場は彦根市内なので有料のことがある。' },
+  michinoeki_aito:{ conclusion:'東近江エリアでランチ＋お土産ならここ', reason:'地元野菜を使ったランチが美味しい。直売所で季節の野菜も買える。芝生でピクニックも可。', ng:'月曜定休。東近江市まで遠め。食事目的に絞ったほうがよい。' },
+  ekimachi_nagahama:{ conclusion:'長浜駅直結で雨の日でも動ける', reason:'無料の水族館が入っている。駅直結なので移動コストがない。長浜観光の拠点になる。', ng:'施設自体は小さい。水族館も小規模。期待値を下げて立ち寄り感覚で行くのが正解。' },
+  omihachiman_water:{ conclusion:'近江八幡に来たら一度は体験すべき唯一の体験', reason:'手漕ぎ舟で葦の水路をゆっくり進む体験はここにしかない。3歳以下無料。', ng:'要予約。雨天中止の場合あり。舟の揺れが苦手な子には向かない。' },
+  grand_snow: { conclusion:'冬に滋賀で雪遊びするなら迷わずここ', reason:'入場無料で駐車場代だけで1日遊べる。幼児コーナーがあるから0歳連れでも安心。', ng:'米原市奥伊吹まで遠い。道路が凍結する。冬タイヤ必須。天候確認を忘れずに。' },
+  nagahama_roman:{ conclusion:'黒壁スクエア散策のついでに体験まで楽しめる', reason:'長浜観光と組み合わせやすい。ガラス体験は3歳から楽しめる。お土産にもなる。', ng:'体験は予約推奨。土産物屋としての側面が強く、体験コストもかかる。' },
+  lobby_garden:{ conclusion:'草津市で子連れランチに迷ったら2024年の新定番', reason:'ドリンクバー付きでゆっくり食事できる。近鉄百貨店内なので雨でも安心。授乳室完備。', ng:'百貨店内なので駐車場は有料。食事代プラス駐車場代がかかる。' },
+  hat_kitchen:{ conclusion:'ベビーカー連れで安心してランチできる場所', reason:'全面ガラス張りで明るい店内。ベビーカーOK。無添加離乳食も購入できる。', ng:'湖南市まで遠め。月・火曜定休。ランチタイムのみの営業。' },
+  orisaki_restaurant:{ conclusion:'長浜ICを使った帰り道のランチに確実', reason:'メニューが豊富で好みがバラバラな家族でも問題なし。子どもメニューが充実。', ng:'独立系ファミレスなのでチェーンより少し高め。旅行の帰りに立ち寄る感覚で。' },
+  whats_lifestyle:{ conclusion:'Oh!Me大津テラスに寄ったついでに', reason:'モール内で授乳室が近くにある。ベビーカーOK。ASOBLEと同じ建物で効率よく動ける。', ng:'モール内の飲食店なので料理の特別感は薄い。食事よりも休憩目的で使うのが正解。' },
+  pizza_nagahama:{ conclusion:'近江八幡エリアで子どもが絶対喜ぶランチ', reason:'本格ナポリピッツァを子どもと体験できる。テラスはBBQも可能で犬連れOK。', ng:'近江八幡市内。火曜定休。テラスは風が強い日は寒い。' },
+  nagisa_warms:{ conclusion:'子どもも犬も連れて琵琶湖テラスランチするなら唯一', reason:'石場駅から歩いて行ける琵琶湖畔テラス。なぎさテラス4店舗すべて犬OKというレア環境。', ng:'木・金定休。人気店なので週末は混む。テラス席は天候に左右される。' },
+  mori_no_ki: { conclusion:'犬を全力で走らせながらランチしたい日の正解', reason:'300坪の広大なドッグランで犬を思いっきり遊ばせてから食事ができる唯一の環境。', ng:'高島市安曇川まで遠い。日・月定休。週替わりランチなので内容は要確認。' },
+  horicafe:   { conclusion:'近江八幡の犬との散歩ランチはここが最適', reason:'八幡堀沿いの景色を眺めながら犬と一緒に食事できる。近江牛を使った本格メニュー。', ng:'水曜定休。テラス席のみ犬OK。事前連絡推奨。雨の日のテラスは厳しい。' },
+  rockbay:    { conclusion:'いちご狩り＋犬テラスランチの欲張りプラン', reason:'農園でいちご狩りをしてからテラスでランチできる。犬もOKで家族全員が楽しめる。', ng:'月曜定休。道の駅草津の駐車場は混む。いちご狩りはシーズンを確認すること。' },
+  kusatsu_dogcafe:{ conclusion:'草津市で犬を全力で遊ばせたい日の一択', reason:'120坪のドッグランで犬も子どもも同時に発散できる。店内も犬OKで全犬種歓迎。', ng:'不定休のため事前確認必須。草津市野村という住宅地にあるためわかりにくい。' },
+  lamp_hakodate:{ conclusion:'犬とゴンドラに乗って山頂パフェを食べるという特別体験', reason:'犬をゴンドラに乗せて山頂に行ける場所は滋賀でここだけ。無料ドッグランもある。', ng:'高島市今津まで遠い。ゴンドラ料金がかかる。天候が悪い日は景色ゼロ。' },
+};
+
+
 // ── SPOT EXTRA DATA (必須情報) ──────────────────────────────
 // ageMin, stayTime, rainOK, stroller, toilet
 const SPOT_FACTS = {
@@ -1863,7 +1966,7 @@ function loadState() {
 }
 
 // ── VERSION CHECK ─────────────────────────────────────────────
-const APP_VERSION = 'kodoco-1.3';
+const APP_VERSION = 'kodoco-hybrid-1.0';
 document.addEventListener('DOMContentLoaded', () => {
   if (localStorage.getItem('kodoco_version') !== APP_VERSION) {
     localStorage.removeItem('kodoco_state');
@@ -2073,6 +2176,12 @@ function buildHero() {
   document.getElementById('heroValue').textContent = value;
   document.getElementById('heroJudge').textContent = age + '歳のお子さんに、今日はここで間違いない';
   document.getElementById('heroBadge').textContent = '◎ ' + age + '歳に特におすすめ';
+  // JUDGMENT（結論・理由・NG）
+  const j = JUDGMENT[pick.id] || { conclusion: '', reason: pick.desc, ng: '' };
+  document.getElementById('heroConclusion').textContent = j.conclusion;
+  document.getElementById('heroReasonText').textContent = j.reason;
+  document.getElementById('heroNgText').textContent = j.ng;
+  document.getElementById('heroNg').style.display = j.ng ? 'flex' : 'none';
   // chips
   const chipsCont = document.getElementById('heroChips');
   chipsCont.innerHTML = pick.sense.map(s => '<span class="hero-chip">' + s + '</span>').join('');
@@ -2090,17 +2199,65 @@ function buildHero() {
 function buildRoutePlans() {
   const cont = document.getElementById('routeCards');
   cont.innerHTML = '';
-  ROUTE_PLANS.forEach(plan => {
+  ROUTE_PLANS.forEach((plan, idx) => {
     const card = document.createElement('div');
     card.className = 'route-card';
     card.innerHTML = '<div class="route-card-tag">' + plan.tag + '</div>'
       + '<div class="route-card-title">' + plan.title + '</div>'
       + '<div class="route-card-time">⏱ ' + plan.time + '</div>'
       + '<div class="route-card-steps">'
-      + plan.steps.map(s => '<div class="route-step"><div class="route-step-dot"></div><span>' + (s.time !== '─' ? s.time + ' ' : '') + s.name + '（' + s.note + '）</span></div>').join('')
-      + '</div>';
+      + plan.steps.map(s => '<div class="route-step"><div class="route-step-dot"></div><span>' + (s.time !== '─' ? s.time + ' ' : '') + s.name + '</span></div>').join('')
+      + '</div>'
+      + '<div style="margin-top:10px;font-size:11px;color:var(--green);font-weight:600;">詳細を見る →</div>';
+    card.addEventListener('click', () => openRouteDetail(plan));
     cont.appendChild(card);
   });
+}
+
+function openRouteDetail(plan) {
+  document.getElementById('rdTitle').textContent = plan.title;
+  document.getElementById('rdTag').innerHTML = '<span class="route-detail-tag">' + plan.tag + '</span><span class="route-detail-time">⏱ ' + plan.time + '</span>';
+  const cont = document.getElementById('rdSpots');
+  cont.innerHTML = '';
+  plan.steps.forEach((step, i) => {
+    // スポットを名前で検索
+    const spot = SPOTS.find(s => s.name === step.name || s.name.includes(step.name) || step.name.includes(s.name.substring(0, 6)));
+    const j = spot ? (JUDGMENT[spot.id] || {}) : {};
+    const facts = spot ? (SPOT_FACTS[spot.id] || {}) : {};
+    // スポット詳細アイテム
+    const item = document.createElement('div');
+    item.className = 'route-spot-item';
+    const factBadges = [];
+    if (facts.ageMin) factBadges.push('<span style="font-size:10px;background:var(--green-light);color:var(--green);padding:2px 6px;border-radius:4px;">👶' + facts.ageMin + '</span>');
+    if (facts.rain)   factBadges.push('<span style="font-size:10px;background:var(--green-light);color:var(--green);padding:2px 6px;border-radius:4px;">🌧雨OK</span>');
+    if (facts.dogOk)  factBadges.push('<span style="font-size:10px;background:#fff8e0;color:#7a5c1a;padding:2px 6px;border-radius:4px;">🐕犬OK</span>');
+    item.innerHTML = '<div class="route-spot-inner">'
+      + '<div class="route-spot-thumb" style="background:' + (spot ? spot.galleryBg : 'var(--bg)') + ';">' + (spot ? spot.emoji : '📍') + '</div>'
+      + '<div class="route-spot-info">'
+      + (step.time !== '─' ? '<div class="route-spot-time">🕐 ' + step.time + '</div>' : '')
+      + '<div class="route-spot-name">' + step.name + '</div>'
+      + '<div class="route-spot-note">' + step.note + '</div>'
+      + (j.conclusion ? '<div class="route-spot-conclusion">' + j.conclusion + '</div>' : '')
+      + (factBadges.length ? '<div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:5px;">' + factBadges.join('') + '</div>' : '')
+      + '</div>'
+      + '<div class="route-spot-arrow">›</div>'
+      + '</div>';
+    if (spot) {
+      item.addEventListener('click', () => { closeRouteDetail(); setTimeout(() => openDetail(spot.id), 300); });
+    }
+    cont.appendChild(item);
+    // コネクター（最後以外）
+    if (i < plan.steps.length - 1) {
+      const conn = document.createElement('div');
+      conn.className = 'route-connector';
+      conn.innerHTML = '<div class="route-connector-line"></div><span>↓ 移動</span><div class="route-connector-line"></div>';
+      cont.appendChild(conn);
+    }
+  });
+  document.getElementById('routeDetailModal').style.display = 'flex';
+}
+function closeRouteDetail() {
+  document.getElementById('routeDetailModal').style.display = 'none';
 }
 
 // ── SPOT LIST ─────────────────────────────────────────────────
@@ -2404,6 +2561,14 @@ function openDetail(id) {
   document.getElementById('detailCat').className = 'spot-cat ' + s.catClass;
   document.getElementById('detailLoc').textContent = '📍 ' + s.loc;
   document.getElementById('detailValue').textContent = value;
+  // JUDGMENT追加
+  const j2 = JUDGMENT[id] || {};
+  let jHtml = '';
+  if (j2.conclusion) jHtml += '<div style="background:var(--green-light);border-radius:10px;padding:10px 12px;margin-bottom:8px;border-left:3px solid var(--green);"><div style="font-size:10px;font-weight:700;color:var(--green-mid);letter-spacing:.08em;margin-bottom:3px;">CONCLUSION / 結論</div><div style="font-size:14px;font-weight:700;color:var(--green);line-height:1.4;">' + j2.conclusion + '</div></div>';
+  if (j2.reason)    jHtml += '<div style="background:var(--bg);border-radius:9px;padding:9px 11px;margin-bottom:8px;"><div style="font-size:10px;font-weight:700;color:var(--text-sub);letter-spacing:.08em;margin-bottom:3px;">REASON / 理由</div><div style="font-size:13px;color:var(--text);line-height:1.6;">💡 ' + j2.reason + '</div></div>';
+  if (j2.ng)        jHtml += '<div style="background:#fff5f4;border-radius:9px;padding:9px 11px;margin-bottom:14px;border-left:3px solid #e57373;"><div style="font-size:10px;font-weight:700;color:#c0392b;letter-spacing:.08em;margin-bottom:3px;">⚠ NG情報</div><div style="font-size:13px;color:#c0392b;line-height:1.6;">' + j2.ng + '</div></div>';
+  const existingFacts = document.getElementById('detailFacts');
+  if (jHtml && existingFacts) existingFacts.insertAdjacentHTML('beforebegin', jHtml);
   document.getElementById('detailGallery').style.background = s.galleryBg;
   document.getElementById('detailHighlight').textContent = s.highlight;
   document.getElementById('detailRating').textContent = s.rating;
