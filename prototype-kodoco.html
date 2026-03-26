@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KODOCO — Prototype | Kinoshita Studio</title>
+  <meta name="description" content="滋賀の子連れおでかけWebアプリ「KODOCO」プロトタイプ。ベータテスター募集中。">
+  <meta property="og:title" content="KODOCO — Prototype | Kinoshita Studio">
+  <meta property="og:image" content="https://kinoshitastudio.github.io/ogp-studio.png">
+  <meta property="og:url" content="https://kinoshitastudio.github.io/prototype-kodoco.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+  <link rel="apple-touch-icon" href="favicon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Space+Mono&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cream: #f5f0e8;
+      --cream-dark: #ede7db;
+      --green: #2d5a3d;
+      --green-mid: #3d7a55;
+      --green-light: #e8f0eb;
+      --green-pale: #f0f6f2;
+      --ink: #1a1a18;
+      --ink-mid: #4a4a45;
+      --ink-light: #8a8a82;
+      --line: rgba(26,26,24,0.1);
+      --line-mid: rgba(26,26,24,0.18);
+      --orange: #e07b39;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      padding: 1rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 100;
+      background: rgba(245,240,232,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-back {
+      font-family: 'Space Mono', monospace;
+      font-size: .52rem; letter-spacing: .15em;
+      color: var(--ink-light); text-decoration: none;
+      transition: color .3s;
+    }
+    .nav-back:hover { color: var(--ink); }
+    .nav-logo {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: .9rem; font-weight: 700;
+      color: var(--green); letter-spacing: -.01em;
+    }
+    .nav-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: .45rem; letter-spacing: .15em;
+      background: var(--green); color: #fff;
+      padding: .3rem .8rem; border-radius: 20px;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding-top: 60px;
+      background: var(--green);
+      color: #fff;
+      min-height: 85vh;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      align-items: center;
+      gap: 0;
+    }
+    .hero-left {
+      padding: 6rem 4rem 6rem 5rem;
+    }
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: .5rem; letter-spacing: .3em;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 1.5rem;
+      opacity: 0; animation: fadeUp .6s ease forwards .1s;
+    }
+    .hero-title {
+      font-size: clamp(3rem, 5.5vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.0;
+      letter-spacing: -.02em;
+      margin-bottom: .6rem;
+      opacity: 0; animation: fadeUp .6s ease forwards .2s;
+    }
+    .hero-sub {
+      font-size: clamp(.95rem, 1.5vw, 1.2rem);
+      font-weight: 300;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.7;
+      margin-bottom: 3rem;
+      opacity: 0; animation: fadeUp .6s ease forwards .35s;
+    }
+    .hero-chips {
+      display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: 2.5rem;
+      opacity: 0; animation: fadeUp .6s ease forwards .45s;
+    }
+    .chip {
+      font-family: 'Space Mono', monospace;
+      font-size: .46rem; letter-spacing: .12em;
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.8);
+      padding: .35rem .9rem; border-radius: 20px;
+    }
+    .hero-cta {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp .6s ease forwards .55s;
+    }
+    .btn-white {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: .82rem; font-weight: 400;
+      background: #fff; color: var(--green);
+      padding: .85rem 2rem; border-radius: 8px;
+      text-decoration: none;
+      transition: opacity .3s;
+      display: inline-block;
+    }
+    .btn-white:hover { opacity: .88; }
+    .btn-outline-white {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: .82rem; font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: .85rem 2rem; border-radius: 8px;
+      text-decoration: none;
+      transition: border-color .3s, color .3s;
+      display: inline-block;
+    }
+    .btn-outline-white:hover { border-color: #fff; color: #fff; }
+
+    .hero-right {
+      height: 100%;
+      background: var(--green-mid);
+      display: flex; align-items: center; justify-content: center;
+      padding: 4rem 3rem;
+    }
+    .phone-mock {
+      width: 240px;
+      aspect-ratio: 9/19;
+      background: var(--cream);
+      border-radius: 36px;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.15);
+      position: relative;
+    }
+    .phone-mock img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top;
+      display: block;
+    }
+    .phone-mock-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1rem; padding: 2rem;
+      background: var(--cream);
+    }
+    .phone-mock-placeholder .app-icon {
+      width: 56px; height: 56px;
+      background: var(--green);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+    }
+    .phone-mock-placeholder p {
+      font-family: 'Space Mono', monospace;
+      font-size: .42rem; letter-spacing: .12em;
+      color: var(--ink-light); text-align: center;
+      line-height: 1.8;
+    }
+    .phone-notch {
+      position: absolute; top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 80px; height: 28px;
+      background: #1a1a18;
+      border-radius: 0 0 16px 16px;
+      z-index: 2;
+    }
+
+    /* ===== SECTION ===== */
+    .sec {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 7rem 2.5rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .sec-label {
+      font-family: 'Space Mono', monospace;
+      font-size: .48rem; letter-spacing: .3em;
+      color: var(--green-mid);
+      margin-bottom: 1.8rem;
+    }
+    .sec-title {
+      font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -.01em;
+      margin-bottom: 1.2rem;
+    }
+    .sec-body {
+      font-size: .88rem;
+      color: var(--ink-mid);
+      line-height: 2.4;
+      max-width: 580px;
+    }
+    .sec-body strong { color: var(--ink); font-weight: 400; }
+
+    /* ===== ORIGIN ===== */
+    .gap-card {
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--line);
+    }
+    .gap-col {
+      background: var(--cream);
+      padding: 2.5rem;
+    }
+    .gap-col.hl {
+      background: var(--green-light);
+    }
+    .gap-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: .46rem; letter-spacing: .2em;
+      color: var(--ink-light); margin-bottom: 1rem;
+    }
+    .gap-col.hl .gap-tag { color: var(--green); }
+    .gap-heading {
+      font-size: 1rem; font-weight: 700;
+      margin-bottom: .8rem; line-height: 1.4;
+    }
+    .gap-text { font-size: .8rem; color: var(--ink-mid); line-height: 2; }
+    .insight-box {
+      margin-top: 2.5rem;
+      background: var(--green);
+      color: #fff;
+      padding: 1.8rem 2rem;
+      border-radius: 8px;
+    }
+    .insight-box p {
+      font-size: .85rem; line-height: 2; color: rgba(255,255,255,0.9);
+    }
+    .insight-box strong { color: #fff; font-weight: 400; }
+
+    /* ===== SCREENS ===== */
+    .screens {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .screen-card {}
+    .screen-img {
+      aspect-ratio: 9/16;
+      background: var(--green-light);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: .8rem;
+      position: relative;
+      border: 1px solid var(--line);
+    }
+    .screen-img img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top;
+      display: block;
+    }
+    .screen-ph {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: .6rem;
+    }
+    .screen-ph span { font-size: 1.5rem; }
+    .screen-ph p {
+      font-family: 'Space Mono', monospace;
+      font-size: .4rem; letter-spacing: .12em;
+      color: var(--ink-light); text-align: center;
+    }
+    .screen-name {
+      font-size: .75rem; font-weight: 400;
+      margin-bottom: .3rem;
+    }
+    .screen-desc { font-size: .72rem; color: var(--ink-mid); line-height: 1.7; }
+
+    /* ===== POINTS ===== */
+    .points {
+      margin-top: 3rem;
+      display: flex; flex-direction: column;
+      gap: 0;
+    }
+    .point {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 1.5rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--line);
+      align-items: start;
+    }
+    .point:first-child { border-top: 1px solid var(--line); }
+    .point-icon {
+      width: 48px; height: 48px;
+      background: var(--green-light);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .point-title { font-size: .92rem; font-weight: 700; margin-bottom: .4rem; }
+    .point-desc { font-size: .8rem; color: var(--ink-mid); line-height: 2; }
+
+    /* ===== WHO ===== */
+    .who-band {
+      background: var(--green-pale);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .who-inner {
+      max-width: 1000px; margin: 0 auto;
+      padding: 6rem 2.5rem;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: start;
+    }
+    .who-list { display: flex; flex-direction: column; gap: 1px; background: var(--line); }
+    .who-item {
+      background: var(--green-pale);
+      padding: 1.2rem 1.5rem;
+      display: flex; gap: .8rem; align-items: center;
+      transition: background .3s;
+    }
+    .who-item:hover { background: var(--green-light); }
+    .who-emoji { font-size: 1.2rem; flex-shrink: 0; }
+    .who-text { font-size: .8rem; color: var(--ink-mid); line-height: 1.7; }
+    .who-text strong { color: var(--ink); font-weight: 400; display: block; margin-bottom: .15rem; }
+
+    /* ===== FORM ===== */
+    .form-sec {
+      background: var(--green);
+    }
+    .form-inner {
+      max-width: 1000px; margin: 0 auto;
+      padding: 7rem 2.5rem;
+    }
+    .form-header {
+      margin-bottom: 3rem;
+    }
+    .form-label {
+      font-family: 'Space Mono', monospace;
+      font-size: .48rem; letter-spacing: .3em;
+      color: rgba(255,255,255,0.5); margin-bottom: 1.2rem;
+    }
+    .form-title {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700; color: #fff;
+      line-height: 1.3; margin-bottom: 1rem;
+    }
+    .form-desc {
+      font-size: .85rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 2.2; max-width: 480px;
+    }
+
+    /* フォーム本体 */
+    .contact-form {
+      background: rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 2.5rem;
+      display: flex; flex-direction: column; gap: 1.5rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .form-group { display: flex; flex-direction: column; gap: .5rem; }
+    .form-group label {
+      font-family: 'Space Mono', monospace;
+      font-size: .48rem; letter-spacing: .15em;
+      color: rgba(255,255,255,0.6);
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: .85rem 1rem;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: .82rem; font-weight: 300;
+      color: #fff;
+      outline: none;
+      transition: border-color .3s, background .3s;
+      -webkit-appearance: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.15);
+    }
+    .form-group select option { background: var(--green); color: #fff; }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-note {
+      font-size: .72rem; color: rgba(255,255,255,0.4);
+      line-height: 1.7;
+    }
+    .form-submit {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: .9rem; font-weight: 400;
+      background: #fff; color: var(--green);
+      border: none; border-radius: 8px;
+      padding: 1rem 2.5rem;
+      cursor: pointer;
+      transition: opacity .3s;
+      align-self: flex-start;
+    }
+    .form-submit:hover { opacity: .88; }
+    .form-success {
+      display: none;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      color: rgba(255,255,255,0.85);
+      font-size: .85rem; line-height: 2;
+    }
+    .form-success .success-icon { font-size: 2rem; margin-bottom: .8rem; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      padding: 2rem 2.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid var(--line);
+    }
+    footer span, footer a {
+      font-family: 'Space Mono', monospace;
+      font-size: .48rem; letter-spacing: .12em;
+      color: var(--ink-light); text-decoration: none;
+      transition: color .3s;
+    }
+    footer a:hover { color: var(--ink); }
+
+    /* REVEAL */
+    .rv { opacity: 0; transform: translateY(20px); transition: opacity .65s ease, transform .65s ease; }
+    .rv.on { opacity: 1; transform: translateY(0); }
+    .rv.d1 { transition-delay: .1s; }
+    .rv.d2 { transition-delay: .2s; }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 5rem 1.5rem 3rem; }
+      .hero-right { padding: 2rem 1.5rem 3rem; min-height: 300px; }
+      .phone-mock { width: 180px; }
+      .sec { padding: 5rem 1.5rem; }
+      .gap-card { grid-template-columns: 1fr; }
+      .screens { grid-template-columns: 1fr 1fr; }
+      .who-inner { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 1.5rem; }
+      .form-inner { padding: 4rem 1.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .contact-form { padding: 1.5rem; }
+      footer { padding: 1.5rem; flex-direction: column; gap: .8rem; }
+    }
+    @media (max-width: 500px) {
+      .screens { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="experience-projects.html" class="nav-back">← Back</a>
+  <span class="nav-logo">KODOCO</span>
+  <span class="nav-badge">Beta募集中</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Prototype 01 — Web App — 滋賀県</p>
+    <h1 class="hero-title">今日どこいく？</h1>
+    <p class="hero-sub">子連れで失敗しない場所が、<br>今日の状況でわかる。</p>
+    <div class="hero-chips">
+      <span class="chip">🌤 天気連動</span>
+      <span class="chip">👶 年齢対応</span>
+      <span class="chip">📍 滋賀県内</span>
+      <span class="chip">無料</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#form" class="btn-white">使ってみたい →</a>
+      <a href="#app" class="btn-outline-white">アプリについて</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="phone-mock">
+      <div class="phone-notch"></div>
+      <!-- IMAGE: スクリーンショットを差し替えてください -->
+      <div class="phone-mock-placeholder">
+        <div class="app-icon">🌳</div>
+        <p>App Screenshot<br>（後で差し替え）</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ORIGIN -->
+<div class="sec" id="app">
+  <p class="sec-label rv">— Why / なぜ作ったのか</p>
+  <h2 class="sec-title rv d1">既存のアプリは「今日の文脈」に<br>答えられない。</h2>
+  <p class="sec-body rv d1">Google Mapsや子育て情報サイトは、場所の情報を提供できます。しかし親が本当に知りたいのは、<strong>今日の天気・子どもの機嫌・外出できる時間</strong>に合わせた答えです。</p>
+  <div class="gap-card rv d2">
+    <div class="gap-col">
+      <p class="gap-tag">— 既存サービスの課題</p>
+      <h3 class="gap-heading">情報はある。<br>今日の答えがない。</h3>
+      <p class="gap-text">口コミ・評価・地図——これらは揃っている。でも「0歳の赤ちゃんがいる雨の火曜日」と「晴れた土曜日の3歳児」では、必要な情報がまったく違う。大量の情報を自分でフィルタリングしなければならない。</p>
+    </div>
+    <div class="gap-col hl">
+      <p class="gap-tag">— KODOCOの設計</p>
+      <h3 class="gap-heading">今日の状況を入力して、<br>1スポットが決まる。</h3>
+      <p class="gap-text">天気・子どもの年齢・外出できる時間を選ぶだけ。「これで間違いない」1スポットを提案します。複数の選択肢で悩ませるのではなく、判断を代行する設計。</p>
+    </div>
+  </div>
+  <div class="insight-box rv d2">
+    <p>これは木下スタジオが研究する<strong>「体験翻訳ギャップ」</strong>を実装で検証するプロジェクトでもあります。情報の正確さではなく、<strong>今日の文脈への応答性</strong>がUXの核心だという仮説を試しています。</p>
+  </div>
+</div>
+
+<!-- APP SCREENS -->
+<div class="sec">
+  <p class="sec-label rv">— App / 現在の画面</p>
+  <h2 class="sec-title rv d1">プロトタイプの今。</h2>
+  <p class="sec-body rv d1">開発中のWebアプリです。実際に触れて、気になった点・使いにくかった点・欲しい機能を教えてください。</p>
+  <div class="screens rv d2">
+    <div class="screen-card">
+      <div class="screen-img">
+        <!-- IMAGE 01 -->
+        <div class="screen-ph"><span>🏠</span><p>Home Screen<br>（後で差し替え）</p></div>
+      </div>
+      <p class="screen-name">ホーム</p>
+      <p class="screen-desc">週間天気・今日の状況入力</p>
+    </div>
+    <div class="screen-card">
+      <div class="screen-img">
+        <!-- IMAGE 02 -->
+        <div class="screen-ph"><span>☀️</span><p>Condition Input<br>（後で差し替え）</p></div>
+      </div>
+      <p class="screen-name">今日の状況</p>
+      <p class="screen-desc">天気・機嫌・外出時間を選択</p>
+    </div>
+    <div class="screen-card">
+      <div class="screen-img">
+        <!-- IMAGE 03 -->
+        <div class="screen-ph"><span>📍</span><p>Spot Result<br>（後で差し替え）</p></div>
+      </div>
+      <p class="screen-name">スポット提案</p>
+      <p class="screen-desc">「今日はここ」1件を提示</p>
+    </div>
+  </div>
+</div>
+
+<!-- DESIGN POINTS -->
+<div class="sec">
+  <p class="sec-label rv">— Design / 設計のポイント</p>
+  <h2 class="sec-title rv d1">3つの設計判断。</h2>
+  <div class="points rv d2">
+    <div class="point">
+      <div class="point-icon">🌤</div>
+      <div>
+        <p class="point-title">今日の状況を起点にする</p>
+        <p class="point-desc">天気・子どもの機嫌・外出できる時間の3軸で絞り込む。情報の羅列ではなく、判断の代行。親の認知負荷を下げることが最優先。</p>
+      </div>
+    </div>
+    <div class="point">
+      <div class="point-icon">🎂</div>
+      <div>
+        <p class="point-title">年齢を記憶して提案が変化する</p>
+        <p class="point-desc">子どもの年齢を一度登録すると提案がパーソナライズされる。0歳と5歳では「いい公園」の定義がまったく違う。毎回入力しなくていい設計。</p>
+      </div>
+    </div>
+    <div class="point">
+      <div class="point-icon">📍</div>
+      <div>
+        <p class="point-title">「1つだけ」提案する</p>
+        <p class="point-desc">複数の選択肢を並べるのではなく「今日はここ」と1スポットを示す。選択疲れを起こさないUX設計。外れても「まあいいか」と思える温度感。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHO -->
+<div class="who-band">
+  <div class="who-inner">
+    <div>
+      <p class="sec-label rv">— Research / こんな方に試してほしい</p>
+      <h2 class="sec-title rv d1">ベータテスター<br>募集中。</h2>
+      <p class="sec-body rv d2">プロトタイプの段階から使ってもらい、設計を改善していきます。専門知識は不要です。「使ってみた正直な感想」が一番役立ちます。</p>
+    </div>
+    <div class="who-list rv d1">
+      <div class="who-item">
+        <span class="who-emoji">👶</span>
+        <p class="who-text"><strong>0〜3歳の子どもがいる保護者</strong>外出先の選択に最も悩む時期。フィードバックが特に重要。</p>
+      </div>
+      <div class="who-item">
+        <span class="who-emoji">🌳</span>
+        <p class="who-text"><strong>滋賀県内在住・在勤の方</strong>スポットデータの精度検証に地域の方の意見が必要。</p>
+      </div>
+      <div class="who-item">
+        <span class="who-emoji">☔</span>
+        <p class="who-text"><strong>雨の日のお出かけに困っている方</strong>雨の日の提案精度を優先的に改善したい。</p>
+      </div>
+      <div class="who-item">
+        <span class="who-emoji">📱</span>
+        <p class="who-text"><strong>UX・アプリ設計に詳しい方</strong>設計判断への専門的なフィードバックも歓迎。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="form-sec" id="form">
+  <div class="form-inner">
+    <div class="form-header">
+      <p class="form-label">— Beta Request / 使ってみたい方へ</p>
+      <h2 class="form-title">登録いただいた方に<br>URLをお送りします。</h2>
+      <p class="form-desc">現在クローズドベータとして運用中です。以下のフォームにご登録いただいた方に、プロトタイプのURLをメールでお送りします。</p>
+    </div>
+
+    <div class="contact-form">
+      <p style="font-size:.82rem;color:rgba(255,255,255,0.7);line-height:2.2;margin-bottom:2rem;">以下のメールアドレスに、お名前・メールアドレスをお送りください。折り返しプロトタイプのURLをお届けします。</p>
+
+      <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:1.5rem 2rem;margin-bottom:1.5rem;">
+        <p style="font-family:'Space Mono',monospace;font-size:.46rem;letter-spacing:.2em;color:rgba(255,255,255,0.45);margin-bottom:.8rem;">— 送っていただく内容</p>
+        <div style="display:flex;flex-direction:column;gap:.6rem;">
+          <p style="font-size:.82rem;color:rgba(255,255,255,0.8);">① お名前</p>
+          <p style="font-size:.82rem;color:rgba(255,255,255,0.8);">② メールアドレス（返信先）</p>
+          <p style="font-size:.82rem;color:rgba(255,255,255,0.55);">③ お子さんの年齢（任意）</p>
+          <p style="font-size:.82rem;color:rgba(255,255,255,0.55);">④ お住まいのエリア（任意）</p>
+        </div>
+      </div>
+
+      <a href="mailto:tkinoshita.studio@gmail.com?subject=【KODOCO】ベータ版を使ってみたい"
+         class="form-submit"
+         style="display:inline-block;text-decoration:none;text-align:center;">
+        メールを送る →
+      </a>
+
+      <p class="form-note" style="margin-top:1.2rem;">件名は「【KODOCO】ベータ版を使ってみたい」で届きます。いただいた情報は返信目的のみに使用します。</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2025 Kinoshita Studio — Takahiro Kinoshita</span>
+  <a href="experience-projects.html">← Experience Projects</a>
+</footer>
+
+<script>
+  // Scroll reveal
+  (function(){
+    const els = document.querySelectorAll('.rv');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    els.forEach(el => io.observe(el));
+  })();
+
+
+</script>
+</body>
+</html>
