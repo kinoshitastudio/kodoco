@@ -187,6 +187,8 @@
     .url-link { max-width: 160px; }
   }
 </style>
+<!-- Load SPOTS data statically (works on file:// — no fetch needed). -->
+<script src="./spots-data.js"></script>
 </head>
 <body>
 
@@ -286,6 +288,11 @@ function toast(msg, ms = 1600) {
 }
 
 async function loadSpots() {
+  // 1. spots-data.js から window.KODOCO_SPOTS を最優先（file:// でも動く）
+  if (Array.isArray(window.KODOCO_SPOTS) && window.KODOCO_SPOTS.length) {
+    return window.KODOCO_SPOTS;
+  }
+  // 2. フォールバック: HTTP 経由なら app.html を fetch してパース
   try {
     const res = await fetch('./app.html', { cache: 'no-cache' });
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -316,11 +323,12 @@ function showLoadError(err) {
   const isFileScheme = location.protocol === 'file:';
   el.style.display = 'block';
   el.innerHTML = isFileScheme
-    ? '⚠ <b>この check.html は <code>file://</code> 経由では動作しません</b>（<code>fetch()</code> 制限のため）。<br/>' +
-      'ターミナルで以下を実行し、<code>http://localhost:8080/check.html</code> で開いてください：<br/>' +
-      '<code>cd projects/kodoco &amp;&amp; python3 -m http.server 8080</code>'
+    ? '⚠ <code>spots-data.js</code> の読み込みに失敗しました。<br/>' +
+      '<code>check.html</code> と同じディレクトリに <code>spots-data.js</code> があることを確認してください。<br/>' +
+      'app.html の SPOTS を再生成するには、ターミナルで以下を実行：<br/>' +
+      '<code>node -e "const s=require(\'fs\').readFileSync(\'app.html\',\'utf8\');const i=s.indexOf(\'const SPOTS = [\');const r=s.slice(i);const e=r.search(/\\n\\];/);require(\'fs\').writeFileSync(\'spots-data.js\',\'window.KODOCO_SPOTS=(function(){\'+r.slice(0,e+3)+\'return SPOTS;})();\')"</code>'
     : '⚠ データ読み込みエラー: <code>' + (err && err.message || err) + '</code><br/>' +
-      '<code>app.html</code> が同じディレクトリにあるか確認してください。';
+      '<code>app.html</code> または <code>spots-data.js</code> が同じディレクトリにあるか確認してください。';
 }
 
 // ── helpers (mirror of app.html) ──────────────────────────────────────
