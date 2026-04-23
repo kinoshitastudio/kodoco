@@ -7,10 +7,14 @@
   <meta name="description" content="「今日、子どもとどこいく？」そのひと言に答えるWebアプリ。天気・年齢・時間で1スポットに絞って提案。滋賀県57スポット収録、完全無料のプロトタイプ。">
   <meta property="og:title" content="KODOCO — 今日、子どもとどこいく？">
   <meta property="og:description" content="子連れで失敗しない場所が、今日の状況でわかる。滋賀県の子連れおでかけWebアプリ。">
-  <meta property="og:image" content="https://kinoshitastudio.github.io/ogp-studio.png">
+  <meta property="og:image" content="./ogp.svg">
   <meta property="og:url" content="https://kinoshitastudio.github.io/prototype-kodoco.html">
+  <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="favicon.ico">
+  <meta name="twitter:image" content="./ogp.svg">
+  <meta name="theme-color" content="#FAF8F4">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="apple-touch-icon" href="./favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Inter:wght@400;500;600;700;800;900&family=DM+Serif+Display&display=swap" rel="stylesheet">
@@ -687,8 +691,9 @@
       width: 140px; height: auto;
       opacity: 0.92;
     }
-    .cta-mascot.l { left: 6%; transform: rotate(-8deg); }
-    .cta-mascot.r { right: 6%; transform: rotate(8deg); }
+    .cta-mascot.l { left: 5%; transform: rotate(-8deg); }
+    .cta-mascot.c { left: 50%; transform: translateX(-50%) rotate(0); width: 120px; bottom: -6px; }
+    .cta-mascot.r { right: 5%; transform: rotate(8deg); }
     .cta-title {
       font-size: clamp(34px, 4.8vw, 56px);
       font-weight: 900;
@@ -762,6 +767,115 @@
       font-size: 12px; color: var(--ink-faint);
     }
 
+    /* ═══ CHARACTERS ═══ */
+    .characters {
+      padding: 128px 24px;
+      background: linear-gradient(180deg, var(--bg-warm) 0%, var(--bg) 100%);
+    }
+    .characters-inner { max-width: 1120px; margin: 0 auto; }
+    .characters-head { text-align: center; margin-bottom: 72px; }
+    .characters-head .section-title { margin-bottom: 20px; }
+    .characters-head .section-sub { margin: 0 auto; }
+    .char-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .char-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 44px 28px 32px;
+      text-align: center;
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .char-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 48%; z-index: 0;
+      border-radius: 28px 28px 0 0;
+    }
+    .char-card.kodo::before { background: linear-gradient(180deg, var(--green-soft) 0%, transparent 100%); }
+    .char-card.koto::before { background: linear-gradient(180deg, var(--peach-soft) 0%, transparent 100%); }
+    .char-card.biwa::before { background: linear-gradient(180deg, var(--blue-soft) 0%, transparent 100%); }
+    .char-card > * { position: relative; z-index: 1; }
+    .char-card:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(44,42,38,0.08); }
+
+    .char-num {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.18em;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+      background: rgba(255,255,255,0.85);
+      color: var(--ink-soft);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(6px);
+    }
+    .char-portrait {
+      width: 148px; height: 166px;
+      margin: 0 auto 18px;
+      filter: drop-shadow(0 12px 24px rgba(44,42,38,0.12));
+      animation: charFloat 3.5s ease-in-out infinite;
+    }
+    .char-portrait svg { width: 100%; height: 100%; display: block; }
+    .char-card.kodo .char-portrait { animation-delay: 0s; }
+    .char-card.koto .char-portrait { animation-delay: .4s; }
+    .char-card.biwa .char-portrait { animation-delay: .8s; }
+    @keyframes charFloat {
+      0%, 100% { transform: translateY(0) rotate(0); }
+      50%      { transform: translateY(-8px) rotate(1deg); }
+    }
+    .char-name {
+      font-size: 26px; font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+      line-height: 1.1;
+    }
+    .char-tagline {
+      font-size: 15px; font-weight: 700;
+      margin-bottom: 14px;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .char-card.kodo .char-tagline { color: var(--green-deep); }
+    .char-card.koto .char-tagline { color: var(--peach-deep); }
+    .char-card.biwa .char-tagline { color: var(--blue-deep); }
+    .char-desc {
+      font-size: 13px; color: var(--ink-soft);
+      line-height: 1.85; margin-bottom: 20px;
+    }
+    .char-traits {
+      display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+      padding-top: 18px;
+      border-top: 1px dashed var(--line);
+    }
+    .char-traits span {
+      font-size: 11px;
+      padding: 5px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .char-footer {
+      max-width: 720px; margin: 56px auto 0;
+      text-align: center;
+      padding: 28px 32px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      display: flex; align-items: center; gap: 18px; justify-content: center;
+      flex-wrap: wrap;
+    }
+    .char-footer-mascots { display: flex; gap: -4px; }
+    .char-footer-mascots svg { width: 44px; height: 50px; }
+    .char-footer-mascots svg + svg { margin-left: -10px; }
+    .char-footer-text { font-size: 13.5px; color: var(--ink-soft); line-height: 1.75; text-align: left; }
+    .char-footer-text strong { color: var(--ink); font-weight: 700; }
+
     /* ═══ REVEAL ═══ */
     .rv { opacity: 0; transform: translateY(18px); transition: opacity .75s ease, transform .75s ease; }
     .rv.on { opacity: 1; transform: translateY(0); }
@@ -793,16 +907,23 @@
       .preview { padding: 88px 20px; }
       .preview-head { margin-bottom: 48px; }
       .preview-grid { grid-template-columns: 1fr; gap: 28px; }
+      .characters { padding: 88px 20px; }
+      .characters-head { margin-bottom: 48px; }
+      .char-grid { grid-template-columns: 1fr; gap: 20px; }
+      .char-portrait { width: 132px; height: 148px; }
+      .char-footer { padding: 24px 20px; flex-direction: column; gap: 16px; text-align: center; }
+      .char-footer-text { text-align: center; }
       .who { padding: 88px 20px; }
       .who-head { margin-bottom: 44px; }
       .who-grid { grid-template-columns: 1fr; }
       .faq { padding: 88px 20px; }
       .faq-head { margin-bottom: 40px; }
       .final-cta { padding: 72px 20px 88px; }
-      .cta-card { padding: 64px 24px 80px; }
-      .cta-mascot { width: 80px; }
-      .cta-mascot.l { left: 4%; }
-      .cta-mascot.r { right: 4%; }
+      .cta-card { padding: 64px 24px 100px; }
+      .cta-mascot { width: 70px; }
+      .cta-mascot.l { left: 3%; }
+      .cta-mascot.c { width: 64px; bottom: -4px; }
+      .cta-mascot.r { right: 3%; }
       .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
       .footer-brand { grid-column: span 2; }
     }
@@ -885,6 +1006,69 @@
       <path d="M 34 64 Q 40 60, 46 64" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
       <path d="M 54 64 Q 60 60, 66 64" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
       <path d="M 42 87 Q 50 94, 58 87" stroke="#2C2A26" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- 「コトちゃん」花を咲かせたピーチ色の相棒 -->
+    <symbol id="koto" viewBox="0 0 160 180">
+      <circle cx="70" cy="22" r="8" fill="#F4A898"/>
+      <circle cx="90" cy="22" r="8" fill="#F4A898"/>
+      <circle cx="80" cy="12" r="8" fill="#F8B8A8"/>
+      <circle cx="80" cy="32" r="8" fill="#F4A898"/>
+      <circle cx="80" cy="22" r="5" fill="#E8D28A"/>
+      <rect x="77" y="32" width="6" height="16" rx="3" fill="#8DAE91"/>
+      <ellipse cx="80" cy="108" rx="58" ry="54" fill="#F8D8BA"/>
+      <ellipse cx="80" cy="158" rx="40" ry="4" fill="#DAB898" opacity="0.35"/>
+      <ellipse cx="45" cy="116" rx="10" ry="6" fill="#E88878" opacity="0.55"/>
+      <ellipse cx="115" cy="116" rx="10" ry="6" fill="#E88878" opacity="0.55"/>
+      <circle cx="60" cy="96" r="4" fill="#2C2A26"/>
+      <circle cx="100" cy="96" r="4" fill="#2C2A26"/>
+      <circle cx="61.5" cy="94.5" r="1.4" fill="#fff"/>
+      <circle cx="101.5" cy="94.5" r="1.4" fill="#fff"/>
+      <ellipse cx="80" cy="128" rx="9" ry="6" fill="#2C2A26"/>
+      <ellipse cx="80" cy="130" rx="6" ry="3" fill="#F4A0A0"/>
+      <ellipse cx="62" cy="166" rx="11" ry="4" fill="#E5C4A6"/>
+      <ellipse cx="98" cy="166" rx="11" ry="4" fill="#E5C4A6"/>
+    </symbol>
+
+    <!-- コトちゃん ロゴマーク -->
+    <symbol id="koto-mark" viewBox="0 0 100 120">
+      <circle cx="44" cy="18" r="6" fill="#F4A898"/>
+      <circle cx="56" cy="18" r="6" fill="#F4A898"/>
+      <circle cx="50" cy="10" r="6" fill="#F8B8A8"/>
+      <circle cx="50" cy="26" r="6" fill="#F4A898"/>
+      <circle cx="50" cy="18" r="4" fill="#E8D28A"/>
+      <rect x="47" y="26" width="6" height="12" rx="3" fill="#8DAE91"/>
+      <ellipse cx="50" cy="72" rx="38" ry="36" fill="#F8D8BA"/>
+      <ellipse cx="29" cy="80" rx="7" ry="4" fill="#E88878" opacity="0.55"/>
+      <ellipse cx="71" cy="80" rx="7" ry="4" fill="#E88878" opacity="0.55"/>
+      <circle cx="40" cy="66" r="3" fill="#2C2A26"/>
+      <circle cx="60" cy="66" r="3" fill="#2C2A26"/>
+      <circle cx="40.8" cy="65.2" r="1" fill="#fff"/>
+      <circle cx="60.8" cy="65.2" r="1" fill="#fff"/>
+      <ellipse cx="50" cy="86" rx="6" ry="4" fill="#2C2A26"/>
+    </symbol>
+
+    <!-- 「ビワちゃん」琵琶湖シルエットの水色の子 -->
+    <symbol id="biwa" viewBox="0 0 160 200">
+      <path d="M 80 30 C 62 30, 58 48, 64 62 C 68 72, 72 78, 72 84 C 58 88, 38 100, 28 120 C 16 148, 28 182, 80 186 C 132 182, 144 148, 132 120 C 122 100, 102 88, 88 84 C 88 78, 92 72, 96 62 C 102 48, 98 30, 80 30 Z" fill="#8FC1D4"/>
+      <ellipse cx="58" cy="130" rx="18" ry="12" fill="#C0DDE9" opacity="0.6"/>
+      <ellipse cx="105" cy="155" rx="14" ry="8" fill="#B0D5E2" opacity="0.55"/>
+      <path d="M 58 26 Q 64 20, 70 26" stroke="#6BA0B8" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M 90 26 Q 96 20, 102 26" stroke="#6BA0B8" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <circle cx="65" cy="115" r="3.6" fill="#2C2A26"/>
+      <circle cx="95" cy="115" r="3.6" fill="#2C2A26"/>
+      <circle cx="66" cy="113.8" r="1.3" fill="#fff"/>
+      <circle cx="96" cy="113.8" r="1.3" fill="#fff"/>
+      <ellipse cx="50" cy="128" rx="7" ry="4" fill="#F2B89A" opacity="0.5"/>
+      <ellipse cx="110" cy="128" rx="7" ry="4" fill="#F2B89A" opacity="0.5"/>
+      <path d="M 70 140 Q 80 147, 90 140" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="biwa-mark" viewBox="0 0 100 120">
+      <path d="M 50 20 C 40 20, 37 32, 41 40 C 44 47, 46 50, 46 54 C 38 56, 24 64, 18 78 C 10 98, 20 115, 50 116 C 80 115, 90 98, 82 78 C 76 64, 62 56, 54 54 C 54 50, 56 47, 59 40 C 63 32, 60 20, 50 20 Z" fill="#8FC1D4"/>
+      <ellipse cx="38" cy="82" rx="10" ry="6" fill="#C0DDE9" opacity="0.55"/>
+      <circle cx="40" cy="72" r="2.6" fill="#2C2A26"/>
+      <circle cx="60" cy="72" r="2.6" fill="#2C2A26"/>
+      <path d="M 42 88 Q 50 93, 58 88" stroke="#2C2A26" stroke-width="2.4" fill="none" stroke-linecap="round"/>
     </symbol>
   </defs>
 </svg>
@@ -1091,6 +1275,66 @@
   </div>
 </div>
 
+<!-- ═══ CHARACTERS ═══ -->
+<div class="characters">
+  <div class="characters-inner">
+    <div class="characters-head rv">
+      <span class="section-eyebrow">— Characters</span>
+      <h2 class="section-title">一緒におでかけする、<br>3匹の仲間。</h2>
+      <p class="section-sub">アプリのあちこちで登場します。どの子が相棒になるかは、あなたしだい。</p>
+    </div>
+    <div class="char-grid">
+      <div class="char-card kodo rv">
+        <div class="char-num">NO.01 · ガイド役</div>
+        <div class="char-portrait"><svg><use href="#kodo"/></svg></div>
+        <h3 class="char-name">コドちゃん</h3>
+        <p class="char-tagline">「今日、どこいく？」</p>
+        <p class="char-desc">芽を出した丸っこい子。<br>おだやかで、今日のヒントをそっと<br>教えてくれる相談役。</p>
+        <div class="char-traits">
+          <span>🌿 自然派</span>
+          <span>💚 おだやか</span>
+          <span>🗣 おしえ上手</span>
+        </div>
+      </div>
+      <div class="char-card koto rv d1">
+        <div class="char-num">NO.02 · 冒険役</div>
+        <div class="char-portrait"><svg><use href="#koto"/></svg></div>
+        <h3 class="char-name">コトちゃん</h3>
+        <p class="char-tagline">「いっしょに行こうよ！」</p>
+        <p class="char-desc">花を咲かせた元気な子。<br>好奇心いっぱいで、新しい場所に<br>連れ出してくれる冒険家。</p>
+        <div class="char-traits">
+          <span>🌸 元気印</span>
+          <span>🏃 アクティブ</span>
+          <span>💡 アイデアマン</span>
+        </div>
+      </div>
+      <div class="char-card biwa rv d2">
+        <div class="char-num">NO.03 · 湖のナビ</div>
+        <div class="char-portrait"><svg><use href="#biwa"/></svg></div>
+        <h3 class="char-name">ビワちゃん</h3>
+        <p class="char-tagline">「水辺はまかせて！」</p>
+        <p class="char-desc">琵琶湖のかたちをうつした子。<br>滋賀の水辺スポットを知りつくした<br>頼れるナビゲーター。</p>
+        <div class="char-traits">
+          <span>🌊 水辺の友</span>
+          <span>🏯 滋賀愛</span>
+          <span>📍 道案内役</span>
+        </div>
+      </div>
+    </div>
+    <div class="char-footer rv d2">
+      <div class="char-footer-mascots">
+        <svg><use href="#kodo"/></svg>
+        <svg><use href="#koto"/></svg>
+        <svg><use href="#biwa"/></svg>
+      </div>
+      <div class="char-footer-text">
+        アプリの <strong>⚙️ 設定 → 🎨 お気に入りキャラ</strong> で、<br>
+        トップバー・今日のおすすめ・ひとこと・お祝いアニメが<br>選んだ子に切り替わります。
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ WHO ═══ -->
 <div id="who" class="who">
   <div class="who-inner">
@@ -1170,7 +1414,8 @@
 <!-- ═══ BIG CTA ═══ -->
 <div class="final-cta">
   <div class="cta-card rv">
-    <svg class="cta-mascot l"><use href="#kodo"/></svg>
+    <svg class="cta-mascot l"><use href="#koto"/></svg>
+    <svg class="cta-mascot c"><use href="#biwa"/></svg>
     <svg class="cta-mascot r"><use href="#kodo-wave"/></svg>
     <h2 class="cta-title">週末、<br>どこ行くか決まってる？</h2>
     <p class="cta-sub">まだなら、KODOCOに聞いてみて。<br>今日の1スポットが、すぐ見つかります。</p>
