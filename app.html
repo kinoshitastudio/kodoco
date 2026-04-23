@@ -267,7 +267,68 @@ html, body {
 
 /* Weather strip */
 .weather-card { margin: 0 16px 16px; background: var(--card); border-radius: var(--radius); padding: 14px 16px; }
-.weather-title { font-size: 12px; color: var(--text-sub); margin-bottom: 10px; font-weight: 500; }
+.weather-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+.weather-title-wrap { display: flex; flex-direction: column; gap: 2px; }
+.weather-title { font-size: 12px; color: var(--text-sub); font-weight: 500; letter-spacing: 0.02em; }
+.weather-loc { font-size: 13px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+.geo-toggle {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  color: var(--text-sub);
+  font-size: 11px; font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all .2s;
+  flex-shrink: 0;
+}
+.geo-toggle:active { transform: scale(0.96); }
+.geo-toggle.on {
+  background: var(--green-light);
+  border-color: var(--green);
+  color: var(--green);
+}
+.geo-toggle.loading {
+  color: var(--text-light);
+  pointer-events: none;
+}
+.geo-toggle.loading #geoToggleIcon { animation: spin 1s linear infinite; display: inline-block; }
+
+/* Hourly rain strip */
+.rain-strip { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); }
+.rain-strip-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.rain-strip-title { font-size: 12px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+.rain-strip-sub { font-size: 10px; color: var(--text-sub); font-weight: 500; }
+.rain-strip-bars {
+  display: flex; gap: 2px; align-items: flex-end;
+  height: 56px;
+  padding: 0 2px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.rain-strip-bars::-webkit-scrollbar { display: none; }
+.rain-bar {
+  flex: 1 0 auto;
+  min-width: 14px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  position: relative;
+  cursor: default;
+}
+.rain-bar-fill {
+  width: 100%;
+  min-height: 3px;
+  background: linear-gradient(to top, #9AB4CC, #7B9DBC);
+  border-radius: 2px;
+  transition: height .4s;
+}
+.rain-bar.low .rain-bar-fill  { background: linear-gradient(to top, #D0E0E8, #B8CFDB); }
+.rain-bar.mid .rain-bar-fill  { background: linear-gradient(to top, #8FB8D0, #7DA5C2); }
+.rain-bar.high .rain-bar-fill { background: linear-gradient(to top, #5B7F9A, #3D6480); }
+.rain-bar-hour { font-size: 8.5px; color: var(--text-light); font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: 0; }
+.rain-bar-pct { font-size: 8px; color: var(--text-sub); font-weight: 700; position: absolute; top: -2px; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+.rain-bar.has-rain .rain-bar-pct { color: var(--blue-deep, #5B7899); }
 .weather-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
 .weather-day { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 5px 1px; border-radius: 8px; cursor: pointer; transition: background .15s; position: relative; }
 .weather-day.today { background: #fff8f4; }
@@ -1273,8 +1334,24 @@ html, body {
 
       <!-- Weather -->
       <div class="weather-card">
-        <div class="weather-title">今週の天気（大津市）</div>
+        <div class="weather-header">
+          <div class="weather-title-wrap">
+            <div class="weather-title">今週の天気</div>
+            <div class="weather-loc" id="weatherLoc">📍 <span id="weatherLocName">大津市</span></div>
+          </div>
+          <button class="geo-toggle" id="geoToggle" onclick="toggleGeolocation()">
+            <span id="geoToggleIcon">📍</span>
+            <span id="geoToggleLabel">現在地ON</span>
+          </button>
+        </div>
         <div class="weather-days" id="weatherDays"></div>
+        <div class="rain-strip" id="rainStrip" style="display:none;">
+          <div class="rain-strip-header">
+            <span class="rain-strip-title">☔ これからの雨</span>
+            <span class="rain-strip-sub" id="rainStripSub">24時間の降水確率</span>
+          </div>
+          <div class="rain-strip-bars" id="rainStripBars"></div>
+        </div>
       </div>
 
       <!-- Quick filter -->
@@ -3257,6 +3334,148 @@ const WEATHER_FALLBACK = [
   { dow:'土', date:'3/28', icon:'🌧', hi:14, lo:12, cond:'雨', weekend:true, wcode:63 },
 ];
 const WEATHER_CACHE_KEY = 'kodoco.weather.v1';
+const WEATHER_LOC_KEY   = 'kodoco.weather.location';
+const DEFAULT_LOC = { lat: 35.0036, lng: 135.8683, name: '大津市', source: 'default' };
+
+function getSavedLocation() {
+  try {
+    const v = JSON.parse(localStorage.getItem(WEATHER_LOC_KEY) || 'null');
+    if (v && typeof v.lat === 'number' && typeof v.lng === 'number') return v;
+  } catch (_) {}
+  return DEFAULT_LOC;
+}
+function saveLocation(loc) {
+  try { localStorage.setItem(WEATHER_LOC_KEY, JSON.stringify(loc)); } catch (_) {}
+}
+
+async function reverseGeocode(lat, lng) {
+  // Open-Meteo は直接の reverse geocoding API を持たないので、前方探索で代用。
+  // 粗い近似として日本の市町村を Nominatim ではなく、Open-Meteo の Search API を使う手もあるが
+  // CORS/無料制限を考慮してシンプルな「緯度経度のみ」表示にフォールバック。
+  try {
+    const r = await fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng + '&zoom=10&addressdetails=1&accept-language=ja', {
+      headers: { 'Accept': 'application/json' }
+    });
+    if (!r.ok) throw new Error('rev');
+    const j = await r.json();
+    const a = j.address || {};
+    return a.city || a.town || a.village || a.county || a.state || '現在地';
+  } catch (_) {
+    return '現在地';
+  }
+}
+
+let _currentLoc = null;
+
+async function toggleGeolocation() {
+  const btn = document.getElementById('geoToggle');
+  if (!btn) return;
+  const isOn = btn.classList.contains('on');
+  if (isOn) {
+    // OFF → default に戻す
+    _currentLoc = null;
+    saveLocation(DEFAULT_LOC);
+    updateGeoToggleUI(false);
+    setLocationLabel(DEFAULT_LOC.name);
+    await refreshWeatherForLocation(DEFAULT_LOC);
+    return;
+  }
+  if (!('geolocation' in navigator)) {
+    toast('この端末は位置情報に対応していません');
+    return;
+  }
+  btn.classList.add('loading');
+  document.getElementById('geoToggleLabel').textContent = '取得中...';
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+    const lat = pos.coords.latitude, lng = pos.coords.longitude;
+    const name = await reverseGeocode(lat, lng);
+    const loc = { lat, lng, name, source: 'geo' };
+    _currentLoc = loc;
+    saveLocation(loc);
+    btn.classList.remove('loading');
+    updateGeoToggleUI(true);
+    setLocationLabel(name);
+    await refreshWeatherForLocation(loc);
+    toast('現在地（' + name + '）の天気に切り替えました');
+  }, (err) => {
+    btn.classList.remove('loading');
+    updateGeoToggleUI(false);
+    const msg = err.code === 1 ? '位置情報の利用が許可されていません' : '位置情報の取得に失敗しました';
+    toast(msg);
+  }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 600000 });
+}
+
+function updateGeoToggleUI(on) {
+  const btn = document.getElementById('geoToggle');
+  if (!btn) return;
+  btn.classList.toggle('on', on);
+  document.getElementById('geoToggleIcon').textContent = on ? '📍' : '📍';
+  document.getElementById('geoToggleLabel').textContent = on ? '現在地ON' : '現在地OFF';
+}
+function setLocationLabel(name) {
+  const el = document.getElementById('weatherLocName');
+  if (el) el.textContent = name || '大津市';
+}
+
+async function refreshWeatherForLocation(loc) {
+  const fresh = await fetchWeekWeather(loc.lat, loc.lng);
+  if (fresh && fresh.length) {
+    try { localStorage.setItem(WEATHER_CACHE_KEY, JSON.stringify({ data: fresh, expiresAt: Date.now() + 2*60*60*1000, loc })); } catch(_){}
+    renderWeatherDays(fresh);
+    if (typeof buildHero === 'function') buildHero();
+  }
+  const hourly = await fetchHourlyRain(loc.lat, loc.lng);
+  renderRainStrip(hourly);
+}
+
+async function fetchHourlyRain(lat, lng) {
+  try {
+    const url = 'https://api.open-meteo.com/v1/forecast'
+      + '?latitude=' + lat + '&longitude=' + lng
+      + '&hourly=precipitation_probability,precipitation'
+      + '&timezone=Asia%2FTokyo&forecast_days=2';
+    const r = await fetch(url, { cache: 'no-cache' });
+    if (!r.ok) throw new Error('rain fetch fail');
+    const data = await r.json();
+    if (!data || !data.hourly || !data.hourly.time) return null;
+    const now = new Date();
+    const rows = data.hourly.time.map((iso, i) => ({
+      time: new Date(iso + (iso.length === 16 ? ':00' : '') + '+09:00'),
+      prob: data.hourly.precipitation_probability?.[i] ?? 0,
+      mm:   data.hourly.precipitation?.[i] ?? 0,
+    })).filter(r => r.time >= now).slice(0, 24);
+    return rows;
+  } catch (_) { return null; }
+}
+
+function renderRainStrip(rows) {
+  const strip = document.getElementById('rainStrip');
+  const bars  = document.getElementById('rainStripBars');
+  const sub   = document.getElementById('rainStripSub');
+  if (!strip || !bars) return;
+  if (!rows || !rows.length) { strip.style.display = 'none'; return; }
+  const maxProb = Math.max(...rows.map(r => r.prob), 30);
+  const totalMm = rows.reduce((a, r) => a + r.mm, 0);
+  if (sub) {
+    if (totalMm > 0.3) sub.textContent = '24h合計 ' + totalMm.toFixed(1) + 'mm · 最大 ' + maxProb + '%';
+    else sub.textContent = '24h降水なしの予報';
+  }
+  bars.innerHTML = rows.map((r, i) => {
+    const h = r.time.getHours();
+    const pct = r.prob;
+    const pctHeight = Math.max(3, Math.round(pct * 0.44)); // 0-100% → 0-44px
+    const tier = pct >= 60 ? 'high' : pct >= 30 ? 'mid' : 'low';
+    const hasRain = r.mm > 0 ? 'has-rain' : '';
+    const showHour = i === 0 || h === 0 || h === 6 || h === 12 || h === 18;
+    const showPct = pct >= 30;
+    return '<div class="rain-bar ' + tier + ' ' + hasRain + '" title="' + h + '時 ' + pct + '% / ' + r.mm.toFixed(1) + 'mm">'
+         + (showPct ? '<span class="rain-bar-pct">' + pct + '</span>' : '')
+         + '<div class="rain-bar-fill" style="height:' + pctHeight + 'px;"></div>'
+         + '<div class="rain-bar-hour">' + (showHour ? h : '') + '</div>'
+         + '</div>';
+  }).join('');
+  strip.style.display = 'block';
+}
 
 function wcToVisual(code) {
   if (code === 0)              return { icon:'☀️', cond:'晴れ' };
@@ -3270,9 +3489,11 @@ function wcToVisual(code) {
   return { icon:'☁️', cond:'曇' };
 }
 
-async function fetchWeekWeather() {
+async function fetchWeekWeather(lat, lng) {
   try {
-    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.0&longitude=135.87&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=Asia%2FTokyo&forecast_days=7', { cache: 'no-cache' });
+    const la = typeof lat === 'number' ? lat : DEFAULT_LOC.lat;
+    const ln = typeof lng === 'number' ? lng : DEFAULT_LOC.lng;
+    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + la + '&longitude=' + ln + '&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=Asia%2FTokyo&forecast_days=7', { cache: 'no-cache' });
     if (!r.ok) throw new Error('fetch fail');
     const data = await r.json();
     if (!data || !data.daily || !data.daily.time) return null;
@@ -3318,26 +3539,23 @@ function renderWeatherDays(data) {
 function buildWeather() {
   // Paint immediately: cached → fallback
   let initial = WEATHER_FALLBACK;
+  let cachedLoc = null;
   try {
     const cached = JSON.parse(localStorage.getItem(WEATHER_CACHE_KEY) || 'null');
     if (cached && cached.expiresAt > Date.now() && Array.isArray(cached.data)) {
       initial = cached.data;
+      cachedLoc = cached.loc || null;
     }
   } catch (_) {}
   renderWeatherDays(initial);
 
+  const loc = getSavedLocation();
+  _currentLoc = loc;
+  setLocationLabel(loc.name);
+  updateGeoToggleUI(loc.source === 'geo');
+
   // Refresh from live API in the background (best-effort)
-  fetchWeekWeather().then((fresh) => {
-    if (!fresh || !fresh.length) return;
-    try {
-      localStorage.setItem(WEATHER_CACHE_KEY, JSON.stringify({
-        data: fresh, expiresAt: Date.now() + 2 * 60 * 60 * 1000
-      }));
-    } catch (_) {}
-    renderWeatherDays(fresh);
-    // Let the hero / filters react to updated weather
-    if (typeof buildHero === 'function') buildHero();
-  });
+  refreshWeatherForLocation(loc);
 }
 
 // ── FILTER ────────────────────────────────────────────────────
