@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KODOCO データ確認シート</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f4f1ec;
+    --card: #ffffff;
+    --green: #3a6b52;
+    --green-light: #eaf3ee;
+    --green-mid: #4d8a67;
+    --orange: #c9622e;
+    --red: #c14545;
+    --text: #1e1e1c;
+    --text-sub: #6b7068;
+    --text-light: #a8a9a2;
+    --border: #e8e4dc;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    padding: 22px 22px 80px;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  header { margin-bottom: 18px; max-width: 1400px; }
+  h1 { font-size: 22px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+  h1 .pill { font-size: 10px; font-weight: 500; padding: 3px 9px; background: var(--green); color: #fff; border-radius: 20px; letter-spacing: 0.08em; }
+  .lead { font-size: 13px; color: var(--text-sub); max-width: 780px; line-height: 1.8; }
+  .lead code { background: #fff; padding: 1px 6px; border-radius: 4px; font-size: 12px; border: 1px solid var(--border); }
+
+  /* Summary cards */
+  .summary { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0; }
+  .summary-box {
+    background: #fff; border-radius: 10px; padding: 11px 16px;
+    border: 1px solid var(--border); font-size: 12px; min-width: 130px;
+  }
+  .summary-box b { font-size: 22px; color: var(--green); display: block; line-height: 1.1; margin-bottom: 2px; font-feature-settings: 'tnum'; }
+  .summary-box.warn b { color: var(--orange); }
+  .summary-box.bad b  { color: var(--red); }
+
+  /* Toolbar */
+  .toolbar {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(244,241,236,0.94); backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    padding: 12px 0;
+    margin: 0 0 8px;
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .search {
+    flex: 1 1 220px; min-width: 180px;
+    background: #fff; border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 12px; font-size: 13px; font-family: inherit; outline: none;
+  }
+  .search:focus { border-color: var(--green); }
+  .chip {
+    background: #fff; border: 1px solid var(--border); border-radius: 20px;
+    padding: 6px 13px; font-size: 12px; cursor: pointer; font-family: inherit;
+    color: var(--text); white-space: nowrap;
+    transition: all .15s;
+  }
+  .chip:hover { background: var(--green-light); border-color: var(--green-mid); }
+  .chip.active { background: var(--green); border-color: var(--green); color: #fff; }
+  .sep { width: 1px; height: 22px; background: var(--border); margin: 0 4px; }
+  .btn {
+    background: #fff; border: 1px solid var(--border); border-radius: 8px;
+    padding: 7px 13px; font-size: 12px; cursor: pointer; font-family: inherit;
+    color: var(--text); display: inline-flex; align-items: center; gap: 4px;
+  }
+  .btn:hover { background: var(--green-light); border-color: var(--green-mid); }
+  .btn-danger { color: var(--red); border-color: #eecfcf; }
+  .btn-danger:hover { background: #fbeeee; }
+
+  /* Table */
+  .table-wrap { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12px; }
+  thead th {
+    background: var(--green); color: #fff; padding: 10px 10px; text-align: left;
+    font-weight: 500; letter-spacing: 0.05em; font-size: 11px;
+    position: sticky; top: 52px; z-index: 5;
+  }
+  thead th.center { text-align: center; }
+  tbody td { padding: 10px; border-top: 1px solid #f0ede4; vertical-align: top; }
+  tbody tr { transition: background .15s; }
+  tbody tr:nth-child(even) { background: #fbfaf6; }
+  tbody tr:hover { background: var(--green-light); }
+  tbody tr.row-verified { background: #f1f9f3; }
+  tbody tr.row-broken   { background: #fdf0ef; }
+  .idx { color: var(--text-light); font-weight: 600; text-align: center; font-feature-settings: 'tnum'; }
+  td.check-col { text-align: center; width: 70px; }
+
+  /* Spot card */
+  .spot-name { font-weight: 700; font-size: 13px; line-height: 1.35; }
+  .spot-id { font-size: 10px; color: var(--text-light); font-family: ui-monospace, monospace; display: block; margin-top: 2px; }
+  .spot-cat { font-size: 10px; color: var(--text-sub); letter-spacing: 0.04em; display: flex; align-items: center; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
+  .cat-chip { display: inline-block; padding: 1px 7px; border-radius: 8px; font-size: 10px; color: #fff; background: var(--text-light); letter-spacing: 0; font-weight: 500; }
+  .cat-park       { background: #4d8a67; }
+  .cat-indoor     { background: #c9622e; }
+  .cat-cafe       { background: #a47148; }
+  .cat-museum     { background: #6f80aa; }
+  .cat-dog        { background: #9a7b49; }
+  .cat-restaurant { background: #b85e5e; }
+
+  .thumb {
+    width: 110px; height: 70px; border-radius: 6px; background: #e8e4dc center/cover no-repeat;
+    display: block; flex-shrink: 0;
+  }
+
+  .url-link {
+    display: inline-block; max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    color: #1e6fe0; text-decoration: none; vertical-align: bottom; font-size: 12px;
+  }
+  .url-link:hover { text-decoration: underline; }
+  .unset { color: #b4b4b4; font-style: italic; font-size: 11px; }
+  .phone { color: var(--green); text-decoration: none; font-variant-numeric: tabular-nums; font-weight: 500; }
+  .phone:hover { text-decoration: underline; }
+  .map-link {
+    color: var(--text-sub); font-size: 11px; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 3px;
+  }
+  .map-link:hover { color: var(--green); text-decoration: underline; }
+
+  /* Check buttons (per-row) */
+  .chk-group { display: flex; gap: 4px; justify-content: center; }
+  .chk {
+    width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--border);
+    background: #fff; cursor: pointer; font-family: inherit; font-size: 14px;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: all .12s;
+  }
+  .chk:hover { border-color: var(--green-mid); }
+  .chk.on.ok  { background: var(--green); border-color: var(--green); color: #fff; }
+  .chk.on.ng  { background: var(--red);   border-color: var(--red);   color: #fff; }
+
+  .meta-col {
+    display: flex; flex-direction: column; gap: 4px;
+    font-size: 11px; color: var(--text-sub); line-height: 1.5;
+  }
+  .meta-col .badge {
+    background: var(--green-light); color: var(--green-mid);
+    border-radius: 10px; padding: 1px 7px; font-size: 10px; display: inline-block;
+    margin-right: 3px; margin-bottom: 2px;
+  }
+
+  /* Alert */
+  .alert {
+    background: #fff3ea; border: 1px solid #f0c89a; color: #7a4a20;
+    padding: 14px 16px; border-radius: 10px; margin-bottom: 18px; font-size: 13px; line-height: 1.7;
+  }
+  .alert code {
+    background: #fff; padding: 2px 6px; border-radius: 3px; border: 1px solid #f0c89a;
+    font-family: ui-monospace, monospace; font-size: 12px;
+  }
+
+  /* Empty */
+  .empty {
+    background: #fff; border-radius: 10px; padding: 50px 20px; text-align: center;
+    color: var(--text-sub); border: 1px dashed var(--border);
+  }
+
+  footer { margin-top: 24px; font-size: 11px; color: var(--text-light); text-align: center; padding: 14px; }
+  footer kbd { background: #fff; padding: 1px 6px; border-radius: 3px; border: 1px solid var(--border); font-size: 10px; font-family: ui-monospace, monospace; }
+
+  /* Toast */
+  .toast {
+    position: fixed; left: 50%; bottom: 32px; transform: translateX(-50%);
+    background: rgba(30,30,28,0.94); color: #fff; padding: 10px 20px; border-radius: 22px;
+    font-size: 13px; z-index: 999; pointer-events: none; opacity: 0;
+    transition: opacity .2s; max-width: 86%; text-align: center;
+  }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 760px) {
+    body { padding: 14px 10px 60px; }
+    thead th.hide-sm, tbody td.hide-sm { display: none; }
+    .thumb { width: 70px; height: 46px; }
+    .url-link { max-width: 160px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>KODOCO <span class="pill">CHECK</span> データ確認シート</h1>
+  <p class="lead">
+    <code>app.html</code> 内 SPOTS 全スポットの
+    <b>公式サイト URL</b>・<b>電話番号</b>・<b>画像（自動割当）</b>・<b>Google マップ 経路案内</b>を一覧化しました。<br/>
+    クリックで動作確認、行右端の <b>✓ / ✕</b> ボタンで確認結果をローカル保存できます。<br/>
+    <b>キーボード:</b> <kbd>/</kbd> で検索にフォーカス、<kbd>Esc</kbd> で検索解除。
+  </p>
+</header>
+
+<div id="loadErr" class="alert" style="display:none;"></div>
+
+<div class="summary" id="summary"></div>
+
+<div class="toolbar">
+  <input id="search" class="search" type="search" placeholder="🔍 スポット名・ID・エリアで検索... (/ でフォーカス)">
+  <span class="sep"></span>
+  <button class="chip active" data-filter="all">すべて</button>
+  <button class="chip" data-filter="noUrl">URL 未設定</button>
+  <button class="chip" data-filter="noPhone">電話 未設定</button>
+  <button class="chip" data-filter="verified">確認済み</button>
+  <button class="chip" data-filter="broken">❌ 問題あり</button>
+  <button class="chip" data-filter="unchecked">未確認</button>
+  <span class="sep"></span>
+  <button class="chip" data-cat="all">🌐 全カテゴリ</button>
+  <button class="chip" data-cat="park">🌳 公園</button>
+  <button class="chip" data-cat="indoor">🏠 室内</button>
+  <button class="chip" data-cat="cafe">☕ カフェ</button>
+  <button class="chip" data-cat="museum">🔬 体験</button>
+  <button class="chip" data-cat="restaurant">🍽 ご飯</button>
+  <button class="chip" data-cat="dog">🐕 犬連れ</button>
+  <span style="flex:1"></span>
+  <button class="btn" id="exportBtn" title="問題ありリストをクリップボードへ">📋 問題ありリスト出力</button>
+  <button class="btn btn-danger" id="resetBtn" title="チェックマークを全リセット">🔄 チェックリセット</button>
+</div>
+
+<div class="table-wrap" id="tableWrap">
+  <table>
+    <thead>
+      <tr>
+        <th class="center">#</th>
+        <th class="hide-sm">画像</th>
+        <th>スポット名 / カテゴリ</th>
+        <th class="hide-sm">住所・施設情報</th>
+        <th>公式サイト</th>
+        <th class="hide-sm">電話</th>
+        <th class="center">地図</th>
+        <th class="center">確認</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+</div>
+
+<div id="empty" class="empty" style="display:none;">
+  <div style="font-size:32px;opacity:.5;">🔍</div>
+  <div style="margin-top:8px;">該当するスポットがありません</div>
+</div>
+
+<footer>
+  © kinoshita studio · KODOCO データ確認シート · 生成: <span id="gen"></span><br/>
+  チェック状態は <code>localStorage</code> に自動保存されます。ブラウザを閉じても残ります。
+</footer>
+
+<div id="toast" class="toast"></div>
+
+<script>
+'use strict';
+// ═══════════════════════════════════════════════════════════════════════
+// Fetch SPOTS from app.html at runtime. For file:// this falls back to a
+// helpful error message asking the user to run a local server.
+// ═══════════════════════════════════════════════════════════════════════
+const LS_KEY = 'kodoco_check_state_v1';
+let SPOTS = [];
+let checkState = {};   // id → 'ok' | 'ng' | null
+let filterStatus = 'all';
+let filterCat = 'all';
+let searchQ = '';
+
+function loadCheckState() {
+  try { checkState = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); }
+  catch (_) { checkState = {}; }
+}
+function saveCheckState() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(checkState)); } catch (_) {}
+}
+
+function toast(msg, ms = 1600) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => el.classList.remove('show'), ms);
+}
+
+async function loadSpots() {
+  try {
+    const res = await fetch('./app.html', { cache: 'no-cache' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const html = await res.text();
+    return extractSpots(html);
+  } catch (err) {
+    showLoadError(err);
+    return [];
+  }
+}
+
+function extractSpots(html) {
+  const start = html.indexOf('const SPOTS = [');
+  if (start < 0) throw new Error('SPOTS 宣言が見つかりません');
+  const rest = html.slice(start);
+  const endM = rest.search(/\n\];/);
+  if (endM < 0) throw new Error('SPOTS の終端が見つかりません');
+  const body = rest.slice(0, endM + 3);   // include `];`
+  try {
+    return new Function(body + '; return SPOTS;')();
+  } catch (err) {
+    throw new Error('SPOTS パース失敗: ' + err.message);
+  }
+}
+
+function showLoadError(err) {
+  const el = document.getElementById('loadErr');
+  const isFileScheme = location.protocol === 'file:';
+  el.style.display = 'block';
+  el.innerHTML = isFileScheme
+    ? '⚠ <b>この check.html は <code>file://</code> 経由では動作しません</b>（<code>fetch()</code> 制限のため）。<br/>' +
+      'ターミナルで以下を実行し、<code>http://localhost:8080/check.html</code> で開いてください：<br/>' +
+      '<code>cd projects/kodoco &amp;&amp; python3 -m http.server 8080</code>'
+    : '⚠ データ読み込みエラー: <code>' + (err && err.message || err) + '</code><br/>' +
+      '<code>app.html</code> が同じディレクトリにあるか確認してください。';
+}
+
+// ── helpers (mirror of app.html) ──────────────────────────────────────
+function _spotHashSeed(s) {
+  const id = s.id || s.name || '';
+  let h = 7;
+  for (let i = 0; i < id.length; i++) h = ((h * 31) + id.charCodeAt(i)) & 0x7fffffff;
+  return h || 1;
+}
+function autoPhotoUrl(s) {
+  if (s.photoUrl) return Array.isArray(s.photoUrl) ? s.photoUrl[0] : s.photoUrl;
+  return 'https://picsum.photos/seed/kodoco-' + _spotHashSeed(s) + '/400/250';
+}
+function mapUrl(s) {
+  if (s.googleMapUrl) return s.googleMapUrl;
+  const q = encodeURIComponent([s.name, s.addr].filter(Boolean).join(' '));
+  return 'https://www.google.com/maps/search/?api=1&query=' + q;
+}
+function telHref(phone) { return phone ? 'tel:' + phone.replace(/[^0-9+]/g, '') : ''; }
+function escHtml(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+
+// ── filtering ─────────────────────────────────────────────────────────
+function matches(s) {
+  if (filterCat !== 'all' && s.catClass !== filterCat) return false;
+
+  const state = checkState[s.id];
+  if (filterStatus === 'noUrl'     && s.officialUrl) return false;
+  if (filterStatus === 'noPhone'   && s.phone) return false;
+  if (filterStatus === 'verified'  && state !== 'ok') return false;
+  if (filterStatus === 'broken'    && state !== 'ng') return false;
+  if (filterStatus === 'unchecked' && state) return false;
+
+  if (searchQ) {
+    const q = searchQ.toLowerCase();
+    const hay = (s.name + ' ' + (s.id || '') + ' ' + (s.loc || '') + ' ' + (s.addr || '') + ' ' + (s.cat || '')).toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+  return true;
+}
+
+// ── summary ───────────────────────────────────────────────────────────
+function updateSummary() {
+  const nTotal  = SPOTS.length;
+  const nUrl    = SPOTS.filter(s => s.officialUrl).length;
+  const nPhone  = SPOTS.filter(s => s.phone).length;
+  const nLatLng = SPOTS.filter(s => s.lat && s.lng).length;
+  const nOk     = Object.values(checkState).filter(v => v === 'ok').length;
+  const nNg     = Object.values(checkState).filter(v => v === 'ng').length;
+
+  document.getElementById('summary').innerHTML =
+    card(nTotal, 'スポット総数', '') +
+    card(nUrl,   '公式 URL 設定済', (nTotal - nUrl) + ' 件未設定', nUrl === nTotal ? '' : 'warn') +
+    card(nPhone, '電話 設定済',     (nTotal - nPhone) + ' 件未設定', nPhone === nTotal ? '' : 'warn') +
+    card(nLatLng, '緯度経度あり',    '') +
+    card(nOk,    '✓ 確認済み', '', 'ok') +
+    card(nNg,    '✕ 問題あり', '', nNg ? 'bad' : '');
+}
+function card(n, label, sub, cls) {
+  return '<div class="summary-box ' + (cls||'') + '"><b>' + n + '</b>' + escHtml(label) + (sub ? '<div style="color:var(--text-light);font-size:10px;margin-top:3px;">' + escHtml(sub) + '</div>' : '') + '</div>';
+}
+
+// ── rows ──────────────────────────────────────────────────────────────
+function render() {
+  const tbody = document.getElementById('rows');
+  const rows = SPOTS.filter(matches);
+  tbody.innerHTML = rows.map(rowHtml).join('');
+  document.getElementById('empty').style.display = rows.length ? 'none' : 'block';
+  document.getElementById('tableWrap').style.display = rows.length ? '' : 'none';
+  updateSummary();
+  // Wire up check buttons
+  tbody.querySelectorAll('.chk').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.id;
+      const val = btn.dataset.val;
+      if (checkState[id] === val) delete checkState[id];
+      else                        checkState[id] = val;
+      saveCheckState();
+      render();
+    });
+  });
+}
+
+function rowHtml(s, iGlobal) {
+  const i = SPOTS.indexOf(s);
+  const state = checkState[s.id];
+  const photo = autoPhotoUrl(s);
+  const hasUrl = !!s.officialUrl;
+  const hasPhone = !!s.phone;
+  const rowCls = state === 'ok' ? 'row-verified' : state === 'ng' ? 'row-broken' : '';
+
+  // meta badges
+  const badges = [];
+  if (s.parkingSpots) badges.push('🅿 ' + s.parkingSpots.count + '台');
+  if (s.durationMin)  badges.push('⏱ ' + s.durationMin + '分');
+  if (s.station)      badges.push('🚃 ' + s.station);
+  if (s.weatherProof) badges.push((s.weatherProof==='indoor'?'🏠 屋内':s.weatherProof==='roof'?'🏛 屋根':'🌳 屋外'));
+  if (s.reservation)  badges.push((s.reservation==='required'?'📅 予約必須':s.reservation==='recommended'?'📅 予約推奨':''));
+
+  return '<tr class="' + rowCls + '">' +
+    '<td class="idx">' + (i + 1) + '</td>' +
+    '<td class="hide-sm"><img class="thumb" loading="lazy" src="' + photo + '" alt="" onerror="this.style.background=\'#eee\';this.removeAttribute(\'src\')"></td>' +
+    '<td>' +
+      '<div class="spot-name">' + escHtml(s.emoji + ' ' + s.name) + '</div>' +
+      '<span class="spot-id">id: ' + escHtml(s.id) + '</span>' +
+      '<div class="spot-cat"><span class="cat-chip cat-' + escHtml(s.catClass) + '">' + escHtml(s.cat) + '</span> · ' + escHtml(s.loc) + '</div>' +
+    '</td>' +
+    '<td class="hide-sm">' +
+      '<div style="font-size:11px;color:var(--text-sub);line-height:1.55;margin-bottom:4px;">' + escHtml(s.addr || '—') + '</div>' +
+      (badges.length ? '<div class="meta-col">' + badges.filter(Boolean).map(b => '<span class="badge">' + escHtml(b) + '</span>').join('') + '</div>' : '') +
+    '</td>' +
+    '<td>' + (hasUrl
+      ? '<a class="url-link" href="' + escHtml(s.officialUrl) + '" target="_blank" rel="noopener" title="' + escHtml(s.officialUrl) + '">' + escHtml(s.officialUrl.replace(/^https?:\/\//,'').replace(/\/$/,'')) + '</a>'
+      : '<span class="unset">未設定</span>') +
+    '</td>' +
+    '<td class="hide-sm">' + (hasPhone
+      ? '<a class="phone" href="' + escHtml(telHref(s.phone)) + '">' + escHtml(s.phone) + '</a>'
+      : '<span class="unset">未設定</span>') +
+    '</td>' +
+    '<td class="center"><a class="map-link" href="' + escHtml(mapUrl(s)) + '" target="_blank" rel="noopener">🗺 開く</a></td>' +
+    '<td class="check-col"><div class="chk-group">' +
+      '<button class="chk ' + (state==='ok'?'on ok':'') + '" data-id="' + escHtml(s.id) + '" data-val="ok" title="OK">✓</button>' +
+      '<button class="chk ' + (state==='ng'?'on ng':'') + '" data-id="' + escHtml(s.id) + '" data-val="ng" title="NG">✕</button>' +
+    '</div></td>' +
+  '</tr>';
+}
+
+// ── wiring ────────────────────────────────────────────────────────────
+function wireToolbar() {
+  document.getElementById('search').addEventListener('input', (e) => {
+    searchQ = e.target.value.trim();
+    render();
+  });
+  document.querySelectorAll('.chip[data-filter]').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.chip[data-filter]').forEach(x => x.classList.remove('active'));
+      c.classList.add('active');
+      filterStatus = c.dataset.filter;
+      render();
+    });
+  });
+  document.querySelectorAll('.chip[data-cat]').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.chip[data-cat]').forEach(x => x.classList.remove('active'));
+      c.classList.add('active');
+      filterCat = c.dataset.cat;
+      render();
+    });
+  });
+  document.getElementById('exportBtn').addEventListener('click', exportBroken);
+  document.getElementById('resetBtn').addEventListener('click', resetChecks);
+
+  // '/' focuses search, 'Esc' clears it
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+      if (e.key === 'Escape') { e.target.blur(); e.target.value = ''; searchQ=''; render(); }
+      return;
+    }
+    if (e.key === '/') { e.preventDefault(); document.getElementById('search').focus(); }
+  });
+}
+
+function exportBroken() {
+  const rows = SPOTS.filter(s => checkState[s.id] === 'ng');
+  if (!rows.length) { toast('問題ありマーク ( ✕ ) が付いたスポットがありません'); return; }
+  const lines = [
+    '# KODOCO 問題ありスポット一覧',
+    '# 生成: ' + new Date().toLocaleString('ja-JP'),
+    '# 件数: ' + rows.length,
+    ''
+  ];
+  rows.forEach(s => {
+    lines.push('- id: ' + s.id);
+    lines.push('  name: ' + s.name);
+    lines.push('  cat: ' + s.cat + ' / ' + s.loc);
+    if (s.officialUrl) lines.push('  officialUrl: ' + s.officialUrl);
+    if (s.phone)       lines.push('  phone: ' + s.phone);
+    lines.push('');
+  });
+  const text = lines.join('\n');
+  navigator.clipboard.writeText(text).then(
+    () => toast('クリップボードにコピーしました（' + rows.length + '件）'),
+    () => { prompt('コピーできませんでした。手動でコピーしてください:', text); }
+  );
+}
+function resetChecks() {
+  if (!confirm('確認チェック (✓ ✕) をすべてリセットしますか？')) return;
+  checkState = {};
+  saveCheckState();
+  render();
+  toast('チェックをリセットしました');
+}
+
+// ── boot ──────────────────────────────────────────────────────────────
+(async function boot() {
+  loadCheckState();
+  SPOTS = await loadSpots();
+  if (!SPOTS.length) {
+    // load error already shown
+    document.getElementById('tableWrap').style.display = 'none';
+    return;
+  }
+  wireToolbar();
+  render();
+  document.getElementById('gen').textContent = new Date().toLocaleString('ja-JP');
+})();
+</script>
+
+</body>
+</html>
