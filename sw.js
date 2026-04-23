@@ -2,7 +2,7 @@
 // Strategy:
 //   · HTML (navigation): network-first with cache fallback
 //   · static / 3rd-party assets: cache-first with background refresh
-const VERSION     = 'kodoco-v11-2026-04-23-full';
+const VERSION     = 'kodoco-v21-2026-04-23-modalfix';
 const SHELL_CACHE = `${VERSION}-shell`;
 const RUNTIME     = `${VERSION}-runtime`;
 

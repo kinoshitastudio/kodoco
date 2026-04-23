@@ -126,7 +126,7 @@
     .hero {
       max-width: 1120px;
       margin: 0 auto;
-      padding: 96px 24px 80px;
+      padding: 72px 24px 56px;
       text-align: center;
       position: relative;
     }
@@ -438,10 +438,10 @@
 
     /* ═══ FEATURE BANDS ═══ */
     .feat {
-      padding: 128px 24px;
+      padding: 88px 24px;
       max-width: 1200px; margin: 0 auto;
     }
-    .feat-row + .feat-row { margin-top: 96px; }
+    .feat-row + .feat-row { margin-top: 72px; }
     .feat-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -467,13 +467,118 @@
       filter: drop-shadow(0 8px 20px rgba(44,42,38,0.15));
     }
 
+    /* 賑やかなキャラ入りシーン */
+    .feat-scene { position: relative; width: 100%; height: 100%; overflow: hidden; }
+    .feat-scene svg.fs-mascot {
+      position: absolute;
+      filter: drop-shadow(0 10px 24px rgba(44,42,38,0.18));
+    }
+    .feat-scene .fs-icon {
+      position: absolute;
+      font-size: clamp(32px, 4vw, 56px);
+      filter: drop-shadow(0 4px 10px rgba(44,42,38,0.12));
+      line-height: 1;
+    }
+    @keyframes fsFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50%      { transform: translateY(-10px) rotate(6deg); }
+    }
+    @keyframes fsPulse {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.12); }
+    }
+    @keyframes fsSway {
+      0%, 100% { transform: rotate(-4deg); }
+      50%      { transform: rotate(4deg); }
+    }
+
+    /* Weather scene: kid center, koto left, kodo right */
+    .fs-weather .fs-m-main { width: 42%; left: 29%; bottom: 0; z-index: 3; }
+    .fs-weather .fs-m-left { width: 32%; left: -4%; bottom: 10%; z-index: 2; transform: rotate(-6deg); }
+    .fs-weather .fs-m-right{ width: 30%; right: -2%; bottom: 6%; z-index: 2; transform: rotate(4deg); }
+    .fs-weather .fs-i-sun  { top: 12%; left: 14%; animation: fsFloat 3s ease-in-out infinite; }
+    .fs-weather .fs-i-rain { top: 8%; right: 14%; animation: fsFloat 3.5s ease-in-out infinite -0.5s; }
+    .fs-weather .fs-i-cloud{ top: 30%; left: 42%; font-size: clamp(24px, 3vw, 36px); animation: fsFloat 4s ease-in-out infinite -1s; }
+
+    /* Age scene: kodo main + kid peeking */
+    .fs-age .fs-m-main { width: 56%; left: 22%; bottom: 0; z-index: 3; }
+    .fs-age .fs-m-kid  { width: 30%; right: 4%; bottom: 8%; z-index: 2; transform: rotate(6deg); }
+    .fs-age .fs-i-baby { top: 14%; left: 12%; animation: fsFloat 3s ease-in-out infinite; }
+    .fs-age .fs-i-cake { top: 20%; right: 10%; font-size: clamp(24px, 3vw, 36px); animation: fsFloat 3.4s ease-in-out infinite -0.8s; }
+
+    /* Plans scene: lineup of 4 walking */
+    .fs-plans .fs-m-l1 { width: 24%; left: 2%;  bottom: 6%; z-index: 1; transform: rotate(-2deg); }
+    .fs-plans .fs-m-l2 { width: 24%; left: 26%; bottom: 10%; z-index: 2; transform: rotate(2deg); }
+    .fs-plans .fs-m-l3 { width: 22%; left: 50%; bottom: 4%; z-index: 3; transform: rotate(-3deg); }
+    .fs-plans .fs-m-l4 { width: 22%; left: 74%; bottom: 8%; z-index: 2; transform: rotate(3deg); }
+    .fs-plans .fs-i-map { top: 12%; left: 10%; animation: fsSway 4s ease-in-out infinite; transform-origin: center; }
+    .fs-plans .fs-i-star{ top: 10%; right: 12%; font-size: clamp(24px, 3vw, 40px); animation: fsPulse 2.8s ease-in-out infinite; }
+
+    /* Voices scene: mama central with speech bubbles */
+    .fs-voices .fs-m-main { width: 42%; left: 29%; bottom: 2%; z-index: 3; }
+    .fs-voices .fs-m-left { width: 28%; left: -2%; bottom: 6%; z-index: 2; transform: rotate(-5deg); }
+    .fs-voices .fs-m-right{ width: 28%; right: -2%; bottom: 4%; z-index: 2; transform: rotate(5deg); }
+    .fs-voices .fs-i-chat1{ top: 14%; right: 18%; animation: fsFloat 3s ease-in-out infinite; }
+    .fs-voices .fs-i-chat2{ top: 28%; left: 16%; font-size: clamp(24px, 3vw, 36px); animation: fsFloat 3.5s ease-in-out infinite -0.7s; }
+    .fs-voices .fs-i-heart{ top: 22%; left: 48%; font-size: clamp(22px, 2.8vw, 32px); animation: fsPulse 2.4s ease-in-out infinite; }
+
+    /* How it works mini scene */
+    .how-scene {
+      position: relative;
+      height: 80px;
+      margin-bottom: 14px;
+    }
+    .how-scene svg.hs-mascot {
+      position: absolute;
+      filter: drop-shadow(0 6px 14px rgba(44,42,38,0.12));
+    }
+    .how-scene .hs-emoji {
+      position: absolute;
+      font-size: 32px;
+      line-height: 1;
+      animation: fsFloat 3s ease-in-out infinite;
+    }
+    .how-scene.hs-01 .hs-main { width: 54px; left: 0; bottom: 0; }
+    .how-scene.hs-01 .hs-emoji { top: 0; left: 60px; }
+    .how-scene.hs-02 .hs-main { width: 54px; left: 0; bottom: 0; transform: rotate(-5deg); }
+    .how-scene.hs-02 .hs-sub  { position: absolute; width: 44px; left: 50px; bottom: 6px; filter: drop-shadow(0 4px 10px rgba(44,42,38,0.1)); transform: rotate(4deg); }
+    .how-scene.hs-02 .hs-emoji { top: 0; right: 0; animation-delay: -0.5s; }
+    .how-scene.hs-03 .hs-main { width: 54px; left: 0; bottom: 0; }
+    .how-scene.hs-03 .hs-sub  { position: absolute; width: 48px; left: 52px; bottom: 2px; transform: rotate(8deg); filter: drop-shadow(0 4px 10px rgba(44,42,38,0.1)); }
+    .how-scene.hs-03 .hs-emoji { top: 8px; right: 0; animation-delay: -1s; }
+
+    /* Preview phones: char peeks out */
+    .preview-phone { position: relative; overflow: hidden; }
+    .preview-phone svg.pp-peek {
+      position: absolute;
+      bottom: -8px;
+      width: 42%;
+      filter: drop-shadow(0 6px 14px rgba(44,42,38,0.18));
+      z-index: 2;
+    }
+    .preview-phone svg.pp-peek.left  { left: -6%; transform: rotate(-6deg); }
+    .preview-phone svg.pp-peek.right { right: -6%; transform: rotate(6deg); }
+
+    /* Who cards: small character on right */
+    .who-card { position: relative; overflow: hidden; }
+    .who-card svg.wc-mascot {
+      position: absolute;
+      bottom: -8px; right: -6px;
+      width: 64px; height: auto;
+      opacity: 0.85;
+      filter: drop-shadow(0 4px 10px rgba(44,42,38,0.1));
+      z-index: 0;
+      pointer-events: none;
+    }
+    .who-card > * { position: relative; z-index: 1; }
+
     /* ═══ HOW IT WORKS ═══ */
     .how {
       background: var(--bg-warm);
-      padding: 128px 24px;
+      padding: 88px 24px;
     }
     .how-head {
-      max-width: 640px; margin: 0 auto 72px;
+      max-width: 640px; margin: 0 auto 56px;
       text-align: center;
     }
     .how-head .section-title { margin-bottom: 20px; }
@@ -535,10 +640,10 @@
 
     /* ═══ APP PREVIEW ═══ */
     .preview {
-      padding: 128px 24px;
+      padding: 88px 24px;
       max-width: 1200px; margin: 0 auto;
     }
-    .preview-head { text-align: center; margin-bottom: 72px; }
+    .preview-head { text-align: center; margin-bottom: 56px; }
     .preview-head .section-title { margin-bottom: 20px; }
     .preview-head .section-sub { margin: 0 auto; }
     .preview-grid {
@@ -577,10 +682,10 @@
     /* ═══ WHO ═══ */
     .who {
       background: var(--bg-warm);
-      padding: 128px 24px;
+      padding: 88px 24px;
     }
     .who-inner { max-width: 1120px; margin: 0 auto; }
-    .who-head { text-align: center; margin-bottom: 64px; }
+    .who-head { text-align: center; margin-bottom: 48px; }
     .who-head .section-title { margin-bottom: 20px; }
     .who-head .section-sub { margin: 0 auto; }
     .who-grid {
@@ -769,11 +874,11 @@
 
     /* ═══ CHARACTERS ═══ */
     .characters {
-      padding: 128px 24px;
+      padding: 88px 24px;
       background: linear-gradient(180deg, var(--bg-warm) 0%, var(--bg) 100%);
     }
     .characters-inner { max-width: 1120px; margin: 0 auto; }
-    .characters-head { text-align: center; margin-bottom: 72px; }
+    .characters-head { text-align: center; margin-bottom: 56px; }
     .characters-head .section-title { margin-bottom: 20px; }
     .characters-head .section-sub { margin: 0 auto; }
     .char-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
@@ -1176,7 +1281,14 @@
       <p class="section-sub">週間天気を自動で取得して、晴れなら公園、雨なら屋内施設と優先順位を切り替え。「出発する直前に空模様を見て悩む」時間がなくなります。</p>
     </div>
     <div class="feat-visual bg-blue">
-      <div class="feat-emoji">🌤</div>
+      <div class="feat-scene fs-weather">
+        <span class="fs-icon fs-i-sun">☀️</span>
+        <span class="fs-icon fs-i-rain">☔</span>
+        <span class="fs-icon fs-i-cloud">☁️</span>
+        <svg class="fs-mascot fs-m-left" aria-hidden="true"><use href="#koto"/></svg>
+        <svg class="fs-mascot fs-m-main" aria-hidden="true"><use href="#kid"/></svg>
+        <svg class="fs-mascot fs-m-right" aria-hidden="true"><use href="#kodo"/></svg>
+      </div>
     </div>
   </div>
 
@@ -1187,7 +1299,12 @@
       <p class="section-sub">お子さんの年齢を一度だけ登録すれば、遊具の安全性・動線・危険度まで自動で判定。年齢別にフィルタされた安心できる候補だけが並びます。</p>
     </div>
     <div class="feat-visual bg-peach">
-      <svg class="feat-mascot"><use href="#kodo"/></svg>
+      <div class="feat-scene fs-age">
+        <span class="fs-icon fs-i-baby">👶</span>
+        <span class="fs-icon fs-i-cake">🎂</span>
+        <svg class="fs-mascot fs-m-main" aria-hidden="true"><use href="#kodo"/></svg>
+        <svg class="fs-mascot fs-m-kid" aria-hidden="true"><use href="#kid"/></svg>
+      </div>
     </div>
   </div>
 
@@ -1198,7 +1315,14 @@
       <p class="section-sub">「雨の日を全力で遊ぶ」「琵琶湖まるっと」など、タグ別に3スポットをつないだ1日プラン。出発から帰宅まで、流れで考えられます。</p>
     </div>
     <div class="feat-visual bg-yellow">
-      <div class="feat-emoji">🗺</div>
+      <div class="feat-scene fs-plans">
+        <span class="fs-icon fs-i-map">🗺</span>
+        <span class="fs-icon fs-i-star">✨</span>
+        <svg class="fs-mascot fs-m-l1" aria-hidden="true"><use href="#papa"/></svg>
+        <svg class="fs-mascot fs-m-l2" aria-hidden="true"><use href="#mama"/></svg>
+        <svg class="fs-mascot fs-m-l3" aria-hidden="true"><use href="#kid"/></svg>
+        <svg class="fs-mascot fs-m-l4" aria-hidden="true"><use href="#kodo"/></svg>
+      </div>
     </div>
   </div>
 
@@ -1209,7 +1333,14 @@
       <p class="section-sub">実際に訪れたパパママのコメント・評価・タグ（🌿自然感 / 🅿️駐車場余裕 / 🐕犬OK など）を年齢別に確認。自分の声も投稿すれば、次の家族を助けられます。</p>
     </div>
     <div class="feat-visual bg-green">
-      <div class="feat-emoji">💬</div>
+      <div class="feat-scene fs-voices">
+        <span class="fs-icon fs-i-chat1">💬</span>
+        <span class="fs-icon fs-i-chat2">💭</span>
+        <span class="fs-icon fs-i-heart">❤️</span>
+        <svg class="fs-mascot fs-m-left" aria-hidden="true"><use href="#kid"/></svg>
+        <svg class="fs-mascot fs-m-main" aria-hidden="true"><use href="#mama"/></svg>
+        <svg class="fs-mascot fs-m-right" aria-hidden="true"><use href="#koto"/></svg>
+      </div>
     </div>
   </div>
 </div>
@@ -1224,19 +1355,30 @@
   <div class="how-grid">
     <div class="how-card rv">
       <div class="how-num">01</div>
-      <span class="how-emoji">👶</span>
+      <div class="how-scene hs-01">
+        <svg class="hs-mascot hs-main" aria-hidden="true"><use href="#kid"/></svg>
+        <span class="hs-emoji">👶</span>
+      </div>
       <h3 class="how-card-title">お子さんを登録</h3>
       <p class="how-card-desc">初回に年齢を入力するだけ。次回以降は自動でパーソナライズされます。</p>
     </div>
     <div class="how-card rv d1">
       <div class="how-num">02</div>
-      <span class="how-emoji">🌤</span>
+      <div class="how-scene hs-02">
+        <svg class="hs-mascot hs-main" aria-hidden="true"><use href="#mama"/></svg>
+        <svg class="hs-mascot hs-sub" aria-hidden="true"><use href="#koto"/></svg>
+        <span class="hs-emoji">🌤</span>
+      </div>
       <h3 class="how-card-title">今日の状況をタップ</h3>
       <p class="how-card-desc">天気・外出できる時間・犬連れの有無。3つのタップだけで絞り込み完了。</p>
     </div>
     <div class="how-card rv d2">
       <div class="how-num">03</div>
-      <span class="how-emoji">📍</span>
+      <div class="how-scene hs-03">
+        <svg class="hs-mascot hs-main" aria-hidden="true"><use href="#papa"/></svg>
+        <svg class="hs-mascot hs-sub" aria-hidden="true"><use href="#kodo"/></svg>
+        <span class="hs-emoji">📍</span>
+      </div>
       <h3 class="how-card-title">1スポットで決まる</h3>
       <p class="how-card-desc">「今日はここ」と1つだけ提案。理由・NG情報・混雑予測までひと画面に。</p>
     </div>
@@ -1254,6 +1396,8 @@
     <div class="preview-card rv">
       <div class="preview-phone bg-green">
         <div class="preview-phone-emoji">🏠</div>
+        <svg class="pp-peek left" aria-hidden="true"><use href="#mama"/></svg>
+        <svg class="pp-peek right" aria-hidden="true"><use href="#kid"/></svg>
       </div>
       <h3 class="preview-name">ホーム</h3>
       <p class="preview-desc">今日の1スポット・週間天気・<br>お出かけプラン</p>
@@ -1261,6 +1405,8 @@
     <div class="preview-card rv d1">
       <div class="preview-phone bg-peach">
         <div class="preview-phone-emoji">🗺</div>
+        <svg class="pp-peek left" aria-hidden="true"><use href="#koto"/></svg>
+        <svg class="pp-peek right" aria-hidden="true"><use href="#papa"/></svg>
       </div>
       <h3 class="preview-name">スポット詳細</h3>
       <p class="preview-desc">理由・NG情報・混雑予測・<br>パパママの声</p>
@@ -1268,9 +1414,11 @@
     <div class="preview-card rv d2">
       <div class="preview-phone bg-blue">
         <div class="preview-phone-emoji">📍</div>
+        <svg class="pp-peek left" aria-hidden="true"><use href="#biwa"/></svg>
+        <svg class="pp-peek right" aria-hidden="true"><use href="#kodo"/></svg>
       </div>
       <h3 class="preview-name">地図</h3>
-      <p class="preview-desc">滋賀県57スポットを<br>地図から探す</p>
+      <p class="preview-desc">全152スポットを<br>地図から探す</p>
     </div>
   </div>
 </div>
@@ -1350,6 +1498,7 @@
           <div class="who-title">0〜3歳の子がいるパパママ</div>
           <div class="who-desc">外出先選びに最も悩む時期。年齢に合った場所が一目で分かります。</div>
         </div>
+        <svg class="wc-mascot" aria-hidden="true"><use href="#kid"/></svg>
       </div>
       <div class="who-card rv d1">
         <div class="who-icon p">🌳</div>
@@ -1357,6 +1506,7 @@
           <div class="who-title">滋賀県内在住・在勤の方</div>
           <div class="who-desc">琵琶湖・森・街中。県内スポットを網羅、地元民の視点で厳選。</div>
         </div>
+        <svg class="wc-mascot" aria-hidden="true"><use href="#biwa"/></svg>
       </div>
       <div class="who-card rv d2">
         <div class="who-icon b">☔</div>
@@ -1364,6 +1514,7 @@
           <div class="who-title">雨の日に困っている方</div>
           <div class="who-desc">天気連動で屋内スポットを優先提案。雨の休日が味方になります。</div>
         </div>
+        <svg class="wc-mascot" aria-hidden="true"><use href="#koto"/></svg>
       </div>
       <div class="who-card rv d3">
         <div class="who-icon y">🐕</div>
@@ -1371,6 +1522,7 @@
           <div class="who-title">犬も一緒に出かけたい方</div>
           <div class="who-desc">犬OKの施設・エリア・対応犬種まで細かく把握できます。</div>
         </div>
+        <svg class="wc-mascot" aria-hidden="true"><use href="#kodo"/></svg>
       </div>
     </div>
   </div>
