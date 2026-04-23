@@ -2,9 +2,28 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>KODOCO｜今日どこいく？</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!-- viewport-fit=cover: 必須。iOS PWA 標準モードで safe-area-inset-* を有効化。
+     これがないとホームインジケーター領域にナビが隠れる。 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>KODOCO — 今日どこいく？</title>
+<meta name="description" content="「今日、子どもとどこいく？」そのひと言に答えるWebアプリ。天気・年齢・時間で1スポットに絞って提案。滋賀県57スポット。">
+<!-- iOS PWA (Add to Home Screen) settings -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="KODOCO">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#FAF8F4">
+<meta property="og:title" content="KODOCO — 今日どこいく？">
+<meta property="og:description" content="子連れで失敗しない場所が、今日の状況でわかる。滋賀県の子連れおでかけWebアプリ。">
+<meta property="og:image" content="./ogp.svg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="./ogp.svg">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="apple-touch-icon" href="./favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <!-- Firebase (compat SDK — allows non-module scripts below) -->
 <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -16,30 +35,51 @@ html { touch-action: manipulation; }
 /* iOS: inputs with font-size < 16px trigger auto-zoom on focus. */
 input, select, textarea { font-size: 16px; }
 :root {
-  --bg: #f4f1ec;
-  --card: #ffffff;
-  --green: #3a6b52;
-  --green-light: #eaf3ee;
-  --green-mid: #4d8a67;
-  --orange: #c9622e;
-  --text: #1e1e1c;
-  --text-sub: #6b7068;
-  --text-light: #a8a9a2;
-  --border: #e8e4dc;
-  --radius: 16px;
-  --radius-sm: 10px;
+  /* KODOCO palette — Notion-inspired warm palette. Shared with index.html. */
+  --bg:         #FAF8F4;
+  --bg-warm:    #F3EEE4;
+  --card:       #FFFFFF;
+  --green:      #5B7F61;   /* deep sage — primary button/accent */
+  --green-mid:  #7A9B7E;   /* main sage — hover/highlight */
+  --green-light:#E7EEE3;   /* tint — subtle backgrounds */
+  --peach:      #E8B69A;
+  --peach-soft: #FBEADC;
+  --peach-deep: #B67A5A;
+  --blue-soft:  #E7EFF5;
+  --yellow-soft:#FAF1D4;
+  --orange:     #B67A5A;   /* warnings/accents — muted peach-terracotta */
+  --text:       #2C2A26;
+  --text-sub:   #6E6A62;
+  --text-light: #A8A39A;
+  --border:     #E8E3D9;
+  --line-soft:  #F0ECE3;
+  --radius:     16px;
+  --radius-sm:  10px;
+  --radius-lg:  20px;
 }
 html, body {
   height: -webkit-fill-available;
   height: 100%;
-  font-family: 'Noto Sans JP', sans-serif;
+  /* Notion-style stack: Inter for Latin/numerals, Noto Sans JP + native JP fallbacks */
+  font-family: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont,
+               'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', 'Meiryo',
+               'Helvetica Neue', Arial, sans-serif;
+  font-feature-settings: 'palt' 1, 'kern' 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   background: var(--bg);
   color: var(--text);
   overflow: hidden;
 }
 #app {
   display: flex; flex-direction: column;
-  height: -webkit-fill-available; height: 100vh; height: 100dvh;
+  /* iOS Safari: 100vh は URL バー込みで過大評価され、ナビが画面下に隠れる。
+     svh (small viewport height) = URLバー表示時の最小可視高。ボトムナビが常に見える。
+     dvh は動的変化するのでレイアウトシフトが起きやすい → svh を最後（勝ち）に。 */
+  height: -webkit-fill-available;
+  height: 100vh;
+  height: 100dvh;
+  height: 100svh;
   max-width: 430px; margin: 0 auto;
   background: var(--bg); position: relative; overflow: hidden;
 }
@@ -51,7 +91,21 @@ html, body {
 }
 .ob-screen { display: none; flex-direction: column; height: 100%; overflow: hidden; }
 .ob-screen.active { display: flex; }
-#ob-welcome { background: var(--green); }
+#ob-welcome { background: linear-gradient(160deg, #7A9B7E 0%, #5B7F61 100%); }
+.ob-mascot {
+  width: 148px; height: 166px; margin-bottom: 14px; display: block;
+  filter: drop-shadow(0 12px 28px rgba(44,42,38,0.2));
+  animation: kodoSway 3s ease-in-out infinite;
+  transform-origin: 50% 90%;
+}
+@keyframes kodoSway {
+  0%, 100% { transform: rotate(-3deg); }
+  50%      { transform: rotate(3deg); }
+}
+@keyframes kodoBreathe {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
 
 .ob-header { padding: max(env(safe-area-inset-top, 16px), 16px) 20px 4px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
 .ob-progress { display: flex; gap: 5px; }
@@ -64,10 +118,10 @@ html, body {
 .ob-body::-webkit-scrollbar { display: none; }
 #ob-welcome .ob-body { align-items: center; justify-content: center; text-align: center; padding: 32px 28px; }
 
-.ob-logo { font-size: 42px; font-weight: 700; color: white; letter-spacing: -2px; margin-bottom: 4px; }
-.ob-logo-sub { font-size: 16px; color: rgba(255,255,255,0.8); margin-bottom: 32px; }
-.ob-welcome-title { font-size: 22px; color: white; font-weight: 500; line-height: 1.5; margin-bottom: 12px; }
-.ob-welcome-sub { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.7; }
+.ob-logo { font-family: 'Inter', 'Noto Sans JP', sans-serif; font-size: 44px; font-weight: 900; color: white; letter-spacing: -0.04em; margin-bottom: 2px; line-height: 1; }
+.ob-logo-sub { font-size: 14px; color: rgba(255,255,255,0.75); margin-bottom: 28px; letter-spacing: 0.02em; }
+.ob-welcome-title { font-size: 24px; color: white; font-weight: 700; line-height: 1.35; margin-bottom: 14px; letter-spacing: -0.02em; }
+.ob-welcome-sub { font-size: 14px; color: rgba(255,255,255,0.78); line-height: 1.85; }
 
 .ob-title { font-size: 22px; font-weight: 700; line-height: 1.3; margin-bottom: 6px; }
 .ob-sub { font-size: 13px; color: var(--text-sub); line-height: 1.6; margin-bottom: 20px; }
@@ -120,8 +174,10 @@ html, body {
 
 /* topbar */
 .topbar { display: flex; justify-content: space-between; align-items: center; padding: max(env(safe-area-inset-top, 10px), 10px) 16px 6px; flex-shrink: 0; }
-.topbar-logo { font-size: 20px; font-weight: 700; color: var(--green); letter-spacing: -0.5px; }
-.topbar-logo span { font-size: 11px; font-weight: 400; color: var(--text-sub); letter-spacing: 0; margin-left: 4px; }
+.topbar-logo { display: flex; align-items: center; gap: 8px; }
+.topbar-mark { width: 28px; height: 32px; flex-shrink: 0; }
+.topbar-brand { font-family: 'Inter', 'Noto Sans JP', sans-serif; font-size: 20px; font-weight: 800; color: var(--text); letter-spacing: -0.03em; }
+.topbar-sub { font-size: 11px; font-weight: 400; color: var(--text-sub); letter-spacing: 0; }
 .topbar-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--card); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 .topbar-btn svg { width: 17px; height: 17px; }
 
@@ -154,6 +210,18 @@ html, body {
 
 /* TODAY'S PICK (ヒーロー) */
 .hero-section { margin: 0 16px 20px; background: var(--green); border-radius: 20px; overflow: hidden; cursor: pointer; position: relative; }
+.hero-mascot {
+  position: absolute; top: 8px; right: 10px;
+  width: 64px; height: 72px;
+  transform: rotate(10deg);
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.25));
+  z-index: 3; pointer-events: none;
+  animation: kodoPeek 3.6s ease-in-out infinite;
+}
+@keyframes kodoPeek {
+  0%, 100% { transform: rotate(10deg) translateY(0); }
+  50%      { transform: rotate(6deg) translateY(-3px); }
+}
 .hero-photo { height: 180px; display: flex; align-items: center; justify-content: center; position: relative; }
 .hero-emoji { font-size: 52px; }
 .hero-photo-note { position: absolute; bottom: 8px; left: 0; right: 0; text-align: center; font-size: 10px; color: rgba(255,255,255,0.6); }
@@ -167,6 +235,35 @@ html, body {
 .hero-meta { display: flex; gap: 10px; flex-wrap: wrap; }
 .hero-meta-item { display: flex; align-items: center; gap: 4px; font-size: 11px; color: rgba(255,255,255,0.8); }
 .hero-cta { margin-top: 12px; padding: 11px; background: white; border-radius: 10px; font-size: 13px; font-weight: 700; color: var(--green); text-align: center; }
+
+/* コドちゃんのひとこと */
+.kodo-tip {
+  margin: 0 16px 14px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 14px 8px 4px;
+}
+.kodo-tip-mascot {
+  width: 54px; height: 60px; flex-shrink: 0;
+  filter: drop-shadow(0 3px 8px rgba(44,42,38,0.12));
+  animation: kodoBreathe 3s ease-in-out infinite;
+}
+.kodo-tip-bubble {
+  flex: 1; background: var(--card); border: 1.5px solid var(--border);
+  border-radius: 14px 14px 14px 4px;
+  padding: 10px 14px;
+  font-size: 13px; color: var(--text);
+  line-height: 1.6; position: relative;
+}
+.kodo-tip-bubble::before {
+  content: ''; position: absolute;
+  left: -8px; bottom: 6px;
+  width: 10px; height: 10px;
+  background: var(--card);
+  border-left: 1.5px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
+  transform: rotate(45deg);
+  border-bottom-left-radius: 3px;
+}
 
 /* Weather strip */
 .weather-card { margin: 0 16px 16px; background: var(--card); border-radius: var(--radius); padding: 14px 16px; }
@@ -212,36 +309,164 @@ html, body {
 .route-card-cta { margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--border); font-size: 12px; color: var(--green); font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
 /* ルートプラン詳細モーダル */
 #routeDetailModal { display:none; position:absolute; inset:0; z-index:200; background:rgba(0,0,0,0.5); align-items:flex-end; justify-content:center; }
-.route-detail-sheet { background:var(--bg); border-radius:20px 20px 0 0; width:100%; max-width:430px; max-height:88vh; overflow-y:auto; padding:0 0 calc(env(safe-area-inset-bottom,16px)+16px); }
-.route-detail-header { padding:14px 16px 0; display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-.route-detail-title { font-size:18px; font-weight:700; }
-.route-detail-close { background:none; border:none; font-size:19px; cursor:pointer; color:var(--text-sub); }
-.route-detail-tag { font-size:11px; font-weight:700; color:var(--green); background:var(--green-light); padding:3px 10px; border-radius:20px; display:inline-block; margin:0 16px 14px; }
-.route-detail-time { font-size:12px; color:var(--text-sub); margin-left:6px; }
-.route-spot-item { margin:0 16px 12px; background:var(--card); border-radius:var(--radius); overflow:hidden; cursor:pointer; transition:all .15s; border:1.5px solid transparent; }
+.route-detail-sheet { background:var(--bg); border-radius:22px 22px 0 0; width:100%; max-width:430px; max-height:90vh; overflow-y:auto; padding:0 0 calc(env(safe-area-inset-bottom,16px)+20px); position:relative; }
+.route-detail-cover {
+  position: relative;
+  padding: 32px 20px 24px;
+  border-radius: 22px 22px 0 0;
+  overflow: hidden;
+}
+.route-detail-cover.sunny  { background: linear-gradient(135deg, #F8D7A4 0%, #F4B58E 100%); }
+.route-detail-cover.rainy  { background: linear-gradient(135deg, #A5C2D9 0%, #7B9DBC 100%); }
+.route-detail-cover.short  { background: linear-gradient(135deg, #FAEBB8 0%, #E8C87A 100%); }
+.route-detail-cover.dog    { background: linear-gradient(135deg, #E6D0A8 0%, #C9B084 100%); }
+.route-detail-cover.indoor { background: linear-gradient(135deg, #D4C4E0 0%, #A99AC2 100%); }
+.route-detail-cover.water  { background: linear-gradient(135deg, #A8D4E6 0%, #7DB5CC 100%); }
+.route-detail-cover.nature { background: linear-gradient(135deg, #B8D8A8 0%, #8AB48A 100%); }
+.route-detail-cover.default{ background: linear-gradient(135deg, #9EB9A0 0%, #6E8F70 100%); }
+.route-cover-emoji { font-size: 48px; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.18)); line-height: 1; margin-bottom: 10px; }
+.route-cover-tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.82);
+  color: var(--text);
+  font-size: 11px; font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  letter-spacing: 0.04em;
+}
+.route-cover-title { font-size: 22px; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 8px; letter-spacing: -0.02em; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+.route-cover-meta { display: flex; gap: 10px; font-size: 12px; color: rgba(255,255,255,0.92); font-weight: 500; }
+.route-cover-mascot {
+  position: absolute; right: 14px; bottom: 8px;
+  width: 70px; height: 78px;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.18));
+  transform: rotate(8deg);
+  animation: kodoPeek 3.6s ease-in-out infinite;
+}
+.route-detail-close {
+  position: absolute; top: 14px; right: 14px;
+  background: rgba(255,255,255,0.92); border: none;
+  width: 30px; height: 30px; border-radius: 50%;
+  font-size: 15px; cursor: pointer; color: var(--text);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2;
+}
+.route-detail-body { padding: 18px 0 4px; }
+.route-map-wrap { margin: 0 16px 16px; position: relative; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+.route-map { width: 100%; height: 220px; background: var(--bg-warm); }
+.route-map-hint {
+  position: absolute; bottom: 8px; left: 8px;
+  background: rgba(255,255,255,0.92);
+  padding: 4px 10px;
+  border-radius: 14px;
+  font-size: 10.5px;
+  color: var(--text-sub);
+  z-index: 500;
+  backdrop-filter: blur(4px);
+  font-weight: 500;
+}
+.route-map-marker {
+  background: var(--green); color: #fff;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(44,42,38,0.3);
+  font-family: 'Inter', sans-serif;
+}
+.route-detail-title { display: none; } /* 旧マークアップ互換 */
+.route-detail-tag { display: none; }    /* 旧マークアップ互換 */
+.route-detail-time { font-size: 12px; color: rgba(255,255,255,0.9); }
+
+.route-spot-item { margin:0 16px 8px; background:var(--card); border-radius:var(--radius); overflow:hidden; cursor:pointer; transition:transform .15s, border-color .15s, box-shadow .15s; border:1.5px solid transparent; position: relative; }
+.route-spot-item:hover { box-shadow: 0 6px 16px rgba(44,42,38,0.08); }
 .route-spot-item:active { transform:scale(0.98); border-color:var(--green); }
 .route-spot-inner { display:flex; }
-.route-spot-thumb { width:80px; height:80px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:26px; }
-.route-spot-info { flex:1; padding:10px 12px 10px 0; }
-.route-spot-time { font-size:10px; font-weight:700; color:var(--green); margin-bottom:2px; }
-.route-spot-name { font-size:14px; font-weight:700; margin-bottom:3px; }
-.route-spot-note { font-size:12px; color:var(--text-sub); margin-bottom:4px; }
-.route-spot-conclusion { font-size:12px; color:var(--green); font-weight:500; line-height:1.4; }
-.route-spot-arrow { font-size:13px; color:var(--text-light); display:flex; align-items:center; padding-right:10px; }
-.route-connector { display:flex; align-items:center; gap:8px; margin:0 16px 12px; font-size:11px; color:var(--text-light); }
-.route-connector-line { flex:1; height:1px; background:var(--border); }
+.route-spot-step {
+  font-family: 'Inter', sans-serif;
+  position: absolute; top: 8px; left: 8px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--ink, #2C2A26); color: #fff;
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1;
+  letter-spacing: -0.02em;
+}
+.route-spot-thumb { width:88px; height:92px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:32px; }
+.route-spot-info { flex:1; padding:12px 12px 10px 4px; }
+.route-spot-time { font-size:10px; font-weight:700; color:var(--green); margin-bottom:2px; letter-spacing: 0.04em; }
+.route-spot-name { font-size:14.5px; font-weight:700; margin-bottom:3px; letter-spacing: -0.01em; }
+.route-spot-note { font-size:12px; color:var(--text-sub); margin-bottom:4px; line-height: 1.5; }
+.route-spot-conclusion { font-size:12px; color:var(--green); font-weight:500; line-height:1.5; }
+.route-spot-arrow { font-size:15px; color:var(--text-light); display:flex; align-items:center; padding-right:12px; }
+.route-connector {
+  display: flex; align-items: center; gap: 10px;
+  margin: 0 40px 8px; font-size: 11px; color: var(--text-light);
+  font-weight: 500; letter-spacing: 0.02em;
+}
+.route-connector-line { flex:1; height:0; border-top: 1.5px dashed var(--border); }
+.route-connector-ico { font-size: 16px; }
+
+.route-detail-footer {
+  margin: 20px 16px 0;
+  padding: 18px 16px;
+  background: linear-gradient(135deg, var(--green-light) 0%, var(--peach-soft) 100%);
+  border-radius: var(--radius);
+  display: flex; align-items: center; gap: 12px;
+}
+.route-footer-mascots {
+  display: flex; align-items: flex-end; gap: 4px; flex-shrink: 0;
+}
+.route-footer-mascots svg { width: 46px; height: 52px; }
+.route-footer-mascots svg.koto { transform: rotate(-6deg); }
+.route-footer-mascots svg.biwa { transform: rotate(4deg); width: 40px; height: 48px; }
+.route-footer-text { flex: 1; font-size: 12.5px; color: var(--text); line-height: 1.6; }
+.route-footer-text strong { font-weight: 700; color: var(--green); }
 .route-step { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--text); line-height: 1.5; }
 .route-step-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-light); border: 1.5px solid var(--green); flex-shrink: 0; }
 
 /* Spot list */
 .spots-section { padding: 0 16px 6px; }
+.nearby-header {
+  margin: 24px 0 14px;
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 14px;
+  background: linear-gradient(135deg, var(--peach-soft) 0%, var(--yellow-soft) 100%);
+  border-radius: var(--radius);
+}
+.nearby-header-mascot { width: 54px; height: 60px; flex-shrink: 0; filter: drop-shadow(0 4px 10px rgba(44,42,38,0.12)); animation: kodoBreathe 3s ease-in-out infinite; }
+.nearby-header-text { flex: 1; }
+.nearby-header-title { font-size: 14.5px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; margin-bottom: 2px; }
+.nearby-header-sub { font-size: 12px; color: var(--text-sub); line-height: 1.5; }
+.nearby-pref-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  color: var(--text-sub);
+  background: var(--bg-warm);
+  padding: 6px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  margin: 8px 0 10px;
+}
 .spot-card { background: var(--card); border-radius: var(--radius); overflow: hidden; margin-bottom: 12px; cursor: pointer; transition: transform .15s; }
 .spot-card:active { transform: scale(0.99); }
 .spot-photo { height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; position: relative; }
 .spot-emoji-lg { font-size: 38px; }
 .spot-photo-note { font-size: 10px; opacity: 0.6; }
 .spot-photo-arr { position: absolute; bottom: 8px; right: 8px; width: 26px; height: 26px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
-.rec-badge-card { position: absolute; top: 8px; left: 8px; background: rgba(255,255,255,0.95); color: var(--orange); font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px; }
+.rec-badge-card {
+  position: absolute; top: 10px; left: 10px;
+  background: rgba(255,255,255,0.97);
+  color: var(--green);
+  font-size: 11px; font-weight: 700;
+  padding: 4px 12px 4px 4px;
+  border-radius: 20px;
+  display: inline-flex; align-items: center; gap: 5px;
+  box-shadow: 0 3px 10px rgba(44,42,38,0.18);
+  letter-spacing: 0.01em;
+}
+.rec-badge-mark { width: 20px; height: 22px; flex-shrink: 0; }
 .spot-body { padding: 12px 14px 14px; }
 .spot-top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
 .spot-name { font-size: 16px; font-weight: 700; line-height: 1.2; }
@@ -290,6 +515,50 @@ html, body {
 .loading-text { text-align: center; padding: 8px; font-size: 12px; color: var(--text-light); display: flex; align-items: center; justify-content: center; gap: 5px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading-spinner { width: 13px; height: 13px; border: 2px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; }
+.loading-kodo { width: 26px; height: 30px; display: inline-block; animation: kodoLoadRoll 1.4s ease-in-out infinite; }
+@keyframes kodoLoadRoll {
+  0%, 100% { transform: rotate(-12deg) translateY(0); }
+  50%      { transform: rotate(12deg) translateY(-3px); }
+}
+
+/* ── コドちゃん拍手オーバーレイ ─────────────────────── */
+#kodoCheer {
+  position: fixed; inset: 0; z-index: 9999;
+  display: none; align-items: center; justify-content: center;
+  pointer-events: none;
+  background: rgba(250,248,244,0);
+}
+#kodoCheer.on { display: flex; }
+.kodo-cheer-wrap { position: relative; display: inline-block; }
+.kodo-cheer-mascot {
+  width: 140px; height: 156px;
+  filter: drop-shadow(0 12px 28px rgba(44,42,38,0.22));
+  animation: kodoCheerPop 1.1s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+@keyframes kodoCheerPop {
+  0%   { transform: scale(0.3) rotate(-14deg); opacity: 0; }
+  25%  { transform: scale(1.2) rotate(8deg); opacity: 1; }
+  55%  { transform: scale(0.95) rotate(-5deg); opacity: 1; }
+  80%  { transform: scale(1.05) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 0; }
+}
+.spark { position: absolute; font-size: 24px; opacity: 0; pointer-events: none; }
+#kodoCheer.on .spark { animation: sparkFly 1.1s ease-out forwards; }
+.spark.s1 { top: 10%; left: -30px; animation-delay: .05s; }
+.spark.s2 { top: 0;   right: -26px; animation-delay: .15s; }
+.spark.s3 { bottom: 30%; left: -42px; animation-delay: .25s; }
+.spark.s4 { bottom: 10%; right: -38px; animation-delay: .1s; }
+.spark.s5 { top: -16px; left: 50%; transform: translateX(-50%); animation-delay: .2s; }
+@keyframes sparkFly {
+  0%   { opacity: 0; transform: scale(0.3) translate(0, 0); }
+  40%  { opacity: 1; transform: scale(1.1) translate(var(--dx, -20px), var(--dy, -30px)); }
+  100% { opacity: 0; transform: scale(0.6) translate(var(--dxf, -40px), var(--dyf, -80px)); }
+}
+.spark.s1 { --dx: -10px; --dy: -18px; --dxf: -28px; --dyf: -50px; }
+.spark.s2 { --dx: 16px; --dy: -12px; --dxf: 36px; --dyf: -40px; }
+.spark.s3 { --dx: -16px; --dy: 12px; --dxf: -36px; --dyf: 40px; }
+.spark.s4 { --dx: 14px; --dy: 18px; --dxf: 34px; --dyf: 50px; }
+.spark.s5 { --dx: 0; --dy: -22px; --dxf: 0; --dyf: -60px; }
 
 .footer-credit { text-align: center; padding: 16px 16px 28px; }
 .footer-credit p { font-size: 11px; color: var(--text-light); line-height: 1.8; }
@@ -316,6 +585,7 @@ html, body {
 /* ── FAVORITES ──────────────────── */
 .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 40px 32px; }
 .empty-icon { font-size: 44px; opacity: 0.25; }
+.empty-mascot { width: 110px; height: 124px; margin-bottom: 10px; opacity: 0.92; animation: kodoBreathe 3.2s ease-in-out infinite; }
 .empty-title { font-size: 15px; font-weight: 600; color: var(--text-sub); }
 .empty-sub { font-size: 13px; color: var(--text-light); text-align: center; line-height: 1.6; }
 .empty-btn { margin-top: 8px; padding: 11px 26px; border: 1.5px solid var(--text); border-radius: 12px; background: none; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; }
@@ -378,6 +648,23 @@ html, body {
 .detail-cat-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 .detail-title { font-size: 21px; font-weight: 700; margin-bottom: 6px; }
 .detail-value { font-size: 14px; color: var(--text); font-weight: 500; padding: 10px 12px; background: var(--bg); border-radius: 10px; border-left: 3px solid var(--green); line-height: 1.5; margin-bottom: 14px; }
+
+/* コドちゃんからの感想 */
+.kodo-comment { display: flex; gap: 10px; align-items: center; margin-bottom: 14px; }
+.kodo-comment-mascot { width: 52px; height: 58px; flex-shrink: 0; animation: kodoBreathe 3s ease-in-out infinite; }
+.kodo-comment-bubble {
+  flex: 1; background: var(--peach-soft); border-radius: 14px 14px 14px 4px;
+  padding: 10px 14px; font-size: 13px; color: var(--text); line-height: 1.65;
+  position: relative;
+}
+.kodo-comment-bubble::before {
+  content: ''; position: absolute;
+  left: -7px; bottom: 6px;
+  width: 10px; height: 10px;
+  background: var(--peach-soft);
+  transform: rotate(45deg);
+  border-bottom-left-radius: 3px;
+}
 .detail-facts { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
 .d-section { background: var(--card); border-radius: var(--radius); padding: 13px; margin-bottom: 11px; }
 .d-section-title { font-size: 13px; font-weight: 700; margin-bottom: 9px; display: flex; align-items: center; gap: 5px; }
@@ -527,9 +814,10 @@ html, body {
 .age-tabs::-webkit-scrollbar { display: none; }
 .age-tab { flex-shrink: 0; padding: 5px 11px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--bg); font-size: 12px; font-family: inherit; cursor: pointer; white-space: nowrap; transition: all .2s; }
 .age-tab.active { background: var(--green); border-color: var(--green); color: white; font-weight: 600; }
-.voice-empty { text-align: center; padding: 18px; color: var(--text-light); }
+.voice-empty { text-align: center; padding: 22px 18px; color: var(--text-light); display: flex; flex-direction: column; align-items: center; gap: 6px; }
 .voice-empty-icon { font-size: 30px; opacity: 0.25; margin-bottom: 7px; }
-.voice-empty-text { font-size: 13px; line-height: 1.6; }
+.voice-empty-mascot { width: 76px; height: 86px; opacity: 0.9; animation: kodoBreathe 3.2s ease-in-out infinite; }
+.voice-empty-text { font-size: 13px; line-height: 1.75; }
 .voice-card { padding: 11px 0; border-bottom: 1px solid var(--border); }
 .voice-card:last-child { border-bottom: none; }
 .voice-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
@@ -565,6 +853,55 @@ html, body {
 .settings-action-btn { padding:11px 14px; border-radius:10px; border:1.5px solid var(--green); background:var(--card); color:var(--green); font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; width:100%; text-align:left; display:flex; align-items:center; gap:4px; }
 .settings-action-btn:active { transform: scale(0.99); }
 
+/* 達成バッジ */
+.achievement-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line-soft); }
+.achievement-row:last-child { border-bottom: none; padding-bottom: 0; }
+.achievement-row:first-child { padding-top: 0; }
+.achievement-icon {
+  flex-shrink: 0;
+  width: 42px; height: 42px; border-radius: 12px;
+  background: var(--green-light);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; position: relative;
+}
+.achievement-icon.p { background: var(--peach-soft); }
+.achievement-icon.b { background: var(--blue-soft); }
+.achievement-icon.y { background: var(--yellow-soft); }
+.achievement-tier {
+  position: absolute;
+  bottom: -4px; right: -6px;
+  font-size: 13px;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
+}
+.achievement-body { flex: 1; }
+.achievement-label { font-size: 12px; color: var(--text-sub); margin-bottom: 2px; font-weight: 500; }
+.achievement-count { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+.achievement-count .unit { font-size: 11px; font-weight: 500; color: var(--text-sub); margin-left: 3px; }
+.achievement-progress { margin-top: 4px; height: 4px; background: var(--bg); border-radius: 2px; overflow: hidden; }
+.achievement-progress-bar { height: 100%; background: var(--green); border-radius: 2px; transition: width .4s; }
+.achievement-next { font-size: 10px; color: var(--text-light); margin-top: 3px; }
+
+/* キャラピッカー */
+.mascot-pick {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 10px 6px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: inherit;
+  color: var(--text);
+}
+.mascot-pick:active { transform: scale(0.97); }
+.mascot-pick.selected {
+  background: var(--green-light);
+  border-color: var(--green);
+  box-shadow: 0 2px 8px rgba(91,127,97,0.15);
+}
+.mascot-pick-mark { width: 42px; height: 48px; }
+.mascot-pick span { font-size: 11px; font-weight: 600; }
+
 /* ADD CHILD MODAL */
 #addChildModal { display:none; position:absolute; inset:0; z-index:300; background:rgba(0,0,0,0.5); align-items:flex-end; justify-content:center; }
 .modal-sheet { background:var(--bg); border-radius:20px 20px 0 0; padding:20px 20px calc(env(safe-area-inset-bottom,16px) + 16px); width:100%; max-width:430px; }
@@ -579,6 +916,204 @@ html, body {
 </style>
 </head>
 <body>
+
+<!-- ═══ マスコット「コドちゃん」SVG symbols (index.html と共通) ═══ -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+  <defs>
+    <!-- 通常ポーズ -->
+    <symbol id="kodo" viewBox="0 0 160 180">
+      <path d="M 64 32 Q 46 14 38 28 Q 36 42 58 38 Q 66 36 64 32 Z" fill="#7A9B7E"/>
+      <path d="M 96 32 Q 114 14 122 28 Q 124 42 102 38 Q 94 36 96 32 Z" fill="#8DAE91"/>
+      <path d="M 50 28 L 58 34" stroke="#5B7F61" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+      <path d="M 110 28 L 102 34" stroke="#5B7F61" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+      <rect x="77" y="30" width="6" height="24" rx="3" fill="#6E8A70"/>
+      <ellipse cx="80" cy="108" rx="58" ry="54" fill="#F4E5D2"/>
+      <ellipse cx="80" cy="158" rx="40" ry="4" fill="#D8C8B0" opacity="0.35"/>
+      <ellipse cx="45" cy="116" rx="10" ry="6" fill="#F2B89A" opacity="0.65"/>
+      <ellipse cx="115" cy="116" rx="10" ry="6" fill="#F2B89A" opacity="0.65"/>
+      <path d="M 56 98 Q 63 92, 70 98" stroke="#2C2A26" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <path d="M 90 98 Q 97 92, 104 98" stroke="#2C2A26" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <path d="M 68 126 Q 80 138, 92 126" stroke="#2C2A26" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <ellipse cx="62" cy="166" rx="11" ry="4" fill="#E5D0B6"/>
+      <ellipse cx="98" cy="166" rx="11" ry="4" fill="#E5D0B6"/>
+    </symbol>
+    <!-- 手を振るポーズ -->
+    <symbol id="kodo-wave" viewBox="0 0 180 180">
+      <path d="M 64 32 Q 46 14 38 28 Q 36 42 58 38 Q 66 36 64 32 Z" fill="#7A9B7E"/>
+      <path d="M 96 32 Q 114 14 122 28 Q 124 42 102 38 Q 94 36 96 32 Z" fill="#8DAE91"/>
+      <rect x="77" y="30" width="6" height="24" rx="3" fill="#6E8A70"/>
+      <ellipse cx="80" cy="108" rx="58" ry="54" fill="#F4E5D2"/>
+      <ellipse cx="80" cy="158" rx="40" ry="4" fill="#D8C8B0" opacity="0.35"/>
+      <path d="M 132 95 Q 145 80, 148 55 Q 149 46 141 47 Q 133 49 128 72 Q 126 88 132 95 Z" fill="#F4E5D2"/>
+      <circle cx="144" cy="50" r="9" fill="#F4E5D2"/>
+      <ellipse cx="48" cy="116" rx="10" ry="6" fill="#F2B89A" opacity="0.65"/>
+      <ellipse cx="112" cy="116" rx="10" ry="6" fill="#F2B89A" opacity="0.65"/>
+      <circle cx="63" cy="97" r="3.2" fill="#2C2A26"/>
+      <circle cx="97" cy="97" r="3.2" fill="#2C2A26"/>
+      <circle cx="64" cy="96" r="1" fill="#fff"/>
+      <circle cx="98" cy="96" r="1" fill="#fff"/>
+      <path d="M 68 126 Q 80 138, 92 126" stroke="#2C2A26" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <ellipse cx="62" cy="166" rx="11" ry="4" fill="#E5D0B6"/>
+      <ellipse cx="98" cy="166" rx="11" ry="4" fill="#E5D0B6"/>
+    </symbol>
+    <!-- ロゴマーク -->
+    <symbol id="kodo-mark" viewBox="0 0 100 120">
+      <path d="M 36 20 Q 22 8 18 20 Q 18 30 34 28 Z" fill="#7A9B7E"/>
+      <path d="M 64 20 Q 78 8 82 20 Q 82 30 66 28 Z" fill="#8DAE91"/>
+      <rect x="47" y="22" width="6" height="14" rx="3" fill="#6E8A70"/>
+      <ellipse cx="50" cy="72" rx="38" ry="36" fill="#F4E5D2"/>
+      <ellipse cx="29" cy="80" rx="7" ry="4" fill="#F2B89A" opacity="0.6"/>
+      <ellipse cx="71" cy="80" rx="7" ry="4" fill="#F2B89A" opacity="0.6"/>
+      <path d="M 34 64 Q 40 60, 46 64" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+      <path d="M 54 64 Q 60 60, 66 64" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+      <path d="M 42 87 Q 50 94, 58 87" stroke="#2C2A26" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <!-- ロゴマーク (白アウトライン、緑背景用) -->
+    <symbol id="kodo-mark-onlight" viewBox="0 0 100 120">
+      <path d="M 36 20 Q 22 8 18 20 Q 18 30 34 28 Z" fill="#C9DDCC"/>
+      <path d="M 64 20 Q 78 8 82 20 Q 82 30 66 28 Z" fill="#D5E5D8"/>
+      <rect x="47" y="22" width="6" height="14" rx="3" fill="#A8C3AB"/>
+      <ellipse cx="50" cy="72" rx="38" ry="36" fill="#FFF3E0"/>
+      <ellipse cx="29" cy="80" rx="7" ry="4" fill="#F2B89A" opacity="0.65"/>
+      <ellipse cx="71" cy="80" rx="7" ry="4" fill="#F2B89A" opacity="0.65"/>
+      <path d="M 34 64 Q 40 60, 46 64" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+      <path d="M 54 64 Q 60 60, 66 64" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+      <path d="M 42 87 Q 50 94, 58 87" stroke="#2C2A26" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- 「コトちゃん」— コドちゃんの相棒。花を咲かせたピーチ色の子 -->
+    <symbol id="koto" viewBox="0 0 160 180">
+      <!-- 花びら (4枚) -->
+      <circle cx="70" cy="22" r="8" fill="#F4A898"/>
+      <circle cx="90" cy="22" r="8" fill="#F4A898"/>
+      <circle cx="80" cy="12" r="8" fill="#F8B8A8"/>
+      <circle cx="80" cy="32" r="8" fill="#F4A898"/>
+      <!-- 花の芯 -->
+      <circle cx="80" cy="22" r="5" fill="#E8D28A"/>
+      <!-- 茎 -->
+      <rect x="77" y="32" width="6" height="16" rx="3" fill="#8DAE91"/>
+      <!-- 本体 (ピーチ色) -->
+      <ellipse cx="80" cy="108" rx="58" ry="54" fill="#F8D8BA"/>
+      <!-- 影 -->
+      <ellipse cx="80" cy="158" rx="40" ry="4" fill="#DAB898" opacity="0.35"/>
+      <!-- ほっぺ -->
+      <ellipse cx="45" cy="116" rx="10" ry="6" fill="#E88878" opacity="0.55"/>
+      <ellipse cx="115" cy="116" rx="10" ry="6" fill="#E88878" opacity="0.55"/>
+      <!-- 開いた目（きらきら・コドちゃんと別表情） -->
+      <circle cx="60" cy="96" r="4" fill="#2C2A26"/>
+      <circle cx="100" cy="96" r="4" fill="#2C2A26"/>
+      <circle cx="61.5" cy="94.5" r="1.4" fill="#fff"/>
+      <circle cx="101.5" cy="94.5" r="1.4" fill="#fff"/>
+      <!-- 開いた口 -->
+      <ellipse cx="80" cy="128" rx="9" ry="6" fill="#2C2A26"/>
+      <ellipse cx="80" cy="130" rx="6" ry="3" fill="#F4A0A0"/>
+      <!-- 足 -->
+      <ellipse cx="62" cy="166" rx="11" ry="4" fill="#E5C4A6"/>
+      <ellipse cx="98" cy="166" rx="11" ry="4" fill="#E5C4A6"/>
+    </symbol>
+
+    <!-- コトちゃん ロゴマーク -->
+    <symbol id="koto-mark" viewBox="0 0 100 120">
+      <circle cx="44" cy="18" r="6" fill="#F4A898"/>
+      <circle cx="56" cy="18" r="6" fill="#F4A898"/>
+      <circle cx="50" cy="10" r="6" fill="#F8B8A8"/>
+      <circle cx="50" cy="26" r="6" fill="#F4A898"/>
+      <circle cx="50" cy="18" r="4" fill="#E8D28A"/>
+      <rect x="47" y="26" width="6" height="12" rx="3" fill="#8DAE91"/>
+      <ellipse cx="50" cy="72" rx="38" ry="36" fill="#F8D8BA"/>
+      <ellipse cx="29" cy="80" rx="7" ry="4" fill="#E88878" opacity="0.55"/>
+      <ellipse cx="71" cy="80" rx="7" ry="4" fill="#E88878" opacity="0.55"/>
+      <circle cx="40" cy="66" r="3" fill="#2C2A26"/>
+      <circle cx="60" cy="66" r="3" fill="#2C2A26"/>
+      <circle cx="40.8" cy="65.2" r="1" fill="#fff"/>
+      <circle cx="60.8" cy="65.2" r="1" fill="#fff"/>
+      <ellipse cx="50" cy="86" rx="6" ry="4" fill="#2C2A26"/>
+    </symbol>
+
+    <!-- 「ビワちゃん」— 滋賀のシンボル琵琶湖をモチーフにした水色の子。
+         上が細く下がふっくらした琵琶湖シルエットを体型に。頭には波紋が揺れる。 -->
+    <symbol id="biwa" viewBox="0 0 160 200">
+      <!-- 琵琶湖シルエット (くびれのある、上細・下広のひょうたん形) -->
+      <path d="M 80 30
+               C 62 30, 58 48, 64 62
+               C 68 72, 72 78, 72 84
+               C 58 88, 38 100, 28 120
+               C 16 148, 28 182, 80 186
+               C 132 182, 144 148, 132 120
+               C 122 100, 102 88, 88 84
+               C 88 78, 92 72, 96 62
+               C 102 48, 98 30, 80 30 Z"
+            fill="#8FC1D4"/>
+      <!-- 水面のハイライト -->
+      <ellipse cx="58" cy="130" rx="18" ry="12" fill="#C0DDE9" opacity="0.6"/>
+      <ellipse cx="105" cy="155" rx="14" ry="8" fill="#B0D5E2" opacity="0.55"/>
+      <!-- 頭上の波紋 -->
+      <path d="M 58 26 Q 64 20, 70 26" stroke="#6BA0B8" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M 90 26 Q 96 20, 102 26" stroke="#6BA0B8" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <!-- 目 -->
+      <circle cx="65" cy="115" r="3.6" fill="#2C2A26"/>
+      <circle cx="95" cy="115" r="3.6" fill="#2C2A26"/>
+      <circle cx="66" cy="113.8" r="1.3" fill="#fff"/>
+      <circle cx="96" cy="113.8" r="1.3" fill="#fff"/>
+      <!-- ほっぺ (水彩感) -->
+      <ellipse cx="50" cy="128" rx="7" ry="4" fill="#F2B89A" opacity="0.5"/>
+      <ellipse cx="110" cy="128" rx="7" ry="4" fill="#F2B89A" opacity="0.5"/>
+      <!-- 口 (にっこり) -->
+      <path d="M 70 140 Q 80 147, 90 140" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+      <!-- 足元の波 -->
+      <path d="M 40 188 Q 48 184, 56 188" stroke="#6BA0B8" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.6"/>
+      <path d="M 104 188 Q 112 184, 120 188" stroke="#6BA0B8" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.6"/>
+    </symbol>
+
+    <!-- ビワちゃん ロゴマーク -->
+    <symbol id="biwa-mark" viewBox="0 0 100 120">
+      <path d="M 50 20
+               C 40 20, 37 32, 41 40
+               C 44 47, 46 50, 46 54
+               C 38 56, 24 64, 18 78
+               C 10 98, 20 115, 50 116
+               C 80 115, 90 98, 82 78
+               C 76 64, 62 56, 54 54
+               C 54 50, 56 47, 59 40
+               C 63 32, 60 20, 50 20 Z"
+            fill="#8FC1D4"/>
+      <ellipse cx="38" cy="82" rx="10" ry="6" fill="#C0DDE9" opacity="0.55"/>
+      <circle cx="40" cy="72" r="2.6" fill="#2C2A26"/>
+      <circle cx="60" cy="72" r="2.6" fill="#2C2A26"/>
+      <circle cx="40.5" cy="71.2" r="0.9" fill="#fff"/>
+      <circle cx="60.5" cy="71.2" r="0.9" fill="#fff"/>
+      <path d="M 42 88 Q 50 93, 58 88" stroke="#2C2A26" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- コトちゃん ジャンプポーズ -->
+    <symbol id="koto-jump" viewBox="0 0 160 200">
+      <circle cx="70" cy="42" r="8" fill="#F4A898"/>
+      <circle cx="90" cy="42" r="8" fill="#F4A898"/>
+      <circle cx="80" cy="32" r="8" fill="#F8B8A8"/>
+      <circle cx="80" cy="52" r="8" fill="#F4A898"/>
+      <circle cx="80" cy="42" r="5" fill="#E8D28A"/>
+      <rect x="77" y="52" width="6" height="16" rx="3" fill="#8DAE91"/>
+      <ellipse cx="80" cy="128" rx="58" ry="54" fill="#F8D8BA"/>
+      <!-- 手を広げて喜ぶ -->
+      <ellipse cx="22" cy="105" rx="14" ry="8" fill="#F8D8BA" transform="rotate(-30 22 105)"/>
+      <ellipse cx="138" cy="105" rx="14" ry="8" fill="#F8D8BA" transform="rotate(30 138 105)"/>
+      <ellipse cx="45" cy="136" rx="10" ry="6" fill="#E88878" opacity="0.55"/>
+      <ellipse cx="115" cy="136" rx="10" ry="6" fill="#E88878" opacity="0.55"/>
+      <circle cx="60" cy="116" r="4" fill="#2C2A26"/>
+      <circle cx="100" cy="116" r="4" fill="#2C2A26"/>
+      <circle cx="61.5" cy="114.5" r="1.4" fill="#fff"/>
+      <circle cx="101.5" cy="114.5" r="1.4" fill="#fff"/>
+      <ellipse cx="80" cy="148" rx="9" ry="6" fill="#2C2A26"/>
+      <ellipse cx="80" cy="150" rx="6" ry="3" fill="#F4A0A0"/>
+      <!-- 浮いてるので足位置高め -->
+      <ellipse cx="62" cy="186" rx="11" ry="4" fill="#E5C4A6"/>
+      <ellipse cx="98" cy="186" rx="11" ry="4" fill="#E5C4A6"/>
+      <!-- ジャンプしてるエフェクト (下の影) -->
+      <ellipse cx="80" cy="195" rx="22" ry="2" fill="#2C2A26" opacity="0.08"/>
+    </symbol>
+  </defs>
+</svg>
+
 <div id="app">
 
 <!-- ════════════════════════════════
@@ -589,6 +1124,7 @@ html, body {
   <!-- Welcome -->
   <div id="ob-welcome" class="ob-screen active">
     <div class="ob-body">
+      <svg class="ob-mascot" aria-hidden="true"><use href="#kodo-wave"/></svg>
       <div class="ob-logo">KODOCO</div>
       <div class="ob-logo-sub">今日どこいく？</div>
       <div class="ob-welcome-title">子連れで失敗しない<br>場所が、すぐわかる。</div>
@@ -678,7 +1214,11 @@ html, body {
 <div id="main-app">
 
   <div class="topbar">
-    <div class="topbar-logo">KODOCO <span>今日どこいく？</span></div>
+    <div class="topbar-logo">
+      <svg class="topbar-mark" aria-hidden="true" data-mascot="mark"><use href="#kodo-mark"/></svg>
+      <span class="topbar-brand">KODOCO</span>
+      <span class="topbar-sub">今日どこいく？</span>
+    </div>
     <button class="topbar-btn" onclick="openSettings()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg>
     </button>
@@ -693,6 +1233,7 @@ html, body {
 
       <!-- HERO: 今日のおすすめ1枚 -->
       <div class="hero-section" id="heroSection" onclick="openDetailFromHero()">
+        <svg class="hero-mascot" aria-hidden="true" data-mascot="standing"><use href="#kodo"/></svg>
         <div class="hero-photo" id="heroPhoto">
           <div class="hero-badge" id="heroBadge">今日はここで間違いない</div>
           <div style="font-size:52px;" id="heroEmoji">🌳</div>
@@ -720,6 +1261,14 @@ html, body {
           <div class="section-sub" id="routeSubCount">タグ別・厳選</div>
         </div>
         <div class="route-cards" id="routeCards"></div>
+      </div>
+
+      <!-- コドちゃんのひとこと -->
+      <div class="kodo-tip" id="kodoTip">
+        <svg class="kodo-tip-mascot" aria-hidden="true" data-mascot="standing"><use href="#kodo"/></svg>
+        <div class="kodo-tip-bubble">
+          <span id="kodoTipText">今日は天気がいいね！外で思いっきり遊ぼう 🌳</span>
+        </div>
       </div>
 
       <!-- Weather -->
@@ -783,6 +1332,13 @@ html, body {
       </div>
       <button class="filter-btn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></button>
     </div>
+    <div class="cat-filter-row" id="prefFilterRow">
+      <div class="cat-chip pref-chip active" onclick="filterPref(this,'all')">🗺 すべて</div>
+      <div class="cat-chip pref-chip" onclick="filterPref(this,'滋賀')">🏯 滋賀</div>
+      <div class="cat-chip pref-chip" onclick="filterPref(this,'nearby')">🚗 周辺</div>
+      <div class="cat-chip pref-chip" onclick="filterPref(this,'福井')">⚓ 福井</div>
+      <div class="cat-chip pref-chip" onclick="filterPref(this,'三重')">🏎 三重</div>
+    </div>
     <div class="cat-filter-row" id="catFilterRow">
       <div class="cat-chip active" onclick="filterCat(this)">すべて</div>
       <div class="cat-chip" onclick="filterCat(this)">🌳 公園</div>
@@ -801,7 +1357,7 @@ html, body {
   <div id="tab-fav" class="tab-content">
     <div class="scroll-area" id="favList">
       <div class="empty-state">
-        <div class="empty-icon">♡</div>
+        <svg class="empty-mascot" aria-hidden="true"><use href="#kodo"/></svg>
         <div class="empty-title">まだお気に入りがありません</div>
         <div class="empty-sub">スポットの♡をタップして追加しよう</div>
         <button class="empty-btn" onclick="switchTab('sagasu')">スポットを探す</button>
@@ -944,6 +1500,10 @@ html, body {
       </div>
 <div class="detail-title" id="detailTitle"></div>
       <div class="detail-value" id="detailValue"></div>
+      <div class="kodo-comment" id="kodoComment">
+        <svg class="kodo-comment-mascot" aria-hidden="true"><use href="#kodo"/></svg>
+        <div class="kodo-comment-bubble"><span id="kodoCommentText"></span></div>
+      </div>
       <div id="detailJudgment"></div>
       <div class="detail-facts" id="detailFacts"></div>
 
@@ -983,7 +1543,7 @@ html, body {
         <div class="age-tabs" id="detailAgeTabs"></div>
         <div id="voiceList"></div>
         <div class="voice-empty" id="voiceEmpty">
-          <div class="voice-empty-icon">👥</div>
+          <svg class="voice-empty-mascot" aria-hidden="true"><use href="#koto"/></svg>
           <div class="voice-empty-text" id="voiceEmptyText">まだ声がありません<br>最初の声を投稿してみましょう</div>
         </div>
       </div>
@@ -1050,15 +1610,32 @@ html, body {
 <!-- ROUTE DETAIL MODAL -->
 <div id="routeDetailModal">
   <div class="route-detail-sheet">
-    <div class="modal-handle" style="width:34px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 0;"></div>
-    <div class="route-detail-header">
-      <div>
-        <div class="route-detail-title" id="rdTitle"></div>
-      </div>
-      <button class="route-detail-close" onclick="closeRouteDetail()">✕</button>
+    <button class="route-detail-close" onclick="closeRouteDetail()">✕</button>
+    <div class="route-detail-cover" id="rdCover">
+      <div class="route-cover-emoji" id="rdEmoji">🗺</div>
+      <div class="route-cover-tag" id="rdTag">タグ</div>
+      <div class="route-cover-title" id="rdTitle">プラン名</div>
+      <div class="route-cover-meta" id="rdMeta"></div>
+      <svg class="route-cover-mascot" aria-hidden="true"><use id="rdMascotUse" href="#kodo"/></svg>
     </div>
-    <div id="rdTag"></div>
-    <div id="rdSpots"></div>
+    <div class="route-detail-body">
+      <div class="route-map-wrap">
+        <div id="rdMap" class="route-map"></div>
+        <div class="route-map-hint">🗺 ピンをタップでスポット詳細</div>
+      </div>
+      <div id="rdSpots"></div>
+      <div class="route-detail-footer">
+        <div class="route-footer-mascots">
+          <svg aria-hidden="true"><use href="#kodo"/></svg>
+          <svg class="koto" aria-hidden="true"><use href="#koto"/></svg>
+          <svg class="biwa" aria-hidden="true"><use href="#biwa"/></svg>
+        </div>
+        <div class="route-footer-text">
+          <strong>一緒にまわろう！</strong><br>
+          スポットをタップで詳細が開きます。
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1068,6 +1645,30 @@ html, body {
   <div class="settings-body">
     <div class="settings-section-title">お子さん情報</div>
     <div class="settings-card" id="settingsChildren"></div>
+
+    <div class="settings-section-title" style="margin-top:18px;">🏆 コドちゃんとのあしあと</div>
+    <div class="settings-card" id="settingsAchievements"></div>
+
+    <div class="settings-section-title" style="margin-top:18px;">🎨 お気に入りキャラ</div>
+    <div class="settings-card" id="settingsMascotPicker">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+        <button class="mascot-pick" data-pick="kodo" onclick="setMascotPref('kodo')">
+          <svg class="mascot-pick-mark" aria-hidden="true"><use href="#kodo-mark"/></svg>
+          <span>コドちゃん</span>
+        </button>
+        <button class="mascot-pick" data-pick="koto" onclick="setMascotPref('koto')">
+          <svg class="mascot-pick-mark" aria-hidden="true"><use href="#koto-mark"/></svg>
+          <span>コトちゃん</span>
+        </button>
+        <button class="mascot-pick" data-pick="biwa" onclick="setMascotPref('biwa')">
+          <svg class="mascot-pick-mark" aria-hidden="true"><use href="#biwa-mark"/></svg>
+          <span>ビワちゃん</span>
+        </button>
+      </div>
+      <div style="font-size:11px;color:var(--text-sub);line-height:1.6;padding:8px 4px 0;">
+        お気に入りのキャラを選ぶと、トップバー・ヒーロー右上・ひとこと・拍手アニメで登場します。
+      </div>
+    </div>
 
     <div class="settings-section-title" style="margin-top:18px;">データ</div>
     <div class="settings-card" style="display:flex;flex-direction:column;gap:8px;">
@@ -1928,6 +2529,162 @@ const SPOTS = [
     kidsSpace: false, privateRoom: false,
     rating:4.4, galleryBg:'linear-gradient(135deg,#e8e0f8,#d0c8f0)',
     ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.4123, lng:136.0234
+  },
+
+  // ═══════ 彦根エリア（滋賀） ═══════
+  {
+    id:'hikonejo', emoji:'🏯', name:'彦根城', cat:'ミュージアム・体験', catClass:'museum',
+    pref:'滋賀', loc:'彦根市', addr:'滋賀県彦根市金亀町1-1', hours:'8:30〜17:00', closed:'なし', price:'一般800円 / 小中400円',
+    desc:'国宝・彦根城。天守からの琵琶湖の眺めは絶景。ひこにゃんにも会えるかも。',
+    keywords:['国宝天守','ひこにゃん','城下町','石垣','玄宮園'],
+    play:['天守見学','ひこにゃん登場','玄宮園散策','お堀の白鳥','やぐら'],
+    highlight:'ひこにゃん登場時間は公式でチェック。階段多めでベビーカーは下まで。城下町散策とセットがおすすめ。',
+    rating:4.5, galleryBg:'linear-gradient(135deg,#e8d8b8,#d0b890)',
+    ageGroups:[3,4,5,6,7,8,9,10], lat:35.2763, lng:136.2518
+  },
+  {
+    id:'yumekyobashi', emoji:'🏘', name:'夢京橋キャッスルロード', cat:'カフェ・レストラン', catClass:'cafe',
+    pref:'滋賀', loc:'彦根市', addr:'滋賀県彦根市本町2', hours:'店舗による', closed:'店舗による', price:'店舗による',
+    desc:'彦根城前の江戸風城下町。白壁黒瓦の町並みで食べ歩きと散策が楽しい。',
+    keywords:['城下町','食べ歩き','近江牛','和菓子','ひこどらやき'],
+    play:['町並み散策','近江牛コロッケ','ひこどらやき','和菓子屋さん巡り'],
+    highlight:'子連れでゆっくり散策できる。ベンチも多い。駐車場は彦根城の大手前駐車場が便利。',
+    rating:4.3, galleryBg:'linear-gradient(135deg,#f0e0c8,#d8c0a0)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.2736, lng:136.2515
+  },
+  {
+    id:'yonbancho', emoji:'🏮', name:'四番町スクエア', cat:'カフェ・レストラン', catClass:'cafe',
+    pref:'滋賀', loc:'彦根市', addr:'滋賀県彦根市本町1-8', hours:'10:00〜18:00（店舗による）', closed:'店舗による', price:'無料',
+    desc:'昭和レトロな広場。屋根付き商店街で雨の日も歩ける。お土産屋・カフェが集結。',
+    keywords:['昭和レトロ','屋根付き','お土産','抹茶カフェ','近江屋'],
+    play:['商店街散策','抹茶ソフト','地元野菜マルシェ','ひこねのりんご飴'],
+    highlight:'雨の日でも楽しめる。小さな子どもも歩きやすい。ベンチ多めでおばあちゃん同伴でも安心。',
+    rating:4.1, galleryBg:'linear-gradient(135deg,#e8dac8,#c8b598)',
+    ageGroups:[0,1,2,3,4,5,6,7,8], lat:35.2728, lng:136.2494
+  },
+  {
+    id:'kojinyama', emoji:'🌲', name:'荒神山自然の家', cat:'ミュージアム・体験', catClass:'museum',
+    pref:'滋賀', loc:'彦根市', addr:'滋賀県彦根市清崎町1866', hours:'9:00〜17:00', closed:'月曜', price:'入園無料（体験別途）',
+    desc:'アスレチック・キャンプ・自然体験ができる彦根市南部の森。',
+    keywords:['アスレチック','キャンプ','自然体験','琵琶湖ビュー','展望台'],
+    play:['森のアスレチック','ネイチャークラフト','展望台ハイキング','自然観察'],
+    highlight:'予約制プログラムあり（要電話）。展望台からの琵琶湖の眺めが素晴らしい。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#c8e0c0,#a0c898)',
+    ageGroups:[3,4,5,6,7,8,9,10], lat:35.2334, lng:136.2197
+  },
+  {
+    id:'hikone_kodomo', emoji:'🎨', name:'彦根市子どもセンター', cat:'室内遊び場', catClass:'indoor',
+    pref:'滋賀', loc:'彦根市', addr:'滋賀県彦根市平田町670', hours:'9:00〜17:00', closed:'月曜・祝日翌日', price:'無料',
+    desc:'雨の日も安心の屋内遊び場。おもちゃ図書館・工作コーナー・プレイルームあり。',
+    keywords:['屋内','無料','工作','おもちゃ','雨の日OK'],
+    play:['プレイルーム','おもちゃ図書館','工作コーナー','絵本コーナー'],
+    highlight:'0歳から遊べる乳児コーナーあり。雨の日の定番。駐車場は隣接の市営利用。',
+    rating:4.0, galleryBg:'linear-gradient(135deg,#e8d0e0,#c8a8c0)',
+    ageGroups:[0,1,2,3,4,5,6], lat:35.2720, lng:136.2598
+  },
+
+  // ═══════ 福井エリア ═══════
+  {
+    id:'echizen_aquarium', emoji:'🐟', name:'越前松島水族館', cat:'ミュージアム・体験', catClass:'museum',
+    pref:'福井', loc:'坂井市', addr:'福井県坂井市三国町崎74-2-3', hours:'9:00〜17:30', closed:'なし', price:'大人2,200円 / 小中1,100円 / 幼児600円',
+    desc:'日本海を間近に望む水族館。ペンギンのお散歩やイルカショーが人気。触れる展示も多い。',
+    keywords:['ペンギン','イルカショー','タッチプール','日本海','さんごの海'],
+    play:['ペンギンお散歩','イルカショー','タッチプール','海の生き物観察'],
+    highlight:'体験型展示が多く、小さい子も飽きない。日本海ビューの屋外展示も必見。',
+    rating:4.4, galleryBg:'linear-gradient(135deg,#a8d8e8,#78b8d0)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:36.2420, lng:136.1427
+  },
+  {
+    id:'tsuruga_redbrick', emoji:'🚂', name:'敦賀赤レンガ倉庫', cat:'ミュージアム・体験', catClass:'museum',
+    pref:'福井', loc:'敦賀市', addr:'福井県敦賀市金ヶ崎町4-1', hours:'9:30〜17:30', closed:'水曜', price:'ジオラマ館400円',
+    desc:'明治の赤レンガ倉庫をリノベ。ジオラマ館（鉄道＆街）とレストラン街。',
+    keywords:['赤レンガ','鉄道ジオラマ','レストラン','港町','ノスタルジー'],
+    play:['鉄道ジオラマ鑑賞','レストラン街','港散策','敦賀ムゼウム隣接'],
+    highlight:'鉄道好きの子どもに刺さる。食事もできるので昼食込みで計画可能。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#e8b098,#d08870)',
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.6518, lng:136.0614
+  },
+  {
+    id:'kehi_jingu', emoji:'⛩', name:'氣比神宮', cat:'ミュージアム・体験', catClass:'museum',
+    pref:'福井', loc:'敦賀市', addr:'福井県敦賀市曙町11-68', hours:'5:00〜17:00', closed:'なし', price:'無料',
+    desc:'北陸道総鎮守。日本三大木造大鳥居のひとつ。子連れでも落ち着いて参拝できる広い境内。',
+    keywords:['神社','大鳥居','参拝','御朱印','静か'],
+    play:['大鳥居くぐり','境内散策','御朱印','手水','亀の池'],
+    highlight:'境内が広く、小さい子も歩きやすい。ベビーカーでも段差少なく進める。',
+    rating:4.3, galleryBg:'linear-gradient(135deg,#d8c8a0,#b8a880)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.6504, lng:136.0719
+  },
+  {
+    id:'angel_land', emoji:'🔭', name:'エンゼルランドふくい', cat:'ミュージアム・体験', catClass:'museum',
+    pref:'福井', loc:'坂井市', addr:'福井県坂井市春江町東太郎丸3-1', hours:'9:30〜17:00', closed:'月曜', price:'大人400円 / 中学生以下無料',
+    desc:'福井県児童科学館。科学体験・プラネタリウム・屋外ジップラインと大型遊具。',
+    keywords:['科学館','プラネタリウム','ジップライン','大型遊具','無料エリアあり'],
+    play:['科学体験','プラネタリウム','屋外ジップライン','ふわふわドーム'],
+    highlight:'屋外のふわふわドームが子どもに大人気。プラネタリウムは要時間確認。食事持ち込みOK。',
+    rating:4.5, galleryBg:'linear-gradient(135deg,#c8c0e8,#a098d0)',
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:36.1667, lng:136.2547
+  },
+  {
+    id:'obama_marina', emoji:'⚓', name:'マーメイドテラス（小浜）', cat:'カフェ・レストラン', catClass:'cafe',
+    pref:'福井', loc:'小浜市', addr:'福井県小浜市川崎1-3-2', hours:'9:00〜17:00', closed:'火曜', price:'入場無料',
+    desc:'小浜湾沿いのフィッシャーマンズワーフ。海鮮グルメと海辺散策が楽しめる。',
+    keywords:['港','海鮮','遊覧船','フィッシャーマンズワーフ','海辺'],
+    play:['港散策','海鮮ランチ','遊覧船','海風を浴びる'],
+    highlight:'遊覧船もあり、海好きな子には特別感。海鮮ランチは日によって混雑するので早めに。',
+    rating:4.0, galleryBg:'linear-gradient(135deg,#a8d0e0,#78a8c0)',
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.4966, lng:135.7479
+  },
+
+  // ═══════ 三重エリア ═══════
+  {
+    id:'suzuka_park', emoji:'🏎', name:'鈴鹿サーキットパーク', cat:'ミュージアム・体験', catClass:'museum',
+    pref:'三重', loc:'鈴鹿市', addr:'三重県鈴鹿市稲生町7992', hours:'10:00〜17:00（季節変動）', closed:'不定休', price:'入場1,600円〜（乗り物別）',
+    desc:'サーキット併設の家族向けテーマパーク。カート・アトラクション・プールが充実。',
+    keywords:['カート','アトラクション','プール','F1','モータースポーツ'],
+    play:['キッズカート','子ども向けアトラクション','プール（夏）','おしごとたいけん'],
+    highlight:'カートは身長制限あり要確認。早め来場がおすすめ。駐車場広め。',
+    rating:4.4, galleryBg:'linear-gradient(135deg,#f0a0a0,#d07878)',
+    ageGroups:[3,4,5,6,7,8,9,10], lat:34.8432, lng:136.5371
+  },
+  {
+    id:'yokkaichi_sports', emoji:'⛰', name:'四日市スポーツランド', cat:'公園', catClass:'park',
+    pref:'三重', loc:'四日市市', addr:'三重県四日市市桜町9868-37', hours:'9:00〜17:00', closed:'火曜', price:'大人320円 / 小中160円',
+    desc:'大型アスレチック・ゴーカート・スライダーなど総合アミューズメントな森の公園。',
+    keywords:['大型アスレチック','ゴーカート','スライダー','森','1日遊べる'],
+    play:['アスレチックコース','ゴーカート','芝ソリすべり','森の散策'],
+    highlight:'1日遊べる規模。水分多めに用意。弁当持参OK、屋内食事スペースあり。',
+    rating:4.3, galleryBg:'linear-gradient(135deg,#b8d8a8,#90b080)',
+    ageGroups:[3,4,5,6,7,8,9,10], lat:34.9734, lng:136.6125
+  },
+  {
+    id:'iga_ninja', emoji:'🥷', name:'伊賀流忍者博物館', cat:'ミュージアム・体験', catClass:'museum',
+    pref:'三重', loc:'伊賀市', addr:'三重県伊賀市上野丸之内117', hours:'9:30〜17:00', closed:'12/29〜1/1', price:'大人800円 / 小中500円',
+    desc:'本物の忍者屋敷＋忍術実演ショー＋手裏剣体験。忍者好きにはたまらない。',
+    keywords:['忍者屋敷','からくり','手裏剣','忍術ショー','伊賀'],
+    play:['忍者屋敷見学','忍術実演ショー','手裏剣打ち体験','忍者衣装で記念撮影'],
+    highlight:'忍術ショーは時間指定あり・別料金。手裏剣体験は子どもも楽しめる。',
+    rating:4.3, galleryBg:'linear-gradient(135deg,#c0c0c0,#808080)',
+    ageGroups:[4,5,6,7,8,9,10], lat:34.7693, lng:136.1309
+  },
+  {
+    id:'nabana_sato', emoji:'🌸', name:'なばなの里', cat:'ミュージアム・体験', catClass:'museum',
+    pref:'三重', loc:'桑名市', addr:'三重県桑名市長島町駒江漆畑270', hours:'10:00〜21:00（季節変動）', closed:'不定休', price:'大人2,500円（金券1,000円付）',
+    desc:'四季の花とイルミネーションの里。子どもでも感動する規模の花畑とライトアップ。',
+    keywords:['花畑','イルミネーション','チューリップ','四季','レストラン'],
+    play:['花畑散策','イルミネーション鑑賞','アイランド富士（展望台）','園内レストラン'],
+    highlight:'冬〜春のイルミ期間は激混。平日昼がおすすめ。広いのでベビーカー必須。',
+    rating:4.4, galleryBg:'linear-gradient(135deg,#f0b8d0,#d088a8)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1116, lng:136.6614
+  },
+  {
+    id:'menard_aoyama', emoji:'🌿', name:'メナード青山リゾート', cat:'ミュージアム・体験', catClass:'museum',
+    pref:'三重', loc:'伊賀市', addr:'三重県伊賀市霧生2356', hours:'10:00〜17:00（季節変動）', closed:'不定休', price:'ハーブガーデン500円',
+    desc:'広大なハーブガーデンと体験教室。ラベンダー畑は夏の名物。子ども向けクラフトも。',
+    keywords:['ハーブ','ラベンダー','体験教室','リゾート','高原'],
+    play:['ハーブガーデン散策','ラベンダー摘み（夏）','クラフト体験','テラスカフェ'],
+    highlight:'標高が高く夏でも涼しい。アクセスは車推奨。食事もリゾート内で完結。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#d0c0e8,#a890c0)',
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:34.6575, lng:136.1958
   }
 ];
 
@@ -2172,6 +2929,43 @@ const ROUTE_PLANS = [
       { time: '14:00', name: '高島市周辺散策', note: '犬の疲れ具合を見て判断' },
     ]
   },
+  {
+    tag: '🌊 琵琶湖まるごと',
+    title: '湖畔でのんびり1日プラン',
+    time: '約5時間',
+    weather: 'sunny',
+    coverKey: 'water',
+    steps: [
+      { time: '10:00', name: 'なぎさ公園', note: '湖沿い散策ウォーク' },
+      { time: '12:00', name: 'シャーレ水ヶ浜', note: '湖を眺めながらランチ' },
+      { time: '14:00', name: '草津川跡地公園', note: 'のんびりピクニック' },
+      { time: '16:00', name: '矢橋帰帆島公園', note: '夕方まで遊んで帰る' },
+    ]
+  },
+  {
+    tag: '🎨 体験デイ',
+    title: '学び×遊びプラン',
+    time: '約4時間',
+    weather: 'any',
+    coverKey: 'indoor',
+    steps: [
+      { time: '10:00', name: '大津市科学館', note: 'プラネタリウムで宇宙体験' },
+      { time: '12:00', name: 'ランチ（近隣カフェ）', note: '軽めランチで休憩' },
+      { time: '14:00', name: 'ASOBLEオーミー大津', note: '午後は体をうごかす' },
+    ]
+  },
+  {
+    tag: '🌿 自然たっぷり',
+    title: '森と風と子どもプラン',
+    time: '約4時間',
+    weather: 'sunny',
+    coverKey: 'nature',
+    steps: [
+      { time: '10:00', name: '皇子が丘公園', note: '木陰の遊具で遊ぶ' },
+      { time: '12:00', name: 'テイクアウトランチ', note: '公園でピクニック' },
+      { time: '14:00', name: 'なぎさ公園', note: '湖風を感じながら散歩' },
+    ]
+  },
 ];
 
 // ── STATE ────────────────────────────────────────────────────
@@ -2207,6 +3001,7 @@ function loadState() {
 const APP_VERSION = 'kodoco-hybrid-1.0';
 document.addEventListener('DOMContentLoaded', () => {
   initFirebase();
+  if (typeof applyMascotPref === 'function') applyMascotPref();
   if (localStorage.getItem('kodoco_version') !== APP_VERSION) {
     localStorage.removeItem('kodoco_state');
     localStorage.setItem('kodoco_version', APP_VERSION);
@@ -2322,6 +3117,7 @@ function initApp() {
   buildWeather();
   buildRoutePlans();
   buildHero();
+  updateKodoTip();
   buildSpotList();
   buildSagasuList();
   buildDiaryAgeTags();
@@ -2582,7 +3378,7 @@ function buildHero() {
   const child = state.children[state.activeChild];
   const age = child ? child.age : 2;
   let pool = SPOTS.filter(s => s.ageGroups.includes(age));
-  if (state.weather === 'rainy') pool = pool.filter(s => s.facilities.includes('雨の日OK') || s.catClass === 'indoor' || s.catClass === 'museum');
+  if (state.weather === 'rainy') pool = pool.filter(s => (s.facilities || []).includes('雨の日OK') || s.catClass === 'indoor' || s.catClass === 'museum');
   if (state.time === 'short') pool = pool.filter(s => { const f = SPOT_FACTS[s.id]; return f && f.stay && f.stay.includes('1'); });
   if (state.dog) pool = pool.filter(s => { const f = SPOT_FACTS[s.id]; return (f && f.dogOk) || (s.dogInfo && s.dogInfo.ok); });
   const pick = pool[Math.floor(Math.random() * Math.min(pool.length, 5))] || pool[0];
@@ -2604,7 +3400,7 @@ function buildHero() {
   document.getElementById('heroNg').style.display = j.ng ? 'flex' : 'none';
   // chips
   const chipsCont = document.getElementById('heroChips');
-  chipsCont.innerHTML = pick.sense.map(s => '<span class="hero-chip">' + s + '</span>').join('');
+  chipsCont.innerHTML = (pick.sense || []).map(s => '<span class="hero-chip">' + s + '</span>').join('');
   // meta
   const metaCont = document.getElementById('heroMeta');
   const metaItems = [];
@@ -2636,31 +3432,67 @@ function buildRoutePlans() {
   });
 }
 
+// タグ→カバーのスタイル設定（色 / 絵文字 / マスコット / コネクター）
+const ROUTE_COVER_PRESETS = {
+  sunny:  { emoji: '☀️', mascot: '#kodo-wave', connector: '🚶' },
+  rainy:  { emoji: '☔',  mascot: '#koto',      connector: '☂️' },
+  short:  { emoji: '⏱',   mascot: '#koto-jump', connector: '🏃' },
+  dog:    { emoji: '🐕',  mascot: '#kodo',      connector: '🐾' },
+  indoor: { emoji: '🏠',  mascot: '#koto',      connector: '🚶' },
+  water:  { emoji: '🌊',  mascot: '#biwa',      connector: '💦' },
+  nature: { emoji: '🌿',  mascot: '#kodo',      connector: '🌱' },
+  default:{ emoji: '🗺',  mascot: '#kodo',      connector: '🚶' },
+};
+function _routeCoverKey(plan) {
+  if (plan.coverKey) return plan.coverKey;
+  const t = (plan.tag || '').toLowerCase();
+  if (/雨|rain/.test(plan.tag)) return 'rainy';
+  if (/30分|短|サクッ/.test(plan.tag)) return 'short';
+  if (/犬|dog/.test(plan.tag)) return 'dog';
+  if (/屋内|室内|indoor/.test(plan.tag)) return 'indoor';
+  if (/水|湖|琵琶|water/.test(plan.tag + plan.title)) return 'water';
+  if (/自然|森|nature/.test(plan.tag + plan.title)) return 'nature';
+  if (plan.weather === 'sunny') return 'sunny';
+  return 'default';
+}
+
 function openRouteDetail(plan) {
+  const key = _routeCoverKey(plan);
+  const preset = ROUTE_COVER_PRESETS[key] || ROUTE_COVER_PRESETS.default;
+  const cover = document.getElementById('rdCover');
+  cover.className = 'route-detail-cover ' + key;
+  document.getElementById('rdEmoji').textContent = preset.emoji;
+  document.getElementById('rdTag').textContent = plan.tag;
   document.getElementById('rdTitle').textContent = plan.title;
-  document.getElementById('rdTag').innerHTML = '<span class="route-detail-tag">' + plan.tag + '</span><span class="route-detail-time">⏱ ' + plan.time + '</span>';
+  document.getElementById('rdMeta').innerHTML =
+    '<span>⏱ ' + plan.time + '</span>'
+    + '<span>·</span>'
+    + '<span>📍 ' + plan.steps.length + 'スポット</span>';
+  document.getElementById('rdMascotUse').setAttribute('href', preset.mascot);
+
   const cont = document.getElementById('rdSpots');
   cont.innerHTML = '';
   plan.steps.forEach((step, i) => {
-    // スポットを名前で検索
     const spot = SPOTS.find(s => s.name === step.name || s.name.includes(step.name) || step.name.includes(s.name.substring(0, 6)));
     const j = spot ? (JUDGMENT[spot.id] || {}) : {};
     const facts = spot ? (SPOT_FACTS[spot.id] || {}) : {};
-    // スポット詳細アイテム
     const item = document.createElement('div');
     item.className = 'route-spot-item';
     const factBadges = [];
     if (facts.ageMin) factBadges.push('<span style="font-size:10px;background:var(--green-light);color:var(--green);padding:2px 6px;border-radius:4px;">👶' + facts.ageMin + '</span>');
     if (facts.rain)   factBadges.push('<span style="font-size:10px;background:var(--green-light);color:var(--green);padding:2px 6px;border-radius:4px;">🌧雨OK</span>');
     if (facts.dogOk)  factBadges.push('<span style="font-size:10px;background:#fff8e0;color:#7a5c1a;padding:2px 6px;border-radius:4px;">🐕犬OK</span>');
-    item.innerHTML = '<div class="route-spot-inner">'
-      + '<div class="route-spot-thumb" style="background:' + (spot ? spot.galleryBg : 'var(--bg)') + ';">' + (spot ? spot.emoji : '📍') + '</div>'
+    const stepNum = String(i + 1).padStart(2, '0');
+    item.innerHTML =
+      '<div class="route-spot-step">' + stepNum + '</div>'
+      + '<div class="route-spot-inner">'
+      + '<div class="route-spot-thumb" style="background:' + (spot ? spot.galleryBg : 'var(--bg-warm, #F3EEE4)') + ';">' + (spot ? spot.emoji : '📍') + '</div>'
       + '<div class="route-spot-info">'
       + (step.time !== '─' ? '<div class="route-spot-time">🕐 ' + step.time + '</div>' : '')
       + '<div class="route-spot-name">' + step.name + '</div>'
       + '<div class="route-spot-note">' + step.note + '</div>'
       + (j.conclusion ? '<div class="route-spot-conclusion">' + j.conclusion + '</div>' : '')
-      + (factBadges.length ? '<div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:5px;">' + factBadges.join('') + '</div>' : '')
+      + (factBadges.length ? '<div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:6px;">' + factBadges.join('') + '</div>' : '')
       + '</div>'
       + '<div class="route-spot-arrow">›</div>'
       + '</div>';
@@ -2668,15 +3500,70 @@ function openRouteDetail(plan) {
       item.addEventListener('click', () => { closeRouteDetail(); setTimeout(() => openDetail(spot.id), 300); });
     }
     cont.appendChild(item);
-    // コネクター（最後以外）
     if (i < plan.steps.length - 1) {
       const conn = document.createElement('div');
       conn.className = 'route-connector';
-      conn.innerHTML = '<div class="route-connector-line"></div><span>↓ 移動</span><div class="route-connector-line"></div>';
+      conn.innerHTML = '<div class="route-connector-line"></div><span class="route-connector-ico">' + preset.connector + '</span><span>移動</span><div class="route-connector-line"></div>';
       cont.appendChild(conn);
     }
   });
   document.getElementById('routeDetailModal').style.display = 'flex';
+
+  // ─ 地図描画：プランのスポット座標をつないで表示 ─
+  setTimeout(() => renderRouteMap(plan, preset), 60);
+}
+
+let _routeMap = null;
+let _routeMapLayers = [];
+function renderRouteMap(plan, preset) {
+  const el = document.getElementById('rdMap');
+  if (!el || typeof L === 'undefined') return;
+  // 既存マップをリセット
+  if (_routeMap) {
+    _routeMapLayers.forEach(lyr => { try { _routeMap.removeLayer(lyr); } catch(_){} });
+    _routeMapLayers = [];
+  } else {
+    _routeMap = L.map(el, { zoomControl: true, attributionControl: false, scrollWheelZoom: false });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      subdomains: 'abcd', maxZoom: 18
+    }).addTo(_routeMap);
+  }
+  _routeMap.invalidateSize();
+
+  // プランのスポット座標を抽出
+  const coords = [];
+  plan.steps.forEach((step, i) => {
+    const spot = SPOTS.find(s => s.name === step.name || s.name.includes(step.name) || step.name.includes(s.name.substring(0, 6)));
+    if (spot && typeof spot.lat === 'number' && typeof spot.lng === 'number') {
+      coords.push({ latlng: [spot.lat, spot.lng], step: i + 1, name: step.name, spot });
+    }
+  });
+  if (!coords.length) return;
+
+  // ルートライン（dashed）
+  const line = L.polyline(coords.map(c => c.latlng), {
+    color: '#5B7F61', weight: 3.5, opacity: 0.85, dashArray: '6 8', lineCap: 'round'
+  }).addTo(_routeMap);
+  _routeMapLayers.push(line);
+
+  // 番号付きマーカー
+  coords.forEach(c => {
+    const icon = L.divIcon({
+      html: '<div class="route-map-marker">' + c.step + '</div>',
+      className: '',
+      iconSize: [26, 26], iconAnchor: [13, 13]
+    });
+    const m = L.marker(c.latlng, { icon }).addTo(_routeMap);
+    m.bindPopup('<div style="font-family:inherit;min-width:140px;">'
+      + '<div style="font-weight:700;font-size:12px;margin-bottom:6px;">' + c.step + '. ' + (c.spot.emoji || '📍') + ' ' + c.name + '</div>'
+      + '<button onclick="closeRouteDetail();setTimeout(()=>openDetail(\'' + c.spot.id + '\'),300);" style="width:100%;padding:7px;background:#5B7F61;color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">詳細を見る →</button>'
+      + '</div>');
+    _routeMapLayers.push(m);
+  });
+
+  // 全ピンが収まるようにズーム
+  const bounds = L.latLngBounds(coords.map(c => c.latlng));
+  _routeMap.fitBounds(bounds, { padding: [28, 28], maxZoom: 13 });
 }
 function closeRouteDetail() {
   document.getElementById('routeDetailModal').style.display = 'none';
@@ -2689,9 +3576,32 @@ function triggerRefresh() {
   for (let i = 0; i < 3; i++) {
     cont.innerHTML += '<div class="skeleton-card"><div class="skeleton-photo"></div><div class="skeleton-body"><div class="skeleton-line" style="width:55%"></div><div class="skeleton-line" style="width:35%"></div><div class="skeleton-line" style="width:80%"></div></div></div>';
   }
-  cont.innerHTML += '<div class="loading-text"><span class="loading-spinner"></span>読み込み中...</div>';
+  cont.innerHTML += '<div class="loading-text"><svg class="loading-kodo" aria-hidden="true"><use href="#kodo-mark"/></svg>コドちゃんが選んでるよ...</div>';
+  updateKodoTip();
   setTimeout(() => { buildHero(); buildSpotList(); }, 500);
 }
+
+// コドちゃんからのひとこと — 状態に応じて文言を切替
+const KODO_TIPS = {
+  sunny_half:  ['晴れの半日、思いっきり外で走り回れる日！🌳', '今日は公園が気持ちいいよ。お水わすれずにね 💧', '陽ざしが強めだから帽子忘れないで〜 ☀️'],
+  sunny_short: ['サクッと1時間、近所の公園はどう？🌳', '短い時間でも外の空気で気分転換！🍃'],
+  rainy_half:  ['雨の日は室内であそぼう！☔', '屋根のあるスポットで、のびのび遊ぼう 🏠', '雨の日こそ穴場が空いてるよ ✨'],
+  rainy_short: ['ちょい時間、屋内カフェでまったり？☕', '短時間なら、雨でも平気な室内がいいね 🏠'],
+  dog:         ['ワンちゃんと一緒、楽しみだね 🐕', '犬連れOKのスポットから選んであげる！🐾'],
+  default:     ['今日はどこいく？一緒にきめよう！🌿', 'いい日になりますように ☺️', '外にでるだけで気分上がるよね 🌼'],
+};
+function updateKodoTip() {
+  const el = document.getElementById('kodoTipText');
+  if (!el) return;
+  let key = 'default';
+  if (state.dog) key = 'dog';
+  else if (state.weather && state.time) key = state.weather + '_' + state.time;
+  const tips = KODO_TIPS[key] || KODO_TIPS.default;
+  el.textContent = tips[Math.floor(Math.random() * tips.length)];
+}
+
+// pref が未設定のスポットはすべて '滋賀' として扱う
+function spotPref(s) { return s.pref || '滋賀'; }
 
 function buildSpotList() {
   const child = state.children[state.activeChild];
@@ -2705,11 +3615,49 @@ function buildSpotList() {
     const f = SPOT_FACTS[s.id];
     return (f && f.dogOk) || (s.dogInfo && s.dogInfo.ok);
   });
-  // exclude hero
   if (state._heroPick) filtered = filtered.filter(s => s.id !== state._heroPick);
-  document.getElementById('spotListTitle').textContent = 'その他のスポット（' + filtered.length + '件）';
-  filtered.forEach(s => cont.appendChild(buildSpotCard(s, false, age)));
-  if (filtered.length === 0) cont.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text-light);font-size:14px;">このカテゴリのスポットは準備中です</div>';
+
+  // 滋賀と周辺エリアで分割
+  const shigaSpots = filtered.filter(s => spotPref(s) === '滋賀');
+  const nearbySpots = filtered.filter(s => spotPref(s) !== '滋賀');
+
+  document.getElementById('spotListTitle').textContent = 'その他のスポット（' + shigaSpots.length + '件）';
+  // 年齢がぴったりマッチする最初の2件に「おすすめ」バッジ
+  const recIds = new Set(shigaSpots.slice(0, 2).map(s => s.id));
+  shigaSpots.forEach(s => cont.appendChild(buildSpotCard(s, recIds.has(s.id), age)));
+  if (shigaSpots.length === 0) {
+    const empty = document.createElement('div');
+    empty.style.cssText = 'text-align:center;padding:32px;color:var(--text-light);font-size:14px;';
+    empty.textContent = 'このカテゴリのスポットは準備中です';
+    cont.appendChild(empty);
+  }
+
+  // 周辺エリア（福井・三重など）
+  if (nearbySpots.length > 0) {
+    const header = document.createElement('div');
+    header.className = 'nearby-header';
+    header.innerHTML =
+      '<svg class="nearby-header-mascot" aria-hidden="true"><use href="#koto"/></svg>'
+      + '<div class="nearby-header-text">'
+      + '<div class="nearby-header-title">🚗 周辺エリアのスポット</div>'
+      + '<div class="nearby-header-sub">福井・三重まで足をのばす（' + nearbySpots.length + '件）</div>'
+      + '</div>';
+    cont.appendChild(header);
+
+    // prefごとにまとめる
+    const byPref = {};
+    nearbySpots.forEach(s => {
+      const p = spotPref(s);
+      (byPref[p] = byPref[p] || []).push(s);
+    });
+    Object.keys(byPref).forEach(pref => {
+      const label = document.createElement('div');
+      label.className = 'nearby-pref-label';
+      label.textContent = pref + '（' + byPref[pref].length + '件）';
+      cont.appendChild(label);
+      byPref[pref].forEach(s => cont.appendChild(buildSpotCard(s, false, age)));
+    });
+  }
 }
 
 function buildSpotCard(s, isRec, age) {
@@ -2737,7 +3685,7 @@ function buildSpotCard(s, isRec, age) {
 
   const hasPhoto = !!spotPhotoSrc(s);
   div.innerHTML = '<div class="spot-photo" style="background:' + spotBackgroundCss(s) + ';">'
-    + (isRec ? '<div class="rec-badge-card">◎ ' + age + '歳におすすめ</div>' : '')
+    + (isRec ? '<div class="rec-badge-card"><svg class="rec-badge-mark" aria-hidden="true"><use href="#kodo-mark"/></svg>◎ ' + age + '歳におすすめ</div>' : '')
     + (hasPhoto ? '' : '<div class="spot-emoji-lg">' + s.emoji + '</div>')
     /* placeholder note removed — photos now load from spot.photoUrl or Picsum fallback */
     + '<div class="spot-photo-arr">›</div>'
@@ -2816,9 +3764,9 @@ function restoreUiState() {
   // search query
   const input = document.getElementById('searchInput');
   if (input && ui.sagasuQ) { input.value = ui.sagasuQ; }
-  // category chip
+  // category chip (cat-filter-row のみ。エリア列は別管理)
   if (ui.sagasuChip) {
-    const chips = document.querySelectorAll('#tab-sagasu .cat-chip');
+    const chips = document.querySelectorAll('#catFilterRow .cat-chip');
     chips.forEach(c => c.classList.toggle('active', c.textContent.trim() === ui.sagasuChip));
   }
   // active tab (only if valid) — on desktop the Map tab is redundant with
@@ -2834,7 +3782,7 @@ function restoreUiState() {
 function toggleHeart(btn, id) {
   const liked = state.likes.includes(id);
   if (liked) { state.likes = state.likes.filter(x => x !== id); btn.classList.remove('liked'); btn.textContent = '♡'; }
-  else { state.likes.push(id); btn.classList.add('liked'); btn.textContent = '♥'; }
+  else { state.likes.push(id); btn.classList.add('liked'); btn.textContent = '♥'; kodoCheer(); }
   saveState();
   if (document.getElementById('tab-fav').classList.contains('active')) renderFavList();
 }
@@ -2849,7 +3797,7 @@ function renderFavList() {
   const age = child ? child.age : 2;
   const liked = SPOTS.filter(s => state.likes.includes(s.id));
   if (liked.length === 0) {
-    cont.innerHTML = '<div class="empty-state"><div class="empty-icon">♡</div><div class="empty-title">まだお気に入りがありません</div><div class="empty-sub">スポットの♡をタップして追加しよう</div><button class="empty-btn" onclick="switchTab(\'sagasu\')">スポットを探す</button></div>';
+    cont.innerHTML = '<div class="empty-state"><svg class="empty-mascot" aria-hidden="true"><use href="#kodo"/></svg><div class="empty-title">まだお気に入りがありません</div><div class="empty-sub">スポットの♡をタップして追加しよう</div><button class="empty-btn" onclick="switchTab(\'sagasu\')">スポットを探す</button></div>';
     return;
   }
   const hdr = document.createElement('div');
@@ -2882,23 +3830,39 @@ function initMap() {
 }
 
 // ── SAGASU ────────────────────────────────────────────────────
-function buildSagasuList() { renderSagasuCards(SPOTS); }
+let _prefFilter = 'all';
+function buildSagasuList() {
+  renderSagasuCards(SPOTS);
+  const cnt = document.getElementById('searchCount');
+  if (cnt) cnt.textContent = SPOTS.length + '件';
+}
 function filterCat(chip) {
-  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+  // カテゴリチップのみactive切り替え（エリアchipには触れない）
+  document.querySelectorAll('#catFilterRow .cat-chip').forEach(c => c.classList.remove('active'));
   chip.classList.add('active');
+  doSearch();
+}
+function filterPref(chip, pref) {
+  document.querySelectorAll('#prefFilterRow .pref-chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  _prefFilter = pref;
   doSearch();
 }
 function doSearch() {
   const q = document.getElementById('searchInput').value.toLowerCase();
-  const activeChip = document.querySelector('#tab-sagasu .cat-chip.active');
+  const activeChip = document.querySelector('#catFilterRow .cat-chip.active');
   const chipText = activeChip ? activeChip.textContent.trim() : 'すべて';
   const catMap = { '🌳 公園':'公園', '🏠 室内遊び場':'室内遊び場', '☕ カフェ':'カフェ・レストラン', '🍽 ご飯':'ご飯・レストラン', '🎨 体験':'ミュージアム・体験', '🐕 犬連れ':'犬連れOK', '🏊 水遊び':'水遊び' };
   let filtered = SPOTS;
+  // エリア絞り込み
+  if (_prefFilter === '滋賀') filtered = filtered.filter(s => spotPref(s) === '滋賀');
+  else if (_prefFilter === 'nearby') filtered = filtered.filter(s => spotPref(s) !== '滋賀');
+  else if (_prefFilter && _prefFilter !== 'all') filtered = filtered.filter(s => spotPref(s) === _prefFilter);
   if (catMap[chipText]) filtered = filtered.filter(s => s.cat === catMap[chipText]);
-  if (q) filtered = filtered.filter(s => s.name.includes(q) || s.loc.includes(q) || s.desc.includes(q) || s.keywords.some(k => k.includes(q)));
+  if (q) filtered = filtered.filter(s => (s.name||'').includes(q) || (s.loc||'').includes(q) || (s.desc||'').includes(q) || (s.keywords||[]).some(k => k.includes(q)));
   renderSagasuCards(filtered);
   document.getElementById('searchCount').textContent = filtered.length + '件';
-  writeUiState({ sagasuQ: q, sagasuChip: chipText });
+  writeUiState({ sagasuQ: q, sagasuChip: chipText, prefFilter: _prefFilter });
 }
 function renderSagasuCards(spots) {
   const cont = document.getElementById('sagasuList');
@@ -2927,7 +3891,7 @@ function renderSagasuCards(spots) {
     }
     cont.innerHTML = `
       <div class="empty-state">
-        <div class="empty-icon">🔍</div>
+        <svg class="empty-mascot" aria-hidden="true"><use href="#biwa"/></svg>
         <div class="empty-title">${title}</div>
         ${hint ? `<div class="empty-sub">${hint}</div>` : ''}
         <button class="empty-action" onclick="resetSagasuFilters()">条件をリセット</button>
@@ -3009,7 +3973,7 @@ function pickFeeling(btn) {
   btn.closest('.feeling-row').querySelectorAll('.feeling-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }
-function submitDiary() {
+async function submitDiary() {
   if (!diarySelectedSpot) { alert('スポットを選択してください'); return; }
   const feeling = document.querySelector('#diary-step2 .feeling-btn.active');
   const comment = document.querySelector('#diary-step2 textarea');
@@ -3025,14 +3989,14 @@ function submitDiary() {
     comment: comment ? comment.value.trim() : '',
     tags, date, id: Date.now()
   };
-  const voices = loadVoices();
-  voices.push(voice);
-  saveVoices(voices);
-  alert('口コミをありがとうございます！🎉\n「' + diarySelectedSpot.name + '」への声が登録されました。');
+  await submitVoiceCloud(voice);
+  const spotName = diarySelectedSpot.name;
   diarySelectedSpot = null;
   clearDiarySpot();
   buildDiarySpotList();
   diaryNext(1);
+  kodoCheer();
+  toast('「' + spotName + '」への声、ありがとう！');
 }
 function openNewSpotModal() { document.getElementById('newSpotModal').style.display = 'flex'; }
 function closeNewSpotModal() { document.getElementById('newSpotModal').style.display = 'none'; }
@@ -3094,6 +4058,8 @@ function openDetail(id) {
   document.getElementById('detailCat').className = 'spot-cat ' + s.catClass;
   document.getElementById('detailLoc').textContent = '📍 ' + s.loc;
   document.getElementById('detailValue').textContent = value;
+  const kodoCommentEl = document.getElementById('kodoCommentText');
+  if (kodoCommentEl) kodoCommentEl.textContent = kodoSpotComment(s.cat, s.catClass);
   // JUDGMENT追加
   const j2 = JUDGMENT[id] || {};
   let jHtml = '';
@@ -3134,7 +4100,7 @@ function openDetail(id) {
   else       fb.push('<div class="fact-badge ng">🐕 犬NG</div>');
   factsCont.innerHTML = fb.join('');
 
-  document.getElementById('detailPlayTags').innerHTML = s.play.map(p => '<span class="play-tag">' + p + '</span>').join('');
+  document.getElementById('detailPlayTags').innerHTML = (s.play || []).map(p => '<span class="play-tag">' + p + '</span>').join('');
 
   // dog info
   const dogBox = document.getElementById('detailDogBox');
@@ -3554,12 +4520,93 @@ async function submitVoice() {
   renderVoiceList(spotId, tabs[tabIdx]);
   // ダイアリータブのスポットリストも更新
   buildDiarySpotList();
-  alert('投稿ありがとうございます！🎉');
+  kodoCheer();
+  toast('投稿ありがとうございます！');
 }
 
 // ── SETTINGS ─────────────────────────────────────────────────
-function openSettings() { renderSettingsChildren(); document.getElementById('settingsOverlay').classList.add('open'); }
+function openSettings() {
+  renderSettingsChildren();
+  renderAchievements();
+  renderMascotPicker();
+  document.getElementById('settingsOverlay').classList.add('open');
+}
 function closeSettings() { document.getElementById('settingsOverlay').classList.remove('open'); }
+
+// ── 達成バッジ ─────────────────────────────────────────
+function _tierOf(n) {
+  if (n >= 20) return '🏆';
+  if (n >= 10) return '🥇';
+  if (n >= 5)  return '🥈';
+  if (n >= 1)  return '🥉';
+  return '';
+}
+function _nextMilestone(n) {
+  const stops = [1, 5, 10, 20];
+  for (const s of stops) if (n < s) return s;
+  return null;
+}
+function renderAchievements() {
+  const cont = document.getElementById('settingsAchievements');
+  if (!cont) return;
+  const likeN = (state.likes || []).length;
+  const uid = (typeof getUserId === 'function') ? getUserId() : null;
+  const voiceN = uid
+    ? loadVoices().filter(v => v.userId === uid).length
+    : loadVoices().length;
+  const userSpotN = (typeof loadUserSpots === 'function') ? loadUserSpots().length : 0;
+
+  const rows = [
+    { label: 'お気に入りしたスポット', n: likeN, unit: '件', emoji: '💚', cls: 'g' },
+    { label: '投稿した口コミ',         n: voiceN, unit: '件', emoji: '💬', cls: 'p' },
+    { label: '登録したスポット',        n: userSpotN, unit: '件', emoji: '📍', cls: 'b' },
+  ];
+  cont.innerHTML = rows.map(r => {
+    const tier = _tierOf(r.n);
+    const next = _nextMilestone(r.n);
+    const pct = next ? Math.min(100, Math.round(r.n / next * 100)) : 100;
+    const nextLabel = next ? ('次のバッジまで あと ' + (next - r.n) + '件') : '最高ランク達成 🎉';
+    return '<div class="achievement-row">'
+      + '<div class="achievement-icon ' + r.cls + '">' + r.emoji + (tier ? '<span class="achievement-tier">' + tier + '</span>' : '') + '</div>'
+      + '<div class="achievement-body">'
+      +   '<div class="achievement-label">' + r.label + '</div>'
+      +   '<div class="achievement-count">' + r.n + '<span class="unit">' + r.unit + '</span></div>'
+      +   '<div class="achievement-progress"><div class="achievement-progress-bar" style="width:' + pct + '%;"></div></div>'
+      +   '<div class="achievement-next">' + nextLabel + '</div>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+// ── キャラ切替 ─────────────────────────────────────────
+function getMascotPref() { return localStorage.getItem('kodoco_mascot_pref') || 'kodo'; }
+function setMascotPref(m) {
+  localStorage.setItem('kodoco_mascot_pref', m);
+  renderMascotPicker();
+  applyMascotPref();
+  kodoCheer();
+}
+function renderMascotPicker() {
+  const cur = getMascotPref();
+  document.querySelectorAll('.mascot-pick').forEach(b => {
+    b.classList.toggle('selected', b.getAttribute('data-pick') === cur);
+  });
+}
+const MASCOT_HREFS = {
+  kodo: { mark: '#kodo-mark', standing: '#kodo',       wave: '#kodo-wave' },
+  koto: { mark: '#koto-mark', standing: '#koto',       wave: '#koto-jump' },
+  biwa: { mark: '#biwa-mark', standing: '#biwa',       wave: '#biwa'      },
+};
+function applyMascotPref() {
+  const m = getMascotPref();
+  const map = MASCOT_HREFS[m] || MASCOT_HREFS.kodo;
+  document.querySelectorAll('[data-mascot]').forEach(el => {
+    const type = el.getAttribute('data-mascot');
+    const href = map[type] || map.standing;
+    const use = el.querySelector('use');
+    if (use) use.setAttribute('href', href);
+  });
+}
 function renderSettingsChildren() {
   const cont = document.getElementById('settingsChildren');
   cont.innerHTML = '';
@@ -3623,6 +4670,44 @@ function confirmAddChild() {
   state.activeChild = state.children.length - 1;
   saveState(); hideAddChildModal(); buildChildSwitcher(); buildHero(); buildSpotList();
 }
+
+// ── コドちゃん拍手アニメ ──────────────────────────────
+function kodoCheer() {
+  const el = document.getElementById('kodoCheer');
+  if (!el) return;
+  el.classList.remove('on');
+  // reflow to restart animation
+  void el.offsetWidth;
+  el.classList.add('on');
+  setTimeout(() => el.classList.remove('on'), 1100);
+}
+// コドちゃんからスポット評 — カテゴリ別
+const KODO_DETAIL_COMMENTS = {
+  park:       ['おもいっきり走り回れそう！🌳', '自然と遊べる気持ちいい場所 🍃', 'ピクニックしたくなるね 🧺'],
+  indoor:     ['雨の日でもバッチリ！☔', 'のびのび遊べる屋内スポット 🏠', '天気きにせず楽しめるね ✨'],
+  cafe:       ['ひと息つけて落ち着く〜 ☕', 'パパママもゆっくりできるね ☕', 'ほっと一息したくなる ☕'],
+  restaurant: ['お腹すいたね〜🍽', 'ごはんタイム楽しみ！🍽', 'おいしそうな予感 😋'],
+  museum:     ['新しい発見がありそう 🎨', 'ワクワクが待ってるよ 🎨', '体験型で子どもも夢中！🖍'],
+  dog:        ['ワンちゃんと一緒だね 🐕', '犬連れOKで安心 🐾', 'みんなで出かけられる 🐶'],
+  water:      ['水あそび気持ちよさそう！🏊', 'じゃぶじゃぶ遊ぼう 💦', 'びしょびしょ覚悟で楽しもう 🌊'],
+};
+function kodoSpotComment(cat, catClass) {
+  const key = catClass || 'park';
+  const pool = KODO_DETAIL_COMMENTS[key] || KODO_DETAIL_COMMENTS.park;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
 </script>
+
+<!-- コドちゃん拍手オーバーレイ -->
+<div id="kodoCheer" aria-hidden="true">
+  <div class="kodo-cheer-wrap">
+    <span class="spark s1">✨</span>
+    <span class="spark s2">⭐</span>
+    <span class="spark s3">🌟</span>
+    <span class="spark s4">✨</span>
+    <span class="spark s5">💫</span>
+    <svg class="kodo-cheer-mascot" aria-hidden="true" data-mascot="wave"><use href="#kodo-wave"/></svg>
+  </div>
+</div>
 </body>
 </html>
