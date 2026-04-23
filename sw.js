@@ -2,7 +2,7 @@
 // Strategy:
 //   · HTML (navigation): network-first with cache fallback
 //   · static / 3rd-party assets: cache-first with background refresh
-const VERSION     = 'kodoco-v1-2026-04-23';
+const VERSION     = 'kodoco-v11-2026-04-23-full';
 const SHELL_CACHE = `${VERSION}-shell`;
 const RUNTIME     = `${VERSION}-runtime`;
 
@@ -10,7 +10,9 @@ const SHELL = [
   './',
   './app.html',
   './index.html',
-  'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap',
+  './favicon.svg',
+  './ogp.svg',
+  'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css',
   'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js',
 ];
