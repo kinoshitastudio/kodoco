@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5CDB4"/>
+      <stop offset="100%" stop-color="#D08A75"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+
+  <!-- 背景の花びら（装飾） -->
+  <g opacity="0.25">
+    <g transform="translate(120, 180)"><circle r="22" fill="#FFFFFF"/><circle cx="26" r="22" fill="#FFFFFF"/><circle cy="26" r="22" fill="#FFFFFF"/><circle cx="13" cy="13" r="12" fill="#F8E0B8"/></g>
+    <g transform="translate(930, 220) scale(0.8)"><circle r="22" fill="#FFFFFF"/><circle cx="26" r="22" fill="#FFFFFF"/><circle cy="26" r="22" fill="#FFFFFF"/><circle cx="13" cy="13" r="12" fill="#F8E0B8"/></g>
+    <g transform="translate(160, 860) scale(0.7)"><circle r="22" fill="#FFFFFF"/><circle cx="26" r="22" fill="#FFFFFF"/><circle cy="26" r="22" fill="#FFFFFF"/><circle cx="13" cy="13" r="12" fill="#F8E0B8"/></g>
+    <g transform="translate(950, 820) scale(0.9)"><circle r="22" fill="#FFFFFF"/><circle cx="26" r="22" fill="#FFFFFF"/><circle cy="26" r="22" fill="#FFFFFF"/><circle cx="13" cy="13" r="12" fill="#F8E0B8"/></g>
+    <g transform="translate(70, 500) scale(0.6)"><circle r="22" fill="#FFFFFF"/><circle cx="26" r="22" fill="#FFFFFF"/><circle cy="26" r="22" fill="#FFFFFF"/></g>
+    <g transform="translate(990, 500) scale(0.6)"><circle r="22" fill="#FFFFFF"/><circle cx="26" r="22" fill="#FFFFFF"/><circle cy="26" r="22" fill="#FFFFFF"/></g>
+  </g>
+
+  <!-- 地面の影 -->
+  <ellipse cx="540" cy="830" rx="260" ry="22" fill="#2C2A26" opacity="0.18"/>
+
+  <!-- コトちゃん本体（viewBox 160x180 → scale 3.5 → 560x630） -->
+  <g transform="translate(260, 200) scale(3.5)">
+    <circle cx="70" cy="22" r="8" fill="#F4A898"/>
+    <circle cx="90" cy="22" r="8" fill="#F4A898"/>
+    <circle cx="80" cy="12" r="8" fill="#F8B8A8"/>
+    <circle cx="80" cy="32" r="8" fill="#F4A898"/>
+    <circle cx="80" cy="22" r="5" fill="#E8D28A"/>
+    <rect x="77" y="32" width="6" height="16" rx="3" fill="#8DAE91"/>
+    <ellipse cx="80" cy="108" rx="58" ry="54" fill="#F8D8BA"/>
+    <ellipse cx="80" cy="158" rx="40" ry="4" fill="#DAB898" opacity="0.35"/>
+    <ellipse cx="45" cy="116" rx="10" ry="6" fill="#E88878" opacity="0.55"/>
+    <ellipse cx="115" cy="116" rx="10" ry="6" fill="#E88878" opacity="0.55"/>
+    <circle cx="60" cy="96" r="4" fill="#2C2A26"/>
+    <circle cx="100" cy="96" r="4" fill="#2C2A26"/>
+    <circle cx="61.5" cy="94.5" r="1.4" fill="#fff"/>
+    <circle cx="101.5" cy="94.5" r="1.4" fill="#fff"/>
+    <ellipse cx="80" cy="128" rx="9" ry="6" fill="#2C2A26"/>
+    <ellipse cx="80" cy="130" rx="6" ry="3" fill="#F4A0A0"/>
+    <ellipse cx="62" cy="166" rx="11" ry="4" fill="#E5C4A6"/>
+    <ellipse cx="98" cy="166" rx="11" ry="4" fill="#E5C4A6"/>
+  </g>
+
+  <g font-family="Inter, 'Noto Sans JP', sans-serif" fill="#FFFFFF">
+    <text x="540" y="78" font-size="22" font-weight="600" text-anchor="middle" letter-spacing="8" opacity="0.85">KODOCO</text>
+    <text x="540" y="918" font-size="22" font-weight="600" text-anchor="middle" letter-spacing="5" opacity="0.85">— No. 02 · 冒険役</text>
+    <text x="540" y="998" font-size="84" font-weight="900" text-anchor="middle" letter-spacing="-3">コトちゃん</text>
+    <text x="540" y="1046" font-size="24" font-weight="500" text-anchor="middle" opacity="0.92">「いっしょに行こうよ！」</text>
+  </g>
+</svg>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B8D2E2"/>
+      <stop offset="100%" stop-color="#5B82A0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+
+  <!-- 背景の波紋 -->
+  <g fill="none" stroke="#FFFFFF" stroke-width="3" opacity="0.3">
+    <path d="M -30 240 Q 80 220, 180 240 Q 280 260, 380 240 Q 480 220, 580 240"/>
+    <path d="M 560 180 Q 660 160, 760 180 Q 860 200, 960 180 Q 1060 160, 1120 180"/>
+    <path d="M -30 860 Q 80 840, 180 860 Q 280 880, 380 860 Q 480 840, 580 860"/>
+    <path d="M 560 900 Q 660 880, 760 900 Q 860 920, 960 900 Q 1060 880, 1120 900"/>
+    <path d="M -30 120 Q 60 100, 140 120 Q 220 140, 300 120"/>
+    <path d="M 780 60 Q 860 40, 940 60 Q 1020 80, 1100 60"/>
+  </g>
+  <g fill="#FFFFFF" opacity="0.15">
+    <circle cx="110" cy="400" r="6"/>
+    <circle cx="960" cy="380" r="8"/>
+    <circle cx="80" cy="700" r="5"/>
+    <circle cx="1000" cy="650" r="6"/>
+    <circle cx="160" cy="560" r="4"/>
+    <circle cx="920" cy="560" r="5"/>
+  </g>
+
+  <!-- 地面の影 -->
+  <ellipse cx="540" cy="890" rx="240" ry="20" fill="#2C2A26" opacity="0.18"/>
+
+  <!-- ビワちゃん本体（viewBox 160x200 → scale 3.2 → 512x640） -->
+  <g transform="translate(284, 180) scale(3.2)">
+    <path d="M 80 30
+             C 62 30, 58 48, 64 62
+             C 68 72, 72 78, 72 84
+             C 58 88, 38 100, 28 120
+             C 16 148, 28 182, 80 186
+             C 132 182, 144 148, 132 120
+             C 122 100, 102 88, 88 84
+             C 88 78, 92 72, 96 62
+             C 102 48, 98 30, 80 30 Z"
+          fill="#8FC1D4"/>
+    <ellipse cx="58" cy="130" rx="18" ry="12" fill="#C0DDE9" opacity="0.6"/>
+    <ellipse cx="105" cy="155" rx="14" ry="8" fill="#B0D5E2" opacity="0.55"/>
+    <path d="M 58 26 Q 64 20, 70 26" stroke="#6BA0B8" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <path d="M 90 26 Q 96 20, 102 26" stroke="#6BA0B8" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <circle cx="65" cy="115" r="3.6" fill="#2C2A26"/>
+    <circle cx="95" cy="115" r="3.6" fill="#2C2A26"/>
+    <circle cx="66" cy="113.8" r="1.3" fill="#fff"/>
+    <circle cx="96" cy="113.8" r="1.3" fill="#fff"/>
+    <ellipse cx="50" cy="128" rx="7" ry="4" fill="#F2B89A" opacity="0.5"/>
+    <ellipse cx="110" cy="128" rx="7" ry="4" fill="#F2B89A" opacity="0.5"/>
+    <path d="M 70 140 Q 80 147, 90 140" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+    <path d="M 40 188 Q 48 184, 56 188" stroke="#6BA0B8" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.6"/>
+    <path d="M 104 188 Q 112 184, 120 188" stroke="#6BA0B8" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.6"/>
+  </g>
+
+  <g font-family="Inter, 'Noto Sans JP', sans-serif" fill="#FFFFFF">
+    <text x="540" y="78" font-size="22" font-weight="600" text-anchor="middle" letter-spacing="8" opacity="0.85">KODOCO</text>
+    <text x="540" y="918" font-size="22" font-weight="600" text-anchor="middle" letter-spacing="5" opacity="0.9">— No. 03 · 湖のナビ</text>
+    <text x="540" y="998" font-size="84" font-weight="900" text-anchor="middle" letter-spacing="-3">ビワちゃん</text>
+    <text x="540" y="1046" font-size="24" font-weight="500" text-anchor="middle" opacity="0.92">「水辺はまかせて！」</text>
+  </g>
+</svg>

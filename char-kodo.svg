@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#CCDFD0"/>
+      <stop offset="100%" stop-color="#6E8F70"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+
+  <!-- 背景の葉っぱ（装飾） -->
+  <g opacity="0.22">
+    <g transform="translate(120, 140)"><path d="M 0 0 Q -50 -60 -80 -20 Q -60 30 0 20 Z" fill="#FFFFFF"/></g>
+    <g transform="translate(920, 180) rotate(30)"><path d="M 0 0 Q -50 -60 -80 -20 Q -60 30 0 20 Z" fill="#FFFFFF"/></g>
+    <g transform="translate(180, 880) rotate(-20)"><path d="M 0 0 Q -50 -60 -80 -20 Q -60 30 0 20 Z" fill="#FFFFFF"/></g>
+    <g transform="translate(940, 780) rotate(60)"><path d="M 0 0 Q -50 -60 -80 -20 Q -60 30 0 20 Z" fill="#FFFFFF"/></g>
+    <g transform="translate(90, 540) rotate(45)"><path d="M 0 0 Q -40 -50 -60 -10 Q -45 25 0 15 Z" fill="#FFFFFF"/></g>
+    <g transform="translate(960, 450) rotate(-30)"><path d="M 0 0 Q -40 -50 -60 -10 Q -45 25 0 15 Z" fill="#FFFFFF"/></g>
+  </g>
+
+  <!-- 地面の影 -->
+  <ellipse cx="540" cy="830" rx="260" ry="22" fill="#2C2A26" opacity="0.18"/>
+
+  <!-- コドちゃん本体（viewBox 160x180 を scale 3.5 で 560x630） -->
+  <g transform="translate(260, 200) scale(3.5)">
+    <path d="M 64 32 Q 46 14 38 28 Q 36 42 58 38 Q 66 36 64 32 Z" fill="#7A9B7E"/>
+    <path d="M 96 32 Q 114 14 122 28 Q 124 42 102 38 Q 94 36 96 32 Z" fill="#8DAE91"/>
+    <path d="M 50 28 L 58 34" stroke="#5B7F61" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    <path d="M 110 28 L 102 34" stroke="#5B7F61" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    <rect x="77" y="30" width="6" height="24" rx="3" fill="#6E8A70"/>
+    <ellipse cx="80" cy="108" rx="58" ry="54" fill="#F4E5D2"/>
+    <ellipse cx="80" cy="158" rx="40" ry="4" fill="#D8C8B0" opacity="0.35"/>
+    <ellipse cx="45" cy="116" rx="10" ry="6" fill="#F2B89A" opacity="0.65"/>
+    <ellipse cx="115" cy="116" rx="10" ry="6" fill="#F2B89A" opacity="0.65"/>
+    <path d="M 56 98 Q 63 92, 70 98" stroke="#2C2A26" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+    <path d="M 90 98 Q 97 92, 104 98" stroke="#2C2A26" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+    <path d="M 68 126 Q 80 138, 92 126" stroke="#2C2A26" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="62" cy="166" rx="11" ry="4" fill="#E5D0B6"/>
+    <ellipse cx="98" cy="166" rx="11" ry="4" fill="#E5D0B6"/>
+  </g>
+
+  <!-- テキスト -->
+  <g font-family="Inter, 'Noto Sans JP', sans-serif" fill="#FFFFFF">
+    <text x="540" y="78" font-size="22" font-weight="600" text-anchor="middle" letter-spacing="8" opacity="0.85">KODOCO</text>
+    <text x="540" y="918" font-size="22" font-weight="600" text-anchor="middle" letter-spacing="5" opacity="0.8">— No. 01 · ガイド役</text>
+    <text x="540" y="998" font-size="84" font-weight="900" text-anchor="middle" letter-spacing="-3">コドちゃん</text>
+    <text x="540" y="1046" font-size="24" font-weight="500" text-anchor="middle" opacity="0.88">「今日、どこいく？」</text>
+  </g>
+</svg>

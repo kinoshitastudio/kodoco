@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E7EEE3"/>
+      <stop offset="50%" stop-color="#FBEADC"/>
+      <stop offset="100%" stop-color="#E7EFF5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+
+  <!-- 背景のスパークル -->
+  <g opacity="0.6">
+    <text x="90" y="180" font-size="38" fill="#E8D28A">✨</text>
+    <text x="960" y="200" font-size="44" fill="#F4A898">🌸</text>
+    <text x="140" y="900" font-size="36" fill="#8FC1D4">🌊</text>
+    <text x="940" y="880" font-size="36" fill="#7A9B7E">🌿</text>
+    <text x="540" y="90" font-size="40" fill="#E8D28A" text-anchor="middle">✨</text>
+    <text x="60" y="500" font-size="32" fill="#F4A898">💫</text>
+    <text x="1000" y="500" font-size="32" fill="#8FC1D4">💫</text>
+  </g>
+
+  <!-- 地面ベース影 -->
+  <ellipse cx="540" cy="820" rx="430" ry="18" fill="#2C2A26" opacity="0.12"/>
+
+  <!-- 後列：パパ（左）・ママ（右）— 大人 -->
+  <g transform="translate(170, 280) scale(1.75)">
+    <!-- パパ -->
+    <ellipse cx="90" cy="44" rx="30" ry="6" fill="#5B7889"/>
+    <path d="M 40 42 Q 40 20 80 18 Q 120 20 120 42 L 120 50 L 40 50 Z" fill="#6E8A9E"/>
+    <circle cx="80" cy="22" r="3" fill="#5B7889"/>
+    <ellipse cx="80" cy="118" rx="58" ry="54" fill="#F0DCC4"/>
+    <ellipse cx="46" cy="128" rx="9" ry="5" fill="#F0B090" opacity="0.55"/>
+    <ellipse cx="114" cy="128" rx="9" ry="5" fill="#F0B090" opacity="0.55"/>
+    <circle cx="58" cy="108" r="12" fill="none" stroke="#2C2A26" stroke-width="2.5"/>
+    <circle cx="102" cy="108" r="12" fill="none" stroke="#2C2A26" stroke-width="2.5"/>
+    <line x1="70" y1="108" x2="90" y2="108" stroke="#2C2A26" stroke-width="2"/>
+    <circle cx="58" cy="108" r="3" fill="#2C2A26"/>
+    <circle cx="102" cy="108" r="3" fill="#2C2A26"/>
+    <path d="M 66 140 Q 80 152 94 140" stroke="#2C2A26" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="60" cy="180" rx="12" ry="5" fill="#D8C4A8"/>
+    <ellipse cx="100" cy="180" rx="12" ry="5" fill="#D8C4A8"/>
+  </g>
+  <g transform="translate(630, 280) scale(1.75)">
+    <!-- ママ -->
+    <path d="M 34 55 Q 22 110 40 160 Q 50 170 55 155 Q 45 110 50 65 Z" fill="#6B4E36"/>
+    <path d="M 126 55 Q 138 110 120 160 Q 110 170 105 155 Q 115 110 110 65 Z" fill="#6B4E36"/>
+    <path d="M 30 52 Q 34 22 80 18 Q 126 22 130 52 Q 128 62 116 58 Q 100 44 80 44 Q 60 44 44 58 Q 32 62 30 52 Z" fill="#6B4E36"/>
+    <ellipse cx="80" cy="118" rx="56" ry="54" fill="#F8DAC2"/>
+    <ellipse cx="46" cy="128" rx="10" ry="6" fill="#F09898" opacity="0.55"/>
+    <ellipse cx="114" cy="128" rx="10" ry="6" fill="#F09898" opacity="0.55"/>
+    <path d="M 58 104 Q 62 100 66 104" stroke="#2C2A26" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M 94 104 Q 98 100 102 104" stroke="#2C2A26" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <circle cx="62" cy="110" r="3.5" fill="#2C2A26"/>
+    <circle cx="98" cy="110" r="3.5" fill="#2C2A26"/>
+    <path d="M 66 138 Q 80 148 94 138" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+    <ellipse cx="60" cy="180" rx="12" ry="5" fill="#E8C8B0"/>
+    <ellipse cx="100" cy="180" rx="12" ry="5" fill="#E8C8B0"/>
+  </g>
+
+  <!-- 前列：コドちゃん・キッズ・コトちゃん・ビワちゃん -->
+  <g transform="translate(120, 540) scale(1.25)">
+    <!-- コドちゃん -->
+    <path d="M 64 32 Q 46 14 38 28 Q 36 42 58 38 Q 66 36 64 32 Z" fill="#7A9B7E"/>
+    <path d="M 96 32 Q 114 14 122 28 Q 124 42 102 38 Q 94 36 96 32 Z" fill="#8DAE91"/>
+    <rect x="77" y="30" width="6" height="24" rx="3" fill="#6E8A70"/>
+    <ellipse cx="80" cy="108" rx="58" ry="54" fill="#F4E5D2"/>
+    <ellipse cx="45" cy="116" rx="10" ry="6" fill="#F2B89A" opacity="0.65"/>
+    <ellipse cx="115" cy="116" rx="10" ry="6" fill="#F2B89A" opacity="0.65"/>
+    <path d="M 56 98 Q 63 92, 70 98" stroke="#2C2A26" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+    <path d="M 90 98 Q 97 92, 104 98" stroke="#2C2A26" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+    <path d="M 68 126 Q 80 138, 92 126" stroke="#2C2A26" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="62" cy="166" rx="11" ry="4" fill="#E5D0B6"/>
+    <ellipse cx="98" cy="166" rx="11" ry="4" fill="#E5D0B6"/>
+  </g>
+  <g transform="translate(370, 560) scale(1.3)">
+    <!-- キッズ（前列中央寄り） -->
+    <path d="M 64 24 Q 70 10 76 24" stroke="#8B6A4A" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="70" cy="104" rx="52" ry="50" fill="#FCE8D4"/>
+    <ellipse cx="34" cy="114" rx="11" ry="7" fill="#F88878" opacity="0.65"/>
+    <ellipse cx="106" cy="114" rx="11" ry="7" fill="#F88878" opacity="0.65"/>
+    <circle cx="52" cy="98" r="5.5" fill="#2C2A26"/>
+    <circle cx="88" cy="98" r="5.5" fill="#2C2A26"/>
+    <circle cx="54" cy="96" r="2" fill="#fff"/>
+    <circle cx="90" cy="96" r="2" fill="#fff"/>
+    <ellipse cx="70" cy="122" rx="8" ry="6" fill="#2C2A26"/>
+    <ellipse cx="70" cy="124" rx="5" ry="3" fill="#F8A0A0"/>
+    <ellipse cx="18" cy="105" rx="8" ry="10" fill="#FCE8D4" transform="rotate(-20 18 105)"/>
+    <ellipse cx="122" cy="105" rx="8" ry="10" fill="#FCE8D4" transform="rotate(20 122 105)"/>
+    <ellipse cx="54" cy="162" rx="10" ry="4" fill="#E8D0B8"/>
+    <ellipse cx="86" cy="162" rx="10" ry="4" fill="#E8D0B8"/>
+  </g>
+  <g transform="translate(580, 540) scale(1.25)">
+    <!-- コトちゃん -->
+    <circle cx="70" cy="22" r="8" fill="#F4A898"/>
+    <circle cx="90" cy="22" r="8" fill="#F4A898"/>
+    <circle cx="80" cy="12" r="8" fill="#F8B8A8"/>
+    <circle cx="80" cy="32" r="8" fill="#F4A898"/>
+    <circle cx="80" cy="22" r="5" fill="#E8D28A"/>
+    <rect x="77" y="32" width="6" height="16" rx="3" fill="#8DAE91"/>
+    <ellipse cx="80" cy="108" rx="58" ry="54" fill="#F8D8BA"/>
+    <ellipse cx="45" cy="116" rx="10" ry="6" fill="#E88878" opacity="0.55"/>
+    <ellipse cx="115" cy="116" rx="10" ry="6" fill="#E88878" opacity="0.55"/>
+    <circle cx="60" cy="96" r="4" fill="#2C2A26"/>
+    <circle cx="100" cy="96" r="4" fill="#2C2A26"/>
+    <circle cx="61.5" cy="94.5" r="1.4" fill="#fff"/>
+    <circle cx="101.5" cy="94.5" r="1.4" fill="#fff"/>
+    <ellipse cx="80" cy="128" rx="9" ry="6" fill="#2C2A26"/>
+    <ellipse cx="80" cy="130" rx="6" ry="3" fill="#F4A0A0"/>
+    <ellipse cx="62" cy="166" rx="11" ry="4" fill="#E5C4A6"/>
+    <ellipse cx="98" cy="166" rx="11" ry="4" fill="#E5C4A6"/>
+  </g>
+  <g transform="translate(800, 530) scale(1.15)">
+    <!-- ビワちゃん -->
+    <path d="M 80 30 C 62 30, 58 48, 64 62 C 68 72, 72 78, 72 84 C 58 88, 38 100, 28 120 C 16 148, 28 182, 80 186 C 132 182, 144 148, 132 120 C 122 100, 102 88, 88 84 C 88 78, 92 72, 96 62 C 102 48, 98 30, 80 30 Z" fill="#8FC1D4"/>
+    <ellipse cx="58" cy="130" rx="18" ry="12" fill="#C0DDE9" opacity="0.6"/>
+    <path d="M 58 26 Q 64 20, 70 26" stroke="#6BA0B8" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <path d="M 90 26 Q 96 20, 102 26" stroke="#6BA0B8" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <circle cx="65" cy="115" r="3.6" fill="#2C2A26"/>
+    <circle cx="95" cy="115" r="3.6" fill="#2C2A26"/>
+    <ellipse cx="50" cy="128" rx="7" ry="4" fill="#F2B89A" opacity="0.5"/>
+    <ellipse cx="110" cy="128" rx="7" ry="4" fill="#F2B89A" opacity="0.5"/>
+    <path d="M 70 140 Q 80 147, 90 140" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g font-family="Inter, 'Noto Sans JP', sans-serif" fill="#2C2A26">
+    <text x="540" y="78" font-size="22" font-weight="600" text-anchor="middle" letter-spacing="8" opacity="0.55">KODOCO CREW</text>
+    <text x="540" y="918" font-size="22" font-weight="600" text-anchor="middle" letter-spacing="5" opacity="0.65">— 6人で、おでかけ。</text>
+    <text x="540" y="998" font-size="72" font-weight="900" text-anchor="middle" letter-spacing="-3">ぜんいん、そろった。</text>
+    <text x="540" y="1046" font-size="22" font-weight="500" text-anchor="middle" opacity="0.7">今日どこいく？を、みんなで。</text>
+  </g>
+</svg>

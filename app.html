@@ -208,6 +208,110 @@ html, body {
 .child-badge:not(.active) .spot-count-badge { background: var(--green-light); color: var(--green-mid); }
 .add-child-btn { width: 28px; height: 28px; border-radius: 50%; border: 1.5px dashed var(--green-mid); background: none; color: var(--green-mid); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
+/* ─── HOMEトップ スライドショー ─── */
+.slideshow {
+  position: relative;
+  margin: 4px 16px 20px;
+  border-radius: 20px;
+  overflow: hidden;
+  height: 176px;
+  box-shadow: 0 10px 24px rgba(44,42,38,0.08);
+}
+.slide {
+  position: absolute; inset: 0;
+  display: flex; align-items: stretch;
+  padding: 18px 8px 18px 20px;
+  opacity: 0;
+  transform: translateX(16px);
+  transition: opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+  color: #fff;
+}
+.slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.slide[data-bg="green"] { background: linear-gradient(135deg, #A8C8AC 0%, #5B7F61 100%); }
+.slide[data-bg="peach"] { background: linear-gradient(135deg, #F0C0A8 0%, #C88878 100%); }
+.slide[data-bg="blue"]  { background: linear-gradient(135deg, #A8C4D8 0%, #6B8FAC 100%); }
+.slide[data-bg="yellow"]{ background: linear-gradient(135deg, #F0D88A 0%, #B89A42 100%); }
+
+.slide-text {
+  flex: 1;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  z-index: 2;
+  position: relative;
+}
+.slide-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.2em;
+  opacity: 0.85;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.slide-title {
+  font-size: 19px; font-weight: 800; letter-spacing: -0.025em;
+  line-height: 1.25;
+  margin-bottom: 6px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+.slide-sub {
+  font-size: 11.5px;
+  opacity: 0.92;
+  line-height: 1.55;
+  max-width: 180px;
+}
+
+.slide-chars {
+  position: relative;
+  display: flex; align-items: flex-end; justify-content: flex-end;
+  flex: 0 0 145px;
+  padding-right: 4px;
+}
+.slide-char {
+  position: absolute; bottom: -8px;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.2));
+}
+.slide-char.c-a { right: 85px; transform: rotate(-4deg); width: 76px; height: 94px; z-index: 1; }
+.slide-char.c-b { right: 45px; transform: rotate(3deg);  width: 70px; height: 85px; z-index: 3; bottom: -4px; }
+.slide-char.c-c { right: 4px;  transform: rotate(-3deg); width: 74px; height: 90px; z-index: 2; }
+
+.slide-note {
+  position: absolute; top: 10px; left: 12px; right: 12px;
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 11px;
+  background: rgba(255,255,255,0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 14px;
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.95);
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+  max-width: fit-content;
+  z-index: 4;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.slide-note .slide-note-icon { font-size: 11px; flex-shrink: 0; }
+
+.slide-dots {
+  position: absolute; bottom: 10px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 6px;
+  z-index: 10;
+}
+.slide-dots .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: width .3s, background .3s;
+  border: none; padding: 0;
+}
+.slide-dots .dot.active {
+  background: #fff;
+  width: 20px;
+  border-radius: 3px;
+}
+
 /* TODAY'S PICK (ヒーロー) */
 .hero-section { margin: 0 16px 20px; background: var(--green); border-radius: 20px; overflow: hidden; cursor: pointer; position: relative; }
 .hero-mascot {
@@ -369,7 +473,7 @@ html, body {
 .route-card-steps { display: flex; flex-direction: column; gap: 7px; }
 .route-card-cta { margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--border); font-size: 12px; color: var(--green); font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
 /* ルートプラン詳細モーダル */
-#routeDetailModal { display:none; position:absolute; inset:0; z-index:200; background:rgba(0,0,0,0.5); align-items:flex-end; justify-content:center; }
+#routeDetailModal { display:none; position:absolute; inset:0; z-index:2000; background:rgba(0,0,0,0.5); align-items:flex-end; justify-content:center; }
 .route-detail-sheet { background:var(--bg); border-radius:22px 22px 0 0; width:100%; max-width:430px; max-height:90vh; overflow-y:auto; padding:0 0 calc(env(safe-area-inset-bottom,16px)+20px); position:relative; }
 .route-detail-cover {
   position: relative;
@@ -469,6 +573,7 @@ html, body {
 }
 .route-connector-line { flex:1; height:0; border-top: 1.5px dashed var(--border); }
 .route-connector-ico { font-size: 16px; }
+.route-connector-label { font-size: 11px; color: var(--text-sub); font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
 
 .route-detail-footer {
   margin: 20px 16px 0;
@@ -528,6 +633,49 @@ html, body {
   letter-spacing: 0.01em;
 }
 .rec-badge-mark { width: 20px; height: 22px; flex-shrink: 0; }
+
+/* スポット画像右上の降水確率バッジ */
+.spot-rain-now {
+  position: absolute; top: 10px; right: 10px;
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 4px 11px;
+  border-radius: 18px;
+  font-size: 11px; font-weight: 700;
+  color: #fff;
+  z-index: 3;
+  letter-spacing: 0.01em;
+  box-shadow: 0 3px 10px rgba(44,42,38,0.2);
+  backdrop-filter: blur(4px);
+}
+.spot-rain-now.low  { background: rgba(123, 155, 180, 0.92); }
+.spot-rain-now.mid  { background: rgba(91, 120, 153, 0.94); }
+.spot-rain-now.high { background: rgba(61, 100, 128, 0.96); }
+
+/* 仮画像（プレースホルダー）注釈 */
+.img-placeholder-note {
+  position: absolute;
+  bottom: 8px; left: 8px;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 14px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-sub);
+  letter-spacing: 0.02em;
+  z-index: 3;
+  white-space: nowrap;
+  max-width: calc(100% - 16px);
+  overflow: hidden; text-overflow: ellipsis;
+}
+.img-placeholder-note.long {
+  white-space: normal;
+  line-height: 1.4;
+  max-width: calc(100% - 24px);
+}
+.img-placeholder-note .ipn-icon { font-size: 11px; flex-shrink: 0; }
 .spot-body { padding: 12px 14px 14px; }
 .spot-top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
 .spot-name { font-size: 16px; font-weight: 700; line-height: 1.2; }
@@ -889,14 +1037,58 @@ html, body {
 .voice-card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
 .voice-card-tag { font-size: 10px; padding: 2px 7px; border-radius: 20px; background: var(--bg); color: var(--text-sub); border: 1px solid var(--border); }
 /* Voice form modal */
-#voiceFormModal { display:none; position:absolute; inset:0; z-index:300; background:rgba(0,0,0,0.5); align-items:flex-end; justify-content:center; }
+#voiceFormModal { display:none; position:absolute; inset:0; z-index:2000; background:rgba(0,0,0,0.5); align-items:flex-end; justify-content:center; }
 .voice-form-sheet { background:var(--bg); border-radius:20px 20px 0 0; padding:16px 20px calc(env(safe-area-inset-bottom,16px)+12px); width:100%; max-width:430px; max-height:90vh; overflow-y:auto; }
 .vf-title { font-size:16px; font-weight:700; margin-bottom:2px; }
 .vf-spot-name { font-size:13px; color:var(--green); font-weight:600; margin-bottom:14px; }
 
+/* 口コミ 画像アップロード */
+.vf-photo-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.vf-photo-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 9px 14px;
+  border-radius: 12px;
+  border: 1.5px dashed var(--green-mid);
+  font-size: 12px; font-weight: 600;
+  color: var(--green);
+  background: var(--green-light);
+  cursor: pointer;
+  transition: all .2s;
+  font-family: inherit;
+}
+.vf-photo-btn:active { transform: scale(0.97); }
+.vf-photo-btn.loading { opacity: 0.6; pointer-events: none; }
+.vf-photo-preview { position: relative; display: inline-block; }
+.vf-photo-preview img {
+  width: 76px; height: 76px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+  box-shadow: 0 2px 8px rgba(44,42,38,0.12);
+}
+.vf-photo-clear {
+  position: absolute; top: -7px; right: -7px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--card); border: 1.5px solid var(--border);
+  color: var(--text); font-size: 11px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-family: inherit;
+  box-shadow: 0 2px 6px rgba(44,42,38,0.15);
+}
+.voice-card-img { margin: 8px 0 6px; }
+.voice-card-img img {
+  max-width: 100%; max-height: 260px;
+  border-radius: 10px; display: block;
+  box-shadow: 0 2px 8px rgba(44,42,38,0.1);
+}
+
+/* 詳細画面のスポット雨予報 */
+.detail-rain-sub { font-size: 11px; color: var(--text-sub); margin-bottom: 10px; font-weight: 500; letter-spacing: 0.02em; }
+.detail-rain .rain-strip-bars { height: 56px; }
+
 /* ── SETTINGS ───────────────────── */
 #dimmer { display:none; position:absolute; inset:0; background:rgba(0,0,0,0.4); z-index:99; opacity:0; transition:opacity 0.35s; }
-.settings-overlay { position: absolute; top: 0; left: 0; width: 100%; max-width: 430px; height: 100%; background: var(--bg); z-index: 150; display: none; flex-direction: column; }
+.settings-overlay { position: absolute; top: 0; left: 0; width: 100%; max-width: 430px; height: 100%; background: var(--bg); z-index: 1700; display: none; flex-direction: column; }
 .settings-overlay.open { display: flex; }
 .settings-header { padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; background: var(--card); border-bottom: 1px solid var(--border); }
 .settings-title { font-size: 17px; font-weight: 700; }
@@ -964,7 +1156,7 @@ html, body {
 .mascot-pick span { font-size: 11px; font-weight: 600; }
 
 /* ADD CHILD MODAL */
-#addChildModal { display:none; position:absolute; inset:0; z-index:300; background:rgba(0,0,0,0.5); align-items:flex-end; justify-content:center; }
+#addChildModal { display:none; position:absolute; inset:0; z-index:2000; background:rgba(0,0,0,0.5); align-items:flex-end; justify-content:center; }
 .modal-sheet { background:var(--bg); border-radius:20px 20px 0 0; padding:20px 20px calc(env(safe-area-inset-bottom,16px) + 16px); width:100%; max-width:430px; }
 .modal-handle { width:34px; height:4px; background:var(--border); border-radius:2px; margin:0 auto 14px; }
 .modal-title { font-size:17px; font-weight:700; margin-bottom:4px; }
@@ -1124,6 +1316,89 @@ html, body {
       <!-- 足元の波 -->
       <path d="M 40 188 Q 48 184, 56 188" stroke="#6BA0B8" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.6"/>
       <path d="M 104 188 Q 112 184, 120 188" stroke="#6BA0B8" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.6"/>
+    </symbol>
+
+    <!-- 👨 パパくん — シンプルなキャップ＋眼鏡の丸っこいお父さん -->
+    <symbol id="papa" viewBox="0 0 160 200">
+      <!-- キャップのツバ -->
+      <ellipse cx="90" cy="44" rx="30" ry="6" fill="#5B7889"/>
+      <!-- キャップ本体 -->
+      <path d="M 40 42 Q 40 20 80 18 Q 120 20 120 42 L 120 50 L 40 50 Z" fill="#6E8A9E"/>
+      <!-- キャップのボタン -->
+      <circle cx="80" cy="22" r="3" fill="#5B7889"/>
+      <!-- 本体 -->
+      <ellipse cx="80" cy="118" rx="58" ry="54" fill="#F0DCC4"/>
+      <ellipse cx="80" cy="168" rx="40" ry="4" fill="#D8C4A8" opacity="0.35"/>
+      <!-- ほっぺ -->
+      <ellipse cx="46" cy="128" rx="9" ry="5" fill="#F0B090" opacity="0.55"/>
+      <ellipse cx="114" cy="128" rx="9" ry="5" fill="#F0B090" opacity="0.55"/>
+      <!-- 眼鏡フレーム -->
+      <circle cx="58" cy="108" r="12" fill="none" stroke="#2C2A26" stroke-width="2.5"/>
+      <circle cx="102" cy="108" r="12" fill="none" stroke="#2C2A26" stroke-width="2.5"/>
+      <line x1="70" y1="108" x2="90" y2="108" stroke="#2C2A26" stroke-width="2"/>
+      <!-- 眼鏡の中の目 -->
+      <circle cx="58" cy="108" r="3" fill="#2C2A26"/>
+      <circle cx="102" cy="108" r="3" fill="#2C2A26"/>
+      <circle cx="59" cy="106.5" r="1" fill="#fff"/>
+      <circle cx="103" cy="106.5" r="1" fill="#fff"/>
+      <!-- 笑顔 -->
+      <path d="M 66 140 Q 80 152 94 140" stroke="#2C2A26" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <!-- 足 -->
+      <ellipse cx="60" cy="180" rx="12" ry="5" fill="#D8C4A8"/>
+      <ellipse cx="100" cy="180" rx="12" ry="5" fill="#D8C4A8"/>
+    </symbol>
+
+    <!-- 👩 ママちゃん — ロングヘア＋優しい笑顔 -->
+    <symbol id="mama" viewBox="0 0 160 200">
+      <!-- 後ろ髪 -->
+      <path d="M 34 55 Q 22 110 40 160 Q 50 170 55 155 Q 45 110 50 65 Z" fill="#6B4E36"/>
+      <path d="M 126 55 Q 138 110 120 160 Q 110 170 105 155 Q 115 110 110 65 Z" fill="#6B4E36"/>
+      <!-- 前髪 -->
+      <path d="M 30 52 Q 34 22 80 18 Q 126 22 130 52 Q 128 62 116 58 Q 100 44 80 44 Q 60 44 44 58 Q 32 62 30 52 Z" fill="#6B4E36"/>
+      <!-- 本体 -->
+      <ellipse cx="80" cy="118" rx="56" ry="54" fill="#F8DAC2"/>
+      <ellipse cx="80" cy="168" rx="40" ry="4" fill="#D8C0A8" opacity="0.35"/>
+      <!-- ほっぺ（ピンク寄り） -->
+      <ellipse cx="46" cy="128" rx="10" ry="6" fill="#F09898" opacity="0.55"/>
+      <ellipse cx="114" cy="128" rx="10" ry="6" fill="#F09898" opacity="0.55"/>
+      <!-- まつ毛付きの目 -->
+      <path d="M 58 104 Q 62 100 66 104" stroke="#2C2A26" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 94 104 Q 98 100 102 104" stroke="#2C2A26" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <circle cx="62" cy="110" r="3.5" fill="#2C2A26"/>
+      <circle cx="98" cy="110" r="3.5" fill="#2C2A26"/>
+      <circle cx="63" cy="108.5" r="1.2" fill="#fff"/>
+      <circle cx="99" cy="108.5" r="1.2" fill="#fff"/>
+      <!-- 優しい笑顔 -->
+      <path d="M 66 138 Q 80 148 94 138" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+      <!-- 足 -->
+      <ellipse cx="60" cy="180" rx="12" ry="5" fill="#E8C8B0"/>
+      <ellipse cx="100" cy="180" rx="12" ry="5" fill="#E8C8B0"/>
+    </symbol>
+
+    <!-- 🧒 キッズちゃん — 大きな目と赤いほっぺの小さな子 -->
+    <symbol id="kid" viewBox="0 0 140 180">
+      <!-- 小さな毛束 -->
+      <path d="M 64 24 Q 70 10 76 24" stroke="#8B6A4A" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <!-- 本体（小さめ） -->
+      <ellipse cx="70" cy="104" rx="52" ry="50" fill="#FCE8D4"/>
+      <ellipse cx="70" cy="156" rx="36" ry="3.5" fill="#D8C8B0" opacity="0.35"/>
+      <!-- 大きな赤いほっぺ -->
+      <ellipse cx="34" cy="114" rx="11" ry="7" fill="#F88878" opacity="0.65"/>
+      <ellipse cx="106" cy="114" rx="11" ry="7" fill="#F88878" opacity="0.65"/>
+      <!-- 大きなくりくり目 -->
+      <circle cx="52" cy="98" r="5.5" fill="#2C2A26"/>
+      <circle cx="88" cy="98" r="5.5" fill="#2C2A26"/>
+      <circle cx="54" cy="96" r="2" fill="#fff"/>
+      <circle cx="90" cy="96" r="2" fill="#fff"/>
+      <!-- 開いた口（にっこり） -->
+      <ellipse cx="70" cy="122" rx="8" ry="6" fill="#2C2A26"/>
+      <ellipse cx="70" cy="124" rx="5" ry="3" fill="#F8A0A0"/>
+      <!-- 手（可愛い） -->
+      <ellipse cx="18" cy="105" rx="8" ry="10" fill="#FCE8D4" transform="rotate(-20 18 105)"/>
+      <ellipse cx="122" cy="105" rx="8" ry="10" fill="#FCE8D4" transform="rotate(20 122 105)"/>
+      <!-- 足 -->
+      <ellipse cx="54" cy="162" rx="10" ry="4" fill="#E8D0B8"/>
+      <ellipse cx="86" cy="162" rx="10" ry="4" fill="#E8D0B8"/>
     </symbol>
 
     <!-- ビワちゃん ロゴマーク -->
@@ -1292,12 +1567,60 @@ html, body {
       <!-- child switcher -->
       <div class="child-switcher-row" id="childSwitcher"></div>
 
+      <!-- スライドショー -->
+      <div class="slideshow" id="homeSlideshow">
+        <div class="slide active" data-bg="green">
+          <div class="slide-text">
+            <div class="slide-eyebrow">TODAY'S JOURNEY</div>
+            <div class="slide-title">今日、どこいく？</div>
+            <div class="slide-sub">ぴったりの場所、3タップでみつかる</div>
+          </div>
+          <div class="slide-chars">
+            <svg class="slide-char c-a" aria-hidden="true"><use href="#mama"/></svg>
+            <svg class="slide-char c-b" aria-hidden="true"><use href="#kid"/></svg>
+            <svg class="slide-char c-c" aria-hidden="true"><use href="#kodo"/></svg>
+          </div>
+        </div>
+        <div class="slide" data-bg="peach">
+          <div class="slide-text">
+            <div class="slide-eyebrow">WEATHER-AWARE</div>
+            <div class="slide-title">晴れも雨も、<br>味方になる。</div>
+            <div class="slide-sub">天気と時間に合わせて自動提案</div>
+          </div>
+          <div class="slide-chars">
+            <svg class="slide-char c-a" aria-hidden="true"><use href="#papa"/></svg>
+            <svg class="slide-char c-b" aria-hidden="true"><use href="#kid"/></svg>
+            <svg class="slide-char c-c" aria-hidden="true"><use href="#koto"/></svg>
+          </div>
+        </div>
+        <div class="slide" data-bg="blue">
+          <div class="slide-text">
+            <div class="slide-eyebrow">150+ SPOTS</div>
+            <div class="slide-title">滋賀と周辺、<br>150超スポット。</div>
+            <div class="slide-sub">福井・三重・岐阜・京都北部もカバー</div>
+          </div>
+          <div class="slide-chars">
+            <svg class="slide-char c-a" aria-hidden="true"><use href="#mama"/></svg>
+            <svg class="slide-char c-b" aria-hidden="true"><use href="#papa"/></svg>
+            <svg class="slide-char c-c" aria-hidden="true"><use href="#biwa"/></svg>
+          </div>
+        </div>
+        <div class="slide-dots" id="slideDots">
+          <button class="dot active" onclick="gotoSlide(0)" aria-label="1枚目"></button>
+          <button class="dot" onclick="gotoSlide(1)" aria-label="2枚目"></button>
+          <button class="dot" onclick="gotoSlide(2)" aria-label="3枚目"></button>
+        </div>
+      </div>
+
       <!-- HERO: 今日のおすすめ1枚 -->
       <div class="hero-section" id="heroSection" onclick="openDetailFromHero()">
         <svg class="hero-mascot" aria-hidden="true" data-mascot="standing"><use href="#kodo"/></svg>
         <div class="hero-photo" id="heroPhoto">
           <div class="hero-badge" id="heroBadge">今日はここで間違いない</div>
           <div style="font-size:52px;" id="heroEmoji">🌳</div>
+          <div class="img-placeholder-note long" id="heroPlaceholderNote" style="display:none;">
+            <span class="ipn-icon">💭</span>いまはイメージだよ。いつかみんなの投稿写真が載せられたらうれしいな
+          </div>
         </div>
         <div class="hero-body">
           <div class="hero-judge" id="heroJudge">今日の状況に合わせてピックアップ</div>
@@ -1412,7 +1735,7 @@ html, body {
     <div class="cat-filter-row" id="prefFilterRow">
       <div class="cat-chip pref-chip active" onclick="filterPref(this,'all')">🗺 すべて</div>
       <div class="cat-chip pref-chip" onclick="filterPref(this,'滋賀')">🏯 滋賀</div>
-      <div class="cat-chip pref-chip" onclick="filterPref(this,'nearby')">🚗 周辺</div>
+      <div class="cat-chip pref-chip" onclick="filterPref(this,'nearby')">📍 近くの</div>
       <div class="cat-chip pref-chip" onclick="filterPref(this,'福井')">⚓ 福井</div>
       <div class="cat-chip pref-chip" onclick="filterPref(this,'三重')">🏎 三重</div>
     </div>
@@ -1567,6 +1890,9 @@ html, body {
   <div class="detail-scroll">
     <div class="detail-gallery" id="detailGallery">
       <div class="detail-rec" id="detailRecBadge"></div>
+      <div class="img-placeholder-note long" id="detailPlaceholderNote" style="display:none;">
+        <span class="ipn-icon">💭</span>いまはイメージだよ。投稿写真が集まったらピックして載せるね
+      </div>
       <div style="font-size:50px;" id="detailEmoji"></div>
       <div class="gallery-dots"><div class="gallery-dot active"></div><div class="gallery-dot"></div><div class="gallery-dot"></div><div class="gallery-dot"></div><div class="gallery-dot"></div></div>
     </div>
@@ -1583,6 +1909,12 @@ html, body {
       </div>
       <div id="detailJudgment"></div>
       <div class="detail-facts" id="detailFacts"></div>
+
+      <div class="d-section detail-rain" id="detailRain" style="display:none;">
+        <div class="d-section-title">☔ この場所のリアルタイム雨予報</div>
+        <div class="detail-rain-sub" id="detailRainSub"></div>
+        <div class="rain-strip-bars" id="detailRainBars"></div>
+      </div>
 
       <div class="d-section">
         <div class="d-section-title">🧩 遊具・あそび</div>
@@ -1648,6 +1980,18 @@ html, body {
 
     <textarea class="form-input" id="vfComment" rows="3" placeholder="一言コメント（例：1歳でも楽しめました！トイレがきれいで助かりました）" style="resize:none;margin-bottom:12px;"></textarea>
 
+    <div style="font-size:12px;color:var(--text-sub);margin-bottom:6px;">📷 写真（任意・1枚）</div>
+    <div class="vf-photo-row" style="margin-bottom:14px;">
+      <label class="vf-photo-btn">
+        <span id="vfPhotoBtnLabel">📸 写真を選ぶ</span>
+        <input type="file" accept="image/*" style="display:none;" onchange="handleVfPhoto(this)">
+      </label>
+      <div class="vf-photo-preview" id="vfPhotoPreview" style="display:none;">
+        <img id="vfPhotoImg" alt="投稿画像プレビュー"/>
+        <button type="button" class="vf-photo-clear" onclick="clearVfPhoto()" aria-label="削除">✕</button>
+      </div>
+    </div>
+
     <div style="font-size:12px;color:var(--text-sub);margin-bottom:6px;">感覚タグ（複数選択可）</div>
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;" id="vfTagBtns"></div>
 
@@ -1657,7 +2001,7 @@ html, body {
 </div>
 
 <!-- NEW SPOT MODAL -->
-<div id="newSpotModal" style="display:none;position:absolute;inset:0;z-index:300;background:rgba(0,0,0,0.5);align-items:flex-end;justify-content:center;">
+<div id="newSpotModal" style="display:none;position:absolute;inset:0;z-index:2000;background:rgba(0,0,0,0.5);align-items:flex-end;justify-content:center;">
   <div class="modal-sheet" style="max-height:85vh;overflow-y:auto;">
     <div class="modal-handle"></div>
     <div class="modal-title">📍 新しいスポットを登録</div>
@@ -2762,7 +3106,97 @@ const SPOTS = [
     highlight:'標高が高く夏でも涼しい。アクセスは車推奨。食事もリゾート内で完結。',
     rating:4.2, galleryBg:'linear-gradient(135deg,#d0c0e8,#a890c0)',
     ageGroups:[2,3,4,5,6,7,8,9,10], lat:34.6575, lng:136.1958
-  }
+  },
+
+  // ═══════ 滋賀拡張（大津・草津・守山・栗東・野洲・近江八幡・東近江・日野・竜王・長浜・米原・高島・多賀）═══════
+  { id:'enryakuji', emoji:'⛩', name:'比叡山延暦寺', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'大津市', addr:'滋賀県大津市坂本本町4220', hours:'8:30〜16:30', closed:'なし', price:'東塔・西塔・横川共通 1,000円', desc:'世界遺産の天台宗総本山。広大な山上境内で自然と歴史にふれる。', keywords:['世界遺産','天台宗','山','紅葉','自然'], play:['境内散策','根本中堂参拝','紅葉狩り','ケーブルカー'], highlight:'ケーブル利用が楽。歩くと広大なので子連れは電動カート推奨エリアも。', rating:4.5, galleryBg:'linear-gradient(135deg,#c0d8c0,#98b698)', ageGroups:[4,5,6,7,8,9,10], lat:35.0709, lng:135.8414 },
+  { id:'miidera', emoji:'🏯', name:'三井寺（園城寺）', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'大津市', addr:'滋賀県大津市園城寺町246', hours:'8:00〜17:00', closed:'なし', price:'大人600円 / 小中300円', desc:'長等山の広大な古刹。桜と紅葉が名所、境内も広く歩きやすい。', keywords:['古刹','桜','紅葉','弁慶の引き摺り鐘','境内散策'], play:['境内散策','桜見物','紅葉狩り','弁慶鐘'], highlight:'境内は広いが平坦な道も多くベビーカーOKな箇所あり。桜の時期は混雑。', rating:4.3, galleryBg:'linear-gradient(135deg,#e0d0b8,#c8b090)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0197, lng:135.8539 },
+  { id:'ishiyamadera', emoji:'🏯', name:'石山寺', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'大津市', addr:'滋賀県大津市石山寺1-1-1', hours:'8:00〜16:30', closed:'なし', price:'大人600円 / 小学生250円', desc:'紫式部ゆかりの古刹。多宝塔と石段、庭園が見どころ。', keywords:['紫式部','多宝塔','源氏物語','石段','境内'], play:['多宝塔','境内散策','源氏物語ゆかり','庭園'], highlight:'石段が多めなのでベビーカーは要注意。紫式部ゆかりの展示は小学生以上向き。', rating:4.3, galleryBg:'linear-gradient(135deg,#d8c8a8,#b8a888)', ageGroups:[4,5,6,7,8,9,10], lat:34.9614, lng:135.9033 },
+  { id:'hanafunsui', emoji:'⛲', name:'びわ湖花噴水', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市', addr:'滋賀県大津市浜大津5', hours:'12:00〜14:00・18:00〜21:00（日による）', closed:'不定休', price:'無料', desc:'琵琶湖上の世界最大級の噴水ショー。大津港から観覧。', keywords:['噴水','琵琶湖','ライトアップ','大津港','ショー'], play:['噴水観覧','ライトアップ鑑賞','湖畔散歩'], highlight:'夜のライトアップが特にきれい。風が強いと中止の日もあるので要確認。', rating:4.2, galleryBg:'linear-gradient(135deg,#a0c8e0,#78a0c0)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0100, lng:135.8700 },
+  { id:'michigan', emoji:'🚢', name:'ミシガン（琵琶湖遊覧船）', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'大津市', addr:'滋賀県大津市浜大津5-1-1', hours:'10:00〜17:00（便による）', closed:'なし', price:'60分コース大人2,500円〜', desc:'外輪船スタイルの琵琶湖遊覧船。ランチクルーズも人気。', keywords:['遊覧船','クルーズ','外輪船','琵琶湖','ランチ'], play:['船上散策','ランチクルーズ','湖上展望','記念撮影'], highlight:'予約推奨。子どもはデッキで楽しめる。ベビーカーもOK。', rating:4.3, galleryBg:'linear-gradient(135deg,#b0d0e8,#88a8c8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0100, lng:135.8700 },
+  { id:'tachiki_jinja', emoji:'⛩', name:'立木神社', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'草津市', addr:'滋賀県草津市草津4-1-3', hours:'6:00〜18:00', closed:'なし', price:'無料', desc:'草津宿を見守る鹿の神社。七五三や初詣で賑わう。', keywords:['神社','七五三','鹿','草津宿','御朱印'], play:['参拝','御朱印','鹿みくじ'], highlight:'境内はコンパクトで小さい子も安心。七五三の時期は要予約。', rating:4.1, galleryBg:'linear-gradient(135deg,#d8c8b0,#b8a890)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.9972, lng:135.9598 },
+  { id:'aeon_kusatsu', emoji:'🏢', name:'イオンモール草津', cat:'室内遊び場', catClass:'indoor', pref:'滋賀', loc:'草津市', addr:'滋賀県草津市新浜町300', hours:'10:00〜22:00', closed:'なし', price:'入場無料', desc:'キッズスペース、授乳室、フードコート完備の大型モール。', keywords:['ショッピング','キッズスペース','フードコート','雨の日OK'], play:['買い物','キッズスペース','フードコート','映画館'], highlight:'雨の日の定番。授乳室・おむつ替えスペース多数で安心。', rating:4.0, galleryBg:'linear-gradient(135deg,#d0d0d8,#b0b0b8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0080, lng:135.9653 },
+  { id:'biwako_museum', emoji:'🐟', name:'琵琶湖博物館', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'草津市', addr:'滋賀県草津市下物町1091', hours:'9:30〜17:00', closed:'月曜', price:'大人800円 / 高大生450円 / 中学生以下無料', desc:'琵琶湖の生き物と歴史を学べる体験型博物館。巨大水槽が圧巻。', keywords:['水族館','博物館','琵琶湖','淡水魚','体験展示'], play:['水族館見学','体験展示','巨大ビワコオオナマズ','歴史展示'], highlight:'中学生以下無料はありがたい。1日遊べる規模。ベビーカーOK。', rating:4.5, galleryBg:'linear-gradient(135deg,#a8d0e8,#80a8c8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0875, lng:135.9350 },
+  { id:'rokuha', emoji:'🌳', name:'ロクハ公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'草津市', addr:'滋賀県草津市追分7丁目1-1', hours:'常時開放（プールは夏季9:00-17:00）', closed:'なし', price:'入園無料（プール別途）', desc:'大型遊具とじゃぶじゃぶ池、夏のプールが人気の総合公園。', keywords:['大型遊具','プール','じゃぶじゃぶ池','芝生','駐車場無料'], play:['大型遊具','じゃぶじゃぶ池（夏）','プール（夏季）','芝生広場'], highlight:'夏のプールは混雑するので朝イチ推奨。駐車場は無料で大型。', rating:4.3, galleryBg:'linear-gradient(135deg,#c8e0c0,#a0c898)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.9994, lng:135.9333 },
+  { id:'pieri_moriyama', emoji:'🏬', name:'ピエリ守山', cat:'室内遊び場', catClass:'indoor', pref:'滋賀', loc:'守山市', addr:'滋賀県守山市今浜町2620-5', hours:'10:00〜20:00（店舗による）', closed:'店舗による', price:'入場無料', desc:'琵琶湖畔の大型商業施設。プールやフードコートもある。', keywords:['ショッピング','フードコート','プール','琵琶湖','雨の日'], play:['買い物','フードコート','ゲームセンター','眺望'], highlight:'琵琶湖ビューが素敵。レストラン街でゆっくり食事可能。', rating:4.0, galleryBg:'linear-gradient(135deg,#c8d8e0,#a0b0c0)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1231, lng:135.9744 },
+  { id:'nagisa_nanohana', emoji:'🌼', name:'第一なぎさ公園（菜の花）', cat:'公園', catClass:'park', pref:'滋賀', loc:'守山市', addr:'滋賀県守山市今浜町地先', hours:'常時開放', closed:'なし', price:'無料', desc:'琵琶湖を背景に早春の菜の花畑が広がる絶景スポット。', keywords:['菜の花','琵琶湖','絶景','写真映え','春'], play:['菜の花鑑賞','湖畔散歩','写真撮影'], highlight:'1〜2月の菜の花の時期がベスト。駐車場は限られるので早朝推奨。', rating:4.4, galleryBg:'linear-gradient(135deg,#f0e0a0,#d8c880)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1227, lng:135.9750 },
+  { id:'ritto_shizen', emoji:'🌲', name:'栗東自然観察の森', cat:'公園', catClass:'park', pref:'滋賀', loc:'栗東市', addr:'滋賀県栗東市荒張696', hours:'9:00〜17:00', closed:'月曜', price:'無料', desc:'里山の自然を体感できる観察の森。昆虫観察や木の実拾いが楽しい。', keywords:['自然観察','里山','昆虫','木の実','森'], play:['自然観察','虫取り','木の実拾い','ネイチャーウォーク'], highlight:'虫よけ必須。季節ごとの生き物がいて何度訪れても楽しめる。', rating:4.2, galleryBg:'linear-gradient(135deg,#c0d8b0,#98b088)', ageGroups:[3,4,5,6,7,8,9,10], lat:34.9773, lng:135.9946 },
+  { id:'alplaza_ritto', emoji:'🏢', name:'アルプラザ栗東', cat:'室内遊び場', catClass:'indoor', pref:'滋賀', loc:'栗東市', addr:'滋賀県栗東市綣2丁目3-22', hours:'9:00〜21:00', closed:'なし', price:'入場無料', desc:'フードコートとキッズ広場のある地域密着型SC。', keywords:['SC','フードコート','キッズ','雨の日','買い物'], play:['買い物','フードコート','キッズ広場'], highlight:'駅近で便利。雨の日のランチ場所として重宝。', rating:3.9, galleryBg:'linear-gradient(135deg,#d8d8d0,#b8b8b0)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.9912, lng:136.0012 },
+  { id:'mikamiyama', emoji:'⛰', name:'三上山（近江富士）', cat:'公園', catClass:'park', pref:'滋賀', loc:'野洲市', addr:'滋賀県野洲市三上', hours:'常時開放', closed:'なし', price:'無料', desc:'富士山型の美しい低山。子連れ登山の入門に最適。', keywords:['登山','低山','近江富士','眺望','ハイキング'], play:['登山','ハイキング','山頂からの眺望'], highlight:'往復2-3時間。水分・動きやすい靴必須。山頂は琵琶湖一望。', rating:4.3, galleryBg:'linear-gradient(135deg,#b8d0b0,#90a888)', ageGroups:[5,6,7,8,9,10], lat:35.0447, lng:136.0319 },
+  { id:'ooiwayama', emoji:'🗿', name:'大岩山古墳群', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'野洲市', addr:'滋賀県野洲市辻町', hours:'常時開放', closed:'なし', price:'無料', desc:'古代の銅鐸が出土した古墳群。歴史公園として整備。', keywords:['古墳','銅鐸','歴史','遺跡','公園'], play:['古墳見学','歴史散策','展望'], highlight:'野洲市歴史民俗博物館と合わせて訪問がおすすめ。', rating:3.9, galleryBg:'linear-gradient(135deg,#c8c0a8,#a0986*80)', ageGroups:[4,5,6,7,8,9,10], lat:35.0500, lng:136.0400 },
+  { id:'hachimanbori', emoji:'🚤', name:'八幡堀', cat:'カフェ・レストラン', catClass:'cafe', pref:'滋賀', loc:'近江八幡市', addr:'滋賀県近江八幡市宮内町', hours:'散策自由', closed:'なし', price:'無料（船は別途）', desc:'八幡山城の堀跡に残る情緒ある水路。船で巡るのも風情がある。', keywords:['八幡堀','水路','散策','船めぐり','時代劇ロケ地'], play:['堀沿い散策','船めぐり','古建築写真','カフェ巡り'], highlight:'船は予約がベター。近くにパン屋・カフェも多い。', rating:4.4, galleryBg:'linear-gradient(135deg,#c0c8d0,#909aa8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1345, lng:136.0858 },
+  { id:'lacollina', emoji:'🧁', name:'ラ コリーナ近江八幡', cat:'カフェ・レストラン', catClass:'cafe', pref:'滋賀', loc:'近江八幡市', addr:'滋賀県近江八幡市北之庄町615-1', hours:'9:00〜18:00', closed:'なし', price:'入場無料', desc:'たねやの本社敷地にあるバームクーヘンの聖地。景観も圧巻。', keywords:['たねや','バームクーヘン','景観','カフェ','子連れ'], play:['バームクーヘン','カステラ','カフェ','草屋根見学'], highlight:'広くて子連れでも快適。週末は激混。ランチも可能。', rating:4.5, galleryBg:'linear-gradient(135deg,#d8e0b8,#b0b890)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1237, lng:136.0969 },
+  { id:'chomeiji', emoji:'⛩', name:'長命寺', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'近江八幡市', addr:'滋賀県近江八幡市長命寺町157', hours:'8:00〜17:00', closed:'なし', price:'無料', desc:'808段の石段で知られる古刹。山上からの琵琶湖展望が絶景。', keywords:['石段','808段','琵琶湖','絶景','古刹'], play:['石段登り','境内散策','眺望'], highlight:'石段はかなりキツい。小学生高学年以上推奨。上まで車でも行ける。', rating:4.1, galleryBg:'linear-gradient(135deg,#c0c8b0,#909888)', ageGroups:[6,7,8,9,10], lat:35.1620, lng:136.0620 },
+  { id:'eigenji', emoji:'🍁', name:'永源寺', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'東近江市', addr:'滋賀県東近江市永源寺高野町41', hours:'9:00〜16:00', closed:'なし', price:'大人500円 / 中学生以下無料', desc:'紅葉の名所として有名な禅寺。渓谷沿いの静かなお寺。', keywords:['紅葉','禅寺','渓谷','静か','中学生以下無料'], play:['紅葉狩り','境内散策','渓谷眺め'], highlight:'紅葉シーズン（11月）は激混、早朝推奨。それ以外は静か。', rating:4.3, galleryBg:'linear-gradient(135deg,#e8b898,#c89878)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0998, lng:136.2511 },
+  { id:'aeon_higashiomi', emoji:'🏬', name:'イオンモール東近江', cat:'室内遊び場', catClass:'indoor', pref:'滋賀', loc:'東近江市', addr:'滋賀県東近江市八日市緑町26-8', hours:'10:00〜21:00', closed:'なし', price:'入場無料', desc:'キッズスペースと専門店街のある地域のSC。', keywords:['SC','キッズ','フードコート','雨の日'], play:['買い物','フードコート','キッズスペース'], highlight:'東近江エリアの雨の日避難所。駐車場無料。', rating:3.9, galleryBg:'linear-gradient(135deg,#d0d0d8,#b0b0b8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1189, lng:136.1553 },
+  { id:'blumenohill', emoji:'🐑', name:'滋賀農業公園ブルーメの丘', cat:'公園', catClass:'park', pref:'滋賀', loc:'日野町', addr:'滋賀県蒲生郡日野町西大路843', hours:'9:30〜18:00（季節変動）', closed:'冬季水曜', price:'大人1,200円 / 4歳以上500円', desc:'動物ふれあい、アスレチック、パターゴルフのある農業公園。', keywords:['動物','ふれあい','アスレチック','パターゴルフ','ドイツ'], play:['動物ふれあい','アスレチック','パターゴルフ','パン作り体験'], highlight:'1日遊べる。お弁当持参OK。イベント開催日は要予約。', rating:4.3, galleryBg:'linear-gradient(135deg,#d8e8c0,#b0c098)', ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:34.9870, lng:136.2420 },
+  { id:'hino_matsuri', emoji:'🏮', name:'日野祭り資料館（近江日野商人館）', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'日野町', addr:'滋賀県蒲生郡日野町大窪1011', hours:'9:30〜16:00', closed:'月曜', price:'大人300円 / 小中100円', desc:'近江商人の歴史と日野祭りを紹介する資料館。', keywords:['近江商人','日野祭り','歴史','民俗','資料館'], play:['資料見学','歴史展示','町並み散策'], highlight:'小規模だが内容は濃い。日野祭り（5月）に合わせて訪問もおすすめ。', rating:3.9, galleryBg:'linear-gradient(135deg,#d0c0a8,#a89880)', ageGroups:[5,6,7,8,9,10], lat:35.0244, lng:136.2524 },
+  { id:'ryuo_outlet', emoji:'🛍', name:'三井アウトレットパーク 滋賀竜王', cat:'カフェ・レストラン', catClass:'cafe', pref:'滋賀', loc:'竜王町', addr:'滋賀県蒲生郡竜王町大字薬師字砂山1178-694', hours:'10:00〜20:00', closed:'不定休', price:'入場無料', desc:'広大な屋外型アウトレット。フードコート・遊び場も充実。', keywords:['アウトレット','ショッピング','フードコート','ブランド'], play:['ショッピング','フードコート','キッズコーナー','イベント'], highlight:'週末は激混。平日午前が穴場。授乳室・キッズスペース完備。', rating:4.1, galleryBg:'linear-gradient(135deg,#d8d0c0,#b0a898)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1173, lng:136.1040 },
+  { id:'kurokabe', emoji:'🏮', name:'黒壁スクエア', cat:'カフェ・レストラン', catClass:'cafe', pref:'滋賀', loc:'長浜市', addr:'滋賀県長浜市元浜町', hours:'店舗による', closed:'店舗による', price:'散策無料', desc:'ガラス工芸の街長浜の中心。レトロな町並みで食べ歩きが楽しい。', keywords:['ガラス工芸','町並み','食べ歩き','レトロ','カフェ'], play:['町並み散策','ガラス工房見学','食べ歩き','カフェ巡り'], highlight:'ガラス体験は要予約。週末混むが平日は静か。', rating:4.3, galleryBg:'linear-gradient(135deg,#c8c0b0,#988880)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.3849, lng:136.2658 },
+  { id:'nagahama_rail', emoji:'🚂', name:'長浜鉄道スクエア', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'長浜市', addr:'滋賀県長浜市北船町1-41', hours:'9:30〜17:00', closed:'なし', price:'大人300円 / 小学生150円', desc:'日本最古の駅舎と鉄道ジオラマ。鉄道好きの子に刺さる。', keywords:['鉄道','ジオラマ','最古の駅舎','SL','鉄道ファン'], play:['駅舎見学','ジオラマ鑑賞','SL見学','歴史展示'], highlight:'黒壁スクエアとセットで訪問しやすい立地。', rating:4.2, galleryBg:'linear-gradient(135deg,#d0c8b0,#a09890)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.3823, lng:136.2687 },
+  { id:'mizudori_station', emoji:'🦆', name:'道の駅 湖北みずどりステーション', cat:'カフェ・レストラン', catClass:'cafe', pref:'滋賀', loc:'長浜市', addr:'滋賀県長浜市湖北町今西1731-1', hours:'9:00〜18:00', closed:'なし', price:'入場無料', desc:'琵琶湖畔の道の駅。渡り鳥観察と地元グルメが楽しめる。', keywords:['道の駅','渡り鳥','琵琶湖','地元野菜','鴨鍋'], play:['渡り鳥観察','地元野菜買い','鴨鍋ランチ'], highlight:'冬は渡り鳥の時期。鴨料理は予約推奨。', rating:4.1, galleryBg:'linear-gradient(135deg,#b8c8d8,#8898a8)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.4510, lng:136.2390 },
+  { id:'samegai', emoji:'💧', name:'醒井水の宿駅・地蔵川', cat:'公園', catClass:'park', pref:'滋賀', loc:'米原市', addr:'滋賀県米原市醒井93', hours:'常時開放（梅花藻は5-8月）', closed:'なし', price:'無料', desc:'清流に咲く梅花藻で有名な水の町。夏の涼スポット。', keywords:['清流','梅花藻','水の町','涼','夏'], play:['清流散策','梅花藻鑑賞','水遊び','写真撮影'], highlight:'夏の梅花藻（7-8月）がベスト。水が冷たく涼しい。', rating:4.3, galleryBg:'linear-gradient(135deg,#b0d0d8,#88a8b0)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.3202, lng:136.3575 },
+  { id:'ibuki', emoji:'⛰', name:'伊吹山', cat:'公園', catClass:'park', pref:'滋賀', loc:'米原市', addr:'滋賀県米原市上野', hours:'ドライブウェイ8:00〜20:00（季節変動）', closed:'冬季通行止', price:'ドライブウェイ3,140円', desc:'滋賀最高峰。山頂までドライブウェイで行ける。夏の花畑が見事。', keywords:['山','ドライブウェイ','花畑','展望','夏'], play:['山頂散策','花畑鑑賞','展望','軽登山'], highlight:'山頂は標高1377mで夏でも涼しい。子連れ登山は山頂駐車場からがおすすめ。', rating:4.4, galleryBg:'linear-gradient(135deg,#b8c8b0,#8098*80)', ageGroups:[4,5,6,7,8,9,10], lat:35.4183, lng:136.4053 },
+  { id:'shirahige', emoji:'⛩', name:'白鬚神社', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'高島市', addr:'滋賀県高島市鵜川215', hours:'参拝自由', closed:'なし', price:'無料', desc:'琵琶湖に浮かぶ鳥居が幻想的。近江最古の大社。', keywords:['鳥居','琵琶湖','神社','絶景','写真映え'], play:['参拝','鳥居見物','写真撮影','湖畔散歩'], highlight:'SNS映え鳥居。朝夕の光が特に美しい。国道沿いで駐車場混雑注意。', rating:4.4, galleryBg:'linear-gradient(135deg,#e0b098,#b88878)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.2769, lng:135.9472 },
+  { id:'metasequoia', emoji:'🌲', name:'マキノ メタセコイア並木', cat:'公園', catClass:'park', pref:'滋賀', loc:'高島市', addr:'滋賀県高島市マキノ町蛭口〜牧野', hours:'常時開放', closed:'なし', price:'無料', desc:'500本のメタセコイアが2.4km続く並木道。四季で表情を変える。', keywords:['並木','メタセコイア','絶景','ドライブ','写真'], play:['並木ドライブ','散歩','写真撮影','自転車'], highlight:'紅葉（11月）、新緑（5-6月）、雪（1-2月）すべて絶景。道路沿いのため駐車マナーに注意。', rating:4.6, galleryBg:'linear-gradient(135deg,#c8d8b8,#90a888)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.3823, lng:136.0144 },
+  { id:'taga_taisha', emoji:'⛩', name:'多賀大社', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'多賀町', addr:'滋賀県犬上郡多賀町多賀604', hours:'8:00〜16:00', closed:'なし', price:'無料', desc:'延命長寿の神様として親しまれる大社。境内も広く子連れで参拝しやすい。', keywords:['神社','延命','長寿','大社','御朱印'], play:['参拝','御朱印','境内散策','絵馬'], highlight:'初詣は混雑。駐車場は広めで無料。', rating:4.3, galleryBg:'linear-gradient(135deg,#d8c0a0,#a89880)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.2277, lng:136.2927 },
+
+  // ═══════ 福井拡張 ═══════
+  { id:'tojinbo', emoji:'🌊', name:'東尋坊', cat:'公園', catClass:'park', pref:'福井', loc:'坂井市', addr:'福井県坂井市三国町安島', hours:'散策自由', closed:'なし', price:'無料（遊覧船別途）', desc:'日本海の荒波が刻んだ断崖絶景。遊覧船で海からも見られる。', keywords:['断崖','絶景','日本海','遊覧船','商店街'], play:['断崖散策','遊覧船','商店街食べ歩き','展望'], highlight:'子連れは柵から離して見学。強風の日注意。', rating:4.3, galleryBg:'linear-gradient(135deg,#a0b8c8,#7088a0)', ageGroups:[3,4,5,6,7,8,9,10], lat:36.2416, lng:136.1250 },
+  { id:'maruokajo', emoji:'🏯', name:'丸岡城', cat:'ミュージアム・体験', catClass:'museum', pref:'福井', loc:'坂井市', addr:'福井県坂井市丸岡町霞町1-59', hours:'8:30〜17:00', closed:'なし', price:'大人450円 / 小中150円', desc:'現存12天守のひとつ。急な階段が体験できる貴重な木造天守。', keywords:['現存天守','城','木造','歴史','急階段'], play:['天守登閣','歴史展示','周辺散策'], highlight:'階段がかなり急。小学生以上推奨。天守最上部からの眺めは素晴らしい。', rating:4.1, galleryBg:'linear-gradient(135deg,#c8b898,#9888*78)', ageGroups:[5,6,7,8,9,10], lat:36.1500, lng:136.2722 },
+  { id:'dinosaur_museum', emoji:'🦖', name:'福井県立恐竜博物館', cat:'ミュージアム・体験', catClass:'museum', pref:'福井', loc:'勝山市', addr:'福井県勝山市村岡町寺尾51-11', hours:'9:00〜17:00', closed:'第2・4水曜', price:'大人1,000円 / 高大800円 / 小中500円', desc:'国内最大級の恐竜博物館。迫力の全身骨格と発掘体験。', keywords:['恐竜','化石','博物館','発掘','勝山'], play:['恐竜展示','発掘体験','ジオラマ','ショップ'], highlight:'予約制日あり。発掘体験は別途申込。1日遊べる規模。', rating:4.6, galleryBg:'linear-gradient(135deg,#c0a888,#907860)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:36.0754, lng:136.5272 },
+  { id:'dinopark', emoji:'🦕', name:'かつやまディノパーク', cat:'公園', catClass:'park', pref:'福井', loc:'勝山市', addr:'福井県勝山市村岡町寺尾', hours:'9:00〜17:00', closed:'不定休', price:'大人700円 / 子ども600円', desc:'恐竜博物館隣の野外恐竜パーク。等身大の恐竜モデルが迫力。', keywords:['恐竜','野外','パーク','等身大','博物館併設'], play:['恐竜ウォーク','化石発掘体験','ジップライン'], highlight:'博物館と合わせて訪問推奨。屋外なので雨具必要。', rating:4.2, galleryBg:'linear-gradient(135deg,#b0c098,#88a070)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:36.0743, lng:136.5303 },
+  { id:'asakura', emoji:'🏯', name:'一乗谷朝倉氏遺跡', cat:'ミュージアム・体験', catClass:'museum', pref:'福井', loc:'福井市', addr:'福井県福井市城戸ノ内町', hours:'散策自由（資料館9:00-17:00）', closed:'資料館12/28-1/4', price:'無料（資料館大人210円）', desc:'戦国時代の城下町を再現した国の特別史跡。時代劇ロケ地にもなる。', keywords:['戦国','城下町','史跡','朝倉氏','時代劇'], play:['町並み散策','資料館見学','歴史体験'], highlight:'広いので歩きやすい靴で。桜と紅葉のシーズンが特に美しい。', rating:4.4, galleryBg:'linear-gradient(135deg,#c0b098,#988*7868)', ageGroups:[4,5,6,7,8,9,10], lat:36.0225, lng:136.2929 },
+  { id:'echizen_togei', emoji:'🏺', name:'越前陶芸村', cat:'ミュージアム・体験', catClass:'museum', pref:'福井', loc:'越前町', addr:'福井県丹生郡越前町小曽原120-61', hours:'9:00〜17:00', closed:'月曜', price:'入園無料（体験別途）', desc:'日本六古窯のひとつ越前焼の総合施設。陶芸体験が人気。', keywords:['越前焼','陶芸','体験','古窯','文化'], play:['陶芸体験','博物館見学','公園散策','ショップ'], highlight:'陶芸体験は小学生以上推奨。予約推奨。', rating:4.2, galleryBg:'linear-gradient(135deg,#c8a898,#987868)', ageGroups:[5,6,7,8,9,10], lat:35.8556, lng:136.1844 },
+  { id:'fukui_shizenshi', emoji:'🦌', name:'福井市立自然史博物館', cat:'ミュージアム・体験', catClass:'museum', pref:'福井', loc:'福井市', addr:'福井県福井市足羽上町147', hours:'9:00〜17:00', closed:'月曜', price:'大人100円 / 中学生以下無料', desc:'福井の自然と生物を学べる博物館。プラネタリウムも併設。', keywords:['自然史','博物館','プラネタリウム','生物','展示'], play:['展示見学','プラネタリウム','体験学習'], highlight:'コンパクトながら内容は充実。コスパ良好。', rating:4.0, galleryBg:'linear-gradient(135deg,#b8c8b0,#889888)', ageGroups:[3,4,5,6,7,8,9,10], lat:36.0625, lng:136.2221 },
+  { id:'katsuyama_castle', emoji:'🏯', name:'勝山城博物館', cat:'ミュージアム・体験', catClass:'museum', pref:'福井', loc:'勝山市', addr:'福井県勝山市平泉寺町林毛谷', hours:'9:00〜17:00', closed:'水曜', price:'大人500円 / 小中200円', desc:'高さ57.8mの日本一の天守高さの模擬天守。展望も良い。', keywords:['城','博物館','天守','展望','勝山'], play:['城内見学','展望台','歴史展示'], highlight:'模擬天守だが規模大きく見応えあり。恐竜博物館とセットで。', rating:3.9, galleryBg:'linear-gradient(135deg,#d0c0a8,#a09080)', ageGroups:[4,5,6,7,8,9,10], lat:36.0611, lng:136.5153 },
+  { id:'wakasa_marine', emoji:'🐠', name:'若狭湾 海浜自然センター', cat:'ミュージアム・体験', catClass:'museum', pref:'福井', loc:'若狭町', addr:'福井県三方上中郡若狭町世久見18-2', hours:'9:00〜17:00', closed:'月曜', price:'大人300円 / 小中100円', desc:'若狭湾の生き物と自然を学べる体験型施設。タッチプールあり。', keywords:['海','自然','タッチプール','体験','若狭湾'], play:['タッチプール','展示見学','磯観察','クラフト'], highlight:'海辺の体験ができる貴重なスポット。水着持参で磯遊びも。', rating:4.1, galleryBg:'linear-gradient(135deg,#a8c8d8,#7898a8)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.6000, lng:135.9000 },
+  { id:'kehi_matsubara', emoji:'🌲', name:'気比の松原', cat:'公園', catClass:'park', pref:'福井', loc:'敦賀市', addr:'福井県敦賀市松島町', hours:'常時開放', closed:'なし', price:'無料', desc:'日本三大松原のひとつ。広大な砂浜と松林、夏は海水浴も。', keywords:['松原','砂浜','海水浴','日本三大','散策'], play:['散策','海水浴（夏）','砂遊び','松林ウォーク'], highlight:'夏は海水浴で賑わう。それ以外の季節は静か。ピクニックにも。', rating:4.3, galleryBg:'linear-gradient(135deg,#c0c8a0,#90987*8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.6527, lng:136.0531 },
+
+  // ═══════ 三重拡張 ═══════
+  { id:'ise_naiku', emoji:'⛩', name:'伊勢神宮 内宮（皇大神宮）', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'伊勢市', addr:'三重県伊勢市宇治館町1', hours:'5:00〜18:00（季節変動）', closed:'なし', price:'無料', desc:'日本人の心のふるさと、日本で最も格式高い神社。', keywords:['伊勢神宮','内宮','神社','パワースポット','参拝'], play:['参拝','宇治橋','神楽殿','御朱印'], highlight:'早朝がベスト。駐車場は離れた場所から無料バスも。おかげ横丁併せて訪問。', rating:4.7, galleryBg:'linear-gradient(135deg,#d0c0a0,#a09080)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.4551, lng:136.7254 },
+  { id:'ise_geku', emoji:'⛩', name:'伊勢神宮 外宮（豊受大神宮）', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'伊勢市', addr:'三重県伊勢市豊川町279', hours:'5:00〜18:00（季節変動）', closed:'なし', price:'無料', desc:'衣食住の神様。内宮から先に参拝する習わし。', keywords:['伊勢神宮','外宮','神社','豊受','参拝'], play:['参拝','神楽殿','御朱印'], highlight:'内宮より空いている。駅から近く便利。内宮と合わせて1日コース。', rating:4.5, galleryBg:'linear-gradient(135deg,#c8b898,#987*868)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.4902, lng:136.7060 },
+  { id:'okage_yokocho', emoji:'🍡', name:'おかげ横丁', cat:'カフェ・レストラン', catClass:'cafe', pref:'三重', loc:'伊勢市', addr:'三重県伊勢市宇治中之切町52', hours:'9:30〜17:30', closed:'なし', price:'散策無料', desc:'内宮前の江戸情緒あふれる商店街。食べ歩きとお土産の定番。', keywords:['商店街','食べ歩き','江戸','赤福','お土産'], play:['食べ歩き','赤福','焼き団子','お土産買い'], highlight:'週末激混。早朝か平日推奨。ベビーカーは混雑時困難。', rating:4.4, galleryBg:'linear-gradient(135deg,#d8b898,#a88*878)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.4568, lng:136.7220 },
+  { id:'toba_aquarium', emoji:'🐬', name:'鳥羽水族館', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'鳥羽市', addr:'三重県鳥羽市鳥羽3-3-6', hours:'9:00〜17:00', closed:'なし', price:'大人2,800円 / 小中1,600円 / 幼児800円', desc:'国内最多1200種の海の生き物。ジュゴンが見られる日本唯一の水族館。', keywords:['水族館','ジュゴン','ラッコ','アシカショー','1200種'], play:['海獣ショー','ジュゴン見学','タッチプール','ラッコ'], highlight:'駐車場大きめ。隣接のミキモト真珠島とセットで1日コース可能。', rating:4.5, galleryBg:'linear-gradient(135deg,#a8c8d8,#7898a8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.4819, lng:136.8338 },
+  { id:'shima_spain', emoji:'🏰', name:'志摩スペイン村', cat:'公園', catClass:'park', pref:'三重', loc:'志摩市', addr:'三重県志摩市磯部町坂崎', hours:'9:30〜17:00（季節変動）', closed:'不定休', price:'大人5,400円 / 小学生4,200円', desc:'スペインをテーマにしたテーマパーク。絶叫マシンから子ども向けまで。', keywords:['テーマパーク','絶叫マシン','スペイン','フラメンコ','リゾート'], play:['アトラクション','フラメンコショー','スペイン街','レストラン'], highlight:'小さい子向けエリアも充実。夏はプールもオープン。', rating:4.3, galleryBg:'linear-gradient(135deg,#f0c8a0,#c89878)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:34.3442, lng:136.8736 },
+  { id:'gozaisho', emoji:'🚠', name:'御在所ロープウエイ', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'菰野町', addr:'三重県三重郡菰野町湯の山温泉', hours:'9:00〜17:00（季節変動）', closed:'水曜（夏冬は無休）', price:'大人往復2,600円 / 小学生1,300円', desc:'標高1,212mの御在所岳へ空中散歩。四季の眺望が絶景。', keywords:['ロープウエイ','山頂','眺望','四季','温泉'], play:['ロープウエイ','山頂散策','景色','スキー（冬）'], highlight:'冬は雪景色、春は新緑、秋は紅葉、夏は涼。湯の山温泉も近い。', rating:4.5, galleryBg:'linear-gradient(135deg,#c0c8a0,#889878)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0264, lng:136.4164 },
+  { id:'matsusaka_jo', emoji:'🏯', name:'松阪城跡', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'松阪市', addr:'三重県松阪市殿町', hours:'常時開放', closed:'なし', price:'無料', desc:'石垣だけが残る城跡。城下町散策と松阪牛グルメの拠点。', keywords:['城跡','石垣','松阪牛','城下町','桜'], play:['石垣散策','本居宣長記念館','城下町','松阪牛'], highlight:'春は桜が見事。松阪牛ランチと合わせて訪問。', rating:4.1, galleryBg:'linear-gradient(135deg,#b8a888,#88*7868)', ageGroups:[3,4,5,6,7,8,9,10], lat:34.5747, lng:136.5278 },
+  { id:'futami_meoto', emoji:'🌊', name:'夫婦岩・二見興玉神社', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'伊勢市', addr:'三重県伊勢市二見町江575', hours:'参拝自由', closed:'なし', price:'無料', desc:'夫婦岩で有名な神社。伊勢神宮参拝前の禊の地。', keywords:['夫婦岩','神社','海','禊','伊勢'], play:['夫婦岩見物','参拝','海辺散策','夕陽'], highlight:'日の出が特に美しい。伊勢神宮とセット参拝が伝統。', rating:4.3, galleryBg:'linear-gradient(135deg,#a8b8c8,#7888a8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.4996, lng:136.7840 },
+  { id:'akame48', emoji:'💧', name:'赤目四十八滝', cat:'公園', catClass:'park', pref:'三重', loc:'名張市', addr:'三重県名張市赤目町長坂861-1', hours:'8:30〜17:00', closed:'なし', price:'大人500円 / 小学生250円', desc:'渓谷沿いに48の滝が連なる名勝。ネイチャーウォークが楽しい。', keywords:['滝','渓谷','ネイチャー','サンショウウオ','ハイキング'], play:['滝めぐり','渓谷ウォーク','センター見学','忍者体験（隣接）'], highlight:'往復3時間程度。歩きやすい靴必須。夏は涼しい。', rating:4.5, galleryBg:'linear-gradient(135deg,#a0c0b0,#708890)', ageGroups:[4,5,6,7,8,9,10], lat:34.6472, lng:136.1461 },
+  { id:'nagashima_spa', emoji:'🎢', name:'ナガシマスパーランド', cat:'公園', catClass:'park', pref:'三重', loc:'桑名市', addr:'三重県桑名市長島町浦安333', hours:'9:30〜17:00（季節変動）', closed:'不定休', price:'大人3,500円 / 小学生2,400円 / 幼児1,300円', desc:'日本最大級の遊園地。絶叫マシン40種以上と夏のジャンボ海水プール。', keywords:['遊園地','絶叫マシン','プール','ジェットコースター'], play:['アトラクション','ジャンボ海水プール（夏）','キッズタウン','花火'], highlight:'小さい子向けキッズタウンも充実。1日遊べる。夏は水着持参。', rating:4.5, galleryBg:'linear-gradient(135deg,#f0a8a8,#c87878)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0869, lng:136.7272 },
+  { id:'seki_shuku', emoji:'🏮', name:'関宿（東海道）', cat:'カフェ・レストラン', catClass:'cafe', pref:'三重', loc:'亀山市', addr:'三重県亀山市関町中町', hours:'散策自由', closed:'なし', price:'無料', desc:'東海道の宿場町がそのまま残る国の重要伝統的建造物群。', keywords:['東海道','宿場町','町並み','伝統','歴史'], play:['町並み散策','資料館','和菓子','カフェ'], highlight:'小規模だが時代タイムスリップ感。ベビーカーOK。', rating:4.3, galleryBg:'linear-gradient(135deg,#d0b898,#a08878)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.8581, lng:136.4161 },
+  { id:'mokumoku', emoji:'🐷', name:'伊賀の里モクモク手づくりファーム', cat:'公園', catClass:'park', pref:'三重', loc:'伊賀市', addr:'三重県伊賀市西湯舟3609', hours:'10:00〜17:00', closed:'不定休', price:'大人1,100円 / 小学生800円 / 3歳以上500円', desc:'地元野菜・ハム作り体験・動物ふれあいの体験型農場。', keywords:['農場','ハム作り','動物ふれあい','野菜','体験'], play:['動物ふれあい','ハム作り体験','野菜狩り','農場レストラン'], highlight:'体験プログラムは予約必須。バーベキューも人気。', rating:4.4, galleryBg:'linear-gradient(135deg,#c8d8b0,#909888)', ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:34.8000, lng:136.1833 },
+  { id:'aquaignis', emoji:'♨', name:'アクアイグニス', cat:'カフェ・レストラン', catClass:'cafe', pref:'三重', loc:'菰野町', addr:'三重県三重郡菰野町大羽根園松ケ枝町', hours:'10:00〜22:00', closed:'なし', price:'温泉大人600円 / カフェは別途', desc:'温泉・レストラン・スイーツ・農園が集まる総合複合施設。', keywords:['温泉','スイーツ','レストラン','複合施設','菰野'], play:['日帰り温泉','スイーツ','地産レストラン','ベーカリー'], highlight:'辻口博啓のスイーツが人気。御在所ロープウェイとセットも可能。', rating:4.3, galleryBg:'linear-gradient(135deg,#d8c0a8,#a89088)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.9389, lng:136.5244 },
+  { id:'yokkaichi_port', emoji:'🌃', name:'四日市港ポートビル（うみてらす14）', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'四日市市', addr:'三重県四日市市霞2-1-1', hours:'10:00〜17:00', closed:'月曜', price:'大人310円 / 小中150円', desc:'工場夜景で有名な四日市の港展望施設。夜は絶景。', keywords:['工場夜景','展望台','港','四日市','夜景'], play:['展望','工場夜景','コンビナート展望','ミニシアター'], highlight:'夕方〜夜がベスト。工場夜景は日本夜景遺産。', rating:4.1, galleryBg:'linear-gradient(135deg,#9098b0,#606878)', ageGroups:[4,5,6,7,8,9,10], lat:34.9640, lng:136.6325 },
+  { id:'mikimoto', emoji:'🦪', name:'ミキモト真珠島', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'鳥羽市', addr:'三重県鳥羽市鳥羽1-7-1', hours:'9:00〜17:00', closed:'なし', price:'大人1,650円 / 小中800円', desc:'真珠養殖発祥の地。海女実演と真珠博物館がある。', keywords:['真珠','海女','博物館','鳥羽','実演'], play:['海女実演','真珠博物館','真珠ジュエリー','眺望'], highlight:'海女実演は時間指定あり。鳥羽水族館と合わせて1日コース。', rating:4.2, galleryBg:'linear-gradient(135deg,#d8c8d0,#a89890)', ageGroups:[4,5,6,7,8,9,10], lat:34.4872, lng:136.8353 },
+  { id:'sakakibara', emoji:'♨', name:'榊原温泉', cat:'カフェ・レストラン', catClass:'cafe', pref:'三重', loc:'津市', addr:'三重県津市榊原町', hours:'店舗による', closed:'店舗による', price:'日帰り1,000円前後', desc:'清少納言の枕草子にも載る古湯。家族風呂のある旅館も。', keywords:['温泉','古湯','家族風呂','清少納言','日帰り'], play:['日帰り入浴','家族風呂','湯めぐり','周辺散策'], highlight:'家族風呂を選べば小さい子と安心。肌に優しい湯質。', rating:4.2, galleryBg:'linear-gradient(135deg,#d8c0c8,#a09098)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.7181, lng:136.3781 },
+  { id:'tsu_kairakuen', emoji:'🌳', name:'津偕楽公園', cat:'公園', catClass:'park', pref:'三重', loc:'津市', addr:'三重県津市広明町', hours:'常時開放', closed:'なし', price:'無料', desc:'津藩主の別邸跡を公園化。桜と鉄道展示で地元に親しまれる。', keywords:['公園','桜','鉄道展示','散策','津市'], play:['散策','桜見物','鉄道展示','ベンチでのんびり'], highlight:'桜の季節（4月上旬）がベスト。駅近でアクセス良好。', rating:3.9, galleryBg:'linear-gradient(135deg,#f0c8d0,#c0a0a8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.7322, lng:136.5081 },
+  { id:'suzuka_mori', emoji:'🌸', name:'鈴鹿の森庭園', cat:'公園', catClass:'park', pref:'三重', loc:'鈴鹿市', addr:'三重県鈴鹿市山本町151', hours:'9:00〜16:00（開園期のみ）', closed:'開園期外', price:'大人1,000円〜 / 小中500円〜（時期変動）', desc:'しだれ梅200本の梅林。3月の開花時期のみ公開。', keywords:['しだれ梅','梅林','春','写真映え','開花時期限定'], play:['梅林散策','ライトアップ','写真撮影'], highlight:'3月の開花期のみ。夕方のライトアップが特に美しい。', rating:4.5, galleryBg:'linear-gradient(135deg,#f0c0d0,#c09098)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.9014, lng:136.4867 },
+  { id:'nagashima_spa_ami', emoji:'♨', name:'湯あみの島（長島温泉）', cat:'室内遊び場', catClass:'indoor', pref:'三重', loc:'桑名市', addr:'三重県桑名市長島町浦安333', hours:'9:30〜23:00', closed:'不定休', price:'大人1,650円 / 小学生1,100円 / 幼児600円', desc:'17種の露天風呂・内湯が楽しめる大型温泉施設。', keywords:['温泉','露天風呂','スパ','長島','家族風呂'], play:['露天風呂','サウナ','岩盤浴','キッズエリア'], highlight:'ナガシマスパーランドとセットで1日。温泉は入れ墨対応あり。', rating:4.2, galleryBg:'linear-gradient(135deg,#d0c0c8,#a09098)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0817, lng:136.7253 },
+
+  // ═══════ 岐阜（近江境・大垣・関ヶ原・養老・岐阜市）═══════
+  { id:'yorono_taki', emoji:'💦', name:'養老の滝', cat:'公園', catClass:'park', pref:'岐阜', loc:'養老町', addr:'岐阜県養老郡養老町高林1298-2', hours:'散策自由', closed:'なし', price:'無料', desc:'孝子伝説の滝。落差32mの名爆と渓谷公園。', keywords:['滝','渓谷','孝子伝説','公園','ハイキング'], play:['滝見物','渓谷ウォーク','養老公園','キャンプ'], highlight:'駐車場から徒歩30分程度。夏は涼しい。養老天命反転地も併設。', rating:4.2, galleryBg:'linear-gradient(135deg,#b0c8c0,#88a098)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.2936, lng:136.5564 },
+  { id:'yorotenmei', emoji:'🎨', name:'養老天命反転地', cat:'公園', catClass:'park', pref:'岐阜', loc:'養老町', addr:'岐阜県養老郡養老町高林1298-2', hours:'9:00〜17:00', closed:'月曜', price:'大人770円 / 小中310円', desc:'荒川修作のアート作品。歪んだ地形で平衡感覚を揺さぶる体験型アート。', keywords:['アート','建築','体験','荒川修作','不思議'], play:['アート散策','斜めの部屋','迷路','写真映え'], highlight:'子どもが走って楽しむ場所。ヘルメット貸出あり。歩きやすい靴で。', rating:4.3, galleryBg:'linear-gradient(135deg,#c8d8a0,#989880)', ageGroups:[3,4,5,6,7,8,9,10], lat:35.2875, lng:136.5656 },
+  { id:'sekigahara', emoji:'⚔', name:'関ヶ原古戦場記念館', cat:'ミュージアム・体験', catClass:'museum', pref:'岐阜', loc:'関ヶ原町', addr:'岐阜県不破郡関ヶ原町関ヶ原894-55', hours:'9:30〜17:00', closed:'月曜', price:'大人500円 / 高校生300円 / 小中無料', desc:'関ヶ原の戦いの全貌を学べる体験型記念館。VRで戦場に立てる。', keywords:['関ヶ原','戦国','VR','体験','歴史'], play:['VR体験','グラウンドビジョン','展望台','古戦場'], highlight:'小学生以下無料。VRは人気なので整理券推奨。', rating:4.3, galleryBg:'linear-gradient(135deg,#a8a890,#80807088)', ageGroups:[4,5,6,7,8,9,10], lat:35.3777, lng:136.4650 },
+  { id:'ogaki_castle', emoji:'🏯', name:'大垣城', cat:'ミュージアム・体験', catClass:'museum', pref:'岐阜', loc:'大垣市', addr:'岐阜県大垣市郭町2-52', hours:'9:00〜17:00', closed:'火曜', price:'大人200円 / 中学生以下無料', desc:'関ヶ原直前に石田三成が拠点とした城。歴史展示と天守。', keywords:['城','大垣','石田三成','歴史','関ヶ原'], play:['天守登閣','歴史展示','庭園','周辺散策'], highlight:'中学生以下無料。コンパクトで1時間程度で見学可能。', rating:3.9, galleryBg:'linear-gradient(135deg,#c8b898,#98*8878)', ageGroups:[3,4,5,6,7,8,9,10], lat:35.3628, lng:136.6172 },
+  { id:'ogaki_park', emoji:'🌳', name:'大垣公園', cat:'公園', catClass:'park', pref:'岐阜', loc:'大垣市', addr:'岐阜県大垣市郭町2', hours:'常時開放', closed:'なし', price:'無料', desc:'大垣城を囲む市民公園。大型遊具と桜が自慢。', keywords:['公園','大型遊具','桜','子連れ','大垣'], play:['大型遊具','芝生広場','桜見物','水遊び場（夏）'], highlight:'春は桜が見事。駐車場は城見学とセットで使える。', rating:4.1, galleryBg:'linear-gradient(135deg,#c8d8b0,#909888)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.3625, lng:136.6194 },
+  { id:'suitopia', emoji:'🎭', name:'スイトピアセンター 大垣', cat:'ミュージアム・体験', catClass:'museum', pref:'岐阜', loc:'大垣市', addr:'岐阜県大垣市室本町5-51', hours:'9:00〜17:00', closed:'火曜', price:'プラネタリウム大人500円 / 小中250円', desc:'プラネタリウム・科学館・音楽堂を備えた複合施設。', keywords:['プラネタリウム','科学館','音楽堂','室内','雨の日'], play:['プラネタリウム','科学体験','展示見学'], highlight:'プラネタリウムは時間指定。雨の日の避難所として重宝。', rating:4.0, galleryBg:'linear-gradient(135deg,#c0b0d0,#908098)', ageGroups:[3,4,5,6,7,8,9,10], lat:35.3611, lng:136.6247 },
+  { id:'nango_taisha', emoji:'⛩', name:'南宮大社', cat:'ミュージアム・体験', catClass:'museum', pref:'岐阜', loc:'垂井町', addr:'岐阜県不破郡垂井町宮代1734-1', hours:'8:30〜17:00', closed:'なし', price:'無料', desc:'美濃国一の宮。朱色の社殿が美しい金属の神様。', keywords:['神社','一の宮','金属','朱色','垂井'], play:['参拝','境内散策','御朱印'], highlight:'美しい朱色の建築。駐車場広く子連れでゆったり参拝可能。', rating:4.2, galleryBg:'linear-gradient(135deg,#e8a898,#c08078)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.3386, lng:136.5500 },
+  { id:'hirui_kofun', emoji:'🗿', name:'昼飯大塚古墳', cat:'ミュージアム・体験', catClass:'museum', pref:'岐阜', loc:'大垣市', addr:'岐阜県大垣市昼飯町', hours:'常時開放', closed:'なし', price:'無料', desc:'岐阜県最大の前方後円墳。公園整備で歩ける古墳。', keywords:['古墳','前方後円墳','歴史','公園','古代'], play:['古墳登り','歴史散策','芝生'], highlight:'古墳の上まで登れる珍しいスポット。子どもの学びに。', rating:3.8, galleryBg:'linear-gradient(135deg,#b0b088,#80806*8)', ageGroups:[4,5,6,7,8,9,10], lat:35.3833, lng:136.6333 },
+  { id:'sekigahara_warland', emoji:'🪖', name:'関ヶ原ウォーランド', cat:'ミュージアム・体験', catClass:'museum', pref:'岐阜', loc:'関ヶ原町', addr:'岐阜県不破郡関ヶ原町関ヶ原1701-6', hours:'9:30〜16:30', closed:'不定休', price:'大人500円 / 小人300円', desc:'コンクリートの武者像240体！ユニークなB級歴史テーマパーク。', keywords:['武者像','B級','関ヶ原','昭和','野外展示'], play:['武者像めぐり','記念撮影','歴史学習'], highlight:'B級スポットとして子連れ親子に密かに人気。関ヶ原記念館と併せて。', rating:4.0, galleryBg:'linear-gradient(135deg,#b8a8a0,#88*7870)', ageGroups:[3,4,5,6,7,8,9,10], lat:35.3778, lng:136.4683 },
+  { id:'gifu_castle', emoji:'🏯', name:'岐阜城（金華山）', cat:'ミュージアム・体験', catClass:'museum', pref:'岐阜', loc:'岐阜市', addr:'岐阜県岐阜市金華山天守閣18', hours:'9:30〜17:30（季節変動）', closed:'なし', price:'大人200円 / 小中100円（ロープウェー別途）', desc:'織田信長の居城。金華山山頂からの眺望は絶景。', keywords:['城','信長','金華山','ロープウェー','眺望'], play:['ロープウェー','天守','城下眺望','リス村'], highlight:'ロープウェー往復1,300円別途。山頂リス村も子どもに人気。', rating:4.3, galleryBg:'linear-gradient(135deg,#c0b098,#90807*0)', ageGroups:[3,4,5,6,7,8,9,10], lat:35.4344, lng:136.7822 },
+
+  // ═══════ 京都北部（亀岡・木津川・南山城） ═══════
+  { id:'hozugawa', emoji:'🚣', name:'保津川下り', cat:'ミュージアム・体験', catClass:'museum', pref:'京都', loc:'亀岡市', addr:'京都府亀岡市保津町下中島2', hours:'9:00〜15:30（最終便）', closed:'12-3月一部日程', price:'大人4,500円 / 4歳以上3,000円', desc:'亀岡から嵐山まで2時間の川下り。四季の渓谷美が絶景。', keywords:['川下り','保津川','亀岡','嵐山','船'], play:['川下り','渓谷景色','水しぶき','写真撮影'], highlight:'冬はこたつ船。雨天でも運航（要問合せ）。嵐山までの片道で帰りは電車。', rating:4.5, galleryBg:'linear-gradient(135deg,#a8c8c0,#7898a0)', ageGroups:[4,5,6,7,8,9,10], lat:35.0175, lng:135.5728 },
+  { id:'torokko_kameoka', emoji:'🚂', name:'トロッコ亀岡駅（嵯峨野観光鉄道）', cat:'ミュージアム・体験', catClass:'museum', pref:'京都', loc:'亀岡市', addr:'京都府亀岡市篠町山本地黒', hours:'列車時刻表に準拠', closed:'水曜（繁忙期運行）', price:'大人880円 / 小人440円', desc:'嵐山までの渓谷沿いを走るトロッコ列車の亀岡駅。', keywords:['トロッコ','列車','嵐山','渓谷','観光'], play:['トロッコ乗車','渓谷景色','保津川下りとセット'], highlight:'春の桜、秋の紅葉は大人気。事前予約推奨。', rating:4.5, galleryBg:'linear-gradient(135deg,#c0a890,#908070)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0178, lng:135.5700 },
+  { id:'keihanna', emoji:'🌳', name:'けいはんな記念公園', cat:'公園', catClass:'park', pref:'京都', loc:'精華町', addr:'京都府相楽郡精華町精華台6-1', hours:'9:00〜17:00', closed:'火曜', price:'無料（水景園400円）', desc:'広大な日本庭園と里山がある文化公園。子連れに優しい設計。', keywords:['日本庭園','里山','文化公園','芝生','ファミリー'], play:['芝生広場','観月橋','水景園','自然散策'], highlight:'広くてベビーカーOK。四季折々の景色が楽しめる。', rating:4.2, galleryBg:'linear-gradient(135deg,#c0d8b0,#909888)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.7492, lng:135.7797 },
+  { id:'kizugawa_sports', emoji:'🌳', name:'山城総合運動公園（太陽が丘）', cat:'公園', catClass:'park', pref:'京都', loc:'宇治市', addr:'京都府宇治市広野町八軒屋谷1', hours:'9:00〜17:00', closed:'火曜', price:'入園無料（施設別途）', desc:'大型遊具・プール・アスレチックを備える京都府の大型公園。', keywords:['大型遊具','アスレチック','プール','太陽が丘','京都府'], play:['大型遊具','アスレチック','プール（夏）','芝生','BBQ'], highlight:'1日遊べる規模。夏の水遊び場が特に人気。', rating:4.3, galleryBg:'linear-gradient(135deg,#c8e0a8,#909888)', ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:34.8733, lng:135.7992 },
+  { id:'wazuka_tea', emoji:'🍵', name:'和束町茶畑ハイキング', cat:'ミュージアム・体験', catClass:'museum', pref:'京都', loc:'和束町', addr:'京都府相楽郡和束町', hours:'散策自由', closed:'なし', price:'無料（体験別途）', desc:'宇治茶の産地で急斜面の茶畑を眺めるハイキング。', keywords:['茶畑','ハイキング','宇治茶','景色','和束'], play:['茶畑ハイキング','茶摘み体験（時期）','写真撮影','カフェ'], highlight:'新茶の5月、紅葉の11月が特に美しい。駐車場は道の駅で。', rating:4.3, galleryBg:'linear-gradient(135deg,#b0c890,#88a070)', ageGroups:[3,4,5,6,7,8,9,10], lat:34.7728, lng:135.9344 },
+  { id:'kasagi_camp', emoji:'⛺', name:'笠置キャンプ場', cat:'公園', catClass:'park', pref:'京都', loc:'笠置町', addr:'京都府相楽郡笠置町笠置河原地内', hours:'通年', closed:'なし', price:'区画料2,000円〜', desc:'木津川沿いの無料キャンプ場。デイキャンプ・川遊びに最適。', keywords:['キャンプ','川遊び','木津川','デイキャンプ','バーベキュー'], play:['キャンプ','川遊び','カヌー','バーベキュー','ハイキング'], highlight:'ペット連れOK。夏は水遊びに最適。事前予約推奨。', rating:4.2, galleryBg:'linear-gradient(135deg,#b0c0b0,#80907*8)', ageGroups:[3,4,5,6,7,8,9,10], lat:34.7670, lng:135.9481 },
+  { id:'minamiyamashiro', emoji:'🍵', name:'道の駅 お茶の京都みなみやましろ', cat:'カフェ・レストラン', catClass:'cafe', pref:'京都', loc:'南山城村', addr:'京都府相楽郡南山城村北大河原', hours:'9:00〜17:00', closed:'なし', price:'入場無料', desc:'宇治茶の産地・南山城の道の駅。抹茶スイーツと地元野菜が充実。', keywords:['道の駅','抹茶','宇治茶','地元野菜','スイーツ'], play:['抹茶スイーツ','地元野菜買い','レストラン','お土産'], highlight:'抹茶ソフトが絶品。車旅の途中立ち寄りに最適。', rating:4.2, galleryBg:'linear-gradient(135deg,#b8c890,#889870)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.7589, lng:136.0022 },
+  { id:'kameoka_cosmos', emoji:'🌸', name:'亀岡夢コスモス園', cat:'公園', catClass:'park', pref:'京都', loc:'亀岡市', addr:'京都府亀岡市吉川町穴太', hours:'9:00〜17:00（10月のみ）', closed:'開園期外', price:'大人800円 / 小人500円', desc:'800万本のコスモスが咲く秋限定の花園。', keywords:['コスモス','花畑','秋','期間限定','亀岡'], play:['コスモス鑑賞','写真撮影','花摘み'], highlight:'10月のみ開園。週末混雑、平日推奨。', rating:4.3, galleryBg:'linear-gradient(135deg,#f0b8c8,#c09098)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0139, lng:135.5919 },
+  { id:'hiyoshidam', emoji:'💧', name:'日吉ダム（スプリングスひよし）', cat:'公園', catClass:'park', pref:'京都', loc:'南丹市', addr:'京都府南丹市日吉町中神子ヶ谷68', hours:'10:00〜21:00', closed:'木曜', price:'温泉大人900円 / 公園無料', desc:'温泉・プール・ダム散策が一度に楽しめる総合施設。', keywords:['ダム','温泉','プール','BBQ','南丹'], play:['ダム見学','温泉','プール','BBQ','公園'], highlight:'子連れで1日遊べる規模。プールは夏季のみ。', rating:4.2, galleryBg:'linear-gradient(135deg,#a8c0d0,#7890a8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1833, lng:135.5044 },
+  { id:'rurikeikogen', emoji:'🐑', name:'るり渓温泉（るり渓高原）', cat:'カフェ・レストラン', catClass:'cafe', pref:'京都', loc:'南丹市', addr:'京都府南丹市園部町大河内広谷1-14', hours:'10:00〜22:00', closed:'なし', price:'温泉大人1,700円 / 子ども1,000円', desc:'高原の温泉リゾート。イルミネーションと羊とのふれあいも。', keywords:['温泉','高原','イルミネーション','羊','リゾート'], play:['温泉','羊ふれあい','イルミネーション','BBQ'], highlight:'冬のイルミネーションが有名。日帰りでも宿泊でも楽しめる。', rating:4.3, galleryBg:'linear-gradient(135deg,#c0d0c8,#8898*8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1444, lng:135.4250 }
 ];
 
 // ── VALUE LINES (体験翻訳コピー) ──────────────────────────────
@@ -3189,13 +3623,57 @@ function skipOnboarding() {
 }
 
 // ── APP INIT ──────────────────────────────────────────────────
+// ── スライドショー ─────────────────────────────────
+let _slideIdx = 0;
+let _slideTimer = null;
+function gotoSlide(n) {
+  const slides = document.querySelectorAll('#homeSlideshow .slide');
+  const dots   = document.querySelectorAll('#slideDots .dot');
+  if (!slides.length) return;
+  slides.forEach(s => s.classList.remove('active'));
+  dots.forEach(d => d.classList.remove('active'));
+  slides[n].classList.add('active');
+  if (dots[n]) dots[n].classList.add('active');
+  _slideIdx = n;
+  // Reset auto-advance timer
+  if (_slideTimer) clearInterval(_slideTimer);
+  _slideTimer = setInterval(nextSlide, 5000);
+}
+function nextSlide() {
+  const n = document.querySelectorAll('#homeSlideshow .slide').length;
+  if (!n) return;
+  gotoSlide((_slideIdx + 1) % n);
+}
+function startSlideshow() {
+  const slides = document.querySelectorAll('#homeSlideshow .slide');
+  if (!slides.length) return;
+  if (_slideTimer) clearInterval(_slideTimer);
+  _slideTimer = setInterval(nextSlide, 5000);
+
+  // Swipe (touch) support — simple left/right
+  const ss = document.getElementById('homeSlideshow');
+  if (ss) {
+    let touchX = 0;
+    ss.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+    ss.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - touchX;
+      const n = slides.length;
+      if (dx > 50) gotoSlide((_slideIdx - 1 + n) % n);
+      else if (dx < -50) gotoSlide((_slideIdx + 1) % n);
+    }, { passive: true });
+  }
+}
+
 function initApp() {
   buildChildSwitcher();
+  startSlideshow();
   buildWeather();
   buildRoutePlans();
   buildHero();
   updateKodoTip();
   buildSpotList();
+  // 各スポットのリアルタイム降水確率をバックグラウンド取得
+  if (typeof loadSpotsRain === 'function') loadSpotsRain();
   buildSagasuList();
   buildDiaryAgeTags();
   buildDiarySpotList();
@@ -3333,9 +3811,130 @@ const WEATHER_FALLBACK = [
   { dow:'金', date:'3/27', icon:'☁️', hi:21, lo:7, cond:'曇', wcode:3 },
   { dow:'土', date:'3/28', icon:'🌧', hi:14, lo:12, cond:'雨', weekend:true, wcode:63 },
 ];
-const WEATHER_CACHE_KEY = 'kodoco.weather.v1';
-const WEATHER_LOC_KEY   = 'kodoco.weather.location';
+const WEATHER_CACHE_KEY  = 'kodoco.weather.v1';
+const WEATHER_LOC_KEY    = 'kodoco.weather.location';
+const SPOT_RAIN_CACHE_KEY= 'kodoco.spots.rain.v1';
 const DEFAULT_LOC = { lat: 35.0036, lng: 135.8683, name: '大津市', source: 'default' };
+
+// スポットごとの降水データ（spotId → [{time,prob,mm}, ...]）
+let _spotsRain = {};
+
+// Open-Meteoに複数地点一括で問い合わせ（50件ずつバッチ）
+async function fetchAllSpotsRain() {
+  const chunkSize = 50;
+  const chunks = [];
+  for (let i = 0; i < SPOTS.length; i += chunkSize) chunks.push(SPOTS.slice(i, i + chunkSize));
+  try {
+    const results = await Promise.all(chunks.map(async chunk => {
+      const valid = chunk.filter(s => typeof s.lat === 'number' && typeof s.lng === 'number');
+      if (!valid.length) return { chunk, arr: [] };
+      const lats = valid.map(s => s.lat.toFixed(3)).join(',');
+      const lngs = valid.map(s => s.lng.toFixed(3)).join(',');
+      const url = 'https://api.open-meteo.com/v1/forecast'
+        + '?latitude=' + lats + '&longitude=' + lngs
+        + '&hourly=precipitation_probability,precipitation'
+        + '&timezone=Asia%2FTokyo&forecast_days=2';
+      const r = await fetch(url, { cache: 'no-cache' });
+      if (!r.ok) throw new Error('rain batch fail ' + r.status);
+      const data = await r.json();
+      // 単数と複数でレスポンス形が変わる：Arrayなら複数、単一なら1オブジェクト
+      const arr = Array.isArray(data) ? data : [data];
+      return { chunk: valid, arr };
+    }));
+    const map = {};
+    const now = new Date();
+    results.forEach(({ chunk, arr }) => {
+      chunk.forEach((spot, si) => {
+        const d = arr[si];
+        if (!d || !d.hourly || !d.hourly.time) return;
+        const rows = d.hourly.time.map((iso, i) => ({
+          time: new Date(iso + (iso.length === 16 ? ':00' : '') + '+09:00'),
+          prob: d.hourly.precipitation_probability?.[i] ?? 0,
+          mm:   d.hourly.precipitation?.[i] ?? 0,
+        })).filter(r => r.time >= now).slice(0, 12);
+        map[spot.id] = rows;
+      });
+    });
+    return map;
+  } catch (e) {
+    console.warn('[KODOCO] 各スポット降水取得失敗:', e);
+    return null;
+  }
+}
+
+async function loadSpotsRain() {
+  // キャッシュ即反映
+  try {
+    const cached = JSON.parse(localStorage.getItem(SPOT_RAIN_CACHE_KEY) || 'null');
+    if (cached && cached.expiresAt > Date.now() && cached.map) {
+      _spotsRain = {};
+      for (const [id, rows] of Object.entries(cached.map)) {
+        _spotsRain[id] = rows.map(r => ({ ...r, time: new Date(r.time) }));
+      }
+      applySpotsRain();
+    }
+  } catch(_){}
+  // バックグラウンドで更新
+  const fresh = await fetchAllSpotsRain();
+  if (fresh && Object.keys(fresh).length) {
+    _spotsRain = fresh;
+    try {
+      const s = {};
+      for (const [id, rows] of Object.entries(fresh)) {
+        s[id] = rows.map(r => ({ prob: r.prob, mm: r.mm, time: r.time.toISOString() }));
+      }
+      localStorage.setItem(SPOT_RAIN_CACHE_KEY, JSON.stringify({ map: s, expiresAt: Date.now() + 30*60*1000 }));
+    } catch(e){ console.warn('[KODOCO] rain cache write failed (likely too big):', e); }
+    applySpotsRain();
+  }
+}
+
+function applySpotsRain() {
+  // 表示中のリストを再描画（バッジ反映のため）
+  if (typeof buildSpotList === 'function') buildSpotList();
+  if (typeof buildSagasuList === 'function' && typeof doSearch === 'function' && document.getElementById('tab-sagasu')?.classList.contains('active')) doSearch();
+  // 詳細が開いていたら更新
+  if (state && state.currentDetail && document.getElementById('detailOverlay')?.classList.contains('open')) {
+    renderDetailRain(state.currentDetail);
+  }
+}
+
+function getSpotCurrentRain(spotId) {
+  const rows = _spotsRain[spotId];
+  if (!rows || !rows.length) return null;
+  return { prob: rows[0].prob, mm: rows[0].mm, next6hMaxProb: Math.max(...rows.slice(0, 6).map(r => r.prob)) };
+}
+
+function renderDetailRain(spotId) {
+  const cont = document.getElementById('detailRainBars');
+  const wrap = document.getElementById('detailRain');
+  const sub  = document.getElementById('detailRainSub');
+  if (!cont || !wrap) return;
+  const rows = _spotsRain[spotId];
+  if (!rows || !rows.length) { wrap.style.display = 'none'; return; }
+  const maxProb = Math.max(...rows.map(r => r.prob), 30);
+  const totalMm = rows.reduce((a, r) => a + r.mm, 0);
+  if (sub) {
+    sub.textContent = totalMm > 0.3
+      ? '12h合計 ' + totalMm.toFixed(1) + 'mm · 最大 ' + maxProb + '%'
+      : '12h降水なしの予報';
+  }
+  cont.innerHTML = rows.map((r, i) => {
+    const h = r.time.getHours();
+    const pct = r.prob;
+    const pctHeight = Math.max(3, Math.round(pct * 0.44));
+    const tier = pct >= 60 ? 'high' : pct >= 30 ? 'mid' : 'low';
+    const hasRain = r.mm > 0 ? 'has-rain' : '';
+    const showHour = i === 0 || h === 0 || h === 6 || h === 12 || h === 18;
+    const showPct = pct >= 30;
+    return '<div class="rain-bar ' + tier + ' ' + hasRain + '" title="' + h + '時 ' + pct + '% / ' + r.mm.toFixed(1) + 'mm">'
+         + (showPct ? '<span class="rain-bar-pct">' + pct + '</span>' : '')
+         + '<div class="rain-bar-fill" style="height:' + pctHeight + 'px;"></div>'
+         + '<div class="rain-bar-hour">' + (showHour ? h : '') + '</div>'
+         + '</div>';
+  }).join('');
+  wrap.style.display = 'block';
+}
 
 function getSavedLocation() {
   try {
@@ -3606,6 +4205,8 @@ function buildHero() {
   const value = VALUE_LINES[pick.id] || pick.desc;
   document.getElementById('heroEmoji').textContent = spotPhotoSrc(pick) ? '' : pick.emoji;
   document.getElementById('heroPhoto').style.background = spotBackgroundCss(pick);
+  const heroNote = document.getElementById('heroPlaceholderNote');
+  if (heroNote) heroNote.style.display = pick.photoUrl ? 'none' : 'inline-flex';
   document.getElementById('heroName').textContent = pick.name;
   document.getElementById('heroValue').textContent = value;
   document.getElementById('heroJudge').textContent = age + '歳のお子さんに、今日はここで間違いない';
@@ -3651,6 +4252,23 @@ function buildRoutePlans() {
 }
 
 // タグ→カバーのスタイル設定（色 / 絵文字 / マスコット / コネクター）
+// 2点間の直線距離（km）
+function haversineKm(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const toRad = (d) => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng/2)**2;
+  return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+// 車での概算移動時間（分）：曲がり補正×1.3、平均40km/h（15km超は高速想定で60km/h）
+function estimateDriveMinutes(lat1, lng1, lat2, lng2) {
+  const km = haversineKm(lat1, lng1, lat2, lng2) * 1.3;
+  const avgKmH = km > 15 ? 60 : 40;
+  const mins = Math.round((km / avgKmH) * 60);
+  return Math.max(1, mins);
+}
+
 const ROUTE_COVER_PRESETS = {
   sunny:  { emoji: '☀️', mascot: '#kodo-wave', connector: '🚶' },
   rainy:  { emoji: '☔',  mascot: '#koto',      connector: '☂️' },
@@ -3682,10 +4300,29 @@ function openRouteDetail(plan) {
   document.getElementById('rdEmoji').textContent = preset.emoji;
   document.getElementById('rdTag').textContent = plan.tag;
   document.getElementById('rdTitle').textContent = plan.title;
+  // 車での合計移動時間を事前計算
+  const spotCoords = plan.steps.map(st => {
+    const sp = SPOTS.find(x => x.name === st.name || x.name.includes(st.name) || st.name.includes(x.name.substring(0, 6)));
+    return (sp && typeof sp.lat === 'number') ? { lat: sp.lat, lng: sp.lng } : null;
+  });
+  let totalDriveMin = 0;
+  const legDriveMin = [];
+  for (let i = 0; i < spotCoords.length - 1; i++) {
+    const a = spotCoords[i], b = spotCoords[i + 1];
+    if (a && b) {
+      const m = estimateDriveMinutes(a.lat, a.lng, b.lat, b.lng);
+      legDriveMin.push(m);
+      totalDriveMin += m;
+    } else {
+      legDriveMin.push(null);
+    }
+  }
+
   document.getElementById('rdMeta').innerHTML =
     '<span>⏱ ' + plan.time + '</span>'
     + '<span>·</span>'
-    + '<span>📍 ' + plan.steps.length + 'スポット</span>';
+    + '<span>📍 ' + plan.steps.length + 'スポット</span>'
+    + (totalDriveMin > 0 ? '<span>·</span><span>🚗 移動 約' + totalDriveMin + '分</span>' : '');
   document.getElementById('rdMascotUse').setAttribute('href', preset.mascot);
 
   const cont = document.getElementById('rdSpots');
@@ -3721,7 +4358,12 @@ function openRouteDetail(plan) {
     if (i < plan.steps.length - 1) {
       const conn = document.createElement('div');
       conn.className = 'route-connector';
-      conn.innerHTML = '<div class="route-connector-line"></div><span class="route-connector-ico">' + preset.connector + '</span><span>移動</span><div class="route-connector-line"></div>';
+      const drive = legDriveMin[i];
+      const driveLabel = drive ? '🚗 約' + drive + '分' : '移動';
+      conn.innerHTML = '<div class="route-connector-line"></div>'
+        + '<span class="route-connector-ico">' + preset.connector + '</span>'
+        + '<span class="route-connector-label">' + driveLabel + '</span>'
+        + '<div class="route-connector-line"></div>';
       cont.appendChild(conn);
     }
   });
@@ -3902,10 +4544,16 @@ function buildSpotCard(s, isRec, age) {
   const kidsBadge = s.kidsSpace ? '<div class="kids-badge-card">🧸 キッズスペースあり</div>' : '';
 
   const hasPhoto = !!spotPhotoSrc(s);
+  const isPlaceholder = !s.photoUrl;
+  const rainInfo = getSpotCurrentRain(s.id);
+  const rainBadge = rainInfo && rainInfo.prob >= 20
+    ? '<div class="spot-rain-now ' + (rainInfo.prob >= 60 ? 'high' : rainInfo.prob >= 40 ? 'mid' : 'low') + '">☔ 今 ' + rainInfo.prob + '%</div>'
+    : '';
   div.innerHTML = '<div class="spot-photo" style="background:' + spotBackgroundCss(s) + ';">'
     + (isRec ? '<div class="rec-badge-card"><svg class="rec-badge-mark" aria-hidden="true"><use href="#kodo-mark"/></svg>◎ ' + age + '歳におすすめ</div>' : '')
+    + rainBadge
     + (hasPhoto ? '' : '<div class="spot-emoji-lg">' + s.emoji + '</div>')
-    /* placeholder note removed — photos now load from spot.photoUrl or Picsum fallback */
+    + (isPlaceholder ? '<div class="img-placeholder-note"><span class="ipn-icon">💭</span>イメージ画像</div>' : '')
     + '<div class="spot-photo-arr">›</div>'
     + '</div>'
     + '<div class="spot-body">'
@@ -4060,7 +4708,22 @@ function filterCat(chip) {
   chip.classList.add('active');
   doSearch();
 }
-function filterPref(chip, pref) {
+async function filterPref(chip, pref) {
+  if (pref === 'nearby') {
+    const loc = _currentLoc || getSavedLocation();
+    if (!loc || loc.source !== 'geo') {
+      // 位置情報がOFF → ONにする確認
+      const ok = confirm('「周辺」は現在地から近いスポットを表示します。\n位置情報をONにしてもいいですか？');
+      if (!ok) return;
+      await toggleGeolocation();
+      // 取得に失敗していれば中止
+      const loc2 = _currentLoc || getSavedLocation();
+      if (!loc2 || loc2.source !== 'geo') {
+        toast('位置情報が取得できなかったため、周辺検索を中止しました');
+        return;
+      }
+    }
+  }
   document.querySelectorAll('#prefFilterRow .pref-chip').forEach(c => c.classList.remove('active'));
   chip.classList.add('active');
   _prefFilter = pref;
@@ -4074,12 +4737,30 @@ function doSearch() {
   let filtered = SPOTS;
   // エリア絞り込み
   if (_prefFilter === '滋賀') filtered = filtered.filter(s => spotPref(s) === '滋賀');
-  else if (_prefFilter === 'nearby') filtered = filtered.filter(s => spotPref(s) !== '滋賀');
+  else if (_prefFilter === 'nearby') {
+    // 現在地から近い順・30km圏内（gelocationが取れていれば）
+    const loc = _currentLoc || getSavedLocation();
+    if (loc && loc.source === 'geo') {
+      filtered = filtered
+        .map(s => ({ s, d: haversineKm(loc.lat, loc.lng, s.lat, s.lng) }))
+        .filter(x => x.d <= 30)
+        .sort((a, b) => a.d - b.d)
+        .map(x => x.s);
+    } else {
+      // 位置情報なしのフォールバック：地理的な「周辺県」
+      filtered = filtered.filter(s => spotPref(s) !== '滋賀');
+    }
+  }
   else if (_prefFilter && _prefFilter !== 'all') filtered = filtered.filter(s => spotPref(s) === _prefFilter);
   if (catMap[chipText]) filtered = filtered.filter(s => s.cat === catMap[chipText]);
   if (q) filtered = filtered.filter(s => (s.name||'').includes(q) || (s.loc||'').includes(q) || (s.desc||'').includes(q) || (s.keywords||[]).some(k => k.includes(q)));
   renderSagasuCards(filtered);
-  document.getElementById('searchCount').textContent = filtered.length + '件';
+  let countLabel = filtered.length + '件';
+  if (_prefFilter === 'nearby') {
+    const loc = _currentLoc || getSavedLocation();
+    if (loc && loc.source === 'geo') countLabel += ' · 📍' + loc.name + 'から30km圏内';
+  }
+  document.getElementById('searchCount').textContent = countLabel;
   writeUiState({ sagasuQ: q, sagasuChip: chipText, prefFilter: _prefFilter });
 }
 function renderSagasuCards(spots) {
@@ -4291,6 +4972,9 @@ function openDetail(id) {
   const _hasPhoto = !!spotPhotoSrc(s);
   const emojiEl = document.getElementById('detailEmoji');
   if (emojiEl) emojiEl.textContent = _hasPhoto ? '' : s.emoji;
+  const detailNote = document.getElementById('detailPlaceholderNote');
+  if (detailNote) detailNote.style.display = s.photoUrl ? 'none' : 'inline-flex';
+  renderDetailRain(s.id);
   document.getElementById('detailHighlight').textContent = s.highlight;
   document.getElementById('detailRating').textContent = s.rating;
   document.getElementById('di-addr').textContent = s.addr;
@@ -4542,6 +5226,7 @@ async function submitVoiceCloud(voice) {
         comment:   voice.comment || '',
         tags:      voice.tags || [],
         date:      voice.date,
+        image:     voice.image || null,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       };
       const ref = await _fbDb.collection('voices').add(payload);
@@ -4584,6 +5269,78 @@ function subscribeVoicesForSpot(spotId, onUpdate) {
 // ── VOICE (口コミ) ───────────────────────────────────────────
 let vfSelectedAge = null;
 let vfSelectedFeeling = null;
+let vfImage = null; // 投稿用に保持する圧縮後のdata URL
+
+// ── 画像圧縮（最大辺をmaxDimに、JPEG qualityで再エンコード）
+function compressImageFile(file, maxDim = 1000, quality = 0.75) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+        canvas.width  = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        const ctx = canvas.getContext('2d');
+        // 背景白でjpeg化（透過対応）
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = () => reject(new Error('image load failed'));
+      img.src = e.target.result;
+    };
+    reader.onerror = () => reject(new Error('file read failed'));
+    reader.readAsDataURL(file);
+  });
+}
+
+async function handleVfPhoto(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) {
+    alert('画像ファイルを選んでください');
+    input.value = '';
+    return;
+  }
+  if (file.size > 15 * 1024 * 1024) {
+    alert('15MB以下の画像を選んでください');
+    input.value = '';
+    return;
+  }
+  const btn = document.querySelector('.vf-photo-btn');
+  const label = document.getElementById('vfPhotoBtnLabel');
+  if (btn) btn.classList.add('loading');
+  if (label) label.textContent = '処理中...';
+  try {
+    let dataUrl = await compressImageFile(file, 1000, 0.75);
+    // Firestore doc size limit: 1MB. base64 は約4/3倍なので ~700KB 以下を目安に。
+    if (dataUrl.length > 700 * 1024) {
+      dataUrl = await compressImageFile(file, 800, 0.7);
+    }
+    if (dataUrl.length > 700 * 1024) {
+      dataUrl = await compressImageFile(file, 640, 0.65);
+    }
+    vfImage = dataUrl;
+    document.getElementById('vfPhotoImg').src = dataUrl;
+    document.getElementById('vfPhotoPreview').style.display = 'inline-block';
+    if (label) label.textContent = '📷 写真を変更';
+  } catch (e) {
+    alert('画像の読み込みに失敗しました');
+    if (label) label.textContent = '📸 写真を選ぶ';
+  } finally {
+    if (btn) btn.classList.remove('loading');
+    input.value = '';
+  }
+}
+function clearVfPhoto() {
+  vfImage = null;
+  document.getElementById('vfPhotoPreview').style.display = 'none';
+  const label = document.getElementById('vfPhotoBtnLabel');
+  if (label) label.textContent = '📸 写真を選ぶ';
+}
 
 function loadVoices() {
   try { return JSON.parse(localStorage.getItem('kodoco_voices') || '[]'); }
@@ -4673,6 +5430,7 @@ function _paintVoiceList(all, ageGrp) {
       + '<span class="voice-card-date">' + v.date + '</span>'
       + '</div>'
       + (v.comment ? '<div class="voice-card-text">' + v.comment + '</div>' : '')
+      + (v.image ? '<div class="voice-card-img"><img src="' + v.image + '" alt="投稿写真" loading="lazy"/></div>' : '')
       + (tagsHtml ? '<div class="voice-card-tags">' + tagsHtml + '</div>' : '');
     listEl.appendChild(card);
   });
@@ -4681,8 +5439,13 @@ function _paintVoiceList(all, ageGrp) {
 function openVoiceForm() {
   const spotId = state.currentDetail;
   const spot = SPOTS.find(s => s.id === spotId);
-  if (!spot) return;
+  if (!spot) {
+    toast('スポット情報が取得できません。詳細を開き直してください');
+    console.warn('[KODOCO] openVoiceForm: spot not found, currentDetail=', spotId);
+    return;
+  }
   vfSelectedAge = null; vfSelectedFeeling = null;
+  clearVfPhoto();
   document.getElementById('vfSpotName').textContent = spot.emoji + ' ' + spot.name;
   // 年齢ボタン（子どもの年齢をデフォルト選択）
   const ageCont = document.getElementById('vfAgeBtns');
@@ -4728,7 +5491,7 @@ async function submitVoice() {
   const tags = Array.from(document.querySelectorAll('#vfTagBtns .tag-btn.active')).map(b => b.textContent);
   const now = new Date();
   const date = (now.getMonth()+1) + '/' + now.getDate();
-  const voice = { spotId, age: vfSelectedAge, feeling: vfSelectedFeeling, comment, tags, date, id: Date.now() };
+  const voice = { spotId, age: vfSelectedAge, feeling: vfSelectedFeeling, comment, tags, date, id: Date.now(), image: vfImage || null };
   await submitVoiceCloud(voice);
   closeVoiceForm();
   // 現在表示中の年齢タブを確認してリスト再描画
