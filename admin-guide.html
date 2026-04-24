@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>KODOCO Admin — 説明書 | KINOSHITA STUDIO</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      --bg:         #FAF8F4;
+      --bg-soft:    #F3EEE4;
+      --card:       #FFFFFF;
+      --ink:        #2C2A26;
+      --ink-sub:    #6E6A62;
+      --ink-faint:  #A8A39A;
+      --line:       #E8E3D9;
+      --line-soft:  #F0ECE3;
+      --green:      #7A9B7E;
+      --green-deep: #5B7F61;
+      --green-soft: #E7EEE3;
+      --peach-soft: #FBEADC;
+      --blue-soft:  #E7EFF5;
+      --yellow-soft:#FAF1D4;
+      --red:        #C14545;
+      --red-soft:   #FBE8E8;
+      --radius:     14px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','Hiragino Sans',sans-serif;
+      font-feature-settings: 'palt' 1, 'kern' 1;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap { max-width: 780px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    .hd { margin-bottom: 40px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+    .hd-badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.14em; color: #fff; background: var(--ink);
+      padding: 3px 10px; border-radius: 6px; margin-bottom: 14px;
+    }
+    .hd h1 {
+      font-family: 'Inter','Noto Sans JP',sans-serif;
+      font-size: 32px; font-weight: 800; letter-spacing: -0.035em;
+      margin-bottom: 8px; line-height: 1.2;
+    }
+    .hd p { font-size: 14px; color: var(--ink-sub); }
+    .hd-meta {
+      display: flex; gap: 20px; margin-top: 14px;
+      font-size: 11px; color: var(--ink-faint);
+      letter-spacing: 0.06em;
+    }
+    .hd-meta b { color: var(--ink-sub); font-weight: 600; }
+
+    .toc {
+      background: var(--bg-soft); border: 1px solid var(--line);
+      border-radius: var(--radius); padding: 18px 22px;
+      margin-bottom: 40px;
+    }
+    .toc-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      color: var(--ink-sub); margin-bottom: 10px; text-transform: uppercase;
+    }
+    .toc ol { list-style: none; padding: 0; margin: 0; counter-reset: toc; }
+    .toc li {
+      counter-increment: toc; font-size: 14px; padding: 4px 0;
+    }
+    .toc li::before {
+      content: counter(toc, decimal-leading-zero) ' ';
+      color: var(--ink-faint); font-family: 'JetBrains Mono',monospace;
+      font-size: 12px; margin-right: 10px;
+    }
+    .toc a { color: var(--ink); text-decoration: none; border-bottom: 1px dashed transparent; }
+    .toc a:hover { border-bottom-color: var(--ink-sub); }
+
+    h2 {
+      font-family: 'Inter','Noto Sans JP',sans-serif;
+      font-size: 22px; font-weight: 700; letter-spacing: -0.02em;
+      margin: 48px 0 14px; padding-top: 8px;
+      scroll-margin-top: 20px;
+    }
+    h2 .num {
+      display: inline-block; font-family: 'JetBrains Mono',monospace;
+      font-size: 14px; font-weight: 500; color: var(--ink-faint);
+      margin-right: 10px; letter-spacing: 0.04em;
+    }
+    h3 {
+      font-size: 15px; font-weight: 700; color: var(--ink);
+      margin: 22px 0 10px;
+    }
+
+    p { font-size: 14px; margin-bottom: 12px; color: var(--ink); }
+    p.sub { color: var(--ink-sub); font-size: 13px; }
+
+    ul, ol { padding-left: 22px; margin-bottom: 14px; }
+    li { font-size: 14px; margin-bottom: 6px; }
+
+    code {
+      font-family: 'JetBrains Mono',monospace;
+      font-size: 12.5px; padding: 2px 7px;
+      background: var(--bg-soft); border: 1px solid var(--line);
+      border-radius: 5px; color: var(--ink);
+    }
+    pre {
+      background: #2C2A26; color: #F4E5D2;
+      border-radius: 10px; padding: 16px 18px;
+      overflow-x: auto; font-size: 12.5px; line-height: 1.65;
+      font-family: 'JetBrains Mono',monospace;
+      margin: 12px 0 16px;
+    }
+    pre code {
+      background: none; border: none; color: inherit; padding: 0; font-size: inherit;
+    }
+
+    .card {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: var(--radius); padding: 18px 22px; margin: 16px 0;
+    }
+    .card h3:first-child { margin-top: 0; }
+
+    .callout {
+      border-left: 3px solid var(--green);
+      background: var(--green-soft);
+      padding: 12px 16px; border-radius: 0 8px 8px 0;
+      font-size: 13px; line-height: 1.7;
+      margin: 14px 0;
+    }
+    .callout.warn { border-color: #d89040; background: var(--yellow-soft); }
+    .callout.danger { border-color: var(--red); background: var(--red-soft); }
+    .callout b { font-weight: 700; }
+
+    table {
+      width: 100%; border-collapse: collapse;
+      margin: 12px 0 18px; font-size: 13px;
+    }
+    th, td {
+      padding: 9px 12px; text-align: left;
+      border-bottom: 1px solid var(--line-soft);
+      vertical-align: top;
+    }
+    th {
+      font-size: 11px; font-weight: 600; color: var(--ink-sub);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      background: var(--bg-soft);
+    }
+    td code { font-size: 11.5px; }
+
+    .kbd {
+      font-family: 'JetBrains Mono',monospace; font-size: 11.5px;
+      padding: 2px 8px; border: 1px solid var(--line);
+      border-bottom-width: 2px; border-radius: 5px;
+      background: var(--card); color: var(--ink);
+    }
+
+    .step {
+      display: flex; gap: 14px; align-items: flex-start;
+      margin: 14px 0; padding: 14px 16px;
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--ink); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Inter',sans-serif; font-size: 13px; font-weight: 700;
+    }
+    .step-body { flex: 1; }
+    .step-body p:last-child { margin-bottom: 0; }
+    .step-body strong { font-weight: 700; }
+
+    .ft {
+      margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line);
+      font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em;
+      text-align: center;
+    }
+
+    @media (max-width: 560px) {
+      .wrap { padding: 28px 16px 60px; }
+      .hd h1 { font-size: 24px; }
+      h2 { font-size: 18px; margin: 36px 0 10px; }
+      .step { padding: 12px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hd">
+    <span class="hd-badge">PRIVATE · ADMIN REFERENCE</span>
+    <h1>KODOCO Admin 説明書</h1>
+    <p>管理画面 <code>admin.html</code> の使い方・機能・注意点をまとめた個人用リファレンス。</p>
+    <div class="hd-meta">
+      <span><b>対象ファイル</b>: <code>projects/kodoco/admin.html</code></span>
+      <span><b>最終更新</b>: 2026-04-24</span>
+    </div>
+  </header>
+
+  <!-- 目次 -->
+  <nav class="toc">
+    <div class="toc-title">目次</div>
+    <ol>
+      <li><a href="#access">アクセス方法と合言葉</a></li>
+      <li><a href="#dashboard">ダッシュボード</a></li>
+      <li><a href="#data">データ操作 (JSON エクスポート/インポート)</a></li>
+      <li><a href="#ls">localStorage ビューア</a></li>
+      <li><a href="#spot">スポットデータ確認</a></li>
+      <li><a href="#unlock">キャラ解禁テスト</a></li>
+      <li><a href="#cache">キャッシュ / Service Worker 制御</a></li>
+      <li><a href="#scenario">使いどころ (シナリオ例)</a></li>
+      <li><a href="#config">設定の変更方法</a></li>
+      <li><a href="#files">関連ファイル</a></li>
+      <li><a href="#security">セキュリティについて</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1. アクセス -->
+  <h2 id="access"><span class="num">01</span>アクセス方法と合言葉</h2>
+
+  <p>管理画面は一般公開ナビからは到達できません。以下の直URLを使用します。</p>
+
+  <table>
+    <tr><th>環境</th><th>URL</th></tr>
+    <tr><td>ローカル (PC)</td><td><code>http://localhost:8001/projects/kodoco/admin.html</code></td></tr>
+    <tr><td>ローカル (スマホ実機)</td><td><code>http://192.168.0.10:8001/projects/kodoco/admin.html</code></td></tr>
+    <tr><td>本番 (GitHub Pages)</td><td><code>https://99letters.github.io/projects/kodoco/admin.html</code></td></tr>
+  </table>
+
+  <p>初回アクセス時にゲート画面が出るので、合言葉を入力します。</p>
+
+  <div class="card">
+    <h3>🔑 合言葉</h3>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:14px;margin-bottom:6px;"><code>kodoco-admin-2025</code></p>
+    <p class="sub">認証は <code>sessionStorage</code> に保存されるため、タブを閉じるまで有効。別タブ/別端末では再入力が必要。</p>
+  </div>
+
+  <div class="callout warn">
+    <b>注意:</b> これはクライアントサイドの簡易ゲートです。真のセキュリティではなく「URLを偶然踏んだ一般ユーザーに中身を見せない」目的の障壁。本当に秘匿したいデータがある場合はサーバー側認証が必要です。
+  </div>
+
+  <!-- 2. Dashboard -->
+  <h2 id="dashboard"><span class="num">02</span>ダッシュボード</h2>
+  <p>現在このブラウザの localStorage に入っている KODOCO データの概要を一覧表示します。</p>
+
+  <table>
+    <tr><th>項目</th><th>内容</th></tr>
+    <tr><td>お気に入り</td><td><code>kodoco_state.likes</code> の件数</td></tr>
+    <tr><td>声 (voices)</td><td><code>kodoco_voices</code> の件数</td></tr>
+    <tr><td>ユーザー登録スポット</td><td><code>kodoco_user_spots</code> の件数</td></tr>
+    <tr><td>localStorage 容量</td><td>全キーの合計サイズ(UTF-16バイト)</td></tr>
+    <tr><td>UID</td><td><code>kodoco_uid</code> (匿名識別子)</td></tr>
+    <tr><td>お気に入りキャラ</td><td><code>kodoco_mascot_pref</code></td></tr>
+    <tr><td>アプリバージョン</td><td><code>kodoco_version</code></td></tr>
+  </table>
+
+  <!-- 3. Data -->
+  <h2 id="data"><span class="num">03</span>データ操作 (エクスポート/インポート)</h2>
+
+  <p>ユーザーデータ(お気に入り・声・登録スポット・アプリ状態)を JSON でまとめて書き出し・取り込みできます。旧 <code>settings → データ</code> セクションから移設した機能。</p>
+
+  <h3>エクスポート</h3>
+  <p>ボタン押下で <code>kodoco_backup_YYYY-MM-DD.json</code> というファイルがダウンロードされます。構造:</p>
+
+<pre><code>{
+  "format": "kodoco.backup",
+  "version": 1,
+  "exportedAt": "2026-04-24T08:00:00.000Z",
+  "voices": [...],
+  "userSpots": [...],
+  "state": { "likes": [...], "children": [...], ... }
+}</code></pre>
+
+  <h3>インポート</h3>
+  <ul>
+    <li>ファイル選択 → 確認ダイアログ → 既存データを上書き</li>
+    <li><code>format: "kodoco.backup"</code> でないファイルは拒否</li>
+    <li>インポート直後に画面を再描画(再読み込みなし)</li>
+  </ul>
+
+  <div class="callout">
+    <b>使いどころ:</b> バグ報告用の再現データ固定化、PC移行、ブラウザ切替、テストデータの保存・再利用。
+  </div>
+
+  <!-- 4. LS viewer -->
+  <h2 id="ls"><span class="num">04</span>localStorage ビューア</h2>
+
+  <p><code>kodoco_*</code> で始まる全キーを一覧表示。キーごとに サイズ / 値プレビュー / 削除ボタンを提供。</p>
+
+  <h3>扱うキー一覧</h3>
+  <table>
+    <tr><th>キー</th><th>内容</th></tr>
+    <tr><td><code>kodoco_state</code></td><td>お気に入り・お子さん情報・設定 (JSON)</td></tr>
+    <tr><td><code>kodoco_voices</code></td><td>投稿された声/口コミ (JSON配列)</td></tr>
+    <tr><td><code>kodoco_user_spots</code></td><td>ユーザー登録スポット (JSON配列)</td></tr>
+    <tr><td><code>kodoco_uid</code></td><td>匿名ユーザーID (自動生成)</td></tr>
+    <tr><td><code>kodoco_mascot_pref</code></td><td>選択中のお気に入りキャラ</td></tr>
+    <tr><td><code>kodoco_version</code></td><td>アプリバージョン(互換性管理用)</td></tr>
+    <tr><td><code>kodoco_admin_ok</code></td><td>管理画面への認証状態(これは削除ボタン無効)</td></tr>
+  </table>
+
+  <p class="sub">その他、キャッシュ用の <code>kodoco_spot_rain_cache</code>、<code>kodoco_weather_cache</code>、<code>kodoco_weather_loc</code> なども含まれる場合あり。</p>
+
+  <!-- 5. Spot -->
+  <h2 id="spot"><span class="num">05</span>スポットデータ確認</h2>
+  <p>スポットの URL / 電話番号 などのデータ品質チェックは別の画面 <code>check.html</code> に分離されています。adminからはリンクで起動するだけ。</p>
+  <ul>
+    <li>フィルタ: すべて / URL未設定 / 電話未設定 / 確認済み / 問題あり / 未確認</li>
+    <li>カテゴリ別絞り込み(公園 / 室内 / カフェ / 体験 / ご飯 / 犬連れ)</li>
+    <li>問題ありリストをクリップボードに出力</li>
+  </ul>
+
+  <!-- 6. Unlock -->
+  <h2 id="unlock"><span class="num">06</span>キャラ解禁テスト</h2>
+
+  <p class="sub"><b>最も実用的なセクション。</b> 実データを作り込まずに、UI/報酬の解禁段階を即座に再現できます。</p>
+
+  <h3>トラック</h3>
+  <table>
+    <tr><th>トラック</th><th>カウント元</th><th>解禁段階</th></tr>
+    <tr><td>💚 お気に入り</td><td><code>state.likes.length</code></td><td>1件=マフラー / 5件=ハナちゃん / 10件=帽子 / 20件=王冠</td></tr>
+    <tr><td>💬 声の主</td><td><code>kodoco_voices.length</code></td><td>1件=拍手強化 / 5件=クロちゃん / 10件=レア口コミ / 20件=金マフラー</td></tr>
+    <tr><td>📍 スポット登録家</td><td><code>kodoco_user_spots.length</code></td><td>1件=感謝バッジ / 3件=船帽子 / 10件=開拓者</td></tr>
+  </table>
+
+  <h3>操作</h3>
+  <ul>
+    <li>各ボタンを押すと対応する localStorage キーに仮データが書き込まれます</li>
+    <li>「0件に戻す」で該当キーを空配列に上書き</li>
+    <li>右上のダッシュボードも自動更新される</li>
+  </ul>
+
+  <div class="callout danger">
+    <b>⚠ 実データを上書きします。</b> 本当のテスト前に「エクスポート」で現在のデータを必ず退避させてください。
+  </div>
+
+  <!-- 7. Cache -->
+  <h2 id="cache"><span class="num">07</span>キャッシュ / Service Worker 制御</h2>
+
+  <table>
+    <tr><th>ボタン</th><th>動作</th><th>使いどころ</th></tr>
+    <tr><td>🗑 CacheStorage をクリア</td><td><code>caches.delete()</code> 全削除</td><td>画像/JSの更新が反映されない</td></tr>
+    <tr><td>⚡ Service Worker を解除</td><td><code>ServiceWorkerRegistration.unregister()</code></td><td>古い SW が新しい更新を掴まない</td></tr>
+    <tr><td>💣 localStorage 全消去</td><td><code>kodoco_*</code> を全削除(認証キー除く)</td><td>初回ユーザー体験の再現・テスト</td></tr>
+  </table>
+
+  <!-- 8. Scenario -->
+  <h2 id="scenario"><span class="num">08</span>使いどころ (シナリオ例)</h2>
+
+  <div class="step">
+    <div class="step-num">A</div>
+    <div class="step-body">
+      <p><strong>解禁キャラの見た目を確認したい</strong></p>
+      <p>admin → キャラ解禁テスト → 「likes=5」を押す → app.html へ移動 → 設定タブの 🏆 あしあと を確認 → ハナちゃん解禁の見た目が出る</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">B</div>
+    <div class="step-body">
+      <p><strong>バグ報告用のデータを保存</strong></p>
+      <p>バグを踏んだら即 admin → エクスポート → JSON保存 → 後で別環境でインポートして再現</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">C</div>
+    <div class="step-body">
+      <p><strong>初回オンボーディングを再テスト</strong></p>
+      <p>admin → 「localStorage 全消去」 → 「SW解除」 → app.html を <span class="kbd">⌘ Shift R</span> でハードリロード → 初回ウィザードが出る</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">D</div>
+    <div class="step-body">
+      <p><strong>キャッシュが古くて新しいCSS が反映されない</strong></p>
+      <p>admin → CacheStorage クリア + SW 解除 → ハードリロード</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">E</div>
+    <div class="step-body">
+      <p><strong>特定の voices だけ消したい</strong></p>
+      <p>admin → localStorage ビューア → <code>kodoco_voices</code> の「削除」 → voicesだけ消える(likes等は残る)</p>
+    </div>
+  </div>
+
+  <!-- 9. Config -->
+  <h2 id="config"><span class="num">09</span>設定の変更方法</h2>
+
+  <h3>合言葉を変える</h3>
+  <p><code>admin.html</code> 内の以下の定数を編集:</p>
+<pre><code>const ADMIN_KEY = 'kodoco-admin-2025';   // ← 好きな文字列に</code></pre>
+
+  <h3>認証の保存期間を変える</h3>
+  <p>デフォルトは <code>sessionStorage</code> (タブを閉じるまで)。永続化したい場合は <code>submitGate()</code> 内で <code>localStorage.setItem(AUTH_KEY, '1')</code> に変更可能。</p>
+
+  <h3>表示するキー/統計を追加する</h3>
+  <p><code>renderStats()</code> の <code>stats</code> 配列に項目を追加すれば、自動的にダッシュボードに表示されます。</p>
+
+  <!-- 10. Files -->
+  <h2 id="files"><span class="num">10</span>関連ファイル</h2>
+
+  <table>
+    <tr><th>ファイル</th><th>役割</th></tr>
+    <tr><td><code>admin.html</code></td><td>管理画面本体</td></tr>
+    <tr><td><code>admin-guide.html</code></td><td>この説明書</td></tr>
+    <tr><td><code>check.html</code></td><td>スポットデータ品質チェック(admin からリンク)</td></tr>
+    <tr><td><code>app.html</code></td><td>本体アプリ(admin への直接リンクなし)</td></tr>
+    <tr><td><code>index.html</code></td><td>LP (admin とは無関係)</td></tr>
+  </table>
+
+  <h3>app.html 側の変更点</h3>
+  <p>設定タブの「データ」セクション(JSONエクスポート/インポート)は <code>display:none</code> で非表示化。DOMは保持してあるので、将来復活させたい場合は <code>style="display:none;..."</code> を外すだけ。該当箇所は <code>app.html</code> で <code>settings-section-title</code> の「データ」コメントを検索してください。</p>
+
+  <!-- 11. Security -->
+  <h2 id="security"><span class="num">11</span>セキュリティについて</h2>
+
+  <ul>
+    <li><code>admin.html</code> は GitHub Pages で公開されます。URL を知っていればアクセス可能。</li>
+    <li>合言葉はソースコードにハードコードされているため、開発者ツールから覗けます。<strong>真のセキュリティではなく、障壁です</strong>。</li>
+    <li>扱うデータは「このブラウザの localStorage」のみ。他ユーザーのデータには触れません。</li>
+    <li><code>robots</code> メタタグで <code>noindex,nofollow</code> を設定済み(検索エンジン登録回避)。</li>
+    <li>将来本格的なマルチユーザー化する場合は、Cloudflare Access・Basic認証・Firebase Auth 等への置き換えが必要。</li>
+  </ul>
+
+  <div class="ft">
+    KODOCO Admin Guide · KINOSHITA STUDIO · Private Use
+  </div>
+
+</div>
+
+</body>
+</html>
