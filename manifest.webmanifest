@@ -1,0 +1,28 @@
+{
+  "name": "KODOCO — 今日どこいく？",
+  "short_name": "KODOCO",
+  "description": "子連れで失敗しない場所が、今日の状況でわかる。",
+  "start_url": "./app.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#FAF8F4",
+  "background_color": "#FAF8F4",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "lang": "ja",
+  "dir": "ltr",
+  "categories": ["lifestyle", "travel", "parenting"]
+}
