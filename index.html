@@ -56,10 +56,17 @@
       --radius-xl:  32px;
     }
 
-    html { scroll-behavior: smooth; touch-action: manipulation; }
+    html {
+      scroll-behavior: smooth;
+      touch-action: manipulation;
+      overflow-x: hidden;
+      overflow-x: clip;
+    }
     body {
       background: var(--bg);
       color: var(--ink);
+      width: 100%;
+      max-width: 100%;
       /* Notion-style stack: Inter for Latin/numerals, Noto Sans JP + native JP fallbacks for kana/kanji */
       font-family: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont,
                    'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', 'Meiryo',
@@ -69,6 +76,7 @@
       line-height: 1.7;
       letter-spacing: 0.005em;
       overflow-x: hidden;
+      overflow-x: clip;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizeLegibility;
