@@ -4358,7 +4358,81 @@ const AGE_GROUPS = [
 ];
 function getAgeGroup(age) { return AGE_GROUPS.find(g => g.ages.includes(age)) || AGE_GROUPS[2]; }
 function getAgeBadge(age) { const g = getAgeGroup(age); return g.emoji + ' ' + age + '歳'; }
-function saveState() { localStorage.setItem('kodoco_state', JSON.stringify(state)); }
+function saveState() {
+  localStorage.setItem('kodoco_state', JSON.stringify(state));
+  if (typeof scheduleSyncUserState === 'function') scheduleSyncUserState();
+}
+
+// ── Supabase: kodoco_user_state 同期 ──
+let _userStateSyncTimer = null;
+function scheduleSyncUserState() {
+  if (!window.kodocoSupabase || !window.kodocoUser) return;
+  if (_userStateSyncTimer) clearTimeout(_userStateSyncTimer);
+  _userStateSyncTimer = setTimeout(syncUserStateToCloud, 1500);  // debounce 1.5s
+}
+async function syncUserStateToCloud() {
+  if (!window.kodocoSupabase || !window.kodocoUser) return;
+  try {
+    const payload = {
+      user_id: window.kodocoUser.id,
+      state: {
+        likes:    state.likes || [],
+        children: state.children || [],
+        version:  1,
+        // unlocks (achievements 解禁状態) は count から都度計算するので保存不要
+        // detail_views / visit_days は端末固有なので別扱い
+      },
+    };
+    const { error } = await window.kodocoSupabase
+      .from('kodoco_user_state')
+      .upsert(payload, { onConflict: 'user_id' });
+    if (error) console.warn('[KODOCO] user_state upsert 失敗:', error.message);
+    else if (typeof toast === 'function') { /* silent */ }
+  } catch (e) {
+    console.warn('[KODOCO] user_state upsert エラー:', e);
+  }
+}
+async function applyCloudUserState() {
+  if (!window.kodocoSupabase || !window.kodocoUser) return;
+  try {
+    const { data, error } = await window.kodocoSupabase
+      .from('kodoco_user_state')
+      .select('state')
+      .eq('user_id', window.kodocoUser.id)
+      .maybeSingle();
+    if (error) { console.warn('[KODOCO] user_state fetch 失敗:', error.message); return; }
+    const cloud = data && data.state;
+    if (!cloud) return;  // DB 上に未保存（初回ログイン）
+    let changed = false;
+    // likes は union (どちらかにある = 残す)
+    if (Array.isArray(cloud.likes)) {
+      const set = new Set([...(state.likes || []), ...cloud.likes]);
+      if (set.size !== (state.likes || []).length) {
+        state.likes = [...set];
+        changed = true;
+      }
+    }
+    // children は DB に「中身ある」場合のみ採用 (空 array で上書きしない)
+    if (Array.isArray(cloud.children) && cloud.children.length && (!state.children || !state.children.length)) {
+      state.children = cloud.children;
+      changed = true;
+    }
+    if (changed) {
+      // saveState でなく直接 localStorage 書き (sync 二重発火回避)
+      localStorage.setItem('kodoco_state', JSON.stringify(state));
+      // UI 再描画
+      try { if (typeof renderFavList === 'function') renderFavList(); } catch (_) {}
+      try { if (typeof renderHomeView === 'function') renderHomeView(); } catch (_) {}
+      try { if (typeof renderSettingsChildren === 'function') renderSettingsChildren(); } catch (_) {}
+      try { if (typeof renderAchievements === 'function') renderAchievements(); } catch (_) {}
+    }
+  } catch (e) {
+    console.warn('[KODOCO] applyCloudUserState エラー:', e);
+  }
+}
+// ログイン直後 / 初回起動時に DB から取得 (auth-change で発火)
+document.addEventListener('kodoco:auth-ready', () => { if (window.kodocoUser) applyCloudUserState(); });
+document.addEventListener('kodoco:auth-change', () => { if (window.kodocoUser) { applyCloudUserState(); syncUserStateToCloud(); } });
 function loadState() {
   const s = localStorage.getItem('kodoco_state');
   if (s) {
@@ -5912,7 +5986,7 @@ function loadUserSpots() {
 function saveUserSpots(spots) {
   localStorage.setItem('kodoco_user_spots', JSON.stringify(spots));
 }
-function submitNewSpot() {
+async function submitNewSpot() {
   const name = document.getElementById('ns-name').value.trim();
   if (!name) { alert('スポット名を入力してください'); return; }
   const cat = document.getElementById('ns-cat').value || 'その他';
@@ -5928,6 +6002,33 @@ function submitNewSpot() {
     ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.03, lng:135.90,
     isUserSpot: true
   };
+  // Supabase に申請 (ログイン中)
+  if (window.kodocoSupabase && window.kodocoUser) {
+    try {
+      const handle = (window.kodocoUser.user_metadata && window.kodocoUser.user_metadata.handle)
+        || (window.kodocoUser.email || '').split('@')[0] || 'user';
+      const { data, error } = await window.kodocoSupabase
+        .from('kodoco_user_spots')
+        .insert({
+          user_id:     window.kodocoUser.id,
+          user_handle: handle,
+          data:        { name, cat, loc: area, addr, emoji: '📍' },
+          status:      'pending',
+        })
+        .select()
+        .single();
+      if (error) {
+        console.warn('[KODOCO] user_spots insert 失敗:', error.message);
+        if (typeof toast === 'function') toast('申請の送信に失敗しました（ローカルのみ保存）');
+      } else if (data) {
+        newSpot.cloudId = data.id;
+        newSpot.cloudStatus = 'pending';
+        if (typeof toast === 'function') toast('スポット申請を送信しました ✨ 承認待ち');
+      }
+    } catch (e) {
+      console.warn('[KODOCO] user_spots insert エラー:', e);
+    }
+  }
   const userSpots = loadUserSpots();
   userSpots.push(newSpot);
   saveUserSpots(userSpots);

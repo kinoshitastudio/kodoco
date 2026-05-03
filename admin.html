@@ -9,6 +9,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/supabase-client.js"></script>
   <style>
     *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
 
@@ -256,6 +259,19 @@
       background: var(--green-soft); color: var(--green-deep);
       border-color: #b8ddc8; font-weight: 700;
     }
+
+    /* ── User spot moderation ── */
+    .adm-userspots-list { display: flex; flex-direction: column; gap: 8px; }
+    .adm-userspot-row {
+      display: flex; gap: 12px; align-items: flex-start;
+      background: var(--bg-soft); border-radius: var(--radius-sm);
+      padding: 10px 14px; border: 1px solid var(--line);
+    }
+    .adm-userspot-meta { flex: 1; min-width: 0; }
+    .adm-userspot-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .adm-userspot-info { font-size: 11px; color: var(--ink-sub); margin-bottom: 4px; }
+    .adm-userspot-by { font-size: 10px; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .adm-userspot-actions { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
 
     /* ── Buttons ── */
     .adm-row { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -600,6 +616,25 @@
             <button class="adm-btn adm-btn-sm" onclick="setFakeLikesCat('museum',15)">15</button>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- 5b. スポット投稿モデレーション (Supabase) -->
+    <section class="adm-section">
+      <div class="adm-section-head">
+        <h2>📍 スポット投稿モデレーション</h2>
+        <p>ユーザーが申請したスポットを承認・却下できます。承認すると本番に反映されます。</p>
+      </div>
+      <div class="adm-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <div style="display:flex;gap:6px;">
+            <button class="adm-btn adm-btn-sm" onclick="setSpotModFilter('pending')" data-spot-filter="pending">承認待ち</button>
+            <button class="adm-btn adm-btn-sm" onclick="setSpotModFilter('approved')" data-spot-filter="approved">承認済</button>
+            <button class="adm-btn adm-btn-sm" onclick="setSpotModFilter('rejected')" data-spot-filter="rejected">却下</button>
+          </div>
+          <button class="adm-btn adm-btn-sm" onclick="renderUserSpots()">🔄 更新</button>
+        </div>
+        <div id="userSpotsList" class="adm-userspots-list">読み込み中…</div>
       </div>
     </section>
 
@@ -994,6 +1029,75 @@
     renderAll();
   }
 
+  // ─── 5b. ユーザー投稿スポット モデレーション (Supabase) ─────
+  let _spotModFilter = 'pending';
+  function setSpotModFilter(f) { _spotModFilter = f; renderUserSpots(); }
+
+  async function renderUserSpots() {
+    const cont = document.getElementById('userSpotsList');
+    if (!cont) return;
+    document.querySelectorAll('[data-spot-filter]').forEach(b => {
+      b.style.background = b.dataset.spotFilter === _spotModFilter ? 'var(--ink)' : '';
+      b.style.color      = b.dataset.spotFilter === _spotModFilter ? '#fff' : '';
+    });
+    if (!window.kodocoSupabase) {
+      cont.innerHTML = '<div style="font-size:12px;color:var(--ink-faint);">Supabase 未接続</div>';
+      return;
+    }
+    try {
+      const { data, error } = await window.kodocoSupabase
+        .from('kodoco_user_spots')
+        .select('*')
+        .eq('status', _spotModFilter)
+        .order('created_at', { ascending: false });
+      if (error) {
+        cont.innerHTML = '<div style="color:var(--red);font-size:12px;">エラー: ' + escapeHtml(error.message) + '</div>';
+        return;
+      }
+      if (!data || !data.length) {
+        cont.innerHTML = '<div style="font-size:12px;color:var(--ink-faint);padding:20px 0;text-align:center;">該当する投稿はありません</div>';
+        return;
+      }
+      cont.innerHTML = data.map(s => {
+        const d = s.data || {};
+        const ts = new Date(s.created_at).toLocaleString('ja-JP');
+        const actions = s.status === 'pending'
+          ? '<button class="adm-btn adm-btn-sm" onclick="approveUserSpot(\'' + s.id + '\')">✓ 承認</button>'
+            + '<button class="adm-btn adm-btn-sm adm-btn-danger" onclick="rejectUserSpot(\'' + s.id + '\')">✗ 却下</button>'
+          : (s.status === 'rejected' && s.reject_reason ? '<div style="font-size:11px;color:var(--ink-sub);">理由: ' + escapeHtml(s.reject_reason) + '</div>' : '');
+        return '<div class="adm-userspot-row">'
+          + '<div class="adm-userspot-meta">'
+          +   '<div class="adm-userspot-name">' + escapeHtml(d.name || '(名前なし)') + '</div>'
+          +   '<div class="adm-userspot-info">' + escapeHtml(d.cat || '') + ' · ' + escapeHtml(d.loc || '') + (d.addr ? ' · ' + escapeHtml(d.addr) : '') + '</div>'
+          +   '<div class="adm-userspot-by">投稿: ' + escapeHtml(s.user_handle || '?') + ' · ' + ts + '</div>'
+          + '</div>'
+          + '<div class="adm-userspot-actions">' + actions + '</div>'
+          + '</div>';
+      }).join('');
+    } catch (e) {
+      cont.innerHTML = '<div style="color:var(--red);font-size:12px;">' + escapeHtml(String(e)) + '</div>';
+    }
+  }
+  async function approveUserSpot(id) {
+    const { error } = await window.kodocoSupabase
+      .from('kodoco_user_spots')
+      .update({ status: 'approved' })
+      .eq('id', id);
+    if (error) { alert(error.message); return; }
+    toast('承認しました ✓');
+    renderUserSpots();
+  }
+  async function rejectUserSpot(id) {
+    const reason = prompt('却下理由（任意）:') || '';
+    const { error } = await window.kodocoSupabase
+      .from('kodoco_user_spots')
+      .update({ status: 'rejected', reject_reason: reason })
+      .eq('id', id);
+    if (error) { alert(error.message); return; }
+    toast('却下しました');
+    renderUserSpots();
+  }
+
   // ─── 6. Cache / SW ─────────────────────────────────────────
   async function clearCaches() {
     if (!('caches' in window)) { alert('このブラウザは CacheStorage 未対応です'); return; }
@@ -1037,6 +1141,7 @@
     renderStats();
     renderLs();
     renderUnlockSim();
+    if (typeof renderUserSpots === 'function') renderUserSpots();
   }
 
   // ─── Boot ─────────────────────────────────────────────────
