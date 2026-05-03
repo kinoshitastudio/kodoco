@@ -6290,9 +6290,45 @@ function getUserId() {
   return uid;
 }
 
+// feeling 絵文字 ↔ rating(1-5) 変換マップ
+const _FEELING_TO_RATING = { '🥰': 5, '😊': 4, '🙂': 3, '😐': 2, '😞': 1 };
+const _RATING_TO_FEELING = { 5: '🥰', 4: '😊', 3: '🙂', 2: '😐', 1: '😞' };
+
 async function submitVoiceCloud(voice) {
   voice.userId = getUserId();
-  if (_fbReady) {
+  // ① Supabase 優先 (ログイン中のみ)
+  if (window.kodocoSupabase && window.kodocoUser) {
+    try {
+      const handle = (window.kodocoUser.user_metadata && window.kodocoUser.user_metadata.handle)
+        || (window.kodocoUser.email || '').split('@')[0] || 'user';
+      const rating = _FEELING_TO_RATING[voice.feeling] || 3;
+      const ageGroups = (voice.age != null) ? [voice.age] : [];
+      const tagsStr = (voice.tags && voice.tags.length) ? '\n[' + voice.tags.join(' ') + ']' : '';
+      const body = (voice.comment || voice.feeling || '訪問記録').slice(0, 1900) + tagsStr;
+      const { data, error } = await window.kodocoSupabase
+        .from('kodoco_reviews')
+        .insert({
+          spot_id:     voice.spotId,
+          user_id:     window.kodocoUser.id,
+          user_handle: handle,
+          rating:      rating,
+          body:        body,
+          age_groups:  ageGroups,
+        })
+        .select()
+        .single();
+      if (error) {
+        console.warn('[KODOCO] Supabase reviews insert 失敗:', error.message);
+      } else if (data) {
+        voice.cloudId = data.id;
+        voice.cloudSource = 'supabase';
+      }
+    } catch (e) {
+      console.warn('[KODOCO] Supabase reviews insert エラー:', e);
+    }
+  }
+  // ② Firebase fallback (Supabase 未投稿 + Firebase 接続あり)
+  else if (_fbReady) {
     try {
       const payload = {
         spotId:    voice.spotId,
@@ -6307,14 +6343,46 @@ async function submitVoiceCloud(voice) {
       };
       const ref = await _fbDb.collection('voices').add(payload);
       voice.cloudId = ref.id;
+      voice.cloudSource = 'firebase';
     } catch (e) {
-      console.warn('[KODOCO] 投稿のクラウド送信失敗、ローカルのみ保存:', e);
+      console.warn('[KODOCO] Firebase 投稿失敗:', e);
     }
   }
-  // Always cache locally (works offline / Firebase未設定時のフォールバック)
+  // ③ Always cache locally (offline / 未ログイン時のフォールバック)
   const voices = loadVoices();
   voices.push(voice);
   saveVoices(voices);
+}
+
+// Supabase の kodoco_reviews を voice 形式に変換して取得
+async function fetchVoicesForSpotSupabase(spotId) {
+  if (!window.kodocoSupabase) return [];
+  try {
+    const { data, error } = await window.kodocoSupabase
+      .from('kodoco_reviews')
+      .select('*')
+      .eq('spot_id', spotId)
+      .eq('status', 'published')
+      .order('created_at', { ascending: false });
+    if (error) { console.warn('[KODOCO] reviews fetch 失敗:', error.message); return []; }
+    return (data || []).map(r => ({
+      cloudId:     r.id,
+      cloudSource: 'supabase',
+      spotId:      r.spot_id,
+      userId:      r.user_id,
+      userHandle:  r.user_handle,
+      age:         (r.age_groups && r.age_groups[0]) != null ? r.age_groups[0] : null,
+      feeling:     _RATING_TO_FEELING[r.rating] || '🙂',
+      comment:     r.body || '',
+      tags:        [],
+      date:        (new Date(r.created_at)).toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric' }),
+      id:          r.id,
+      createdAt:   new Date(r.created_at).getTime(),
+    }));
+  } catch (e) {
+    console.warn('[KODOCO] reviews fetch エラー:', e);
+    return [];
+  }
 }
 
 function _voiceTimestamp(v) {
@@ -6325,6 +6393,25 @@ function _voiceTimestamp(v) {
 
 function subscribeVoicesForSpot(spotId, onUpdate) {
   if (_voiceUnsub) { try { _voiceUnsub(); } catch(_){} _voiceUnsub = null; }
+
+  // ① Supabase 優先 (ログイン中)
+  if (window.kodocoSupabase) {
+    let cancelled = false;
+    const fetchAndMerge = async () => {
+      const cloud = await fetchVoicesForSpotSupabase(spotId);
+      if (cancelled) return;
+      const localUnsynced = loadVoices().filter(v => v.spotId === spotId && !v.cloudId);
+      const merged = [...cloud, ...localUnsynced].sort((a, b) => _voiceTimestamp(b) - _voiceTimestamp(a));
+      onUpdate(merged);
+    };
+    fetchAndMerge();
+    // 簡易ポーリング (15秒ごと)
+    const timer = setInterval(fetchAndMerge, 15000);
+    _voiceUnsub = () => { cancelled = true; clearInterval(timer); };
+    return;
+  }
+
+  // ② Firebase fallback / ③ local
   if (!_fbReady) {
     onUpdate(loadVoices().filter(v => v.spotId === spotId).sort((a, b) => _voiceTimestamp(b) - _voiceTimestamp(a)));
     return;
