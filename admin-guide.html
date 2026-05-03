@@ -222,6 +222,8 @@
       <li><a href="#config">設定の変更方法</a></li>
       <li><a href="#files">関連ファイル</a></li>
       <li><a href="#security">セキュリティについて</a></li>
+      <li><a href="#moderation">口コミのモデレーション</a></li>
+      <li><a href="#firebase">Firebase 有効化 / Firestore Security Rules</a></li>
     </ol>
   </nav>
 
@@ -435,6 +437,168 @@
     <li><code>robots</code> メタタグで <code>noindex,nofollow</code> を設定済み(検索エンジン登録回避)。</li>
     <li>将来本格的なマルチユーザー化する場合は、Cloudflare Access・Basic認証・Firebase Auth 等への置き換えが必要。</li>
   </ul>
+
+  <!-- 12. Moderation -->
+  <h2 id="moderation"><span class="num">12</span>口コミのモデレーション</h2>
+
+  <p>app.html 側で投稿フォームと voice-card に以下の仕組みを追加済み:</p>
+
+  <h3>1. 初回投稿時の利用規約同意</h3>
+  <p>初めて投稿する時に <code>confirm()</code> ダイアログで投稿ガイドラインに同意を求める。一度同意すると <code>localStorage.kodoco_voice_terms_agreed = '1'</code> が立ち、再表示されない。</p>
+
+  <div class="card">
+    <h3>ガイドラインの内容</h3>
+    <ul>
+      <li>誹謗中傷・個人攻撃・差別的表現は禁止</li>
+      <li>虚偽情報・広告宣伝目的の投稿は禁止</li>
+      <li>他人の個人情報を書き込まない</li>
+      <li>お子さんの顔が特定できる写真は避ける</li>
+      <li>違反投稿は予告なく削除する場合がある</li>
+    </ul>
+  </div>
+
+  <h3>2. 通報ボタン (voice-card に設置)</h3>
+  <p>自分以外の投稿カードに <code>⚠ 通報</code> ボタンが表示される。押すと <code>mailto:99letters99@gmail.com</code> が起動し、本文に以下が自動入力される:</p>
+<pre><code>スポット: {name} (id: {spotId})
+投稿ID: {cloudId or local:id}
+通報者UID: {reporter's kodoco_uid}
+通報日時: {ISO timestamp}
+
+【通報理由】
+(ユーザー記入欄)</code></pre>
+
+  <h3>3. モデレーションワークフロー</h3>
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body"><p>通報メールが <code>99letters99@gmail.com</code> に届く</p></div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body"><p>メール本文の <strong>投稿ID (cloudId)</strong> をコピー</p></div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body"><p>Firebase Console → Firestore → <code>voices</code> コレクション → 該当 docId を検索 → 削除</p></div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body"><p>悪質 or 繰り返しの場合は、<code>userId</code> を <code>blocked_users</code> コレクションに登録(Firestore rules で投稿拒否)</p></div>
+  </div>
+
+  <div class="callout warn">
+    <b>現状 (Firebase 未設定):</b> 投稿は各ユーザーの localStorage に閉じているため、他人には見えません。モデレーション自体が不要な状態です。通報ボタンは Firebase 有効化後に機能し始めます。
+  </div>
+
+  <!-- 13. Firebase -->
+  <h2 id="firebase"><span class="num">13</span>Firebase 有効化 / Firestore Security Rules</h2>
+
+  <h3>有効化手順</h3>
+  <ol>
+    <li><a href="https://console.firebase.google.com/" target="_blank">Firebase Console</a> でプロジェクト作成</li>
+    <li>Firestore Database を有効化 (ネイティブモード、リージョン: asia-northeast1 推奨)</li>
+    <li>プロジェクト設定 → Web アプリ追加 → <code>firebaseConfig</code> をコピー</li>
+    <li><code>app.html</code> 内の <code>FIREBASE_CONFIG</code> オブジェクトに貼り付け (5535行目付近)</li>
+  </ol>
+
+  <h3>Firestore Security Rules の雛形</h3>
+  <p><strong>そのままコピペ禁止。</strong>用途に応じて調整してください。3パターン提示。</p>
+
+  <h3>パターン A — 最も緩い (プロトタイプ用)</h3>
+  <div class="callout warn">
+    読み書き誰でも可能。スパム対策ゼロ。<b>本番運用NG、検証用のみ。</b>
+  </div>
+<pre><code>rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    match /voices/{id} {
+      allow read, write: if true;
+    }
+  }
+}</code></pre>
+
+  <h3>パターン B — 書き込みレート制限付き (推奨: プロトタイプ〜小規模公開)</h3>
+  <div class="callout">
+    書き込みは userId 必須、コメント長制限あり。削除は admin UID のみ。認証なしで動く。
+  </div>
+<pre><code>rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+
+    // 管理者の匿名UID(kodoco_uid を admin.html で確認してここに貼る)
+    function isAdmin() {
+      return request.auth == null
+        &amp;&amp; request.resource.data.userId == 'u_admin_YOUR_UID_HERE';
+    }
+
+    match /voices/{id} {
+      // 誰でも読める
+      allow read: if true;
+
+      // 作成: 必要なフィールドと長さ制限
+      allow create: if
+        request.resource.data.keys().hasAll(['spotId','userId','age','feeling','createdAt'])
+        &amp;&amp; request.resource.data.comment is string
+        &amp;&amp; request.resource.data.comment.size() &lt;= 500
+        &amp;&amp; request.resource.data.spotId is string
+        &amp;&amp; request.resource.data.spotId.size() &lt;= 50;
+
+      // 更新・削除: 管理者のみ (kodoco_admin_uid が一致する場合)
+      allow update, delete: if request.resource.data.adminKey == 'kodoco-admin-2025';
+    }
+  }
+}</code></pre>
+  <p class="sub"><b>注意:</b> このルールは「admin パスワードを知っている人が書き換えられる」仕組みで、本物のセキュリティではない。admin UID の扱いを徹底してください。</p>
+
+  <h3>パターン C — Firebase Auth ベース (本格運用)</h3>
+  <div class="callout">
+    Google/Email ログイン必須、admin はカスタムクレーム <code>admin: true</code> を持つユーザーのみ。最も安全。
+  </div>
+<pre><code>rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    match /voices/{id} {
+      allow read: if true;
+
+      allow create: if request.auth != null
+        &amp;&amp; request.resource.data.userId == request.auth.uid
+        &amp;&amp; request.resource.data.comment.size() &lt;= 500;
+
+      // 自分の投稿のみ編集可 / 管理者は全削除可
+      allow update: if request.auth.uid == resource.data.userId;
+      allow delete: if request.auth.token.admin == true;
+    }
+
+    // ブロックユーザー管理 (管理者のみ)
+    match /blocked_users/{uid} {
+      allow read: if request.auth != null;
+      allow write: if request.auth.token.admin == true;
+    }
+  }
+}</code></pre>
+  <p class="sub">カスタムクレーム付与は Firebase Admin SDK が必要。</p>
+
+  <h3>データモデル (voices コレクション)</h3>
+<pre><code>{
+  spotId:    'park_001',         // どのスポットへの投稿か
+  userId:    'u_xxx',            // 投稿者の匿名UID(kodoco_uid)
+  age:       3,                  // 子どもの年齢
+  feeling:   '😊',               // 感情
+  comment:   'よかった',          // テキスト(最大500字)
+  tags:      ['静か','日陰多い'],
+  date:      '4/24',             // 表示用MM/DD
+  image:     'data:image/jpeg;base64,...' (任意),
+  createdAt: Timestamp,          // サーバータイムスタンプ
+}</code></pre>
+
+  <h3>無料枠の目安</h3>
+  <table>
+    <tr><th>リソース</th><th>無料枠(1日)</th><th>KODOCO換算の目安</th></tr>
+    <tr><td>ドキュメント読み取り</td><td>50,000</td><td>約5,000 PV/日まで余裕</td></tr>
+    <tr><td>ドキュメント書き込み</td><td>20,000</td><td>約2,000 投稿/日まで余裕</td></tr>
+    <tr><td>ストレージ</td><td>1 GB</td><td>テキスト中心なら数万件可能</td></tr>
+    <tr><td>下り通信</td><td>10 GB/月</td><td>画像が多いと早く消費</td></tr>
+  </table>
+  <p class="sub">画像を base64 で Firestore に入れると容量を食いやすい。Firebase Storage 併用を検討。</p>
 
   <div class="ft">
     KODOCO Admin Guide · KINOSHITA STUDIO · Private Use

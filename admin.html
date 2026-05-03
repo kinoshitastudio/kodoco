@@ -189,6 +189,74 @@
       border-color: #b8ddc8; font-weight: 600;
     }
 
+    /* ── Char grid ── */
+    .adm-char-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+    }
+    .adm-char-card {
+      background: var(--card); border: 1.5px solid var(--line);
+      border-radius: var(--radius); padding: 12px 12px 14px;
+      position: relative; transition: transform .12s, box-shadow .12s;
+    }
+    .adm-char-card.unlocked.rarity-1 { border-color: var(--green-deep); }
+    .adm-char-card.unlocked.rarity-2 { border-color: #C8569E; }
+    .adm-char-card.unlocked.rarity-3 {
+      border: 1.5px solid transparent;
+      background:
+        linear-gradient(var(--card), var(--card)) padding-box,
+        linear-gradient(135deg, #ff90c0, #ffd76b 30%, #94e1ff 60%, #c79bff 100%) border-box;
+    }
+    .adm-char-card.locked { opacity: 0.55; background: var(--bg-soft); }
+    .adm-char-head {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 9px; color: var(--ink-faint);
+      margin-bottom: 6px;
+    }
+    .adm-char-no { font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: 0.1em; }
+    .adm-char-stars { color: #d4a000; font-weight: 700; }
+    .adm-char-emoji { font-size: 40px; text-align: center; line-height: 1; margin: 8px 0; }
+    .adm-char-name { font-size: 13px; font-weight: 700; text-align: center; margin-bottom: 4px; }
+    .adm-char-story {
+      font-size: 10.5px; color: var(--ink-sub);
+      line-height: 1.5; text-align: justify; margin-bottom: 8px;
+      min-height: 48px;
+    }
+    .adm-char-unlock {
+      font-size: 9.5px; color: var(--ink-faint);
+      text-align: center; padding: 4px 0; letter-spacing: 0.02em;
+      border-top: 1px dashed var(--line);
+    }
+    .adm-char-status { text-align: center; margin-top: 4px; font-size: 10px; font-weight: 700; }
+    .adm-char-on  { color: var(--green-deep); }
+    .adm-char-off { color: var(--ink-faint); }
+
+    /* ── Track list (achievements) ── */
+    .adm-track-list { display: flex; flex-direction: column; gap: 10px; }
+    .adm-track-row {
+      background: var(--bg-soft); border-radius: var(--radius-sm);
+      padding: 10px 14px;
+    }
+    .adm-track-head {
+      display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px;
+    }
+    .adm-track-emoji { font-size: 16px; }
+    .adm-track-label { font-size: 13px; font-weight: 700; flex: 1; }
+    .adm-track-count {
+      font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 800;
+      color: var(--green-deep);
+    }
+    .adm-track-tiers { display: flex; flex-wrap: wrap; gap: 5px; }
+    .adm-track-tier {
+      font-size: 10px; padding: 3px 8px; border-radius: 8px;
+      background: var(--card); color: var(--ink-sub);
+      border: 1px solid var(--line); letter-spacing: 0;
+    }
+    .adm-track-tier.on {
+      background: var(--green-soft); color: var(--green-deep);
+      border-color: #b8ddc8; font-weight: 700;
+    }
+
     /* ── Buttons ── */
     .adm-row { display: flex; flex-wrap: wrap; gap: 8px; }
     .adm-btn {
@@ -402,41 +470,134 @@
       </div>
     </section>
 
-    <!-- 5. キャラ解禁テスト -->
+    <!-- 4b. Firestore モデレーション (Firebase有効時) -->
     <section class="adm-section">
       <div class="adm-section-head">
-        <h2>キャラ解禁テスト</h2>
-        <p>仮データを注入して解禁状態を試せます。実データは上書きされるので注意。</p>
+        <h2>口コミモデレーション</h2>
+        <p>ユーザー投稿(voices)の一覧・通報の確認・削除。通報メールは <code>99letters99@gmail.com</code> に届きます。</p>
       </div>
+      <div class="adm-card" id="moderationCard">
+        <div id="moderationStatus" style="font-size:13px;color:var(--ink-sub);line-height:1.7;">
+          <b>Firebase 未設定状態:</b><br>
+          現在 <code>app.html</code> の <code>FIREBASE_CONFIG.apiKey</code> が未設定のため、口コミは各ユーザーの localStorage 内に閉じて保存されています。<br>
+          他人の投稿は見えないため、モデレーションは不要です。
+        </div>
+        <div style="margin-top:12px;padding:12px 14px;background:var(--bg-soft);border-radius:10px;font-size:12px;color:var(--ink-sub);line-height:1.7;">
+          <b>💡 Firebase 有効化後にできるようになること:</b>
+          <ul style="margin:6px 0 0 18px;padding:0;">
+            <li>全ユーザーの投稿を一覧で確認</li>
+            <li>不適切な投稿を Firestore から削除</li>
+            <li>通報メールに記載された投稿ID (<code>cloudId</code>) で特定可能</li>
+          </ul>
+          具体的な手順と Firestore security rules の雛形は <a href="./admin-guide.html#firebase" style="color:var(--green-deep);font-weight:600;">admin-guide.html</a> を参照。
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. キャラ・バッジ管理 -->
+    <section class="adm-section">
+      <div class="adm-section-head">
+        <h2>🎴 キャラ・バッジ管理</h2>
+        <p>全キャラ・全バッジの解禁状態と、解禁条件・報酬を一覧で確認。仮データで動作テスト可。</p>
+      </div>
+
+      <!-- 全キャラのカード一覧 -->
+      <div class="adm-card" style="margin-bottom:14px;">
+        <h3 style="font-size:14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
+          <span>🎴 キャラクター一覧</span>
+          <span id="charCountLabel" style="font-size:11px;color:var(--ink-sub);font-weight:500;background:var(--bg-soft);padding:3px 10px;border-radius:999px;">— / —</span>
+        </h3>
+        <div id="adminCharGrid" class="adm-char-grid"></div>
+      </div>
+
+      <!-- 全バッジ・トラック進捗 -->
+      <div class="adm-card" style="margin-bottom:14px;">
+        <h3 style="font-size:14px;margin-bottom:12px;">🏅 アチーブメント進捗 (全 <span id="totalTrackCount">—</span> トラック)</h3>
+        <div id="adminTrackList" class="adm-track-list"></div>
+      </div>
+
+      <!-- 仮データ注入 -->
       <div class="adm-card">
-        <div class="adm-stat-grid" id="unlockSim"></div>
-        <div style="margin-top:18px;">
-          <div class="adm-kv-k" style="margin-bottom:8px;font-weight:600;color:var(--ink);">仮データを注入 (お気に入り)</div>
+        <h3 style="font-size:14px;margin-bottom:8px;">💉 仮データ注入</h3>
+        <p style="font-size:11px;color:var(--ink-sub);margin-bottom:14px;">localStorage を直接書き換え。実データが上書きされるので注意。</p>
+
+        <div style="margin-bottom:14px;">
+          <div class="adm-kv-k" style="margin-bottom:6px;font-weight:600;color:var(--ink);">お気に入り (likes)</div>
           <div class="adm-row">
-            <button class="adm-btn adm-btn-sm" onclick="setFake('likes',1)">1件</button>
-            <button class="adm-btn adm-btn-sm" onclick="setFake('likes',5)">5件</button>
-            <button class="adm-btn adm-btn-sm" onclick="setFake('likes',10)">10件</button>
-            <button class="adm-btn adm-btn-sm" onclick="setFake('likes',20)">20件</button>
-            <button class="adm-btn adm-btn-sm adm-btn-danger" onclick="setFake('likes',0)">0件に戻す</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFake('likes',1)">1</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFake('likes',5)">5</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFake('likes',10)">10</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFake('likes',20)">20</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFake('likes',50)">50</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFake('likes',100)">100</button>
+            <button class="adm-btn adm-btn-sm adm-btn-danger" onclick="setFake('likes',0)">0</button>
           </div>
         </div>
-        <div style="margin-top:14px;">
-          <div class="adm-kv-k" style="margin-bottom:8px;font-weight:600;color:var(--ink);">仮データを注入 (声 / voices)</div>
+        <div style="margin-bottom:14px;">
+          <div class="adm-kv-k" style="margin-bottom:6px;font-weight:600;color:var(--ink);">口コミ (voices)</div>
           <div class="adm-row">
-            <button class="adm-btn adm-btn-sm" onclick="setFake('voices',1)">1件</button>
-            <button class="adm-btn adm-btn-sm" onclick="setFake('voices',5)">5件</button>
-            <button class="adm-btn adm-btn-sm" onclick="setFake('voices',10)">10件</button>
-            <button class="adm-btn adm-btn-sm" onclick="setFake('voices',20)">20件</button>
-            <button class="adm-btn adm-btn-sm adm-btn-danger" onclick="setFake('voices',0)">0件に戻す</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFake('voices',1)">1</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFake('voices',5)">5</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFake('voices',10)">10</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFake('voices',20)">20</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFake('voices',30)">30</button>
+            <button class="adm-btn adm-btn-sm adm-btn-danger" onclick="setFake('voices',0)">0</button>
           </div>
         </div>
-        <div style="margin-top:14px;">
-          <div class="adm-kv-k" style="margin-bottom:8px;font-weight:600;color:var(--ink);">仮データを注入 (ユーザー登録スポット)</div>
+        <div style="margin-bottom:14px;">
+          <div class="adm-kv-k" style="margin-bottom:6px;font-weight:600;color:var(--ink);">スポット投稿 (user_spots)</div>
           <div class="adm-row">
-            <button class="adm-btn adm-btn-sm" onclick="setFake('spots',1)">1件</button>
-            <button class="adm-btn adm-btn-sm" onclick="setFake('spots',3)">3件</button>
-            <button class="adm-btn adm-btn-sm" onclick="setFake('spots',10)">10件</button>
-            <button class="adm-btn adm-btn-sm adm-btn-danger" onclick="setFake('spots',0)">0件に戻す</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFake('spots',1)">1</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFake('spots',3)">3</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFake('spots',10)">10</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFake('spots',25)">25</button>
+            <button class="adm-btn adm-btn-sm adm-btn-danger" onclick="setFake('spots',0)">0</button>
+          </div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <div class="adm-kv-k" style="margin-bottom:6px;font-weight:600;color:var(--ink);">詳細閲覧 (curious / detail_views)</div>
+          <div class="adm-row">
+            <button class="adm-btn adm-btn-sm" onclick="setDetailViews(10)">10</button>
+            <button class="adm-btn adm-btn-sm" onclick="setDetailViews(50)">50</button>
+            <button class="adm-btn adm-btn-sm" onclick="setDetailViews(200)">200</button>
+            <button class="adm-btn adm-btn-sm adm-btn-danger" onclick="setDetailViews(0)">0</button>
+          </div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <div class="adm-kv-k" style="margin-bottom:6px;font-weight:600;color:var(--ink);">連続日数 (streak)</div>
+          <div class="adm-row">
+            <button class="adm-btn adm-btn-sm" onclick="setFakeStreak(3)">3日</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFakeStreak(7)">7日</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFakeStreak(30)">30日</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFakeStreak(100)">100日</button>
+            <button class="adm-btn adm-btn-sm adm-btn-danger" onclick="setFakeStreak(0)">リセット</button>
+          </div>
+        </div>
+        <div>
+          <div class="adm-kv-k" style="margin-bottom:6px;font-weight:600;color:var(--ink);">カテゴリ別お気に入り (park / indoor / cafe / museum)</div>
+          <div class="adm-row" style="margin-bottom:6px;">
+            <span style="font-size:11px;width:54px;color:var(--ink-sub);">park:</span>
+            <button class="adm-btn adm-btn-sm" onclick="setFakeLikesCat('park',3)">3</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFakeLikesCat('park',7)">7</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFakeLikesCat('park',15)">15</button>
+          </div>
+          <div class="adm-row" style="margin-bottom:6px;">
+            <span style="font-size:11px;width:54px;color:var(--ink-sub);">indoor:</span>
+            <button class="adm-btn adm-btn-sm" onclick="setFakeLikesCat('indoor',3)">3</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFakeLikesCat('indoor',7)">7</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFakeLikesCat('indoor',15)">15</button>
+          </div>
+          <div class="adm-row" style="margin-bottom:6px;">
+            <span style="font-size:11px;width:54px;color:var(--ink-sub);">cafe:</span>
+            <button class="adm-btn adm-btn-sm" onclick="setFakeLikesCat('cafe',3)">3</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFakeLikesCat('cafe',7)">7</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFakeLikesCat('cafe',15)">15</button>
+          </div>
+          <div class="adm-row">
+            <span style="font-size:11px;width:54px;color:var(--ink-sub);">museum:</span>
+            <button class="adm-btn adm-btn-sm" onclick="setFakeLikesCat('museum',3)">3</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFakeLikesCat('museum',7)">7</button>
+            <button class="adm-btn adm-btn-sm" onclick="setFakeLikesCat('museum',15)">15</button>
           </div>
         </div>
       </div>
@@ -641,36 +802,148 @@
     renderAll();
   }
 
-  // ─── 4. Unlock simulator ───────────────────────────────────
-  const TRACKS = [
-    { key: 'likes',  label: 'お気に入り',       emoji: '💚', tiers: [1, 5, 10, 20], rewards: ['マフラー', 'ハナちゃん', '帽子', '王冠'] },
-    { key: 'voices', label: '声の主',           emoji: '💬', tiers: [1, 5, 10, 20], rewards: ['拍手強化', 'クロちゃん', 'レア口コミ', '金マフラー'] },
-    { key: 'spots',  label: 'スポット登録家',    emoji: '📍', tiers: [1, 3, 10],     rewards: ['感謝バッジ', '船帽子', '開拓者'] },
+  // ─── 4. Unlock simulator (拡張版) ──────────────────────────
+  // キャラ定義 (app.html の KODOCO_CHARS と同期)
+  const ADMIN_CHARS = [
+    { id:'kodo', name:'コドちゃん', emoji:'🌱', rarity:1, unlock:'初期キャラ', unlockKey:null,             story:'芽吹いたばかりの丸い子。穏やかな相談役。' },
+    { id:'koto', name:'コトちゃん', emoji:'🌸', rarity:1, unlock:'初期キャラ', unlockKey:null,             story:'花を咲かせた元気な冒険家。' },
+    { id:'biwa', name:'ビワちゃん', emoji:'🌊', rarity:1, unlock:'初期キャラ', unlockKey:null,             story:'琵琶湖の水辺ナビゲーター。' },
+    { id:'hana', name:'ハナちゃん', emoji:'🧚', rarity:2, unlock:'お気に入り 5件', unlockKey:'mascot:hana', story:'花を抱えた小さな妖精。' },
+    { id:'kuro', name:'クロちゃん', emoji:'🐈‍⬛', rarity:2, unlock:'口コミ 5件',     unlockKey:'mascot:kuro', story:'リュックを背負った黒猫の探検家。' },
+    { id:'shin', name:'シンちゃん', emoji:'🌱', rarity:3, unlock:'公園お気に入り 3件',   unlockKey:'char:shin', story:'公園の小道で芽を出した自然派の子。' },
+    { id:'uchi', name:'ウチちゃん', emoji:'🐰', rarity:3, unlock:'室内お気に入り 3件',   unlockKey:'char:uchi', story:'室内遊び場を駆けまわるうさぎ。雨の日のヒーロー。' },
+    { id:'anko', name:'アンコちゃん', emoji:'🍓', rarity:3, unlock:'カフェお気に入り 3件', unlockKey:'char:anko', story:'いちごとミルクが大好物のカフェ巡り好き。' },
+    { id:'hon',  name:'ホンちゃん', emoji:'🦉', rarity:3, unlock:'博物館お気に入り 3件', unlockKey:'char:hon',  story:'物知りなフクロウ。学び派の味方。' },
+    { id:'miru', name:'ミルちゃん', emoji:'🔭', rarity:3, unlock:'詳細閲覧 10件',         unlockKey:'char:miru', story:'望遠鏡を覗き込む観察家。慎重派の友達。' },
   ];
+
+  // アチーブメント定義 (app.html と同期)
+  const ADMIN_TRACKS = [
+    { key:'likes',         label:'お気に入りマスター', emoji:'💚', tiers:[1,5,10,20,50,100], rewards:['マフラー','🧚 ハナちゃん','帽子','王冠','リボン','殿堂入り'] },
+    { key:'voices',        label:'声の主',           emoji:'💬', tiers:[1,5,10,20,30],     rewards:['拍手強化','🐈‍⬛ クロちゃん','レア口コミ','金マフラー','名声バッジ'] },
+    { key:'spots',         label:'スポット登録家',    emoji:'📍', tiers:[1,3,10,25],        rewards:['感謝バッジ','船帽子','開拓者','ご当地マスター'] },
+    { key:'areas',         label:'エリア探検家',      emoji:'🗺', tiers:[3,5,10,13],        rewards:['地図ピン','コトの羽','探検家の地図','滋賀マスター'] },
+    { key:'categories',    label:'カテゴリ通',        emoji:'🎨', tiers:[2,4,6],            rewards:['カラフル背景','絵筆エフェクト','万能パパママ'] },
+    { key:'streak',        label:'毎日コドちゃん',    emoji:'📅', tiers:[3,7,30,100],       rewards:['挨拶バリエ','1週間バッジ','1ヶ月','毎日マスター'] },
+    { key:'park_lover',    label:'自然派',           emoji:'🌳', tiers:[3,7,15],           rewards:['🌱 シンちゃん','木の葉','森の主'] },
+    { key:'indoor_lover',  label:'室内派',           emoji:'🏠', tiers:[3,7,15],           rewards:['🐰 ウチちゃん','雨の日バッジ','室内王'] },
+    { key:'cafe_lover',    label:'グルメ探検家',      emoji:'🍰', tiers:[3,7,15],           rewards:['🍓 アンコちゃん','スイーツ','グルメ王'] },
+    { key:'museum_lover',  label:'学び派',           emoji:'📚', tiers:[3,7,15],           rewards:['🦉 ホンちゃん','学者','博士'] },
+    { key:'curious',       label:'ものしり君',        emoji:'🔭', tiers:[10,50,200],        rewards:['🔭 ミルちゃん','観察家','ものしりマスター'] },
+  ];
+
+  function _likedSpotIds() { return ((loadState()||{}).likes)||[]; }
+  function _likedCatCount(catClass) {
+    // SPOTS データを直接持たないので、admin では fake hint で対応:
+    // localStorage に kodoco_admin_likes_<cat> があれば優先、なければ likes 全数の 1/4 と仮定（簡易）
+    const overridden = localStorage.getItem('kodoco_admin_likes_' + catClass);
+    if (overridden != null) return parseInt(overridden, 10) || 0;
+    return 0;
+  }
+  function _streakDaysCount() {
+    try {
+      const days = JSON.parse(localStorage.getItem('kodoco_visit_days') || '[]').sort();
+      if (!days.length) return 0;
+      const today = new Date().toISOString().slice(0,10);
+      if (days[days.length-1] !== today) return 0;
+      let s = 1;
+      for (let i = days.length-1; i > 0; i--) {
+        const a = new Date(days[i]), b = new Date(days[i-1]);
+        if (Math.round((a-b)/86400000) === 1) s++; else break;
+      }
+      return s;
+    } catch (_) { return 0; }
+  }
+  function _detailViews() { return parseInt(localStorage.getItem('kodoco_detail_views') || '0', 10); }
+
   function currentCounts() {
     return {
-      likes:  ((loadState() || {}).likes || []).length,
-      voices: loadVoices().length,
-      spots:  loadUserSpots().length,
+      likes:        _likedSpotIds().length,
+      voices:       loadVoices().length,
+      spots:        loadUserSpots().length,
+      areas:        0,  // 簡易: 詳細未計算
+      categories:   0,
+      streak:       _streakDaysCount(),
+      park_lover:   _likedCatCount('park'),
+      indoor_lover: _likedCatCount('indoor'),
+      cafe_lover:   _likedCatCount('cafe'),
+      museum_lover: _likedCatCount('museum'),
+      curious:      _detailViews(),
     };
   }
-  function renderUnlockSim() {
-    const n = currentCounts();
-    document.getElementById('unlockSim').innerHTML = TRACKS.map(tr => {
-      const cnt = n[tr.key];
-      const tiersHtml = tr.tiers.map((at, i) => {
-        const got = cnt >= at;
-        return `<span class="adm-tier ${got ? 'on' : ''}">${at}: ${tr.rewards[i]}${got ? ' ✓' : ''}</span>`;
-      }).join('');
+
+  // 解禁済み Set (キャラ判定用)
+  function adminUnlocks() {
+    const counts = currentCounts();
+    const set = new Set();
+    // キャラ解禁条件マッピング
+    if (counts.likes >= 5) set.add('mascot:hana');
+    if (counts.voices >= 5) set.add('mascot:kuro');
+    if (counts.park_lover >= 3) set.add('char:shin');
+    if (counts.indoor_lover >= 3) set.add('char:uchi');
+    if (counts.cafe_lover >= 3) set.add('char:anko');
+    if (counts.museum_lover >= 3) set.add('char:hon');
+    if (counts.curious >= 10) set.add('char:miru');
+    return set;
+  }
+
+  function renderAdminCharGrid() {
+    const grid = document.getElementById('adminCharGrid');
+    if (!grid) return;
+    const unlocks = adminUnlocks();
+    let owned = 0;
+    grid.innerHTML = ADMIN_CHARS.map(c => {
+      const unlocked = !c.unlockKey || unlocks.has(c.unlockKey);
+      if (unlocked) owned++;
+      const stars = '★'.repeat(c.rarity) + '☆'.repeat(3 - c.rarity);
       return `
-        <div class="adm-stat">
-          <div class="adm-stat-label">${tr.emoji} ${escapeHtml(tr.label)}</div>
-          <div class="adm-stat-value">${cnt}<span>件</span></div>
-          <div class="adm-tiers">${tiersHtml}</div>
+        <div class="adm-char-card ${unlocked ? 'unlocked' : 'locked'} rarity-${c.rarity}">
+          <div class="adm-char-head">
+            <span class="adm-char-no">No.${String(ADMIN_CHARS.indexOf(c)+1).padStart(2,'0')}</span>
+            <span class="adm-char-stars">${stars}</span>
+          </div>
+          <div class="adm-char-emoji">${unlocked ? c.emoji : '🔒'}</div>
+          <div class="adm-char-name">${escapeHtml(c.name)}</div>
+          <div class="adm-char-story">${escapeHtml(c.story)}</div>
+          <div class="adm-char-unlock">${escapeHtml(c.unlock)}</div>
+          <div class="adm-char-status">${unlocked ? '<span class="adm-char-on">✓ 解禁済み</span>' : '<span class="adm-char-off">未解禁</span>'}</div>
         </div>
       `;
     }).join('');
+    const lbl = document.getElementById('charCountLabel');
+    if (lbl) lbl.textContent = `${owned} / ${ADMIN_CHARS.length}`;
   }
+
+  function renderAdminTrackList() {
+    const cont = document.getElementById('adminTrackList');
+    if (!cont) return;
+    const counts = currentCounts();
+    cont.innerHTML = ADMIN_TRACKS.map(tr => {
+      const cnt = counts[tr.key] || 0;
+      const tiersHtml = tr.tiers.map((at, i) => {
+        const got = cnt >= at;
+        return `<span class="adm-track-tier ${got ? 'on' : ''}">${at}件: ${escapeHtml(tr.rewards[i] || '')}${got ? ' ✓' : ''}</span>`;
+      }).join('');
+      return `
+        <div class="adm-track-row">
+          <div class="adm-track-head">
+            <span class="adm-track-emoji">${tr.emoji}</span>
+            <span class="adm-track-label">${escapeHtml(tr.label)}</span>
+            <span class="adm-track-count">${cnt}</span>
+          </div>
+          <div class="adm-track-tiers">${tiersHtml}</div>
+        </div>
+      `;
+    }).join('');
+    const tot = document.getElementById('totalTrackCount');
+    if (tot) tot.textContent = ADMIN_TRACKS.length;
+  }
+
+  function renderUnlockSim() {  // 互換性: renderAll から呼ばれる
+    renderAdminCharGrid();
+    renderAdminTrackList();
+  }
+
   function setFake(kind, n) {
     if (kind === 'likes') {
       const st = loadState() || {};
@@ -692,6 +965,32 @@
       localStorage.setItem('kodoco_user_spots', JSON.stringify(fake));
     }
     toast(`${kind} = ${n} 件にセット`);
+    renderAll();
+  }
+
+  function setDetailViews(n) {
+    localStorage.setItem('kodoco_detail_views', String(n));
+    toast('詳細閲覧 = ' + n);
+    renderAll();
+  }
+  function setFakeStreak(days) {
+    if (days <= 0) {
+      localStorage.removeItem('kodoco_visit_days');
+    } else {
+      const arr = [];
+      const today = new Date();
+      for (let i = days - 1; i >= 0; i--) {
+        const d = new Date(today); d.setDate(today.getDate() - i);
+        arr.push(d.toISOString().slice(0, 10));
+      }
+      localStorage.setItem('kodoco_visit_days', JSON.stringify(arr));
+    }
+    toast('streak = ' + days + '日');
+    renderAll();
+  }
+  function setFakeLikesCat(cat, n) {
+    localStorage.setItem('kodoco_admin_likes_' + cat, String(n));
+    toast(cat + ' お気に入り = ' + n);
     renderAll();
   }
 

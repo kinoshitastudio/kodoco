@@ -10,16 +10,22 @@
   "background_color": "#FAF8F4",
   "icons": [
     {
-      "src": "./favicon.svg",
+      "src": "./apple-touch-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "./favicon.svg",
+      "src": "./apple-touch-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "maskable"
+    },
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "monochrome"
     }
   ],
   "lang": "ja",

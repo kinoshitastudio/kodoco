@@ -1,0 +1,662 @@
+{
+  "yabashi": {
+    "photo": "https://hikari-g.com/kihan/wordpress/wp-content/uploads/2022/06/0065.jpg",
+    "source": "og",
+    "name": "矢橋帰帆島公園"
+  },
+  "makino": {
+    "photo": "https://pic-land.com/wp/wp-content/uploads/2019/06/ogp_1200_630_summer.jpg",
+    "source": "og",
+    "name": "マキノピックランド"
+  },
+  "mentai": {
+    "photo": "https://mentai-park.com/admin/wp-content/themes/mentai-park/assets/img/ogp.png?var=20200820",
+    "source": "og",
+    "name": "めんたいパークびわ湖"
+  },
+  "biwako_cruise": {
+    "photo": "https://www.biwakokisen.co.jp/wp/wp-content/uploads/2019/04/ogp.jpg",
+    "source": "og",
+    "name": "琵琶湖汽船ミシガン"
+  },
+  "kibogaoka": {
+    "photo": "https://i0.wp.com/www.kiboupark-shiga.or.jp/wp-content/uploads/2021/08/50.jpg?fit=900%2C350&ssl=1",
+    "source": "og",
+    "name": "希望が丘文化公園"
+  },
+  "hikone_park": {
+    "photo": "https://hikonecastle.com/img/ogp_hikone_castle.jpg",
+    "source": "og",
+    "name": "彦根城・玄宮園"
+  },
+  "biwako_museum": {
+    "photo": "https://www.biwahaku.jp/images/logo_ogp.jpg",
+    "source": "og",
+    "name": "滋賀県立琵琶湖博物館"
+  },
+  "lacolina": {
+    "photo": "https://taneya.jp/la_collina/assets/img/thumb_fb.png",
+    "source": "og",
+    "name": "ラコリーナ近江八幡"
+  },
+  "grand_snow": {
+    "photo": "https://www.okuibuki.co.jp/common/img/ogp.png",
+    "source": "og",
+    "name": "グランスノー奥伊吹（奥伊吹スキー場）"
+  },
+  "nagahama_roman": {
+    "photo": "https://www.kurokabe.co.jp/xadmins/wp-content/uploads/2021/05/7a9ed800d737412243b3330397f54ab8.jpg",
+    "source": "og",
+    "name": "黒壁スクエア（ガラス体験）"
+  },
+  "asoble": {
+    "photo": "https://asoble.jp/engine/wp-content/uploads/2022/04/ogp.jpg",
+    "source": "og-manual",
+    "name": "ASOBLEオーミー大津テラス店"
+  },
+  "kusatsugawa": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Kusatsu_River_Ruins_Park_2021-07_ac_%282%29.jpg/960px-Kusatsu_River_Ruins_Park_2021-07_ac_%282%29.jpg",
+    "source": "wiki",
+    "name": "草津川跡地公園 de愛ひろば"
+  },
+  "otsu_park": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/d/d5/%E7%9A%87%E5%AD%90%E3%81%8C%E4%B8%98%E5%85%AC%E5%9C%92.jpg",
+    "source": "wiki",
+    "name": "皇子が丘公園"
+  },
+  "nagahama_rail": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Nagahama-Station-First-building2020.jpg/960px-Nagahama-Station-First-building2020.jpg",
+    "source": "wiki",
+    "name": "長浜鉄道スクエア"
+  },
+  "blueme": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Blumen_Hugel%2C_Nishioji%2C_Hino-cho%2C_Shiga-ken%2C_%E3%83%96%E3%83%AB%E3%83%BC%E3%83%A1%E3%81%AE%E4%B8%98_-_panoramio_%288%29.jpg/960px-Blumen_Hugel%2C_Nishioji%2C_Hino-cho%2C_Shiga-ken%2C_%E3%83%96%E3%83%AB%E3%83%BC%E3%83%A1%E3%81%AE%E4%B8%98_-_panoramio_%288%29.jpg",
+    "source": "wiki",
+    "name": "ブルーメの丘"
+  },
+  "biwako_kodomo": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Biwako-child-kingdom.jpg/960px-Biwako-child-kingdom.jpg",
+    "source": "wiki",
+    "name": "びわ湖こどもの国"
+  },
+  "yanmar": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/YANMAR_MUSEUM_01.jpg/960px-YANMAR_MUSEUM_01.jpg",
+    "source": "wiki",
+    "name": "ヤンマーミュージアム"
+  },
+  "ceramic_forest": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Shigaraki_Ceramic_Cultural_Park05s3872.jpg/960px-Shigaraki_Ceramic_Cultural_Park05s3872.jpg",
+    "source": "wiki",
+    "name": "滋賀県立陶芸の森"
+  },
+  "otsu_science": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Otsu-City-Science-Museum.jpg/960px-Otsu-City-Science-Museum.jpg",
+    "source": "wiki",
+    "name": "大津市科学館"
+  },
+  "nagahama_park": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/180922_Nagahama_Castle_Nagahama_Shiga_pref_Japan01.JPG/960px-180922_Nagahama_Castle_Nagahama_Shiga_pref_Japan01.JPG",
+    "source": "wiki",
+    "name": "豊公園（長浜城跡）"
+  },
+  "hibari_park": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/%E3%81%B2%E3%81%B0%E3%82%8A%E5%85%AC%E5%9C%92.jpg/960px-%E3%81%B2%E3%81%B0%E3%82%8A%E5%85%AC%E5%9C%92.jpg",
+    "source": "wiki",
+    "name": "ひばり公園"
+  },
+  "michinoeki_aito": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Michinoeki_shinshu_tsutakijuku.jpg/960px-Michinoeki_shinshu_tsutakijuku.jpg",
+    "source": "wiki",
+    "name": "道の駅 あいとうマーガレットステーション"
+  },
+  "pizza_nagahama": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Pizzeria_Trianon_Naples.jpg",
+    "source": "wiki",
+    "name": "ピッツェリア 近江八幡テラス"
+  },
+  "kusatsu_dogcafe": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Miguelangelcardenas.jpg",
+    "source": "wiki",
+    "name": "ドッグカフェ（草津市・ドッグラン120坪）"
+  },
+  "hikonejo": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Hikone_Castle_November_2016_-02.jpg/960px-Hikone_Castle_November_2016_-02.jpg",
+    "source": "wiki",
+    "name": "彦根城"
+  },
+  "yumekyobashi": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Yumekyobashi20120111.JPG/960px-Yumekyobashi20120111.JPG",
+    "source": "wiki",
+    "name": "夢京橋キャッスルロード"
+  },
+  "yonbancho": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Hikone-yonbancho_20100311.jpg/960px-Hikone-yonbancho_20100311.jpg",
+    "source": "wiki",
+    "name": "四番町スクエア"
+  },
+  "echizen_aquarium": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Matsushima_Aquarium.JPG/960px-Matsushima_Aquarium.JPG",
+    "source": "wiki",
+    "name": "越前松島水族館"
+  },
+  "tsuruga_redbrick": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Tsuruga_Red_Brick_Warehouce_ac_%281%29.jpg/960px-Tsuruga_Red_Brick_Warehouce_ac_%281%29.jpg",
+    "source": "wiki",
+    "name": "敦賀赤レンガ倉庫"
+  },
+  "kehi_jingu": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Kehi-jingu_otorii-2.jpg/960px-Kehi-jingu_otorii-2.jpg",
+    "source": "wiki",
+    "name": "氣比神宮"
+  },
+  "angel_land": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Angelland-Fukui.jpg/960px-Angelland-Fukui.jpg",
+    "source": "wiki",
+    "name": "エンゼルランドふくい"
+  },
+  "iga_ninja": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/%E4%BC%8A%E8%B3%80%E6%B5%81%E5%BF%8D%E8%80%85%E5%8D%9A%E7%89%A9%E9%A4%A8_1.JPG/960px-%E4%BC%8A%E8%B3%80%E6%B5%81%E5%BF%8D%E8%80%85%E5%8D%9A%E7%89%A9%E9%A4%A8_1.JPG",
+    "source": "wiki",
+    "name": "伊賀流忍者博物館"
+  },
+  "nabana_sato": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Nabana_no_Sato_Island_Fuji_Illumination.jpg/960px-Nabana_no_Sato_Island_Fuji_Illumination.jpg",
+    "source": "wiki",
+    "name": "なばなの里"
+  },
+  "menard_aoyama": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Menard_aoyama.jpg/960px-Menard_aoyama.jpg",
+    "source": "wiki",
+    "name": "メナード青山リゾート"
+  },
+  "enryakuji": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Enryakuji_Konponchudo04n4272.jpg/960px-Enryakuji_Konponchudo04n4272.jpg",
+    "source": "wiki",
+    "name": "比叡山延暦寺"
+  },
+  "ishiyamadera": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Ishiyamadera29n4272.jpg/960px-Ishiyamadera29n4272.jpg",
+    "source": "wiki",
+    "name": "石山寺"
+  },
+  "hanafunsui": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Illuminated_Fountains_in_Lake_Biwa%2C_Otsu_-_May_18%2C_2012.jpg/960px-Illuminated_Fountains_in_Lake_Biwa%2C_Otsu_-_May_18%2C_2012.jpg",
+    "source": "wiki",
+    "name": "びわ湖花噴水"
+  },
+  "michigan": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Flag_of_Michigan.svg/960px-Flag_of_Michigan.svg.png",
+    "source": "wiki",
+    "name": "ミシガン（琵琶湖遊覧船）"
+  },
+  "tachiki_jinja": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/%E7%AB%8B%E6%9C%A8%E7%A5%9E%E7%A4%BE.jpg/960px-%E7%AB%8B%E6%9C%A8%E7%A5%9E%E7%A4%BE.jpg",
+    "source": "wiki",
+    "name": "立木神社"
+  },
+  "aeon_kusatsu": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/AMKS05.jpg/960px-AMKS05.jpg",
+    "source": "wiki",
+    "name": "イオンモール草津"
+  },
+  "rokuha": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Map_of_Shiga_Prefecture_Ja.svg/960px-Map_of_Shiga_Prefecture_Ja.svg.png",
+    "source": "wiki",
+    "name": "ロクハ公園"
+  },
+  "pieri_moriyama": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Pieri_Moriyama_-_Dec_30%2C_2013.jpg/960px-Pieri_Moriyama_-_Dec_30%2C_2013.jpg",
+    "source": "wiki",
+    "name": "ピエリ守山"
+  },
+  "mikamiyama": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Omi-fuji_2023.jpg/960px-Omi-fuji_2023.jpg",
+    "source": "wiki",
+    "name": "三上山（近江富士）"
+  },
+  "ooiwayama": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Map_of_Shiga_Prefecture_Ja.svg/960px-Map_of_Shiga_Prefecture_Ja.svg.png",
+    "source": "wiki",
+    "name": "大岩山古墳群"
+  },
+  "hachimanbori": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Hachimanbori07s3200.jpg/960px-Hachimanbori07s3200.jpg",
+    "source": "wiki",
+    "name": "八幡堀"
+  },
+  "chomeiji": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Chomeiji27n3200.jpg/960px-Chomeiji27n3200.jpg",
+    "source": "wiki",
+    "name": "長命寺"
+  },
+  "eigenji": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Eigen-ji_%28Rinzai_temple%29.jpg/960px-Eigen-ji_%28Rinzai_temple%29.jpg",
+    "source": "wiki",
+    "name": "永源寺"
+  },
+  "blumenohill": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Blumen_Hugel%2C_Nishioji%2C_Hino-cho%2C_Shiga-ken%2C_%E3%83%96%E3%83%AB%E3%83%BC%E3%83%A1%E3%81%AE%E4%B8%98_-_panoramio_%288%29.jpg/960px-Blumen_Hugel%2C_Nishioji%2C_Hino-cho%2C_Shiga-ken%2C_%E3%83%96%E3%83%AB%E3%83%BC%E3%83%A1%E3%81%AE%E4%B8%98_-_panoramio_%288%29.jpg",
+    "source": "wiki",
+    "name": "滋賀農業公園ブルーメの丘"
+  },
+  "ryuo_outlet": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/MITSUI_OUTLET_PARK_Shiga_Ryuo.jpg/960px-MITSUI_OUTLET_PARK_Shiga_Ryuo.jpg",
+    "source": "wiki",
+    "name": "三井アウトレットパーク 滋賀竜王"
+  },
+  "kurokabe": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/211021_Kurokabe_Square_Nagahama_Shiga_prefecture_Japan01s3.jpg/960px-211021_Kurokabe_Square_Nagahama_Shiga_prefecture_Japan01s3.jpg",
+    "source": "wiki",
+    "name": "黒壁スクエア"
+  },
+  "mizudori_station": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Michinoeki_shinshu_tsutakijuku.jpg/960px-Michinoeki_shinshu_tsutakijuku.jpg",
+    "source": "wiki",
+    "name": "道の駅 湖北みずどりステーション"
+  },
+  "ibuki": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Ibukiyama_from_Kannonzaka%28Maibara-Nagahama%29.jpg/960px-Ibukiyama_from_Kannonzaka%28Maibara-Nagahama%29.jpg",
+    "source": "wiki",
+    "name": "伊吹山"
+  },
+  "shirahige": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Shirahige-jinja_%28Takashima%29_keidai.JPG/960px-Shirahige-jinja_%28Takashima%29_keidai.JPG",
+    "source": "wiki",
+    "name": "白鬚神社"
+  },
+  "taga_taisha": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Taga-taisha%2C_shaden-1.jpg/960px-Taga-taisha%2C_shaden-1.jpg",
+    "source": "wiki",
+    "name": "多賀大社"
+  },
+  "tojinbo": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/081101_Tojinbo_Sakai_Fukui_pref_Japan02bs10.jpg/960px-081101_Tojinbo_Sakai_Fukui_pref_Japan02bs10.jpg",
+    "source": "wiki",
+    "name": "東尋坊"
+  },
+  "maruokajo": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Maruoka_Castle_Keep_Tower%2C_Maruoka-cho_Sakai_2013.jpg/960px-Maruoka_Castle_Keep_Tower%2C_Maruoka-cho_Sakai_2013.jpg",
+    "source": "wiki",
+    "name": "丸岡城"
+  },
+  "dinosaur_museum": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/%E7%A6%8F%E4%BA%95%E7%9C%8C%E7%AB%8B%E6%81%90%E7%AB%9C%E5%8D%9A%E7%89%A9%E9%A4%A8.jpg/960px-%E7%A6%8F%E4%BA%95%E7%9C%8C%E7%AB%8B%E6%81%90%E7%AB%9C%E5%8D%9A%E7%89%A9%E9%A4%A8.jpg",
+    "source": "wiki",
+    "name": "福井県立恐竜博物館"
+  },
+  "asakura": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Asakura_Yakata_of_Ichijodani_Asakura_Family_Historic_Ruins02s3s4440.jpg/960px-Asakura_Yakata_of_Ichijodani_Asakura_Family_Historic_Ruins02s3s4440.jpg",
+    "source": "wiki",
+    "name": "一乗谷朝倉氏遺跡"
+  },
+  "katsuyama_castle": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Katsuyama_Castle_Museum_2002-06-10.jpg/960px-Katsuyama_Castle_Museum_2002-06-10.jpg",
+    "source": "wiki",
+    "name": "勝山城博物館"
+  },
+  "kehi_matsubara": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/150228_Kehi-matsubara_Tsuruga_Fukui_prefecture_Japan02s3.jpg/960px-150228_Kehi-matsubara_Tsuruga_Fukui_prefecture_Japan02s3.jpg",
+    "source": "wiki",
+    "name": "気比の松原"
+  },
+  "ise_naiku": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Naiku_001.jpg/960px-Naiku_001.jpg",
+    "source": "wiki",
+    "name": "伊勢神宮 内宮（皇大神宮）"
+  },
+  "ise_geku": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Naiku_001.jpg/960px-Naiku_001.jpg",
+    "source": "wiki",
+    "name": "伊勢神宮 外宮（豊受大神宮）"
+  },
+  "okage_yokocho": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Okage_Yokocho01.JPG/960px-Okage_Yokocho01.JPG",
+    "source": "wiki",
+    "name": "おかげ横丁"
+  },
+  "toba_aquarium": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Toba_Aquarium_front_view_2019.jpg/960px-Toba_Aquarium_front_view_2019.jpg",
+    "source": "wiki",
+    "name": "鳥羽水族館"
+  },
+  "shima_spain": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/La_Villa_Espa%C3%B1ola_de_Shima%2C_Parque_Espa%C3%B1a_-_Plaza_de_Mayor.jpg/960px-La_Villa_Espa%C3%B1ola_de_Shima%2C_Parque_Espa%C3%B1a_-_Plaza_de_Mayor.jpg",
+    "source": "wiki",
+    "name": "志摩スペイン村"
+  },
+  "gozaisho": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Gozaisho_Ropeway.jpg/960px-Gozaisho_Ropeway.jpg",
+    "source": "wiki",
+    "name": "御在所ロープウエイ"
+  },
+  "akame48": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Akame48Taki_NinaiTaki.jpg/960px-Akame48Taki_NinaiTaki.jpg",
+    "source": "wiki",
+    "name": "赤目四十八滝"
+  },
+  "nagashima_spa": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Nagashima_spa_land_skyview.jpg/960px-Nagashima_spa_land_skyview.jpg",
+    "source": "wiki",
+    "name": "ナガシマスパーランド"
+  },
+  "seki_shuku": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Tokaido53_Seki.jpg/960px-Tokaido53_Seki.jpg",
+    "source": "wiki",
+    "name": "関宿（東海道）"
+  },
+  "mokumoku": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Mokumoku_Farm.JPG/960px-Mokumoku_Farm.JPG",
+    "source": "wiki",
+    "name": "伊賀の里モクモク手づくりファーム"
+  },
+  "aquaignis": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/AQUAIGNIS_in_2017.jpg/960px-AQUAIGNIS_in_2017.jpg",
+    "source": "wiki",
+    "name": "アクアイグニス"
+  },
+  "yokkaichi_port": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/%E5%9B%9B%E6%97%A5%E5%B8%82%E6%B8%AF%E3%83%9D%E3%83%BC%E3%83%88%E3%83%93%E3%83%AB.jpg/960px-%E5%9B%9B%E6%97%A5%E5%B8%82%E6%B8%AF%E3%83%9D%E3%83%BC%E3%83%88%E3%83%93%E3%83%AB.jpg",
+    "source": "wiki",
+    "name": "四日市港ポートビル（うみてらす14）"
+  },
+  "mikimoto": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Mikimoto_Pearl_Island_from_Toba_Auqarium.jpg/960px-Mikimoto_Pearl_Island_from_Toba_Auqarium.jpg",
+    "source": "wiki",
+    "name": "ミキモト真珠島"
+  },
+  "sakakibara": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/CKK20221-C4-13.jpg/960px-CKK20221-C4-13.jpg",
+    "source": "wiki",
+    "name": "榊原温泉"
+  },
+  "tsu_kairakuen": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Tsu_Kairaku_Park_Entrance.jpg/960px-Tsu_Kairaku_Park_Entrance.jpg",
+    "source": "wiki",
+    "name": "津偕楽公園"
+  },
+  "yorono_taki": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Yoro-waterfall.JPG/960px-Yoro-waterfall.JPG",
+    "source": "wiki",
+    "name": "養老の滝"
+  },
+  "ogaki_castle": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/5/54/Old_Ogaki_Castle_in_1933.jpg",
+    "source": "wiki",
+    "name": "大垣城"
+  },
+  "ogaki_park": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Ogaki-koen_Park_20160618.jpg/960px-Ogaki-koen_Park_20160618.jpg",
+    "source": "wiki",
+    "name": "大垣公園"
+  },
+  "nango_taisha": {
+    "photo": "https://upload.wikimedia.org/wikipedia/ja/thumb/f/f6/%E5%8D%97%E5%AE%AE%E5%A4%A7%E7%A4%BE_%E5%A2%83%E5%86%85.JPG/960px-%E5%8D%97%E5%AE%AE%E5%A4%A7%E7%A4%BE_%E5%A2%83%E5%86%85.JPG",
+    "source": "wiki",
+    "name": "南宮大社"
+  },
+  "hirui_kofun": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Round_rear_part_of_Hirui-%C5%8Ctsuka_Tumulus_at_%C5%8Cgaki_city.JPG/960px-Round_rear_part_of_Hirui-%C5%8Ctsuka_Tumulus_at_%C5%8Cgaki_city.JPG",
+    "source": "wiki",
+    "name": "昼飯大塚古墳"
+  },
+  "sekigahara_warland": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/0/03/Sekigahara_war_land1.jpg",
+    "source": "wiki",
+    "name": "関ヶ原ウォーランド"
+  },
+  "gifu_castle": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/%E5%B2%90%E9%98%9C%E5%9F%8E_%E5%A4%A9%E5%AE%88%E9%96%A3.jpg/960px-%E5%B2%90%E9%98%9C%E5%9F%8E_%E5%A4%A9%E5%AE%88%E9%96%A3.jpg",
+    "source": "wiki",
+    "name": "岐阜城（金華山）"
+  },
+  "hozugawa": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Hozukyo.jpg/960px-Hozukyo.jpg",
+    "source": "wiki",
+    "name": "保津川下り"
+  },
+  "torokko_kameoka": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Truck_KAMEOKA_station-201106.jpg/960px-Truck_KAMEOKA_station-201106.jpg",
+    "source": "wiki",
+    "name": "トロッコ亀岡駅（嵯峨野観光鉄道）"
+  },
+  "keihanna": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Map_of_Kyoto_Prefecture_Ja.svg/960px-Map_of_Kyoto_Prefecture_Ja.svg.png",
+    "source": "wiki",
+    "name": "けいはんな記念公園"
+  },
+  "kizugawa_sports": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Taiyogaoka_Park-02.jpg/960px-Taiyogaoka_Park-02.jpg",
+    "source": "wiki",
+    "name": "山城総合運動公園（太陽が丘）"
+  },
+  "minamiyamashiro": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Michinoeki_shinshu_tsutakijuku.jpg/960px-Michinoeki_shinshu_tsutakijuku.jpg",
+    "source": "wiki",
+    "name": "道の駅 お茶の京都みなみやましろ"
+  },
+  "hiyoshidam": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Hiyoshi_Dam_%28Nantan%2C_Kyoto%29%2C_zenkei-1-2.jpg/960px-Hiyoshi_Dam_%28Nantan%2C_Kyoto%29%2C_zenkei-1-2.jpg",
+    "source": "wiki",
+    "name": "日吉ダム（スプリングスひよし）"
+  },
+  "rurikeikogen": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Kyoto_g%C3%A9olocalisation_relief.svg/960px-Kyoto_g%C3%A9olocalisation_relief.svg.png",
+    "source": "wiki",
+    "name": "るり渓温泉（るり渓高原）"
+  },
+  "moriyama_park": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Moriyama-juku01s3200.jpg/960px-Moriyama-juku01s3200.jpg",
+    "source": "wiki",
+    "name": "守山市民運動公園"
+  },
+  "shigaraki": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Tanuki_Mura%2C_Shigaraki_T%C5%8Den_01.jpg/960px-Tanuki_Mura%2C_Shigaraki_T%C5%8Den_01.jpg",
+    "source": "wiki",
+    "name": "信楽陶苑 たぬき村"
+  },
+  "agripark": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Ryuo-exit.jpg/960px-Ryuo-exit.jpg",
+    "source": "wiki",
+    "name": "アグリパーク竜王"
+  },
+  "biwako_valley": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Biwako_valley23n.jpg/960px-Biwako_valley23n.jpg",
+    "source": "wiki",
+    "name": "びわ湖バレイ・びわ湖テラス"
+  },
+  "karasuma_botanical": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Karasuma_Peninsula.jpg/960px-Karasuma_Peninsula.jpg",
+    "source": "wiki",
+    "name": "烏丸半島水生植物公園みずの森"
+  },
+  "omihachiman_water": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Fukuoka_Yanagawa05s5s3200.jpg/960px-Fukuoka_Yanagawa05s5s3200.jpg",
+    "source": "wiki",
+    "name": "近江八幡水郷めぐり"
+  },
+  "obama_marina": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/150725_Obama_Station_Obama_Fukui_pref_Japan02n.jpg/960px-150725_Obama_Station_Obama_Fukui_pref_Japan02n.jpg",
+    "source": "wiki",
+    "name": "マーメイドテラス（小浜）"
+  },
+  "suzuka_park": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Suzuka_Circuit_2013_001.svg/960px-Suzuka_Circuit_2013_001.svg.png",
+    "source": "wiki",
+    "name": "鈴鹿サーキットパーク"
+  },
+  "yokkaichi_sports": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Yokkaichi_Montage.jpg",
+    "source": "wiki",
+    "name": "四日市スポーツランド"
+  },
+  "miidera": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Mii-dera_Otsu_Shiga_pref01s5s4592.jpg/960px-Mii-dera_Otsu_Shiga_pref01s5s4592.jpg",
+    "source": "wiki",
+    "name": "三井寺（園城寺）"
+  },
+  "alplaza_ritto": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Ritto_station_east_2023.jpg/960px-Ritto_station_east_2023.jpg",
+    "source": "wiki",
+    "name": "アルプラザ栗東"
+  },
+  "aeon_higashiomi": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/AMKS05.jpg/960px-AMKS05.jpg",
+    "source": "wiki",
+    "name": "イオンモール東近江"
+  },
+  "metasequoia": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Dawn_redwood_inside_Bachkovo_Monastery_01.jpg/960px-Dawn_redwood_inside_Bachkovo_Monastery_01.jpg",
+    "source": "wiki",
+    "name": "マキノ メタセコイア並木"
+  },
+  "fukui_shizenshi": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Fukui_montage.jpg",
+    "source": "wiki",
+    "name": "福井市立自然史博物館"
+  },
+  "futami_meoto": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Futamiokitama_jinja_Haiden.jpg/960px-Futamiokitama_jinja_Haiden.jpg",
+    "source": "wiki",
+    "name": "夫婦岩・二見興玉神社"
+  },
+  "suzuka_mori": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/SUZUKA_CIRCUIT_on_26th_November_2022.jpg/960px-SUZUKA_CIRCUIT_on_26th_November_2022.jpg",
+    "source": "wiki",
+    "name": "鈴鹿の森庭園"
+  },
+  "nagashima_spa_ami": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Hotel_hanamizuki.jpg/960px-Hotel_hanamizuki.jpg",
+    "source": "wiki",
+    "name": "湯あみの島（長島温泉）"
+  },
+  "suitopia": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/4/48/%E8%88%B9%E7%94%BA%E6%B8%AF%E8%B7%A1.jpg",
+    "source": "wiki",
+    "name": "スイトピアセンター 大垣"
+  },
+  "kasagi_camp": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Shogatsudo.JPG/960px-Shogatsudo.JPG",
+    "source": "wiki",
+    "name": "笠置キャンプ場"
+  },
+  "kameoka_cosmos": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Yume-Cosmos-Park_Kameoka.JPG/960px-Yume-Cosmos-Park_Kameoka.JPG",
+    "source": "wiki",
+    "name": "亀岡夢コスモス園"
+  },
+  "ogoto_park": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Yumotokan-Ogoto_onsen_%26_Ogoto_port.jpg/960px-Yumotokan-Ogoto_onsen_%26_Ogoto_port.jpg",
+    "source": "wiki",
+    "name": "雄琴公園"
+  },
+  "ogi_park": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Kita-Otsu-HS.jpg/960px-Kita-Otsu-HS.jpg",
+    "source": "wiki",
+    "name": "仰木公園"
+  },
+  "ogisato_central": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Kita-Otsu-HS.jpg/960px-Kita-Otsu-HS.jpg",
+    "source": "wiki",
+    "name": "仰木の里中央公園"
+  },
+  "ono_park": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Onoji_Park_in_Machida.JPG/960px-Onoji_Park_in_Machida.JPG",
+    "source": "wiki",
+    "name": "小野公園"
+  },
+  "wani_park": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/East_entrance_of_Wani_station.jpg/960px-East_entrance_of_Wani_station.jpg",
+    "source": "wiki",
+    "name": "和邇公園"
+  },
+  "ikadachi_park": {
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Shiga_prefectural_road_route_047%2C_Otsu%2C_Minamishiga_1_intersection.jpg/960px-Shiga_prefectural_road_route_047%2C_Otsu%2C_Minamishiga_1_intersection.jpg",
+    "source": "wiki",
+    "name": "伊香立公園"
+  },
+  "loco_cafe": {
+    "photo": "https://locoenjoythemommylife.com/wp-content/uploads/2021/08/loco-2021ogp.jpg",
+    "source": "og-manual",
+    "name": "子育て応援カフェ LOCO"
+  },
+  "higoro": {
+    "photo": "https://higoro-terrace.com/wp-content/uploads/2023/08/higoro-ogp.png",
+    "source": "og-manual",
+    "name": "higoro TERRACE"
+  },
+  "ichigo_milk": {
+    "photo": "https://gon-se.com/common/upload_data/gon-secom/image/20220613150258.jpg",
+    "source": "og-manual",
+    "name": "カフェ&BBQ いちごとミルク"
+  },
+  "teraitei": {
+    "photo": "https://cdn.peraichi.com/userData/5cb2d798-2f08-4ddb-b6b7-57360a00002b/img/5cc06f8cefbd4/original.jpeg",
+    "source": "og-manual",
+    "name": "teraitei"
+  },
+  "chalet": {
+    "photo": "https://ja.biwako-visitors.jp/design/img/cmn/ogp.jpg",
+    "source": "og-manual",
+    "name": "シャーレ水ヶ浜"
+  },
+  "minakuchi_cafe": {
+    "photo": "https://www.city.koka.lg.jp/sns-base-image.png",
+    "source": "og-manual",
+    "name": "みなくち子どもの森 自然館カフェ"
+  },
+  "lamp_hakodate": {
+    "photo": "https://www.hakodateyama.com/green/parts/images/common/s_img.jpg",
+    "source": "og-manual",
+    "name": "パフェ専門店LAMP"
+  },
+  "horicafe": {
+    "photo": "https://horicafe.com/wp-content/uploads/2021/12/header2.jpg",
+    "source": "og-manual",
+    "name": "ほりかふぇ"
+  },
+  "cafe_morinoki": {
+    "photo": "https://www.honda.co.jp/dog/common/image/ogimage.jpg",
+    "source": "og-manual",
+    "name": "Cafe 森の木"
+  },
+  "challenge_museum": {
+    "photo": "https://kitabiwako.jp/common/images/ogp.png",
+    "source": "og-manual",
+    "name": "チャレンジミュージアム (ヤンマー)"
+  },
+  "zakids_kusatsu": {
+    "photo": "https://image.asoview-media.com/image/production/base/161718/e366afe3-d7c9-41ac-b1e9-9d4d6267438e.jpeg",
+    "source": "og-manual",
+    "name": "ザキッズ エイスクエア草津店"
+  },
+  "zakids_konan": {
+    "photo": "https://image.asoview-media.com/image/production/base/162789/93d8cc78-9a7b-4edd-90ba-e40da898e1d7.jpeg",
+    "source": "og-manual",
+    "name": "ザキッズ フレンドマート甲南店"
+  },
+  "hat_kitchen": {
+    "photo": "https://andshiga.jp/wp-content/uploads/2024/10/ブログ　アイキャッチ-1.jpg",
+    "source": "og-manual",
+    "name": "ハットキッチン"
+  },
+  "ekimachi_nagahama": {
+    "photo": "https://www.ekimachinagahama.com/wp-content/uploads/2020/06/about-1-1024x362.jpg",
+    "source": "og-manual",
+    "name": "えきまちテラス長浜"
+  },
+  "lacollina": {
+    "photo": "https://taneya.jp/la_collina/assets/img/thumb_fb.png",
+    "source": "og-manual",
+    "name": "ラ コリーナ近江八幡"
+  },
+  "samegai": {
+    "photo": "https://www.city.maibara.lg.jp/material/images/group/24/baikamosarusuberi.jpg",
+    "source": "og-manual",
+    "name": "醒井水の宿駅・地蔵川"
+  },
+  "lobby_garden": {
+    "photo": "https://babyface-planets.com/bf/wp-content/uploads/2018/05/4eee3ed157667126b99cca2f1bb4edbb-1024x683.jpg",
+    "source": "og-manual",
+    "name": "LOBBY GARDEN by SKY TERRACE"
+  }
+}

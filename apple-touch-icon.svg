@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="KODOCO icon">
+  <!-- BG: KODOCO のシグネチャ緑、iOS が自動で角丸マスクする -->
+  <rect width="180" height="180" fill="#7A9B7E"/>
+
+  <!-- ふわっとした明るさ(上半分が少し明るい) -->
+  <defs>
+    <linearGradient id="bgshade" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#8DAE91" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#5B7F61" stop-opacity="0.4"/>
+    </linearGradient>
+  </defs>
+  <rect width="180" height="180" fill="url(#bgshade)"/>
+
+  <!-- コドちゃん本体(中央配置 + サイズ大きめ) -->
+  <!-- 葉 -->
+  <path d="M 78 38 Q 50 20 42 38 Q 40 56 72 50 Q 82 47 78 38 Z" fill="#C9DDCC"/>
+  <path d="M 102 38 Q 130 20 138 38 Q 140 56 108 50 Q 98 47 102 38 Z" fill="#D5E5D8"/>
+  <!-- 葉脈 -->
+  <path d="M 56 36 L 66 44" stroke="#FAF8F4" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
+  <path d="M 124 36 L 114 44" stroke="#FAF8F4" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
+  <!-- 茎 -->
+  <rect x="86" y="42" width="8" height="22" rx="4" fill="#A8C3AB"/>
+  <!-- 本体(大きな丸) -->
+  <ellipse cx="90" cy="115" rx="58" ry="52" fill="#F4E5D2"/>
+  <!-- 影 -->
+  <ellipse cx="90" cy="160" rx="40" ry="4.5" fill="#2C2A26" opacity="0.18"/>
+  <!-- ほっぺ -->
+  <ellipse cx="55" cy="124" rx="10" ry="6" fill="#F2B89A" opacity="0.65"/>
+  <ellipse cx="125" cy="124" rx="10" ry="6" fill="#F2B89A" opacity="0.65"/>
+  <!-- 目(笑顔 closed) -->
+  <path d="M 64 106 Q 71 100, 78 106" stroke="#2C2A26" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+  <path d="M 102 106 Q 109 100, 116 106" stroke="#2C2A26" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+  <!-- 口 -->
+  <path d="M 76 134 Q 90 145, 104 134" stroke="#2C2A26" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+</svg>

@@ -20,12 +20,17 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="./ogp.svg">
 <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=33" sizes="any">
-<link rel="apple-touch-icon" href="./favicon.svg?v=33">
+<link rel="apple-touch-icon" href="./apple-touch-icon.svg?v=34">
+<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.svg?v=34">
 <link rel="mask-icon" href="./favicon.svg?v=33" color="#5B7F61">
 <link rel="manifest" href="./manifest.webmanifest?v=33">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KODOCO">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <!-- Firebase (compat SDK — allows non-module scripts below) -->
 <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -625,16 +630,18 @@ html, body {
 .spot-photo-arr { position: absolute; bottom: 8px; right: 8px; width: 26px; height: 26px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
 .rec-badge-card {
   position: absolute; top: 10px; left: 10px;
-  background: rgba(255,255,255,0.97);
-  color: var(--green);
-  font-size: 11px; font-weight: 700;
-  padding: 4px 12px 4px 4px;
-  border-radius: 20px;
-  display: inline-flex; align-items: center; gap: 5px;
-  box-shadow: 0 3px 10px rgba(44,42,38,0.18);
-  letter-spacing: 0.01em;
+  background: var(--green-deep);
+  color: #FFFFFF;
+  font-size: 12px; font-weight: 700;
+  padding: 5px 14px 5px 6px;
+  border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 6px;
+  box-shadow: 0 2px 12px rgba(44,42,38,0.32), inset 0 0 0 1.5px rgba(255,255,255,0.55);
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.18);
 }
-.rec-badge-mark { width: 20px; height: 22px; flex-shrink: 0; }
+.rec-badge-mark { width: 22px; height: 24px; flex-shrink: 0; color: #FFFFFF; }
+.rec-badge-mark * { fill: #FFFFFF !important; stroke: none !important; }
 
 /* スポット画像右上の降水確率バッジ */
 .spot-rain-now {
@@ -679,8 +686,16 @@ html, body {
 }
 .img-placeholder-note .ipn-icon { font-size: 11px; flex-shrink: 0; }
 .spot-body { padding: 12px 14px 14px; }
-.spot-top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
+.spot-top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; gap: 8px; }
+.spot-name-wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; flex: 1; min-width: 0; }
 .spot-name { font-size: 16px; font-weight: 700; line-height: 1.2; }
+.spot-rating {
+  font-size: 11px; font-weight: 700;
+  color: #a07a00; background: #fff3cd;
+  padding: 3px 8px; border-radius: 999px;
+  letter-spacing: 0.01em; flex-shrink: 0;
+  border: 1px solid #f0d890;
+}
 .heart-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-light); padding: 0 0 0 6px; flex-shrink: 0; }
 .heart-btn.liked { color: #e85d7a; }
 .spot-meta-row { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; flex-wrap: wrap; }
@@ -846,8 +861,43 @@ html, body {
 }
 .detail-overlay.open { transform: translateY(0); }
 .detail-handle { width: 34px; height: 4px; background: var(--border); border-radius: 2px; margin: 10px auto 4px; flex-shrink: 0; }
-.detail-topbar { display: flex; justify-content: space-between; align-items: center; padding: 8px 16px 6px; flex-shrink: 0; }
-.detail-back { display: flex; align-items: center; gap: 5px; font-size: 14px; cursor: pointer; background: none; border: none; font-family: inherit; color: var(--text); }
+.detail-topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: max(10px, env(safe-area-inset-top, 10px)) 10px 6px;
+  flex-shrink: 0;
+  gap: 8px;
+}
+.detail-back {
+  display: flex; align-items: center; gap: 4px;
+  padding: 10px 14px;
+  margin-left: -6px;
+  border-radius: 999px;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; background: none; border: none;
+  font-family: inherit; color: var(--text);
+  min-height: 40px; max-width: 60%;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  -webkit-tap-highlight-color: rgba(0,0,0,0.05);
+}
+.detail-back:active { background: rgba(0,0,0,0.05); }
+.detail-back svg { flex-shrink: 0; }
+.detail-back .label { flex-shrink: 0; }
+.detail-back .nav-title {
+  font-size: 12px; color: var(--text-sub); font-weight: 500;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  margin-left: 2px;
+}
+.detail-topbar-right { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
+.detail-close {
+  width: 40px; height: 40px;
+  border: none; background: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; border-radius: 999px;
+  font-size: 20px; line-height: 1; color: var(--text-sub);
+  font-family: inherit;
+  -webkit-tap-highlight-color: rgba(0,0,0,0.05);
+}
+.detail-close:active { background: rgba(0,0,0,0.05); color: var(--text); }
 .detail-scroll { flex: 1; overflow-y: auto; }
 .detail-scroll::-webkit-scrollbar { display: none; }
 .detail-gallery { height: 190px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; position: relative; }
@@ -1014,6 +1064,22 @@ html, body {
   /* On desktop, hide Map tab from bottom nav since the map is persistent */
   #nav-map { display: none; }
 }
+.food-badge-row { margin-bottom: 12px; }
+.food-badge {
+  display: inline-block; font-size: 13px; font-weight: 700;
+  padding: 5px 14px; border-radius: 999px;
+  background: var(--peach-soft); color: var(--peach-deep);
+  letter-spacing: 0.01em;
+}
+.food-detail { font-size: 13px; line-height: 1.75; color: var(--ink, var(--text)); margin-bottom: 12px; }
+.food-advice {
+  background: var(--green-soft); color: var(--green-deep);
+  padding: 10px 14px; border-radius: 10px;
+  font-size: 12.5px; line-height: 1.7;
+  display: flex; align-items: flex-start; gap: 6px;
+}
+.food-advice::before { content: '💡'; flex-shrink: 0; }
+
 .dog-info-box { margin-bottom: 11px; background: #fff8e0; border-radius: 12px; padding: 16px 14px; }
 .dog-info-box-title { font-size: 13px; font-weight: 700; color: #7a5c1a; margin-bottom: 10px; }
 .dog-info-box-body { font-size: 12px; color: #7a5c1a; line-height: 1.8; }
@@ -1035,6 +1101,9 @@ html, body {
 .voice-card-age { font-size: 11px; background: var(--green-light); color: var(--green); padding: 2px 8px; border-radius: 20px; font-weight: 600; }
 .voice-card-feeling { font-size: 16px; }
 .voice-card-date { font-size: 11px; color: var(--text-light); margin-left: auto; }
+.voice-card-report { background:none; border:none; font-size:12px; color:var(--text-light); cursor:pointer; padding:2px 5px; border-radius:4px; font-family:inherit; opacity:0.6; transition:opacity .15s,color .15s; }
+.voice-card-report:hover { opacity:1; color:#c14545; }
+.voice-card-report:active { transform:scale(0.94); }
 .voice-card-text { font-size: 13px; line-height: 1.7; color: var(--text); margin-bottom: 6px; }
 .voice-card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
 .voice-card-tag { font-size: 10px; padding: 2px 7px; border-radius: 20px; background: var(--bg); color: var(--text-sub); border: 1px solid var(--border); }
@@ -1155,6 +1224,11 @@ html, body {
   box-shadow: 0 2px 8px rgba(91,127,97,0.15);
 }
 .mascot-pick-mark { width: 42px; height: 48px; }
+.mascot-pick-emoji {
+  font-size: 36px; line-height: 1;
+  display: inline-block; padding: 6px 0 4px;
+  filter: drop-shadow(0 2px 3px rgba(44,42,38,0.15));
+}
 .mascot-pick.locked {
   opacity: 0.5;
   background: var(--line-soft);
@@ -1167,6 +1241,303 @@ html, body {
   font-size: 14px;
 }
 .mascot-pick { position: relative; }
+
+/* 全体進捗サマリー (コドちゃんとのあしあと top) */
+.ach-summary {
+  background: linear-gradient(135deg, var(--green-soft), var(--peach-soft));
+  border-radius: var(--radius);
+  padding: 16px 18px 14px;
+  margin-bottom: 18px;
+  border: 1px solid var(--line-soft);
+}
+.ach-summary-head {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 12px; gap: 12px;
+}
+.ach-summary-left { display: flex; flex-direction: column; gap: 2px; }
+.ach-summary-num {
+  font-size: 32px; font-weight: 800;
+  color: var(--green-deep); line-height: 1;
+  letter-spacing: -0.02em;
+}
+.ach-summary-num span {
+  font-size: 14px; color: var(--ink-faint);
+  margin-left: 4px; font-weight: 500;
+}
+.ach-summary-label {
+  font-size: 11px; color: var(--ink-sub);
+  font-weight: 600; letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.ach-summary-streak {
+  background: rgba(255,255,255,0.7);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 13px; font-weight: 700;
+  color: var(--green-deep);
+  display: flex; align-items: baseline; gap: 4px;
+}
+.ach-summary-streak-num span {
+  font-size: 11px; color: var(--ink-sub);
+  font-weight: 500; margin-left: 3px;
+}
+.ach-summary-bar {
+  height: 8px; background: rgba(255,255,255,0.6);
+  border-radius: 999px; overflow: hidden;
+}
+.ach-summary-bar-fill {
+  height: 100%; background: var(--green-deep);
+  border-radius: 999px; transition: width 0.4s ease;
+}
+.ach-summary-foot {
+  margin-top: 6px; font-size: 11px;
+  color: var(--ink-sub); text-align: right;
+  font-weight: 500;
+}
+.ach-earned-row {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 14px; padding-top: 12px;
+  border-top: 1px dashed rgba(255,255,255,0.5);
+  max-height: 240px; overflow-y: auto;
+}
+.ach-earned-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 999px;
+  padding: 3px 10px 3px 5px;
+  font-size: 11px;
+  border: 1px solid var(--line-soft);
+}
+.ach-earned-icon { font-size: 13px; line-height: 1; }
+.ach-earned-text { color: var(--ink-sub); font-weight: 500; }
+.ach-earned-empty {
+  margin-top: 12px; padding: 10px 12px;
+  background: rgba(255,255,255,0.55); border-radius: 10px;
+  font-size: 12px; color: var(--ink-sub);
+  text-align: center; line-height: 1.6;
+}
+
+/* ─── ビックリマン風キャラカード ─── */
+.char-cards-section { margin: 18px 0 24px; }
+.char-cards-title {
+  font-size: 14px; font-weight: 700; color: var(--ink);
+  margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+}
+.char-cards-count {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px; color: var(--ink-sub); font-weight: 500;
+  background: var(--bg-soft); padding: 2px 8px; border-radius: 999px;
+}
+.char-cards-row {
+  display: flex; gap: 12px; overflow-x: auto;
+  padding: 4px 4px 14px; margin: 0 -4px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.char-cards-row::-webkit-scrollbar { display: none; }
+.char-cards-hint {
+  font-size: 11px; color: var(--ink-faint);
+  text-align: center; letter-spacing: 0.04em;
+}
+.char-card-bik {
+  flex: 0 0 250px; height: 460px;
+  border-radius: 18px; overflow: hidden;
+  position: relative; isolation: isolate;
+  scroll-snap-align: start;
+  background: transparent;  /* bg レイヤに任せる */
+  box-shadow:
+    0 8px 22px rgba(44,42,38,0.18),
+    0 2px 6px rgba(44,42,38,0.10);
+  cursor: default;
+}
+/* レアリティ別 frame (細い綺麗なボーダーのみ、白フチなし) */
+.char-card-frame {
+  position: absolute; inset: 0; pointer-events: none;
+  border-radius: 18px; z-index: 4;
+  border: 2px solid transparent;
+}
+.char-card-bik.rarity-1 .char-card-frame { border-color: #5B7F61; }
+.char-card-bik.rarity-2 .char-card-frame { border-color: #C8569E; }
+.char-card-bik.rarity-3 .char-card-frame {
+  border: 2.5px solid transparent;
+  background:
+    linear-gradient(transparent, transparent) padding-box,
+    linear-gradient(135deg, #ff90c0, #ffd76b 30%, #94e1ff 60%, #c79bff 100%) border-box;
+}
+.char-card-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(circle at 20% 25%, rgba(255,209,245,0.75) 0%, transparent 38%),
+    radial-gradient(circle at 75% 70%, rgba(184,229,255,0.75) 0%, transparent 42%),
+    radial-gradient(circle at 50% 50%, rgba(255,243,180,0.6) 0%, transparent 50%),
+    linear-gradient(135deg, #fde7d4 0%, #d8e6ff 50%, #f0d8ff 100%);
+  background-size: 220% 220%;
+  animation: bikuriShine 6s ease-in-out infinite;
+}
+.char-card-bik::after {
+  /* キラキラ overlay (上半分のみ、文字エリアにかからない) */
+  content: ''; position: absolute; top: 4px; left: 4px; right: 4px; height: 200px;
+  z-index: 1; pointer-events: none; mix-blend-mode: screen;
+  border-radius: 14px;
+  background-image:
+    radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.95) 0, transparent 4px),
+    radial-gradient(1.5px 1.5px at 65% 18%, rgba(255,255,255,0.85) 0, transparent 4px),
+    radial-gradient(1.5px 1.5px at 80% 55%, rgba(255,255,255,0.85) 0, transparent 4px),
+    radial-gradient(2px 2px at 35% 78%, rgba(255,255,255,0.85) 0, transparent 4px),
+    radial-gradient(1px 1px at 88% 32%, rgba(255,255,255,0.85) 0, transparent 3px);
+  animation: bikuriTwinkle 3s ease-in-out infinite alternate;
+}
+@keyframes bikuriShine {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+@keyframes bikuriTwinkle {
+  0% { opacity: 0.65; }
+  100% { opacity: 1; }
+}
+.char-card-bik.rarity-1 .char-card-bg { background:
+  radial-gradient(circle at 30% 25%, rgba(199,236,212,0.7) 0%, transparent 40%),
+  radial-gradient(circle at 70% 70%, rgba(255,235,205,0.7) 0%, transparent 45%),
+  linear-gradient(135deg, #ecf3e8 0%, #fcf2e6 100%);
+}
+.char-card-bik.rarity-2 .char-card-bg { background:
+  radial-gradient(circle at 25% 25%, rgba(232,213,250,0.75) 0%, transparent 42%),
+  radial-gradient(circle at 75% 65%, rgba(255,209,242,0.7) 0%, transparent 45%),
+  linear-gradient(135deg, #f0e8f8 0%, #fce8f0 50%, #f0d8fa 100%);
+}
+.char-card-stars {
+  position: absolute; top: 18px; right: 18px; z-index: 2;
+  font-size: 12px; color: #d4a000;
+  font-weight: 700; letter-spacing: 0.06em;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.6);
+}
+.char-card-no {
+  position: absolute; top: 18px; left: 18px; z-index: 2;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; font-weight: 700;
+  color: rgba(44,42,38,0.55);
+  letter-spacing: 0.16em;
+}
+.char-card-portrait {
+  position: relative; z-index: 2;
+  display: flex; align-items: center; justify-content: center;
+  height: 180px; padding-top: 30px; padding-bottom: 4px;
+}
+.char-card-svg-wrap { display: inline-flex; filter: drop-shadow(0 4px 8px rgba(44,42,38,0.18)); }
+.char-card-svg-wrap svg { display: block; }
+.char-card-emoji {
+  font-size: 88px; line-height: 1;
+  filter: drop-shadow(0 4px 6px rgba(44,42,38,0.18));
+}
+.char-card-name {
+  position: relative; z-index: 2;
+  text-align: center;
+  font-size: 19px; font-weight: 800;
+  margin: 6px 12px 8px; color: var(--ink);
+  text-shadow: 0 1px 2px rgba(255,255,255,0.85);
+  letter-spacing: -0.005em;
+}
+/* 吹き出し: ママパパへの感謝 */
+.char-card-bubble {
+  position: relative; z-index: 2;
+  margin: 0 18px 10px;
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(44,42,38,0.08);
+  border-radius: 12px;
+  padding: 9px 12px 8px;
+  font-size: 12px; line-height: 1.55;
+  text-align: center; color: var(--ink);
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(44,42,38,0.06);
+}
+.char-card-bubble::before {
+  /* 吹き出しの三角 (キャラ portrait 側に向く) */
+  content: ''; position: absolute;
+  top: -6px; left: 50%; transform: translateX(-50%) rotate(45deg);
+  width: 10px; height: 10px;
+  background: rgba(255,255,255,0.92);
+  border-left: 1px solid rgba(44,42,38,0.08);
+  border-top: 1px solid rgba(44,42,38,0.08);
+}
+/* 成り立ちストーリー */
+.char-card-story {
+  position: relative; z-index: 2;
+  margin: 0 18px 6px;
+  font-size: 10.5px; line-height: 1.55;
+  color: rgba(44,42,38,0.7);
+  text-align: justify;
+  letter-spacing: 0.005em;
+}
+.char-card-foot {
+  position: absolute; bottom: 56px; left: 18px; right: 18px;
+  text-align: center; z-index: 2;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px; letter-spacing: 0.08em;
+  color: rgba(44,42,38,0.5); font-weight: 600;
+  line-height: 1.3;
+  padding-top: 6px; border-top: 1px dashed rgba(44,42,38,0.12);
+}
+.char-card-actions {
+  position: absolute; bottom: 12px; left: 12px; right: 12px;
+  display: flex; gap: 6px; z-index: 3;
+}
+.char-card-btn {
+  flex: 1; padding: 8px 6px;
+  background: rgba(44,42,38,0.86); color: white;
+  border: none; border-radius: 10px;
+  font-size: 11px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+  transition: transform 0.1s, background 0.15s;
+}
+.char-card-btn:hover { background: var(--ink); }
+.char-card-btn:active { transform: scale(0.97); }
+
+/* 画像保存モーダル */
+.img-save-modal {
+  position: fixed; inset: 0; z-index: 9999;
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.img-save-modal.open { display: flex; }
+.img-save-bg {
+  position: absolute; inset: 0;
+  background: rgba(20,18,14,0.85);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.img-save-shell {
+  position: relative; max-width: 360px; width: 100%;
+  display: flex; flex-direction: column; gap: 14px;
+  align-items: center;
+}
+.img-save-pic {
+  max-width: 100%; max-height: 65vh;
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+  user-select: none; -webkit-user-select: none;
+  -webkit-touch-callout: default; /* iOS で長押しメニュー有効 */
+}
+.img-save-hint {
+  font-size: 13px; color: rgba(255,255,255,0.92);
+  text-align: center; line-height: 1.6;
+  padding: 6px 12px;
+}
+.img-save-hint b { color: #fff; }
+.img-save-actions { display: flex; gap: 10px; width: 100%; padding: 0 4px; }
+.img-save-dl, .img-save-close {
+  flex: 1; padding: 11px 12px; border: none;
+  border-radius: 12px; font-family: inherit;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  text-align: center; text-decoration: none;
+}
+.img-save-dl {
+  background: var(--green-deep); color: white;
+}
+.img-save-close {
+  background: rgba(255,255,255,0.15); color: white;
+  border: 1px solid rgba(255,255,255,0.25);
+}
+.img-save-close:active, .img-save-dl:active { transform: scale(0.97); }
 
 /* 達成ティア帯 */
 .achievement-block + .achievement-block { margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--line); }
@@ -1703,7 +2074,7 @@ html, body {
 <div id="main-app">
 
   <div class="topbar">
-    <div class="topbar-logo">
+    <div class="topbar-logo" onclick="goHome()" style="cursor:pointer;" title="ホームに戻る">
       <svg class="topbar-mark" aria-hidden="true" data-mascot="mark"><use href="#kodo-mark"/></svg>
       <span class="topbar-brand">KODOCO</span>
       <span class="topbar-sub">今日どこいく？</span>
@@ -2022,8 +2393,8 @@ html, body {
       <span>お気に入り</span>
     </button>
     <button class="nav-item" id="nav-diary" onclick="switchTab('diary')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-      <span>日記</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      <span>口コミ</span>
     </button>
   </nav>
 
@@ -2034,11 +2405,15 @@ html, body {
 <div class="detail-overlay" id="detailOverlay">
   <div class="detail-handle"></div>
   <div class="detail-topbar">
-    <button class="detail-back" onclick="closeDetail()">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-      <span id="detailNavTitle"></span>
+    <button class="detail-back" onclick="closeDetail()" aria-label="戻る">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      <span class="label">戻る</span>
+      <span class="nav-title" id="detailNavTitle"></span>
     </button>
-    <button class="heart-btn" style="font-size:21px;" id="detailHeart" onclick="toggleDetailHeart()">♡</button>
+    <div class="detail-topbar-right">
+      <button class="heart-btn" style="font-size:21px;" id="detailHeart" onclick="toggleDetailHeart()">♡</button>
+      <button class="detail-close" onclick="closeDetail()" aria-label="閉じる">✕</button>
+    </div>
   </div>
   <div class="detail-scroll">
     <div class="detail-gallery" id="detailGallery">
@@ -2083,6 +2458,12 @@ html, body {
         <div class="congestion-bars" id="congBars"></div>
         <div class="cbar-labels"><span>9時</span><span>12時</span><span>15時</span><span>18時</span></div>
         <div class="api-note" style="margin-top:6px;">📷 本リリース時はリアルタイムデータが表示されます</div>
+      </div>
+      <div class="d-section" id="detailFoodBox" style="display:none;">
+        <div class="d-section-title">🍽 食事メモ</div>
+        <div class="food-badge-row"><span class="food-badge" id="detailFoodBadge"></span></div>
+        <div class="food-detail" id="detailFoodDetail"></div>
+        <div class="food-advice" id="detailFoodAdvice" style="display:none;"></div>
       </div>
       <div class="d-section">
         <div class="info-rows">
@@ -2246,9 +2627,30 @@ html, body {
           <svg class="mascot-pick-mark" aria-hidden="true"><use href="#kuro-mark"/></svg>
           <span>クロちゃん</span>
         </button>
+        <button class="mascot-pick mascot-pick-emoji-style" data-pick="shin" onclick="setMascotPref('shin')">
+          <span class="mascot-pick-emoji">🌱</span>
+          <span>シンちゃん</span>
+        </button>
+        <button class="mascot-pick mascot-pick-emoji-style" data-pick="uchi" onclick="setMascotPref('uchi')">
+          <span class="mascot-pick-emoji">🐰</span>
+          <span>ウチちゃん</span>
+        </button>
+        <button class="mascot-pick mascot-pick-emoji-style" data-pick="anko" onclick="setMascotPref('anko')">
+          <span class="mascot-pick-emoji">🍓</span>
+          <span>アンコちゃん</span>
+        </button>
+        <button class="mascot-pick mascot-pick-emoji-style" data-pick="hon" onclick="setMascotPref('hon')">
+          <span class="mascot-pick-emoji">🦉</span>
+          <span>ホンちゃん</span>
+        </button>
+        <button class="mascot-pick mascot-pick-emoji-style" data-pick="miru" onclick="setMascotPref('miru')">
+          <span class="mascot-pick-emoji">🔭</span>
+          <span>ミルちゃん</span>
+        </button>
       </div>
       <div style="font-size:11px;color:var(--text-sub);line-height:1.6;padding:8px 4px 0;">
-        お気に入り・口コミを集めると新キャラやアクセサリーが解禁されます。トップバー・ヒーロー右上・ひとこと・拍手アニメで登場。
+        お気に入り・口コミを集めると新キャラやアクセサリーが解禁されます。トップバー・ヒーロー右上・ひとこと・拍手アニメで登場。<br>
+        <span style="color:var(--ink-faint);">※ 絵文字キャラ (🌱🐰🍓🦉🔭) はカード鑑賞用。トップバー表示は SVG 5体のみ対応。</span>
       </div>
     </div>
 
@@ -2267,6 +2669,13 @@ html, body {
 
     <div class="settings-section-title" style="margin-top:28px;">リセット</div>
     <div class="settings-card"><button class="settings-reset-btn" onclick="resetAll()">🔄 登録情報をリセットして最初からやり直す</button></div>
+
+    <div class="settings-section-title" style="margin-top:28px;">📜 KODOCO について</div>
+    <div class="settings-card" style="display:flex;flex-direction:column;gap:6px;font-size:13px;">
+      <a href="terms.html" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:none;padding:8px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;">利用規約<span style="color:var(--ink-faint);">↗</span></a>
+      <a href="privacy.html" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:none;padding:8px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;">プライバシーポリシー<span style="color:var(--ink-faint);">↗</span></a>
+      <a href="community.html" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:none;padding:8px 0;display:flex;justify-content:space-between;">コミュニティガイドライン<span style="color:var(--ink-faint);">↗</span></a>
+    </div>
   </div>
 </div>
 
@@ -3825,7 +4234,13 @@ function loadState() {
 
 // ── VERSION CHECK ─────────────────────────────────────────────
 const APP_VERSION = 'kodoco-hybrid-1.0';
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // load enriched spot photos before first render (best effort)
+  try {
+    const r = await fetch('data/spot-photos.json', { cache: 'no-cache' });
+    if (r.ok) window.SPOT_PHOTOS = await r.json();
+  } catch (_) { /* fall back to picsum seed */ }
+
   initFirebase();
   if (typeof applyMascotPref === 'function') applyMascotPref();
   if (localStorage.getItem('kodoco_version') !== APP_VERSION) {
@@ -4903,6 +5318,17 @@ function buildSpotCard(s, isRec, age) {
   const dogOk = (facts && facts.dogOk) || (s.dogInfo && s.dogInfo.ok);
   if (dogOk) factBadges.push('<div class="fact-badge ok" style="color:#7a5c1a;background:#fff8e0;border-color:#f0d890;">🐕 犬OK</div>');
   else       factBadges.push('<div class="fact-badge ng">🐕 犬NG</div>');
+  // 食事情報 (推定ロジック)
+  const food = spotFoodInfo(s);
+  if (food) {
+    const isPos = /食事|BBQ|軽食|持込/.test(food.badge);
+    const isWarn = /持参推奨|自販機|売店あり/.test(food.badge);
+    const cls = isPos ? 'ok' : (isWarn ? '' : 'ng');
+    const style = isPos
+      ? 'color:#a05028;background:#ffeadd;border-color:#f4c8a8;'
+      : (isWarn ? 'color:#5a5240;background:#f4ecd8;border-color:#d8c8a0;' : '');
+    factBadges.push('<div class="fact-badge ' + cls + '" style="' + style + '">' + food.badge + '</div>');
+  }
 
   const dogBadge = s.dogInfo ? '<div class="dog-badge-card">🐕 ' + s.dogInfo.size + '・' + s.dogInfo.allowed + '</div>' : '';
   const kidsBadge = s.kidsSpace ? '<div class="kids-badge-card">🧸 キッズスペースあり</div>' : '';
@@ -4921,7 +5347,11 @@ function buildSpotCard(s, isRec, age) {
     + '<div class="spot-photo-arr">›</div>'
     + '</div>'
     + '<div class="spot-body">'
-    + '<div class="spot-top-row"><div class="spot-name">' + s.name + '</div>'
+    + '<div class="spot-top-row">'
+    + '<div class="spot-name-wrap">'
+    + '<div class="spot-name">' + s.name + '</div>'
+    + (s.rating ? '<span class="spot-rating">★ ' + Number(s.rating).toFixed(1) + '</span>' : '')
+    + '</div>'
     + '<button class="heart-btn' + (liked?' liked':'') + '" data-id="' + s.id + '" onclick="event.stopPropagation();toggleHeart(this,\'' + s.id + '\')">' + (liked?'♥':'♡') + '</button></div>'
     + '<div class="spot-meta-row"><span class="spot-cat ' + s.catClass + '">' + s.cat + '</span><span class="spot-loc">📍 ' + s.loc + '</span></div>'
     + '<div class="spot-value">' + value + '</div>'
@@ -4974,6 +5404,77 @@ function switchTab(tab) {
   // restore scroll after DOM has updated
   requestAnimationFrame(() => restoreScrollForTab(tab));
 }
+
+// ── ロゴタップで Home タブへ戻る + 全モーダル閉じる ───────────────────────
+function goHome() {
+  // 開いているオーバーレイを全部閉じる
+  closeAnyOpen();
+  // Home タブへ
+  if (_currentTab !== 'home') switchTab('home');
+}
+
+// ── ブラウザ戻るボタンの hijack ──────────────────────────────────────
+// 詳細/モーダルを開く時に history.pushState、戻るで先に閉じる。
+// ロジック: openXxx → navPush() / closeXxx → navPop()
+//          popstate → 開いてるものを DOM 直接で閉じる + 次の戻るも吸収するため再 push
+let _navIgnorePopstate = false;
+
+function navPush() {
+  try { history.pushState({ ond: 'open' }, ''); } catch (_) {}
+}
+function navPop() {
+  // 手動クローズ時に呼ぶ。pushState で積んだ entry を吸収する。
+  try {
+    _navIgnorePopstate = true;
+    history.back();
+    setTimeout(() => { _navIgnorePopstate = false; }, 60);
+  } catch (_) {}
+}
+
+// popstate ハンドラ用: 開いてるものを DOM 直接で閉じる(close 関数経由ではないので navPop は呼ばない)
+function closeAnyOpenRaw() {
+  // 優先順位: 上位モーダル → 詳細 → 設定
+  const newSpot   = document.getElementById('newSpotModal');
+  const voiceForm = document.getElementById('voiceFormModal');
+  const addChild  = document.getElementById('addChildModal');
+  const settings  = document.getElementById('settingsOverlay');
+  const detail    = document.getElementById('detailOverlay');
+  const dimmer    = document.getElementById('dimmer');
+
+  if (newSpot && newSpot.style.display === 'flex')   { newSpot.style.display = 'none'; return true; }
+  if (voiceForm && voiceForm.style.display === 'flex') { voiceForm.style.display = 'none'; return true; }
+  if (addChild && addChild.style.display === 'flex') { addChild.style.display = 'none'; return true; }
+  if (settings && settings.classList.contains('open')) { settings.classList.remove('open'); return true; }
+  if (detail && detail.classList.contains('open')) {
+    detail.classList.remove('open');
+    if (dimmer) {
+      dimmer.style.opacity = '0';
+      setTimeout(() => { dimmer.style.display = 'none'; }, 350);
+    }
+    return true;
+  }
+  return false;
+}
+// 通常の閉じる(全部閉じる) — close 関数経由
+function closeAnyOpen() {
+  closeAnyOpenRaw(); // 同じ動作だが意味合いとして「明示的に閉じる」
+}
+
+window.addEventListener('popstate', (ev) => {
+  if (_navIgnorePopstate) {
+    // 自分が history.back() した分はスルー
+    return;
+  }
+  // ユーザーが戻るボタンを押した
+  if (closeAnyOpenRaw()) {
+    // 何か閉じた → 次の戻るも吸収するため再 push
+    navPush();
+  }
+  // 何も開いていなければ → ブラウザは既に1ページ戻っている → そのまま LP へ
+});
+
+// 起動時に "guard" を1つ積んで、最初の back を吸収する
+// (ただし、何も開いていないときは popstate が来ても何もしないので、結果的に LP に戻る挙動は維持)
 
 // Handle ?spot=xxx URL — open that spot's detail modal on load
 function handleDeepLink() {
@@ -5262,8 +5763,8 @@ async function submitDiary() {
   kodoCheer();
   toast('「' + spotName + '」への声、ありがとう！');
 }
-function openNewSpotModal() { document.getElementById('newSpotModal').style.display = 'flex'; }
-function closeNewSpotModal() { document.getElementById('newSpotModal').style.display = 'none'; }
+function openNewSpotModal() { document.getElementById('newSpotModal').style.display = 'flex'; navPush(); }
+function closeNewSpotModal() { document.getElementById('newSpotModal').style.display = 'none'; navPop(); }
 function loadUserSpots() {
   try { return JSON.parse(localStorage.getItem('kodoco_user_spots') || '[]'); }
   catch(e) { return []; }
@@ -5309,6 +5810,7 @@ function openDetailFromHero() { if (state._heroPick) openDetail(state._heroPick)
 function openDetail(id) {
   const s = SPOTS.find(x => x.id === id);
   if (!s) return;
+  if (typeof _recordDetailView === 'function') _recordDetailView();
   state.currentDetail = id;
   const child = state.children[state.activeChild];
   const age = child ? child.age : 2;
@@ -5376,6 +5878,22 @@ function openDetail(id) {
     document.getElementById('detailDogBody').innerHTML = '<b>同伴可能エリア：</b>' + s.dogInfo.allowed + '<br><b>対応犬種：</b>' + s.dogInfo.size + '<br><b>備考：</b>' + s.dogInfo.notes;
   } else { dogBox.style.display = 'none'; }
 
+  // food info (推定: spotFoodInfo)
+  const foodBox = document.getElementById('detailFoodBox');
+  const foodInfo = spotFoodInfo(s);
+  if (foodInfo) {
+    foodBox.style.display = 'block';
+    document.getElementById('detailFoodBadge').textContent = foodInfo.badge;
+    document.getElementById('detailFoodDetail').textContent = foodInfo.detail;
+    const advEl = document.getElementById('detailFoodAdvice');
+    if (foodInfo.advice) {
+      advEl.style.display = 'flex';
+      advEl.textContent = foodInfo.advice;
+    } else {
+      advEl.style.display = 'none';
+    }
+  } else { foodBox.style.display = 'none'; }
+
   const liked = state.likes.includes(id);
   const hb = document.getElementById('detailHeart');
   hb.textContent = liked ? '♥' : '♡';
@@ -5394,6 +5912,7 @@ function openDetail(id) {
   overlay.querySelector('.detail-scroll').scrollTop = 0;
   dimmer.style.display = 'block';
   requestAnimationFrame(() => { dimmer.style.opacity = '1'; });
+  navPush();
 }
 
 // ── Spot helpers: visual, external links & sharing ────────────────────────
@@ -5410,10 +5929,60 @@ function _spotHashSeed(s) {
 function spotAutoPhotoUrl(s) {
   return `https://picsum.photos/seed/kodoco-${_spotHashSeed(s)}/800/500`;
 }
+// 食事情報を facilities / desc / keywords / cat から推定
+function spotFoodInfo(s) {
+  if (!s) return null;
+  const facList = (s.facilities || []).join(' ');
+  const text = facList + ' ' + (s.desc || '') + ' ' + (s.highlight || '') + ' ' + (s.keywords || []).join(' ') + ' ' + (s.play || []).join(' ');
+  const isCafe   = s.catClass === 'cafe';
+  const isIndoor = s.catClass === 'indoor';
+  const isMuseum = s.catClass === 'museum';
+  const isPark   = s.catClass === 'park';
+  const hasRestaurant = /カフェ|レストラン|食堂|フードコート|食事処|ファミレス/.test(text);
+  const hasBBQ       = /BBQ|バーベキュー/.test(text);
+  const hasShop      = /売店|軽食|スナック/.test(text);
+  const hasVending   = /自販機|自動販売機|ベンディング/.test(text);
+  const yesEat       = /飲食可|飲食OK|食事可|食事OK|お弁当|ピクニック/.test(text);
+  const noEat        = /飲食不可|持込不可|持込禁止|飲食禁止/.test(text);
+
+  if (isCafe) {
+    return { badge: '🍽 食事メイン', detail: 'カフェ・レストランとして営業。お子さん連れ歓迎の店も多いが、事前に確認推奨。', advice: null };
+  }
+  if (hasRestaurant) {
+    return { badge: '🍽 食事OK', detail: '併設のカフェ・レストランあり。子連れメニューや個室の有無は要確認。', advice: null };
+  }
+  if (hasBBQ) {
+    return { badge: '🔥 BBQ可', detail: 'BBQエリアあり。食材持参 or レンタルかは公式ページで要確認、事前予約必須が多い。', advice: 'コンロ・食材を忘れずに。' };
+  }
+  if (yesEat) {
+    return { badge: '🍙 持込OK', detail: 'お弁当持込OK、ピクニックエリアや屋内休憩スペースあり。', advice: 'コンビニで買って持参が便利。' };
+  }
+  if (hasShop) {
+    return { badge: '🛒 軽食可', detail: '売店・軽食コーナーあり。本格的な食事はないので軽い昼食程度。', advice: null };
+  }
+  if (noEat) {
+    return { badge: '🚫 飲食不可', detail: '館内での飲食は禁止。', advice: '事前にしっかり食べてから来園推奨。' };
+  }
+  if (isIndoor) {
+    return { badge: '🥤 自販機程度', detail: '飲食情報なし。多くの室内遊び場は自販機程度で本格的な食事はなし。', advice: hasVending ? '飲み物は自販機で入手可。お子さんのおやつは持参を。' : 'お子さん用おやつ・飲み物の持参推奨。' };
+  }
+  if (isMuseum) {
+    return { badge: '🛍 売店あり多', detail: '多くの博物館・体験施設は売店・カフェ併設だが、土日は混雑することも。', advice: '混雑する曜日は事前に近くで食事を済ませると安心。' };
+  }
+  if (isPark) {
+    return { badge: '🍙 持参推奨', detail: '園内に飲食施設はほぼなし。ピクニックがおすすめ。', advice: '近くのコンビニやスーパーで買って持参すると便利。レジャーシート・水分は多めに。' };
+  }
+  return { badge: '🍙 持参推奨', detail: '飲食情報なし。', advice: '近くのコンビニで買って持参すると安心。' };
+}
+
+// populated asynchronously from data/spot-photos.json (og:image + wiki)
+window.SPOT_PHOTOS = window.SPOT_PHOTOS || {};
 function spotPhotoSrc(s) {
   if (!s) return null;
   if (s.photoUrl) return Array.isArray(s.photoUrl) ? s.photoUrl[0] : s.photoUrl;
-  return spotAutoPhotoUrl(s);
+  const ext = window.SPOT_PHOTOS[s.id];
+  if (ext && ext.photo) return ext.photo;
+  return spotAutoPhotoUrl(s);  // picsum fallback to avoid blank cards
 }
 function spotBackgroundCss(s) {
   const src = spotPhotoSrc(s);
@@ -5491,9 +6060,11 @@ function renderDetailActions(s) {
 function closeDetail() {
   const overlay = document.getElementById('detailOverlay');
   const dimmer = document.getElementById('dimmer');
+  if (!overlay.classList.contains('open')) return; // already closed
   overlay.classList.remove('open');
   dimmer.style.opacity = '0';
   setTimeout(() => { dimmer.style.display = 'none'; }, 350);
+  navPop();
 }
 function buildCongBars() {
   const heights = [8,12,20,32,48,62,72,68,55,38,22,12];
@@ -5789,16 +6360,52 @@ function _paintVoiceList(all, ageGrp) {
     const card = document.createElement('div');
     card.className = 'voice-card';
     const tagsHtml = (v.tags||[]).map(t => '<span class="voice-card-tag">' + t + '</span>').join('');
+    // 通報ボタン: 自分の投稿(userId 一致)には表示しない
+    const myUid = (typeof getUserId === 'function') ? getUserId() : null;
+    const canReport = !myUid || v.userId !== myUid;
+    const voiceRef = v.cloudId || ('local:' + (v.id || ''));
+    const reportBtn = canReport
+      ? '<button class="voice-card-report" onclick="reportVoice(\'' + voiceRef + '\',\'' + (v.spotId || '') + '\')" title="不適切な投稿として通報">⚠ 通報</button>'
+      : '';
     card.innerHTML = '<div class="voice-card-header">'
       + '<span class="voice-card-age">' + g.emoji + ' ' + v.age + '歳</span>'
       + '<span class="voice-card-feeling">' + (v.feeling||'😊') + '</span>'
       + '<span class="voice-card-date">' + v.date + '</span>'
+      + reportBtn
       + '</div>'
       + (v.comment ? '<div class="voice-card-text">' + v.comment + '</div>' : '')
       + (v.image ? '<div class="voice-card-img"><img src="' + v.image + '" alt="投稿写真" loading="lazy"/></div>' : '')
       + (tagsHtml ? '<div class="voice-card-tags">' + tagsHtml + '</div>' : '');
     listEl.appendChild(card);
   });
+}
+
+// 通報ボタン: mailto で管理者へ送信
+function reportVoice(voiceRef, spotId) {
+  if (!confirm('この投稿を不適切として通報しますか？\nメールアプリが起動します。')) return;
+  const myUid = (typeof getUserId === 'function') ? getUserId() : 'unknown';
+  const spot = SPOTS.find(s => s.id === spotId);
+  const spotName = spot ? spot.name : spotId;
+  const subject = '[KODOCO 通報] ' + spotName;
+  const body = [
+    'KODOCO の投稿を通報します。',
+    '',
+    '─────────────',
+    'スポット: ' + spotName + ' (id: ' + spotId + ')',
+    '投稿ID: ' + voiceRef,
+    '通報者UID: ' + myUid,
+    '通報日時: ' + new Date().toISOString(),
+    '─────────────',
+    '',
+    '【通報理由】',
+    '(具体的にご記入ください：誹謗中傷 / 虚偽情報 / 個人情報 / スパム など)',
+    '',
+    '',
+  ].join('\n');
+  const url = 'mailto:99letters99@gmail.com'
+    + '?subject=' + encodeURIComponent(subject)
+    + '&body='    + encodeURIComponent(body);
+  window.location.href = url;
 }
 
 function openVoiceForm() {
@@ -5840,9 +6447,13 @@ function openVoiceForm() {
   document.querySelectorAll('#vfFeelings .feeling-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('vfComment').value = '';
   document.getElementById('voiceFormModal').style.display = 'flex';
+  navPush();
 }
 function closeVoiceForm() {
-  document.getElementById('voiceFormModal').style.display = 'none';
+  const m = document.getElementById('voiceFormModal');
+  if (m.style.display !== 'flex') return; // already closed
+  m.style.display = 'none';
+  navPop();
 }
 function pickVfFeeling(btn, emoji) {
   document.querySelectorAll('#vfFeelings .feeling-btn').forEach(b => b.classList.remove('active'));
@@ -5851,6 +6462,20 @@ function pickVfFeeling(btn, emoji) {
 async function submitVoice() {
   if (vfSelectedAge === null) { alert('お子さんの年齢を選んでください'); return; }
   if (!vfSelectedFeeling) { alert('感想を選んでください'); return; }
+  // 初回投稿時のみ、投稿ガイドラインへの同意を求める
+  if (!localStorage.getItem('kodoco_voice_terms_agreed')) {
+    const agreed = confirm(
+      '📝 投稿ガイドライン\n\n' +
+      '・誹謗中傷、個人攻撃、差別的な表現は禁止\n' +
+      '・虚偽情報、広告・宣伝目的の投稿は禁止\n' +
+      '・他人の個人情報(氏名・住所・写真)を書き込まない\n' +
+      '・お子さんの顔が特定できる写真は避ける\n\n' +
+      '違反投稿は管理者により予告なく削除される場合があります。\n\n' +
+      '同意して投稿しますか？'
+    );
+    if (!agreed) return;
+    localStorage.setItem('kodoco_voice_terms_agreed', '1');
+  }
   const spotId = state.currentDetail;
   const comment = document.getElementById('vfComment').value.trim();
   const tags = Array.from(document.querySelectorAll('#vfTagBtns .tag-btn.active')).map(b => b.textContent);
@@ -5877,8 +6502,14 @@ function openSettings() {
   renderAchievements();
   renderMascotPicker();
   document.getElementById('settingsOverlay').classList.add('open');
+  navPush();
 }
-function closeSettings() { document.getElementById('settingsOverlay').classList.remove('open'); }
+function closeSettings() {
+  const o = document.getElementById('settingsOverlay');
+  if (!o.classList.contains('open')) return; // already closed
+  o.classList.remove('open');
+  navPop();
+}
 
 // 解禁チェック — 新規解禁があればトースト通知
 let _lastUnlockSet = null;
@@ -5911,15 +6542,49 @@ function _checkUnlocks() {
 
 // ── 達成システム（バッジ・キャラ解禁・アクセサリー） ───────────────
 // 各トラックのステップは段階的な解禁報酬を定義
+// 起動日記録 (streak 用) — DOMContentLoaded で呼ばれる前提だが、ここでも安全に
+function _recordVisitDay() {
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    const days = JSON.parse(localStorage.getItem('kodoco_visit_days') || '[]');
+    if (!days.includes(today)) {
+      days.push(today);
+      // 直近1年分のみ保持
+      if (days.length > 400) days.splice(0, days.length - 400);
+      localStorage.setItem('kodoco_visit_days', JSON.stringify(days));
+    }
+  } catch (_) {}
+}
+_recordVisitDay();
+
+function _streakDays() {
+  try {
+    const days = JSON.parse(localStorage.getItem('kodoco_visit_days') || '[]').sort();
+    if (!days.length) return 0;
+    const today = new Date().toISOString().slice(0, 10);
+    if (days[days.length - 1] !== today) return 0;  // 今日未訪問
+    let streak = 1;
+    for (let i = days.length - 1; i > 0; i--) {
+      const a = new Date(days[i]); const b = new Date(days[i-1]);
+      const diff = Math.round((a - b) / 86400000);
+      if (diff === 1) streak++;
+      else break;
+    }
+    return streak;
+  } catch (_) { return 0; }
+}
+
 const ACHIEVEMENT_TRACKS = [
   {
     id: 'likes', label: 'お気に入りマスター', emoji: '💚', cls: 'g',
     getCount: () => (state.likes || []).length,
     tiers: [
-      { at: 1,  tier:'🥉', reward:'マフラー解禁',  unlock:'accessory:scarf' },
-      { at: 5,  tier:'🥈', reward:'ハナちゃん解禁', unlock:'mascot:hana'    },
-      { at: 10, tier:'🥇', reward:'帽子解禁',      unlock:'accessory:hat'  },
-      { at: 20, tier:'🏆', reward:'王冠解禁',      unlock:'accessory:crown'},
+      { at: 1,   tier:'🥉', reward:'マフラー解禁',  unlock:'accessory:scarf' },
+      { at: 5,   tier:'🥈', reward:'ハナちゃん解禁', unlock:'mascot:hana'    },
+      { at: 10,  tier:'🥇', reward:'帽子解禁',      unlock:'accessory:hat'  },
+      { at: 20,  tier:'🏆', reward:'王冠解禁',      unlock:'accessory:crown'},
+      { at: 50,  tier:'🎀', reward:'リボン解禁',    unlock:'accessory:ribbon'},
+      { at: 100, tier:'🌟', reward:'殿堂入り',      unlock:'flag:hallOfFame'},
     ]
   },
   {
@@ -5933,18 +6598,305 @@ const ACHIEVEMENT_TRACKS = [
       { at: 5,  tier:'🥈', reward:'クロちゃん解禁',     unlock:'mascot:kuro'    },
       { at: 10, tier:'🥇', reward:'レア口コミ表示',     unlock:'flag:raretag'   },
       { at: 20, tier:'🏆', reward:'金マフラー解禁',     unlock:'accessory:scarfGold' },
+      { at: 30, tier:'🎙', reward:'名声バッジ',         unlock:'badge:fame'     },
     ]
   },
   {
     id: 'spots', label: 'スポット登録家', emoji: '📍', cls: 'b',
     getCount: () => (typeof loadUserSpots === 'function') ? loadUserSpots().length : 0,
     tiers: [
-      { at: 1, tier:'🥉', reward:'感謝バッジ',  unlock:'flag:thanks' },
-      { at: 3, tier:'🥈', reward:'ビワちゃんの船帽子', unlock:'accessory:captain' },
-      { at: 10, tier:'🥇', reward:'エリア開拓者称号',   unlock:'flag:pioneer'  },
+      { at: 1,  tier:'🥉', reward:'感謝バッジ',          unlock:'flag:thanks' },
+      { at: 3,  tier:'🥈', reward:'ビワちゃんの船帽子',   unlock:'accessory:captain' },
+      { at: 10, tier:'🥇', reward:'エリア開拓者称号',     unlock:'flag:pioneer'  },
+      { at: 25, tier:'🏆', reward:'ご当地マスター',       unlock:'flag:localMaster' },
+    ]
+  },
+  // 新規: エリア探検家 (お気に入りの市町村数)
+  {
+    id: 'areas', label: 'エリア探検家', emoji: '🗺', cls: 'b',
+    getCount: () => {
+      const liked = (state.likes || []);
+      const set = new Set();
+      for (const id of liked) {
+        const s = SPOTS.find(x => x.id === id);
+        if (s && s.loc) set.add(s.loc);
+      }
+      return set.size;
+    },
+    tiers: [
+      { at: 3,  tier:'🥉', reward:'地図ピン強化',     unlock:'flag:pinUpgrade'    },
+      { at: 5,  tier:'🥈', reward:'コトちゃんの羽根', unlock:'accessory:wing'     },
+      { at: 10, tier:'🥇', reward:'探検家の地図',     unlock:'accessory:explorerMap' },
+      { at: 13, tier:'🏆', reward:'滋賀マスター',     unlock:'flag:shigaMaster'   },
+    ]
+  },
+  // 新規: カテゴリ通 (お気に入りの catClass uniq 数)
+  {
+    id: 'categories', label: 'カテゴリ通', emoji: '🎨', cls: 'p',
+    getCount: () => {
+      const liked = (state.likes || []);
+      const set = new Set();
+      for (const id of liked) {
+        const s = SPOTS.find(x => x.id === id);
+        if (s && s.catClass) set.add(s.catClass);
+      }
+      return set.size;
+    },
+    tiers: [
+      { at: 2, tier:'🥉', reward:'カラフル背景',   unlock:'flag:colorBg'    },
+      { at: 4, tier:'🥈', reward:'絵筆エフェクト', unlock:'effect:brush'    },
+      { at: 6, tier:'🏆', reward:'万能パパママ',   unlock:'flag:allRounder' },
+    ]
+  },
+  // 新規: 毎日コドちゃん (連続使用日数 streak)
+  {
+    id: 'streak', label: '毎日コドちゃん', emoji: '📅', cls: 'g',
+    getCount: _streakDays,
+    tiers: [
+      { at: 3,   tier:'🥉', reward:'今日の挨拶バリエ', unlock:'flag:greetVar'    },
+      { at: 7,   tier:'🥈', reward:'1週間バッジ',     unlock:'badge:week'       },
+      { at: 30,  tier:'🥇', reward:'1ヶ月バッジ',     unlock:'badge:month'      },
+      { at: 100, tier:'🏆', reward:'毎日マスター',    unlock:'flag:dailyMaster' },
+    ]
+  },
+  // 新規: 自然派 (park カテゴリお気に入り)
+  {
+    id: 'park_lover', label: '自然派', emoji: '🌳', cls: 'g',
+    getCount: () => (state.likes||[]).filter(id => { const s=SPOTS.find(x=>x.id===id); return s&&s.catClass==='park';}).length,
+    tiers: [
+      { at: 3,  tier:'🥉', reward:'🌱 シンちゃん解禁',   unlock:'char:shin'   },
+      { at: 7,  tier:'🥈', reward:'木の葉エフェクト',     unlock:'effect:leaves' },
+      { at: 15, tier:'🏆', reward:'🌲 森の主バッジ',     unlock:'badge:forestKing' },
+    ]
+  },
+  // 新規: 室内派 (indoor カテゴリお気に入り)
+  {
+    id: 'indoor_lover', label: '室内派', emoji: '🏠', cls: 'p',
+    getCount: () => (state.likes||[]).filter(id => { const s=SPOTS.find(x=>x.id===id); return s&&s.catClass==='indoor';}).length,
+    tiers: [
+      { at: 3,  tier:'🥉', reward:'🐰 ウチちゃん解禁',  unlock:'char:uchi'  },
+      { at: 7,  tier:'🥈', reward:'雨の日バッジ',      unlock:'badge:rainyDay' },
+      { at: 15, tier:'🏆', reward:'☂️ 室内王バッジ',   unlock:'badge:indoorKing' },
+    ]
+  },
+  // 新規: グルメ探検家 (cafe カテゴリお気に入り)
+  {
+    id: 'cafe_lover', label: 'グルメ探検家', emoji: '🍰', cls: 'b',
+    getCount: () => (state.likes||[]).filter(id => { const s=SPOTS.find(x=>x.id===id); return s&&s.catClass==='cafe';}).length,
+    tiers: [
+      { at: 3,  tier:'🥉', reward:'🍓 アンコちゃん解禁', unlock:'char:anko' },
+      { at: 7,  tier:'🥈', reward:'スイーツバッジ',       unlock:'badge:sweets' },
+      { at: 15, tier:'🏆', reward:'👑 グルメ王',         unlock:'badge:gourmetKing' },
+    ]
+  },
+  // 新規: 学び派 (museum カテゴリお気に入り)
+  {
+    id: 'museum_lover', label: '学び派', emoji: '📚', cls: 'y',
+    getCount: () => (state.likes||[]).filter(id => { const s=SPOTS.find(x=>x.id===id); return s&&s.catClass==='museum';}).length,
+    tiers: [
+      { at: 3,  tier:'🥉', reward:'🦉 ホンちゃん解禁', unlock:'char:hon'   },
+      { at: 7,  tier:'🥈', reward:'学者バッジ',         unlock:'badge:scholar' },
+      { at: 15, tier:'🏆', reward:'🎓 博士バッジ',     unlock:'badge:doctor' },
+    ]
+  },
+  // 新規: ものしり君 (詳細閲覧回数)
+  {
+    id: 'curious', label: 'ものしり君', emoji: '🔭', cls: 'p',
+    getCount: () => parseInt(localStorage.getItem('kodoco_detail_views') || '0', 10),
+    tiers: [
+      { at: 10,  tier:'🥉', reward:'🔭 ミルちゃん解禁',   unlock:'char:miru' },
+      { at: 50,  tier:'🥈', reward:'観察家バッジ',         unlock:'badge:observer' },
+      { at: 200, tier:'🏆', reward:'🎯 ものしりマスター', unlock:'badge:knower' },
     ]
   },
 ];
+
+// 詳細閲覧カウント (openDetail から呼ぶ)
+function _recordDetailView() {
+  try {
+    const cur = parseInt(localStorage.getItem('kodoco_detail_views') || '0', 10);
+    localStorage.setItem('kodoco_detail_views', String(cur + 1));
+  } catch (_) {}
+}
+
+// ── ビックリマン風キャラカード ─────────────────────────
+const KODOCO_CHARS = [
+  { id: 'kodo', name: 'コドちゃん',   svg: '#kodo', rarity: 1,
+    thanks: 'いつも、行きたい場所を\n一緒に探してくれて\nありがとう。',
+    story: '芽吹いたばかりの丸い子。穏やかで、迷うパパママに「今日のヒント」をそっとくれる相談役。KODOCO の始まりを見守る。',
+    unlock: '初期キャラ', unlockKey: null },
+  { id: 'koto', name: 'コトちゃん',   svg: '#koto', rarity: 1,
+    thanks: '外に出てよかった。\nそう思えた日に\n会いたい子です。',
+    story: '花を咲かせた元気な子。好奇心いっぱい。「いつもと違う場所」に連れ出してくれる冒険家。',
+    unlock: '初期キャラ', unlockKey: null },
+  { id: 'biwa', name: 'ビワちゃん',   svg: '#biwa', rarity: 1,
+    thanks: '水辺で深呼吸する\n時間をくれて、\nありがとう。',
+    story: '琵琶湖のかたちを写した子。滋賀の水辺スポットを知りつくした、頼れるナビゲーター。',
+    unlock: '初期キャラ', unlockKey: null },
+  { id: 'hana', name: 'ハナちゃん',   svg: '#hana', rarity: 2,
+    thanks: 'きれいなものを\n見つけてくれる目に\nいつも助けられる♡',
+    story: '花を抱えた小さな妖精の子。羽根とハート目で、いつも幸せそう。お気に入り 5 件を集めると現れる。',
+    unlock: 'お気に入り 5件で解禁', unlockKey: 'mascot:hana' },
+  { id: 'kuro', name: 'クロちゃん',   svg: '#kuro', rarity: 2,
+    thanks: '冒険の話、\nまたきいて、\nありがとう。',
+    story: 'リュックを背負った黒猫の探検家。声を届けてくれる人にだけ見える、口コミ 5 件で解禁の子。',
+    unlock: '口コミ 5件で解禁', unlockKey: 'mascot:kuro' },
+  { id: 'shin', name: 'シンちゃん',   emoji: '🌱', rarity: 3,
+    thanks: '芝生でゴロン、\nさせてくれる時間が\n大すきです。',
+    story: '公園の小道で芽を出した小さな子。木陰のお昼寝が好物。3 つの公園を巡ると会える、自然派の友達。',
+    unlock: '公園お気に入り 3件で解禁', unlockKey: 'char:shin' },
+  { id: 'uchi', name: 'ウチちゃん',   emoji: '🐰', rarity: 3,
+    thanks: '雨の日でも\n笑顔の場所を\n選んでくれてありがとう。',
+    story: '室内遊び場を駆けまわるうさぎの子。雨の日のヒーロー。3 つの室内スポットで友達になれる。',
+    unlock: '室内お気に入り 3件で解禁', unlockKey: 'char:uchi' },
+  { id: 'anko', name: 'アンコちゃん', emoji: '🍓', rarity: 3,
+    thanks: 'おいしい時間を\n家族でわけあう、\nそんな日を。',
+    story: 'いちごとミルクが大好物。カフェ・レストラン 3 件をお気に入りすると、テーブルの隅から手を振って現れる。',
+    unlock: 'カフェお気に入り 3件で解禁', unlockKey: 'char:anko' },
+  { id: 'hon',  name: 'ホンちゃん',   emoji: '🦉', rarity: 3,
+    thanks: '「知らない」を\n楽しい時間に\n変えてくれてありがとう。',
+    story: '物知りなフクロウの子。博物館・体験スポット 3 件を巡ると、本を抱えて現れる。学び派の心強い味方。',
+    unlock: '博物館お気に入り 3件で解禁', unlockKey: 'char:hon' },
+  { id: 'miru', name: 'ミルちゃん',   emoji: '🔭', rarity: 3,
+    thanks: 'ひとつひとつ\nじっくり選んでくれて、\nうれしい。',
+    story: '望遠鏡を覗き込む観察家の子。10 件のスポット詳細を読み込んでくれた人にだけ姿を現す、慎重派の友達。',
+    unlock: '詳細閲覧 10件で解禁', unlockKey: 'char:miru' },
+];
+
+// SVG sprite (#kodo, #koto等) を inline SVG にして html2canvas でも描画されるように
+// 第4引数で accessory (#accessory-scarf 等) を重ねられる
+function inlineSvgFromSprite(refId, w, h, accessoryRefId) {
+  if (!refId) return '';
+  w = w || 130; h = h || 150;
+  const id = refId.replace(/^#/, '');
+  const el = document.getElementById(id);
+  if (!el) return '';
+  const vb = el.getAttribute('viewBox') || '0 0 160 180';
+  let body = el.innerHTML;
+  if (accessoryRefId) {
+    const accEl = document.getElementById(accessoryRefId.replace(/^#/, ''));
+    if (accEl) body += accEl.innerHTML;
+  }
+  return '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" viewBox="' + vb + '">' + body + '</svg>';
+}
+
+function _esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function _nl2br(s) { return _esc(s).replace(/\n/g, '<br>'); }
+
+function buildCharCard(c, idx) {
+  // SVG キャラには現在解禁中のアクセサリーを重ねる
+  let accHref = null;
+  if (c.svg && typeof getActiveAccessory === 'function') {
+    const accId = getActiveAccessory();
+    accHref = accId && ACCESSORY_HREFS[accId] || null;
+  }
+  const portrait = c.svg
+    ? '<div class="char-card-svg-wrap">' + inlineSvgFromSprite(c.svg, 130, 150, accHref) + '</div>'
+    : '<span class="char-card-emoji">' + c.emoji + '</span>';
+  const stars = '★'.repeat(c.rarity) + '☆'.repeat(3 - c.rarity);
+  return '<div class="char-card-bik rarity-' + c.rarity + '" id="charCard-' + c.id + '" data-char="' + c.id + '">'
+    + '<div class="char-card-bg"></div>'
+    + '<div class="char-card-frame"></div>'
+    + '<div class="char-card-stars">' + stars + '</div>'
+    + '<div class="char-card-no">No.' + String(idx+1).padStart(2,'0') + '</div>'
+    + '<div class="char-card-portrait">' + portrait + '</div>'
+    + '<div class="char-card-name">' + _esc(c.name) + '</div>'
+    + '<div class="char-card-bubble">' + _nl2br(c.thanks || '') + '</div>'
+    + '<div class="char-card-story">' + _esc(c.story || '') + '</div>'
+    + '<div class="char-card-foot">KODOCO · ' + _esc(c.unlock) + '</div>'
+    + '<div class="char-card-actions">'
+    +   '<button onclick="event.stopPropagation();saveCharCard(\'' + c.id + '\')" class="char-card-btn">📥 保存</button>'
+    +   '<button onclick="event.stopPropagation();shareCharCard(\'' + c.id + '\')" class="char-card-btn">↗ シェア</button>'
+    + '</div>'
+    + '</div>';
+}
+
+async function _toCanvasOf(id) {
+  const el = document.getElementById('charCard-' + id);
+  if (!el) return null;
+  if (typeof html2canvas !== 'function') {
+    if (typeof toast === 'function') toast('読み込み中… もう一度押してね');
+    return null;
+  }
+  const actions = el.querySelector('.char-card-actions');
+  const prev = actions ? actions.style.display : '';
+  if (actions) actions.style.display = 'none';
+  try {
+    const canvas = await html2canvas(el, {
+      backgroundColor: null,
+      scale: 3,
+      useCORS: true,
+      allowTaint: true,
+      logging: false,
+      imageTimeout: 0,
+    });
+    return canvas;
+  } finally {
+    if (actions) actions.style.display = prev;
+  }
+}
+
+// 画像保存モーダル: 長押し→「写真に保存」 (iOS/Android 標準フロー)
+function showImageSaveModal(dataUrl, filename) {
+  let modal = document.getElementById('imgSaveModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'imgSaveModal';
+    modal.className = 'img-save-modal';
+    modal.innerHTML =
+      '<div class="img-save-bg" onclick="closeImageSaveModal()"></div>'
+      + '<div class="img-save-shell">'
+      +   '<img class="img-save-pic" id="imgSavePic" alt="">'
+      +   '<div class="img-save-hint">📱 画像を <b>長押し</b> →「写真に保存」で保存できます</div>'
+      +   '<div class="img-save-actions">'
+      +     '<a class="img-save-dl" id="imgSaveDl" download>📥 ダウンロード</a>'
+      +     '<button class="img-save-close" onclick="closeImageSaveModal()">閉じる</button>'
+      +   '</div>'
+      + '</div>';
+    document.body.appendChild(modal);
+  }
+  document.getElementById('imgSavePic').src = dataUrl;
+  const dl = document.getElementById('imgSaveDl');
+  dl.href = dataUrl; dl.download = filename || 'kodoco-card.png';
+  modal.classList.add('open');
+}
+function closeImageSaveModal() {
+  const m = document.getElementById('imgSaveModal');
+  if (m) m.classList.remove('open');
+}
+
+async function saveCharCard(id) {
+  const canvas = await _toCanvasOf(id);
+  if (!canvas) return;
+  showImageSaveModal(canvas.toDataURL('image/png'), 'kodoco-' + id + '.png');
+}
+
+async function shareCharCard(id) {
+  const c = KODOCO_CHARS.find(x => x.id === id);
+  if (!c) return;
+  const text = 'KODOCO で「' + c.name + '」を解禁したよ!\n' + c.unlock + '\n#KODOCO #子連れおでかけ #滋賀';
+  const url = location.href;
+  // Web Share API (mobile)
+  if (navigator.share) {
+    try {
+      await navigator.share({ text: text, url: url, title: c.name + ' — KODOCO' });
+      return;
+    } catch (_) { /* user cancel or unsupported, try clipboard */ }
+  }
+  // clipboard fallback
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    try {
+      await navigator.clipboard.writeText(text + '\n' + url);
+      if (typeof toast === 'function') toast('テキストをコピーしました 📋');
+      return;
+    } catch (_) { /* fall through */ }
+  }
+  // 最終手段: Twitter intent
+  const twUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text + '\n' + url);
+  window.open(twUrl, '_blank', 'noopener,noreferrer');
+}
 
 function _currentTier(track, n) {
   let cur = null;
@@ -5969,14 +6921,67 @@ function getUnlocks() {
 function isMascotUnlocked(id) {
   // 既定キャラは常に解禁
   if (['kodo','koto','biwa'].includes(id)) return true;
-  return getUnlocks().has('mascot:' + id);
+  const u = getUnlocks();
+  // mascot:xxx (hana/kuro) または char:xxx (shin/uchi/anko/hon/miru) のいずれかで解禁判定
+  return u.has('mascot:' + id) || u.has('char:' + id);
 }
+// SVG ベースのマスコット (トップバー等で実体表示できる 5 体)
+const MASCOT_SVG_IDS = ['kodo','koto','biwa','hana','kuro'];
+function isMascotSvgSupported(id) { return MASCOT_SVG_IDS.includes(id); }
 
 function renderAchievements() {
   const cont = document.getElementById('settingsAchievements');
   if (!cont) return;
   const unlocks = getUnlocks();
-  cont.innerHTML = ACHIEVEMENT_TRACKS.map(tr => {
+
+  // 全体進捗サマリー
+  let totalUnlocked = 0, totalTiers = 0;
+  ACHIEVEMENT_TRACKS.forEach(tr => {
+    const n = tr.getCount();
+    tr.tiers.forEach(t => { totalTiers++; if (n >= t.at) totalUnlocked++; });
+  });
+  const summaryPct = totalTiers ? Math.round(totalUnlocked / totalTiers * 100) : 0;
+  const streak = _streakDays();
+  // 解禁済ご褒美リスト
+  const earned = [];
+  ACHIEVEMENT_TRACKS.forEach(tr => {
+    const n = tr.getCount();
+    tr.tiers.forEach(t => { if (n >= t.at) earned.push({ tier: t.tier, reward: t.reward }); });
+  });
+  const earnedHTML = earned.length
+    ? '<div class="ach-earned-row">' + earned.map(e =>
+        '<span class="ach-earned-pill"><span class="ach-earned-icon">' + e.tier + '</span><span class="ach-earned-text">' + e.reward + '</span></span>'
+      ).join('') + '</div>'
+    : '<div class="ach-earned-empty">まずはお気に入りや口コミを始めて、コドちゃんと一緒に解禁していこう！</div>';
+
+  const summaryHTML = '<div class="ach-summary">'
+    + '<div class="ach-summary-head">'
+    +   '<div class="ach-summary-left">'
+    +     '<div class="ach-summary-num">' + totalUnlocked + '<span>/' + totalTiers + '</span></div>'
+    +     '<div class="ach-summary-label">バッジ獲得</div>'
+    +   '</div>'
+    +   '<div class="ach-summary-streak">'
+    +     '<div class="ach-summary-streak-num">📅 ' + streak + '<span>日連続</span></div>'
+    +   '</div>'
+    + '</div>'
+    + '<div class="ach-summary-bar"><div class="ach-summary-bar-fill" style="width:' + summaryPct + '%;"></div></div>'
+    + '<div class="ach-summary-foot">' + summaryPct + '% 達成</div>'
+    + earnedHTML
+    + '</div>';
+
+  // 取得済キャラのビックリマン風カード
+  const ownedChars = KODOCO_CHARS.filter(c => !c.unlockKey || unlocks.has(c.unlockKey));
+  const charCardsHTML = '<div class="char-cards-section">'
+    + '<div class="char-cards-title">🎴 ゲットしたキャラ '
+    +   '<span class="char-cards-count">' + ownedChars.length + ' / ' + KODOCO_CHARS.length + '</span>'
+    + '</div>'
+    + '<div class="char-cards-row">'
+    +   ownedChars.map((c) => buildCharCard(c, KODOCO_CHARS.indexOf(c))).join('')
+    + '</div>'
+    + '<div class="char-cards-hint">←→ スワイプで切替 · 各カード「📥 保存」「↗ シェア」</div>'
+    + '</div>';
+
+  cont.innerHTML = summaryHTML + charCardsHTML + ACHIEVEMENT_TRACKS.map(tr => {
     const n = tr.getCount();
     const cur = _currentTier(tr, n);
     const next = _nextTier(tr, n);
@@ -6013,8 +7018,8 @@ function renderAchievements() {
 // ── キャラ切替 ─────────────────────────────────────────
 function getMascotPref() {
   const p = localStorage.getItem('kodoco_mascot_pref') || 'kodo';
-  // 解禁されていないキャラが選択中だったら kodo に戻す
-  if (!isMascotUnlocked(p)) return 'kodo';
+  // 解禁されていない or SVG 非対応のキャラはトップ表示できないので kodo に戻す
+  if (!isMascotUnlocked(p) || !isMascotSvgSupported(p)) return 'kodo';
   return p;
 }
 function setMascotPref(m) {
@@ -6022,7 +7027,15 @@ function setMascotPref(m) {
     toast('このキャラはまだ解禁されていません 🔒');
     return;
   }
+  if (!isMascotSvgSupported(m)) {
+    toast('このキャラは「ゲットしたキャラ」カードで鑑賞できます 🎴');
+    // 「選択中」表示は更新するが、トップへの apply はしない
+    localStorage.setItem('kodoco_mascot_pref_pseudo', m);
+    renderMascotPicker();
+    return;
+  }
   localStorage.setItem('kodoco_mascot_pref', m);
+  localStorage.removeItem('kodoco_mascot_pref_pseudo');
   renderMascotPicker();
   applyMascotPref();
   kodoCheer();
@@ -6153,8 +7166,14 @@ function showAddChildModal() {
   document.getElementById('addChildConfirm').disabled = true;
   document.getElementById('addChildConfirm').style.opacity = '0.4';
   document.getElementById('addChildModal').style.display = 'flex';
+  navPush();
 }
-function hideAddChildModal() { document.getElementById('addChildModal').style.display = 'none'; }
+function hideAddChildModal() {
+  const m = document.getElementById('addChildModal');
+  if (m.style.display !== 'flex') return;
+  m.style.display = 'none';
+  navPop();
+}
 function confirmAddChild() {
   if (pendingGuestAge === null) return;
   state.children.push({ age: pendingGuestAge, isGuest: true });
