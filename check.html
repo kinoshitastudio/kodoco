@@ -193,15 +193,20 @@
 </style>
 <!-- Load SPOTS data statically (works on file:// — no fetch needed). -->
 <script src="./spots-data.js"></script>
+<!-- Supabase: per-spot 口コミ数 / pending user_spots を集計 -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="./js/supabase-config.js"></script>
 </head>
 <body>
 
 <header>
   <h1>KODOCO <span class="pill">CHECK</span> データ確認シート</h1>
   <p class="lead">
-    <code>app.html</code> 内 SPOTS 全スポットの
-    <b>公式サイト URL</b>・<b>電話番号</b>・<b>画像（自動割当）</b>・<b>Google マップ 経路案内</b>を一覧化しました。<br/>
-    クリックで動作確認、行右端の <b>✓ / ✕</b> ボタンで確認結果をローカル保存できます。<br/>
+    <code>spots-data.js</code> 全スポットの
+    <b>公式 URL</b>・<b>電話</b>・<b>画像（og:image / picsum 自動割当）</b>・<b>Google マップ 経路</b>を一覧化。
+    Supabase が応答すれば <b>口コミ件数</b>・<b>未承認のユーザー投稿スポット数</b> も同時に集計します。<br/>
+    クリックで動作確認、行右端の <b>✓ / ✕</b> ボタンで確認結果をローカル保存。
+    本格運用に伴うモデレーションは <a href="./admin.html" style="color:var(--green);">admin.html</a> から。<br/>
     <b>キーボード:</b> <kbd>/</kbd> で検索にフォーカス、<kbd>Esc</kbd> で検索解除。
   </p>
 </header>
@@ -219,6 +224,8 @@
   <button class="chip" data-filter="verified">確認済み</button>
   <button class="chip" data-filter="broken">❌ 問題あり</button>
   <button class="chip" data-filter="unchecked">未確認</button>
+  <button class="chip" data-filter="hasReviews">💬 口コミあり</button>
+  <button class="chip" data-filter="noReviews">口コミなし</button>
   <span class="sep"></span>
   <button class="chip" data-cat="all">🌐 全カテゴリ</button>
   <button class="chip" data-cat="park">🌳 公園</button>
@@ -243,6 +250,7 @@
         <th>公式サイト</th>
         <th class="hide-sm">電話</th>
         <th class="center">地図</th>
+        <th class="center hide-sm">口コミ</th>
         <th class="center">確認</th>
       </tr>
     </thead>
@@ -274,6 +282,62 @@ let checkState = {};   // id → 'ok' | 'ng' | null
 let filterStatus = 'all';
 let filterCat = 'all';
 let searchQ = '';
+
+// Supabase 集計（落ちても check.html は動く）
+let reviewCounts = {};    // spot_id → published 件数
+let reviewLatest = {};    // spot_id → 最新 created_at (ISO)
+let cloudStats = {
+  reviewsTotal: 0,
+  spotsPending: 0,
+  spotsApproved: 0,
+  ready: false,
+  error: null,
+};
+let supa = null;
+function initSupabase() {
+  try {
+    if (!window.supabase || !window.KODOCO_SUPABASE_URL) return null;
+    supa = window.supabase.createClient(window.KODOCO_SUPABASE_URL, window.KODOCO_SUPABASE_KEY);
+    return supa;
+  } catch (_) { return null; }
+}
+async function fetchCloudStats() {
+  if (!supa) return;
+  try {
+    // 公開済 review 全件 (RLS により published のみ。多くて数千件想定)
+    const { data: revs, error: revErr } = await supa
+      .from('kodoco_reviews')
+      .select('spot_id, created_at, status')
+      .eq('status', 'published')
+      .limit(10000);
+    if (revErr) throw revErr;
+    (revs || []).forEach(r => {
+      reviewCounts[r.spot_id] = (reviewCounts[r.spot_id] || 0) + 1;
+      const t = r.created_at;
+      if (!reviewLatest[r.spot_id] || t > reviewLatest[r.spot_id]) reviewLatest[r.spot_id] = t;
+    });
+    cloudStats.reviewsTotal = (revs || []).length;
+
+    // ユーザー投稿スポット（ステータス別カウント）— RLS により approved のみ匿名で見える
+    const { count: approvedCount, error: aErr } = await supa
+      .from('kodoco_user_spots')
+      .select('id', { count: 'exact', head: true })
+      .eq('status', 'approved');
+    if (!aErr) cloudStats.spotsApproved = approvedCount || 0;
+
+    // pending は admin だけ見えるので未認証だと 0 になる（admin.html で確認可）
+    const { count: pendingCount } = await supa
+      .from('kodoco_user_spots')
+      .select('id', { count: 'exact', head: true })
+      .eq('status', 'pending');
+    cloudStats.spotsPending = pendingCount || 0;
+
+    cloudStats.ready = true;
+  } catch (err) {
+    cloudStats.error = err.message || String(err);
+    console.warn('[check.html] Supabase 集計失敗:', err);
+  }
+}
 
 function loadCheckState() {
   try { checkState = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); }
@@ -353,17 +417,37 @@ function mapUrl(s) {
 }
 function telHref(phone) { return phone ? 'tel:' + phone.replace(/[^0-9+]/g, '') : ''; }
 function escHtml(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+function reviewCellHtml(s) {
+  if (!cloudStats.ready) return '<span class="unset">—</span>';
+  const n = reviewCounts[s.id] || 0;
+  if (!n) return '<span style="color:var(--text-light);font-size:11px;">0</span>';
+  const latest = reviewLatest[s.id];
+  const ago = latest ? relTime(latest) : '';
+  return '<span style="font-weight:700;color:var(--green);">' + n + '</span>' +
+    (ago ? '<div style="font-size:10px;color:var(--text-light);margin-top:2px;">' + escHtml(ago) + '</div>' : '');
+}
+function relTime(iso) {
+  const d = new Date(iso);
+  const sec = (Date.now() - d.getTime()) / 1000;
+  if (sec < 60) return 'たった今';
+  if (sec < 3600) return Math.floor(sec/60) + '分前';
+  if (sec < 86400) return Math.floor(sec/3600) + '時間前';
+  if (sec < 86400*30) return Math.floor(sec/86400) + '日前';
+  return d.toLocaleDateString('ja-JP', { month: 'short', day: 'numeric' });
+}
 
 // ── filtering ─────────────────────────────────────────────────────────
 function matches(s) {
   if (filterCat !== 'all' && s.catClass !== filterCat) return false;
 
   const state = checkState[s.id];
-  if (filterStatus === 'noUrl'     && s.officialUrl) return false;
-  if (filterStatus === 'noPhone'   && s.phone) return false;
-  if (filterStatus === 'verified'  && state !== 'ok') return false;
-  if (filterStatus === 'broken'    && state !== 'ng') return false;
-  if (filterStatus === 'unchecked' && state) return false;
+  if (filterStatus === 'noUrl'      && s.officialUrl) return false;
+  if (filterStatus === 'noPhone'    && s.phone) return false;
+  if (filterStatus === 'verified'   && state !== 'ok') return false;
+  if (filterStatus === 'broken'     && state !== 'ng') return false;
+  if (filterStatus === 'unchecked'  && state) return false;
+  if (filterStatus === 'hasReviews' && !(reviewCounts[s.id] > 0)) return false;
+  if (filterStatus === 'noReviews'  &&  (reviewCounts[s.id] > 0)) return false;
 
   if (searchQ) {
     const q = searchQ.toLowerCase();
@@ -381,14 +465,25 @@ function updateSummary() {
   const nLatLng = SPOTS.filter(s => s.lat && s.lng).length;
   const nOk     = Object.values(checkState).filter(v => v === 'ok').length;
   const nNg     = Object.values(checkState).filter(v => v === 'ng').length;
+  const nWithReviews = SPOTS.filter(s => reviewCounts[s.id] > 0).length;
 
-  document.getElementById('summary').innerHTML =
+  let html =
     card(nTotal, 'スポット総数', '') +
     card(nUrl,   '公式 URL 設定済', (nTotal - nUrl) + ' 件未設定', nUrl === nTotal ? '' : 'warn') +
     card(nPhone, '電話 設定済',     (nTotal - nPhone) + ' 件未設定', nPhone === nTotal ? '' : 'warn') +
     card(nLatLng, '緯度経度あり',    '') +
     card(nOk,    '✓ 確認済み', '', 'ok') +
     card(nNg,    '✕ 問題あり', '', nNg ? 'bad' : '');
+
+  if (cloudStats.ready) {
+    html +=
+      card(cloudStats.reviewsTotal, '💬 公開中 口コミ総数', nWithReviews + ' スポットに付与') +
+      card(cloudStats.spotsApproved, '👥 承認済 ユーザー投稿', '') +
+      card(cloudStats.spotsPending,  '⏳ 未承認 ユーザー投稿', cloudStats.spotsPending ? 'admin.html で承認' : '', cloudStats.spotsPending ? 'warn' : '');
+  } else if (cloudStats.error) {
+    html += card('—', 'Supabase 接続失敗', cloudStats.error.slice(0, 60), 'bad');
+  }
+  document.getElementById('summary').innerHTML = html;
 }
 function card(n, label, sub, cls) {
   return '<div class="summary-box ' + (cls||'') + '"><b>' + n + '</b>' + escHtml(label) + (sub ? '<div style="color:var(--text-light);font-size:10px;margin-top:3px;">' + escHtml(sub) + '</div>' : '') + '</div>';
@@ -452,6 +547,7 @@ function rowHtml(s, iGlobal) {
       : '<span class="unset">未設定</span>') +
     '</td>' +
     '<td class="center"><a class="map-link" href="' + escHtml(mapUrl(s)) + '" target="_blank" rel="noopener">🗺 開く</a></td>' +
+    '<td class="center hide-sm">' + reviewCellHtml(s) + '</td>' +
     '<td class="check-col"><div class="chk-group">' +
       '<button class="chk ' + (state==='ok'?'on ok':'') + '" data-id="' + escHtml(s.id) + '" data-val="ok" title="OK">✓</button>' +
       '<button class="chk ' + (state==='ng'?'on ng':'') + '" data-id="' + escHtml(s.id) + '" data-val="ng" title="NG">✕</button>' +
@@ -537,6 +633,12 @@ function resetChecks() {
   wireToolbar();
   render();
   document.getElementById('gen').textContent = new Date().toLocaleString('ja-JP');
+
+  // Supabase 集計（落ちても本体は表示済）
+  if (initSupabase()) {
+    await fetchCloudStats();
+    render();
+  }
 })();
 </script>
 
