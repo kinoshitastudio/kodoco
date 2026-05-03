@@ -1534,13 +1534,15 @@ html, body {
   background: var(--card); color: var(--ink);
   box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
-.auth-form { display: flex; flex-direction: column; gap: 14px; }
-.auth-field { display: flex; flex-direction: column; gap: 4px; }
-.auth-field > span {
+.auth-field {
+  display: block; margin-bottom: 14px;
+}
+.auth-field-lbl {
   font-size: 11px; font-weight: 700; color: var(--ink);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.04em; margin-bottom: 4px;
 }
 .auth-field input {
+  display: block; width: 100%;
   padding: 11px 13px; border: 1.5px solid var(--line); border-radius: 10px;
   font-size: 14px; font-family: inherit; outline: none; background: var(--card);
   transition: border-color 0.12s; color: var(--ink);
@@ -1550,16 +1552,29 @@ html, body {
   display: flex; align-items: flex-start; gap: 8px;
   font-size: 12px; color: var(--text-sub, var(--ink-sub));
   line-height: 1.55; cursor: pointer; user-select: none;
+  margin-bottom: 14px;
 }
 .auth-tos input { margin-top: 3px; flex-shrink: 0; cursor: pointer; }
+.auth-tos-text { flex: 1; }
 .auth-tos a { color: var(--green-deep, var(--green)); text-decoration: underline; }
 .auth-error {
   font-size: 12px; color: var(--red, #C14545); min-height: 18px;
+  margin-bottom: 4px;
 }
 .auth-submit {
-  padding: 13px; background: var(--ink); color: white;
-  border: 0; border-radius: 10px; font-size: 14px; font-weight: 700;
+  display: block !important;
+  width: 100%; box-sizing: border-box;
+  padding: 16px;
+  background: #2C2A26; color: white;
+  border: 0; border-radius: 12px;
+  font-size: 15px; font-weight: 700;
   cursor: pointer; font-family: inherit;
+  text-align: center; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  position: sticky; bottom: 0;
+  margin-top: 8px;
+  box-shadow: 0 -4px 16px rgba(255,255,255,0.6);
+  z-index: 10;
 }
 .auth-submit:active { transform: scale(0.98); }
 .auth-submit[disabled] { opacity: 0.5; cursor: wait; }
@@ -2478,39 +2493,42 @@ html, body {
 
 </div><!-- /main-app -->
 
-<!-- AUTH MODAL (signup / login) -->
+<!-- AUTH MODAL (signup / login) — submit ボタンを上に inline で強制表示 (デバッグ込み) -->
 <div class="auth-modal" id="authModal">
   <div class="auth-modal-bg" onclick="closeAuthModal()"></div>
   <div class="auth-modal-shell">
-    <button class="auth-modal-close" onclick="closeAuthModal()" aria-label="閉じる">✕</button>
+    <div class="auth-modal-close" onclick="closeAuthModal()">✕</div>
     <div class="auth-tabs">
-      <button class="auth-tab is-active" data-mode="signup" onclick="switchAuthMode('signup')">新規登録</button>
-      <button class="auth-tab" data-mode="login" onclick="switchAuthMode('login')">ログイン</button>
+      <div class="auth-tab is-active" data-mode="signup" onclick="switchAuthMode('signup')">新規登録</div>
+      <div class="auth-tab" data-mode="login" onclick="switchAuthMode('login')">ログイン</div>
     </div>
-    <form id="authForm" onsubmit="event.preventDefault(); submitAuth();" class="auth-form">
-      <label class="auth-field" id="authHandleField">
-        <span>表示名 (handle)</span>
-        <input type="text" id="authHandle" autocomplete="username" placeholder="taka_kodoco" maxlength="30">
-      </label>
-      <label class="auth-field">
-        <span>メールアドレス</span>
-        <input type="email" id="authEmail" autocomplete="email" placeholder="you@example.com" required>
-      </label>
-      <label class="auth-field">
-        <span>パスワード</span>
-        <input type="password" id="authPassword" autocomplete="current-password" placeholder="6 文字以上" minlength="6" required>
-      </label>
-      <label class="auth-tos" id="authTosField">
-        <input type="checkbox" id="authTosCheckbox">
-        <span>
-          <a href="terms.html" target="_blank" rel="noopener">利用規約</a>・
-          <a href="privacy.html" target="_blank" rel="noopener">プライバシーポリシー</a>・
-          <a href="community.html" target="_blank" rel="noopener">コミュニティガイドライン</a>に同意する
-        </span>
-      </label>
-      <div class="auth-error" id="authError"></div>
-      <button type="submit" class="auth-submit" id="authSubmitBtn">アカウントを作成</button>
-    </form>
+
+    <div class="auth-field" id="authHandleField">
+      <div class="auth-field-lbl">表示名 (handle)</div>
+      <input type="text" id="authHandle" autocomplete="username" placeholder="taka_kodoco" maxlength="30">
+    </div>
+    <div class="auth-field">
+      <div class="auth-field-lbl">メールアドレス</div>
+      <input type="email" id="authEmail" autocomplete="email" placeholder="you@example.com">
+    </div>
+    <div class="auth-field">
+      <div class="auth-field-lbl">パスワード</div>
+      <input type="password" id="authPassword" autocomplete="new-password" placeholder="6 文字以上" minlength="6">
+    </div>
+
+    <div class="auth-tos" id="authTosField" onclick="document.getElementById('authTosCheckbox').click();">
+      <input type="checkbox" id="authTosCheckbox" onclick="event.stopPropagation();">
+      <div class="auth-tos-text">
+        <a href="terms.html" target="_blank" rel="noopener" onclick="event.stopPropagation();">利用規約</a>・
+        <a href="privacy.html" target="_blank" rel="noopener" onclick="event.stopPropagation();">プライバシーポリシー</a>・
+        <a href="community.html" target="_blank" rel="noopener" onclick="event.stopPropagation();">コミュニティガイドライン</a>に同意する
+      </div>
+    </div>
+
+    <div class="auth-error" id="authError"></div>
+
+    <div class="auth-submit" id="authSubmitBtn" onclick="submitAuth()" role="button" tabindex="0">アカウントを作成</div>
+
     <div class="auth-foot" id="authFoot">
       子連れパパママのおでかけを、コドちゃんと一緒に。
     </div>
@@ -6918,10 +6936,10 @@ function renderAccountSection() {
     const initial = (handle[0] || 'U').toUpperCase();
     cont.innerHTML =
       '<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">'
-      +   '<div style="width:42px;height:42px;border-radius:50%;background:var(--green-soft);color:var(--green-deep);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0;">' + escapeHtml(initial) + '</div>'
+      +   '<div style="width:42px;height:42px;border-radius:50%;background:var(--green-soft);color:var(--green-deep);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0;">' + _esc(initial) + '</div>'
       +   '<div style="flex:1;min-width:0;">'
-      +     '<div style="font-size:14px;font-weight:700;">' + escapeHtml(handle) + '</div>'
-      +     '<div style="font-size:11px;color:var(--text-sub);overflow:hidden;text-overflow:ellipsis;">' + escapeHtml(user.email || '') + '</div>'
+      +     '<div style="font-size:14px;font-weight:700;">' + _esc(handle) + '</div>'
+      +     '<div style="font-size:11px;color:var(--text-sub);overflow:hidden;text-overflow:ellipsis;">' + _esc(user.email || '') + '</div>'
       +   '</div>'
       + '</div>'
       + '<button class="settings-action-btn" onclick="signOutAccount()" style="background:transparent;border:1.5px solid var(--line);color:var(--ink);">ログアウト</button>';
@@ -6936,6 +6954,30 @@ function renderAccountSection() {
 
 document.addEventListener('kodoco:auth-ready',  renderAccountSection);
 document.addEventListener('kodoco:auth-change', renderAccountSection);
+
+// ── トップバーのログイン状態インジケータ (handle 頭文字 + 緑背景) ──
+function updateTopbarAuthIndicator() {
+  const btn = document.querySelector('.topbar-btn');
+  if (!btn) return;
+  const user = window.kodocoUser;
+  if (user) {
+    const handle = (user.user_metadata && user.user_metadata.handle) || (user.email || '').split('@')[0] || 'U';
+    const initial = (handle[0] || 'U').toUpperCase();
+    btn.innerHTML = '<span style="font-size:14px;font-weight:800;color:#fff;letter-spacing:0;">' + _esc(initial) + '</span>';
+    btn.style.background = '#5B7F61';
+    btn.style.border = '2px solid #FFF';
+    btn.style.boxShadow = '0 2px 6px rgba(91,127,97,0.35)';
+    btn.title = 'ログイン中: ' + handle;
+  } else {
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg>';
+    btn.style.background = '';
+    btn.style.border = '';
+    btn.style.boxShadow = '';
+    btn.title = '設定';
+  }
+}
+document.addEventListener('kodoco:auth-ready',  updateTopbarAuthIndicator);
+document.addEventListener('kodoco:auth-change', updateTopbarAuthIndicator);
 // ESC で閉じる
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
