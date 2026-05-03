@@ -2738,6 +2738,16 @@ html, body {
       <!-- JS で renderAccountSection() が描画 -->
     </div>
 
+    <div class="settings-section-title" style="margin-top:28px;">💬 自分の口コミ</div>
+    <div class="settings-card" id="myReviewsSection">
+      <!-- JS で renderMyReviewsSection() が描画 -->
+    </div>
+
+    <div class="settings-section-title" style="margin-top:28px;">📍 自分のスポット申請</div>
+    <div class="settings-card" id="mySpotsSection">
+      <!-- JS で renderMySpotsSection() が描画 -->
+    </div>
+
     <div class="settings-section-title" style="margin-top:28px;">お子さん情報</div>
     <div class="settings-card" id="settingsChildren"></div>
 
@@ -7142,6 +7152,134 @@ function renderAccountSection() {
 
 document.addEventListener('kodoco:auth-ready',  renderAccountSection);
 document.addEventListener('kodoco:auth-change', renderAccountSection);
+
+// ── 自分の口コミ一覧 (設定画面) ──
+async function loadMyReviews() {
+  if (!window.kodocoSupabase || !window.kodocoUser) return [];
+  try {
+    const { data, error } = await window.kodocoSupabase
+      .from('kodoco_reviews')
+      .select('*')
+      .eq('user_id', window.kodocoUser.id)
+      .order('created_at', { ascending: false });
+    if (error) { console.warn('[KODOCO] my reviews fetch:', error.message); return []; }
+    return data || [];
+  } catch (e) { return []; }
+}
+async function renderMyReviewsSection() {
+  const cont = document.getElementById('myReviewsSection');
+  if (!cont) return;
+  if (!window.kodocoUser) {
+    cont.innerHTML = '<div style="font-size:12px;color:var(--text-sub);line-height:1.7;">ログインすると、自分が投稿した口コミを一覧で確認・削除できます。</div>';
+    return;
+  }
+  cont.innerHTML = '<div style="font-size:12px;color:var(--text-sub);">読み込み中…</div>';
+  const reviews = await loadMyReviews();
+  if (!reviews.length) {
+    cont.innerHTML = '<div style="font-size:12px;color:var(--text-sub);line-height:1.7;">まだ口コミの投稿はありません。スポット詳細画面の「💬 声を投稿」から投稿できます。</div>';
+    return;
+  }
+  const STATUS_LABEL = { published: '公開中', flagged: '⚠ 非表示', removed: '✗ 削除済' };
+  cont.innerHTML = reviews.map(r => {
+    const spot = (typeof SPOTS !== 'undefined') && SPOTS.find(s => s.id === r.spot_id);
+    const spotName = spot ? spot.name : r.spot_id;
+    const stars = '★'.repeat(r.rating || 0) + '☆'.repeat(Math.max(0, 5 - (r.rating || 0)));
+    const ts = new Date(r.created_at).toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric' });
+    const statusLabel = STATUS_LABEL[r.status] || r.status;
+    return '<div class="my-review-row">'
+      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px;">'
+      +   '<div style="font-size:13px;font-weight:700;flex:1;min-width:0;">' + _esc(spotName) + '</div>'
+      +   '<span style="font-size:10px;color:#d4a000;font-weight:600;flex-shrink:0;">' + stars + '</span>'
+      + '</div>'
+      + '<div style="font-size:12px;color:var(--text);line-height:1.55;margin-bottom:6px;white-space:pre-wrap;">' + _esc(r.body || '') + '</div>'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--text-sub);">'
+      +   '<span>' + ts + ' · ' + statusLabel + '</span>'
+      +   '<button onclick="deleteMyReview(\'' + r.id + '\')" style="background:transparent;border:0;color:#C14545;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;padding:2px 6px;">削除</button>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+async function deleteMyReview(id) {
+  if (!confirm('この口コミを削除しますか？\n削除後は元に戻せません。')) return;
+  const { error } = await window.kodocoSupabase
+    .from('kodoco_reviews')
+    .delete()
+    .eq('id', id);
+  if (error) { alert('削除失敗: ' + error.message); return; }
+  if (typeof toast === 'function') toast('削除しました');
+  renderMyReviewsSection();
+}
+document.addEventListener('kodoco:auth-ready',  renderMyReviewsSection);
+document.addEventListener('kodoco:auth-change', renderMyReviewsSection);
+
+// ── 自分のスポット申請一覧 (設定画面) ──
+async function loadMySpots() {
+  if (!window.kodocoSupabase || !window.kodocoUser) return [];
+  try {
+    const { data, error } = await window.kodocoSupabase
+      .from('kodoco_user_spots')
+      .select('*')
+      .eq('user_id', window.kodocoUser.id)
+      .order('created_at', { ascending: false });
+    if (error) { console.warn('[KODOCO] my spots fetch:', error.message); return []; }
+    return data || [];
+  } catch (e) { return []; }
+}
+async function renderMySpotsSection() {
+  const cont = document.getElementById('mySpotsSection');
+  if (!cont) return;
+  if (!window.kodocoUser) {
+    cont.innerHTML = '<div style="font-size:12px;color:var(--text-sub);line-height:1.7;">ログインすると、申請したスポットを一覧で確認・取り下げできます。</div>';
+    return;
+  }
+  cont.innerHTML = '<div style="font-size:12px;color:var(--text-sub);">読み込み中…</div>';
+  const spots = await loadMySpots();
+  if (!spots.length) {
+    cont.innerHTML = '<div style="font-size:12px;color:var(--text-sub);line-height:1.7;">まだスポットの申請はありません。日記タブの「+ 新しいスポットを追加」から申請できます。</div>';
+    return;
+  }
+  const STATUS_BADGE = {
+    pending:  { label: '⏳ 承認待ち',  color: '#a07a00', bg: '#fff3cd' },
+    approved: { label: '✓ 承認済',    color: '#5B7F61', bg: '#E7EEE3' },
+    rejected: { label: '✗ 却下',      color: '#C14545', bg: '#FBE8E8' },
+  };
+  cont.innerHTML = spots.map(s => {
+    const d = s.data || {};
+    const ts = new Date(s.created_at).toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric' });
+    const badge = STATUS_BADGE[s.status] || STATUS_BADGE.pending;
+    const reason = (s.status === 'rejected' && s.reject_reason)
+      ? '<div style="font-size:11px;color:#C14545;background:#FBE8E8;padding:6px 10px;border-radius:6px;margin-top:6px;">却下理由: ' + _esc(s.reject_reason) + '</div>'
+      : '';
+    const canDelete = (s.status === 'pending' || s.status === 'rejected');
+    const delBtn = canDelete
+      ? '<button onclick="deleteMySpot(\'' + s.id + '\')" style="background:transparent;border:0;color:#C14545;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;padding:2px 6px;">取り下げ</button>'
+      : '';
+    return '<div class="my-review-row">'
+      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px;">'
+      +   '<div style="font-size:13px;font-weight:700;flex:1;min-width:0;">' + _esc(d.name || '(名前なし)') + '</div>'
+      +   '<span style="font-size:10px;color:' + badge.color + ';background:' + badge.bg + ';padding:2px 8px;border-radius:999px;font-weight:700;flex-shrink:0;">' + badge.label + '</span>'
+      + '</div>'
+      + '<div style="font-size:11px;color:var(--text-sub);line-height:1.55;margin-bottom:4px;">' + _esc(d.cat || '') + ' · ' + _esc(d.loc || '') + (d.addr ? ' · ' + _esc(d.addr) : '') + '</div>'
+      + reason
+      + '<div style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--text-sub);margin-top:6px;">'
+      +   '<span>' + ts + '</span>'
+      +   delBtn
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+async function deleteMySpot(id) {
+  if (!confirm('このスポット申請を取り下げますか？\n承認待ち or 却下のもののみ取り下げ可能。')) return;
+  const { error } = await window.kodocoSupabase
+    .from('kodoco_user_spots')
+    .delete()
+    .eq('id', id);
+  if (error) { alert('取り下げ失敗: ' + error.message); return; }
+  if (typeof toast === 'function') toast('取り下げました');
+  renderMySpotsSection();
+}
+document.addEventListener('kodoco:auth-ready',  renderMySpotsSection);
+document.addEventListener('kodoco:auth-change', renderMySpotsSection);
 
 // ── トップバーのログイン状態インジケータ (handle 頭文字 + 緑背景) ──
 function updateTopbarAuthIndicator() {

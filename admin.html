@@ -619,6 +619,25 @@
       </div>
     </section>
 
+    <!-- 5a. 口コミモデレーション (Supabase) -->
+    <section class="adm-section">
+      <div class="adm-section-head">
+        <h2>💬 口コミモデレーション</h2>
+        <p>ユーザーが投稿した口コミを確認・非表示・削除できます。スポット ID で絞り込み可。</p>
+      </div>
+      <div class="adm-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+          <div style="display:flex;gap:6px;">
+            <button class="adm-btn adm-btn-sm" onclick="setReviewModFilter('published')" data-review-filter="published">公開中</button>
+            <button class="adm-btn adm-btn-sm" onclick="setReviewModFilter('flagged')" data-review-filter="flagged">⚠ 通報あり</button>
+            <button class="adm-btn adm-btn-sm" onclick="setReviewModFilter('removed')" data-review-filter="removed">削除済</button>
+          </div>
+          <button class="adm-btn adm-btn-sm" onclick="renderReviews()">🔄 更新</button>
+        </div>
+        <div id="reviewsList" class="adm-userspots-list">読み込み中…</div>
+      </div>
+    </section>
+
     <!-- 5b. スポット投稿モデレーション (Supabase) -->
     <section class="adm-section">
       <div class="adm-section-head">
@@ -1029,6 +1048,72 @@
     renderAll();
   }
 
+  // ─── 5a. 口コミ モデレーション (Supabase) ───
+  let _reviewModFilter = 'published';
+  function setReviewModFilter(f) { _reviewModFilter = f; renderReviews(); }
+
+  async function renderReviews() {
+    const cont = document.getElementById('reviewsList');
+    if (!cont) return;
+    document.querySelectorAll('[data-review-filter]').forEach(b => {
+      b.style.background = b.dataset.reviewFilter === _reviewModFilter ? 'var(--ink)' : '';
+      b.style.color      = b.dataset.reviewFilter === _reviewModFilter ? '#fff' : '';
+    });
+    if (!window.kodocoSupabase) {
+      cont.innerHTML = '<div style="font-size:12px;color:var(--ink-faint);">Supabase 未接続</div>';
+      return;
+    }
+    try {
+      const { data, error } = await window.kodocoSupabase
+        .from('kodoco_reviews')
+        .select('*')
+        .eq('status', _reviewModFilter)
+        .order('created_at', { ascending: false })
+        .limit(100);
+      if (error) {
+        cont.innerHTML = '<div style="color:var(--red);font-size:12px;">エラー: ' + escapeHtml(error.message) + '</div>';
+        return;
+      }
+      if (!data || !data.length) {
+        cont.innerHTML = '<div style="font-size:12px;color:var(--ink-faint);padding:20px 0;text-align:center;">該当する口コミはありません</div>';
+        return;
+      }
+      const stars = (n) => '★'.repeat(n || 0) + '☆'.repeat(Math.max(0, 5 - (n || 0)));
+      cont.innerHTML = data.map(r => {
+        const ts = new Date(r.created_at).toLocaleString('ja-JP');
+        const ageText = (r.age_groups && r.age_groups.length) ? r.age_groups.join(',') + '歳' : '';
+        let actions = '';
+        if (_reviewModFilter === 'published') {
+          actions = '<button class="adm-btn adm-btn-sm" onclick="setReviewStatus(\'' + r.id + '\',\'flagged\')">⚠ 非表示</button>'
+                  + '<button class="adm-btn adm-btn-sm adm-btn-danger" onclick="setReviewStatus(\'' + r.id + '\',\'removed\')">✗ 削除</button>';
+        } else {
+          actions = '<button class="adm-btn adm-btn-sm" onclick="setReviewStatus(\'' + r.id + '\',\'published\')">↩ 復活</button>'
+                  + '<button class="adm-btn adm-btn-sm adm-btn-danger" onclick="setReviewStatus(\'' + r.id + '\',\'removed\')">✗ 削除</button>';
+        }
+        return '<div class="adm-userspot-row">'
+          + '<div class="adm-userspot-meta">'
+          +   '<div class="adm-userspot-name">' + escapeHtml(r.spot_id) + ' <span style="font-size:11px;color:#d4a000;font-weight:500;margin-left:6px;">' + stars(r.rating) + '</span></div>'
+          +   '<div class="adm-userspot-info" style="white-space:pre-wrap;line-height:1.55;color:var(--ink);font-size:13px;margin:4px 0 6px;">' + escapeHtml(r.body || '') + '</div>'
+          +   '<div class="adm-userspot-by">' + escapeHtml(r.user_handle || '?') + ' · ' + ageText + ' · ' + ts + (r.flag_count ? ' · ⚠ 通報 ' + r.flag_count : '') + '</div>'
+          + '</div>'
+          + '<div class="adm-userspot-actions">' + actions + '</div>'
+          + '</div>';
+      }).join('');
+    } catch (e) {
+      cont.innerHTML = '<div style="color:var(--red);font-size:12px;">' + escapeHtml(String(e)) + '</div>';
+    }
+  }
+  async function setReviewStatus(id, newStatus) {
+    if (newStatus === 'removed' && !confirm('この口コミを削除（非公開）しますか？')) return;
+    const { error } = await window.kodocoSupabase
+      .from('kodoco_reviews')
+      .update({ status: newStatus })
+      .eq('id', id);
+    if (error) { alert(error.message); return; }
+    toast(newStatus === 'published' ? '公開に戻しました' : (newStatus === 'flagged' ? '非表示にしました' : '削除しました'));
+    renderReviews();
+  }
+
   // ─── 5b. ユーザー投稿スポット モデレーション (Supabase) ─────
   let _spotModFilter = 'pending';
   function setSpotModFilter(f) { _spotModFilter = f; renderUserSpots(); }
@@ -1141,6 +1226,7 @@
     renderStats();
     renderLs();
     renderUnlockSim();
+    if (typeof renderReviews   === 'function') renderReviews();
     if (typeof renderUserSpots === 'function') renderUserSpots();
   }
 
