@@ -31,6 +31,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/supabase-client.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <!-- Firebase (compat SDK — allows non-module scripts below) -->
 <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -1492,6 +1495,79 @@ html, body {
 .char-card-btn:hover { background: var(--ink); }
 .char-card-btn:active { transform: scale(0.97); }
 
+/* Auth modal (signup / login) */
+.auth-modal {
+  position: fixed; inset: 0; z-index: 9000;
+  display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.auth-modal.open { display: flex; }
+.auth-modal-bg {
+  position: absolute; inset: 0;
+  background: rgba(20,18,14,0.7);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.auth-modal-shell {
+  position: relative; max-width: 400px; width: 100%;
+  background: var(--card); border-radius: 18px;
+  padding: 28px 24px 22px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+}
+.auth-modal-close {
+  position: absolute; top: 12px; right: 12px;
+  width: 32px; height: 32px; border: 0; border-radius: 999px;
+  background: transparent; color: var(--text-sub, var(--ink-sub));
+  font-size: 16px; cursor: pointer;
+}
+.auth-modal-close:hover { background: var(--bg-soft); }
+.auth-tabs {
+  display: flex; gap: 4px; margin-bottom: 20px;
+  padding: 4px; background: var(--bg-soft); border-radius: 999px;
+}
+.auth-tab {
+  flex: 1; padding: 8px 12px; border: 0; background: transparent;
+  border-radius: 999px; cursor: pointer; font-family: inherit;
+  font-size: 13px; font-weight: 600; color: var(--text-sub, var(--ink-sub));
+}
+.auth-tab.is-active {
+  background: var(--card); color: var(--ink);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.auth-form { display: flex; flex-direction: column; gap: 14px; }
+.auth-field { display: flex; flex-direction: column; gap: 4px; }
+.auth-field > span {
+  font-size: 11px; font-weight: 700; color: var(--ink);
+  letter-spacing: 0.04em;
+}
+.auth-field input {
+  padding: 11px 13px; border: 1.5px solid var(--line); border-radius: 10px;
+  font-size: 14px; font-family: inherit; outline: none; background: var(--card);
+  transition: border-color 0.12s; color: var(--ink);
+}
+.auth-field input:focus { border-color: var(--green-deep, var(--green)); }
+.auth-tos {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 12px; color: var(--text-sub, var(--ink-sub));
+  line-height: 1.55; cursor: pointer; user-select: none;
+}
+.auth-tos input { margin-top: 3px; flex-shrink: 0; cursor: pointer; }
+.auth-tos a { color: var(--green-deep, var(--green)); text-decoration: underline; }
+.auth-error {
+  font-size: 12px; color: var(--red, #C14545); min-height: 18px;
+}
+.auth-submit {
+  padding: 13px; background: var(--ink); color: white;
+  border: 0; border-radius: 10px; font-size: 14px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+}
+.auth-submit:active { transform: scale(0.98); }
+.auth-submit[disabled] { opacity: 0.5; cursor: wait; }
+.auth-foot {
+  margin-top: 18px; padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  font-size: 11px; color: var(--ink-faint, var(--text-sub));
+  text-align: center; font-style: italic; letter-spacing: 0.02em;
+}
+
 /* 画像保存モーダル */
 .img-save-modal {
   position: fixed; inset: 0; z-index: 9999;
@@ -2400,6 +2476,45 @@ html, body {
 
 </div><!-- /main-app -->
 
+<!-- AUTH MODAL (signup / login) -->
+<div class="auth-modal" id="authModal">
+  <div class="auth-modal-bg" onclick="closeAuthModal()"></div>
+  <div class="auth-modal-shell">
+    <button class="auth-modal-close" onclick="closeAuthModal()" aria-label="閉じる">✕</button>
+    <div class="auth-tabs">
+      <button class="auth-tab is-active" data-mode="signup" onclick="switchAuthMode('signup')">新規登録</button>
+      <button class="auth-tab" data-mode="login" onclick="switchAuthMode('login')">ログイン</button>
+    </div>
+    <form id="authForm" onsubmit="event.preventDefault(); submitAuth();" class="auth-form">
+      <label class="auth-field" id="authHandleField">
+        <span>表示名 (handle)</span>
+        <input type="text" id="authHandle" autocomplete="username" placeholder="taka_kodoco" maxlength="30">
+      </label>
+      <label class="auth-field">
+        <span>メールアドレス</span>
+        <input type="email" id="authEmail" autocomplete="email" placeholder="you@example.com" required>
+      </label>
+      <label class="auth-field">
+        <span>パスワード</span>
+        <input type="password" id="authPassword" autocomplete="current-password" placeholder="6 文字以上" minlength="6" required>
+      </label>
+      <label class="auth-tos" id="authTosField">
+        <input type="checkbox" id="authTosCheckbox">
+        <span>
+          <a href="terms.html" target="_blank" rel="noopener">利用規約</a>・
+          <a href="privacy.html" target="_blank" rel="noopener">プライバシーポリシー</a>・
+          <a href="community.html" target="_blank" rel="noopener">コミュニティガイドライン</a>に同意する
+        </span>
+      </label>
+      <div class="auth-error" id="authError"></div>
+      <button type="submit" class="auth-submit" id="authSubmitBtn">アカウントを作成</button>
+    </form>
+    <div class="auth-foot" id="authFoot">
+      子連れパパママのおでかけを、コドちゃんと一緒に。
+    </div>
+  </div>
+</div>
+
 <!-- DETAIL OVERLAY -->
 <div id="dimmer" onclick="closeDetail()"></div>
 <div class="detail-overlay" id="detailOverlay">
@@ -2598,7 +2713,12 @@ html, body {
 <div class="settings-overlay" id="settingsOverlay">
   <div class="settings-header"><span class="settings-title">⚙️ 設定</span><button class="settings-close" onclick="closeSettings()">✕</button></div>
   <div class="settings-body">
-    <div class="settings-section-title">お子さん情報</div>
+    <div class="settings-section-title">👤 アカウント</div>
+    <div class="settings-card" id="accountSection">
+      <!-- JS で renderAccountSection() が描画 -->
+    </div>
+
+    <div class="settings-section-title" style="margin-top:28px;">お子さん情報</div>
     <div class="settings-card" id="settingsChildren"></div>
 
     <div class="settings-section-title" style="margin-top:28px;">🏆 コドちゃんとのあしあと</div>
@@ -6498,6 +6618,7 @@ async function submitVoice() {
 
 // ── SETTINGS ─────────────────────────────────────────────────
 function openSettings() {
+  if (typeof renderAccountSection === 'function') renderAccountSection();
   renderSettingsChildren();
   renderAchievements();
   renderMascotPicker();
@@ -6710,6 +6831,116 @@ const ACHIEVEMENT_TRACKS = [
     ]
   },
 ];
+
+// ─── Auth (Supabase: signup / login / signout) ────────────
+let _authMode = 'signup';
+
+function openAuthModal() {
+  const m = document.getElementById('authModal');
+  if (!m) return;
+  m.classList.add('open');
+  switchAuthMode(_authMode);
+  setTimeout(() => { document.getElementById('authEmail').focus(); }, 100);
+}
+function closeAuthModal() {
+  const m = document.getElementById('authModal');
+  if (m) m.classList.remove('open');
+  document.getElementById('authError').textContent = '';
+}
+function switchAuthMode(mode) {
+  _authMode = mode;
+  document.querySelectorAll('.auth-tab').forEach(t => {
+    t.classList.toggle('is-active', t.dataset.mode === mode);
+  });
+  const isSignup = mode === 'signup';
+  document.getElementById('authHandleField').style.display = isSignup ? '' : 'none';
+  document.getElementById('authTosField').style.display    = isSignup ? '' : 'none';
+  document.getElementById('authSubmitBtn').textContent     = isSignup ? 'アカウントを作成' : 'ログイン';
+  document.getElementById('authPassword').setAttribute('autocomplete', isSignup ? 'new-password' : 'current-password');
+  document.getElementById('authError').textContent = '';
+}
+async function submitAuth() {
+  const sb = window.kodocoSupabase;
+  const errEl = document.getElementById('authError');
+  const btn = document.getElementById('authSubmitBtn');
+  if (!sb) { errEl.textContent = '接続準備中… もう一度お試しください'; return; }
+  const email  = document.getElementById('authEmail').value.trim();
+  const pw     = document.getElementById('authPassword').value;
+  const handle = document.getElementById('authHandle').value.trim();
+  const tos    = document.getElementById('authTosCheckbox').checked;
+  errEl.textContent = '';
+  btn.disabled = true;
+  try {
+    if (_authMode === 'signup') {
+      if (!handle) { errEl.textContent = '表示名 (handle) を入力してください'; return; }
+      if (!tos)    { errEl.textContent = '規約への同意が必要です'; return; }
+      const { data, error } = await sb.auth.signUp({
+        email, password: pw,
+        options: { data: { handle, display_name: handle } }
+      });
+      if (error) { errEl.textContent = error.message; return; }
+      // tos_accepted_at を profiles に記録 (auto-create trigger 後の row を update)
+      if (data.user) {
+        await sb.from('profiles')
+          .update({ tos_accepted_at: new Date().toISOString(), handle, display_name: handle })
+          .eq('id', data.user.id);
+      }
+      if (typeof toast === 'function') toast('登録完了 ✨');
+      closeAuthModal();
+    } else {
+      const { error } = await sb.auth.signInWithPassword({ email, password: pw });
+      if (error) { errEl.textContent = error.message; return; }
+      if (typeof toast === 'function') toast('おかえり！');
+      closeAuthModal();
+    }
+  } catch (e) {
+    errEl.textContent = String(e && e.message || e);
+  } finally {
+    btn.disabled = false;
+  }
+}
+async function signOutAccount() {
+  const sb = window.kodocoSupabase;
+  if (!sb) return;
+  if (!confirm('ログアウトしますか?')) return;
+  await sb.auth.signOut();
+  if (typeof toast === 'function') toast('ログアウトしました');
+}
+
+function renderAccountSection() {
+  const cont = document.getElementById('accountSection');
+  if (!cont) return;
+  const user = window.kodocoUser;
+  if (user) {
+    const handle = (user.user_metadata && user.user_metadata.handle) || (user.email || '').split('@')[0] || 'user';
+    const initial = (handle[0] || 'U').toUpperCase();
+    cont.innerHTML =
+      '<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">'
+      +   '<div style="width:42px;height:42px;border-radius:50%;background:var(--green-soft);color:var(--green-deep);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0;">' + escapeHtml(initial) + '</div>'
+      +   '<div style="flex:1;min-width:0;">'
+      +     '<div style="font-size:14px;font-weight:700;">' + escapeHtml(handle) + '</div>'
+      +     '<div style="font-size:11px;color:var(--text-sub);overflow:hidden;text-overflow:ellipsis;">' + escapeHtml(user.email || '') + '</div>'
+      +   '</div>'
+      + '</div>'
+      + '<button class="settings-action-btn" onclick="signOutAccount()" style="background:transparent;border:1.5px solid var(--line);color:var(--ink);">ログアウト</button>';
+  } else {
+    cont.innerHTML =
+      '<div style="font-size:12.5px;line-height:1.7;color:var(--text-sub);margin-bottom:12px;">'
+      +   'ログインすると、お気に入り・口コミ・解禁したキャラがどの端末からでも見られます。スポット投稿も可能に。'
+      + '</div>'
+      + '<button class="settings-action-btn" onclick="openAuthModal()" style="background:var(--green-deep);color:white;border:0;">👤 ログイン / 新規登録</button>';
+  }
+}
+
+document.addEventListener('kodoco:auth-ready',  renderAccountSection);
+document.addEventListener('kodoco:auth-change', renderAccountSection);
+// ESC で閉じる
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const m = document.getElementById('authModal');
+    if (m && m.classList.contains('open')) closeAuthModal();
+  }
+});
 
 // 詳細閲覧カウント (openDetail から呼ぶ)
 function _recordDetailView() {
