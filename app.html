@@ -7166,11 +7166,13 @@ async function loadMyReviews() {
     return data || [];
   } catch (e) { return []; }
 }
+let _editingReviewId = null;
 async function renderMyReviewsSection() {
   const cont = document.getElementById('myReviewsSection');
   if (!cont) return;
   if (!window.kodocoUser) {
-    cont.innerHTML = '<div style="font-size:12px;color:var(--text-sub);line-height:1.7;">ログインすると、自分が投稿した口コミを一覧で確認・削除できます。</div>';
+    _editingReviewId = null;
+    cont.innerHTML = '<div style="font-size:12px;color:var(--text-sub);line-height:1.7;">ログインすると、自分が投稿した口コミを一覧で確認・編集・削除できます。</div>';
     return;
   }
   cont.innerHTML = '<div style="font-size:12px;color:var(--text-sub);">読み込み中…</div>';
@@ -7183,9 +7185,33 @@ async function renderMyReviewsSection() {
   cont.innerHTML = reviews.map(r => {
     const spot = (typeof SPOTS !== 'undefined') && SPOTS.find(s => s.id === r.spot_id);
     const spotName = spot ? spot.name : r.spot_id;
-    const stars = '★'.repeat(r.rating || 0) + '☆'.repeat(Math.max(0, 5 - (r.rating || 0)));
     const ts = new Date(r.created_at).toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric' });
     const statusLabel = STATUS_LABEL[r.status] || r.status;
+
+    if (_editingReviewId === r.id) {
+      // 編集モード
+      const ratingOpts = [5,4,3,2,1].map(n =>
+        '<option value="' + n + '"' + (r.rating === n ? ' selected' : '') + '>' + '★'.repeat(n) + '☆'.repeat(5-n) + '</option>'
+      ).join('');
+      return '<div class="my-review-row" style="background:#fffceb;border:1px solid #f0d873;">'
+        + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;">'
+        +   '<div style="font-size:13px;font-weight:700;flex:1;min-width:0;">' + _esc(spotName) + '</div>'
+        +   '<select id="editRevRating-' + r.id + '" class="form-select" style="font-size:11px;padding:4px 22px 4px 8px;height:auto;width:auto;">' + ratingOpts + '</select>'
+        + '</div>'
+        + '<textarea id="editRevBody-' + r.id + '" class="form-input" rows="3" style="margin-bottom:8px;resize:vertical;font-size:12px;">' + _esc(r.body || '') + '</textarea>'
+        + '<div style="display:flex;gap:6px;justify-content:flex-end;">'
+        +   '<button onclick="cancelEditMyReview()" style="background:transparent;border:1px solid var(--line);color:var(--text-sub);font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;padding:5px 12px;border-radius:6px;">キャンセル</button>'
+        +   '<button onclick="saveEditMyReview(\'' + r.id + '\')" style="background:var(--green-deep);border:0;color:#fff;font-size:11px;cursor:pointer;font-family:inherit;font-weight:700;padding:5px 14px;border-radius:6px;">保存</button>'
+        + '</div>'
+        + '</div>';
+    }
+
+    // 通常表示
+    const stars = '★'.repeat(r.rating || 0) + '☆'.repeat(Math.max(0, 5 - (r.rating || 0)));
+    const canEdit = r.status !== 'removed';
+    const editBtn = canEdit
+      ? '<button onclick="startEditMyReview(\'' + r.id + '\')" style="background:transparent;border:0;color:var(--green-deep);font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;padding:2px 6px;">編集</button>'
+      : '';
     return '<div class="my-review-row">'
       + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px;">'
       +   '<div style="font-size:13px;font-weight:700;flex:1;min-width:0;">' + _esc(spotName) + '</div>'
@@ -7194,10 +7220,38 @@ async function renderMyReviewsSection() {
       + '<div style="font-size:12px;color:var(--text);line-height:1.55;margin-bottom:6px;white-space:pre-wrap;">' + _esc(r.body || '') + '</div>'
       + '<div style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--text-sub);">'
       +   '<span>' + ts + ' · ' + statusLabel + '</span>'
-      +   '<button onclick="deleteMyReview(\'' + r.id + '\')" style="background:transparent;border:0;color:#C14545;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;padding:2px 6px;">削除</button>'
+      +   '<div style="display:flex;gap:4px;">'
+      +     editBtn
+      +     '<button onclick="deleteMyReview(\'' + r.id + '\')" style="background:transparent;border:0;color:#C14545;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;padding:2px 6px;">削除</button>'
+      +   '</div>'
       + '</div>'
       + '</div>';
   }).join('');
+}
+function startEditMyReview(id) {
+  _editingReviewId = id;
+  renderMyReviewsSection();
+}
+function cancelEditMyReview() {
+  _editingReviewId = null;
+  renderMyReviewsSection();
+}
+async function saveEditMyReview(id) {
+  const bodyEl = document.getElementById('editRevBody-' + id);
+  const rateEl = document.getElementById('editRevRating-' + id);
+  if (!bodyEl || !rateEl) return;
+  const body = bodyEl.value.trim();
+  const rating = parseInt(rateEl.value, 10);
+  if (!body) { alert('本文を入力してください'); return; }
+  if (body.length > 2000) { alert('本文は 2000 文字以内にしてください'); return; }
+  const { error } = await window.kodocoSupabase
+    .from('kodoco_reviews')
+    .update({ body, rating })
+    .eq('id', id);
+  if (error) { alert('保存失敗: ' + error.message); return; }
+  _editingReviewId = null;
+  if (typeof toast === 'function') toast('口コミを更新しました');
+  renderMyReviewsSection();
 }
 async function deleteMyReview(id) {
   if (!confirm('この口コミを削除しますか？\n削除後は元に戻せません。')) return;
@@ -7225,11 +7279,17 @@ async function loadMySpots() {
     return data || [];
   } catch (e) { return []; }
 }
+// 編集 UI 共通: 新しいスポット追加モーダルと同じ選択肢
+const _SPOT_CATS  = ['公園','室内遊び場','カフェ・レストラン','ご飯・レストラン','ミュージアム・体験','犬連れOK','水遊び','その他'];
+const _SPOT_AREAS = ['大津市','草津市','守山市','栗東市','野洲市','近江八幡市','彦根市','長浜市','甲賀市','東近江市','高島市'];
+
+let _editingSpotId = null;
 async function renderMySpotsSection() {
   const cont = document.getElementById('mySpotsSection');
   if (!cont) return;
   if (!window.kodocoUser) {
-    cont.innerHTML = '<div style="font-size:12px;color:var(--text-sub);line-height:1.7;">ログインすると、申請したスポットを一覧で確認・取り下げできます。</div>';
+    _editingSpotId = null;
+    cont.innerHTML = '<div style="font-size:12px;color:var(--text-sub);line-height:1.7;">ログインすると、申請したスポットを一覧で確認・編集・取り下げできます。</div>';
     return;
   }
   cont.innerHTML = '<div style="font-size:12px;color:var(--text-sub);">読み込み中…</div>';
@@ -7247,10 +7307,39 @@ async function renderMySpotsSection() {
     const d = s.data || {};
     const ts = new Date(s.created_at).toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric' });
     const badge = STATUS_BADGE[s.status] || STATUS_BADGE.pending;
+
+    if (_editingSpotId === s.id && s.status === 'pending') {
+      // 編集モード（pending のみ。RLS でも pending しか update できない）
+      const catOpts  = _SPOT_CATS.map(c =>  '<option' + (d.cat === c  ? ' selected' : '') + '>' + _esc(c) + '</option>').join('');
+      const areaOpts = _SPOT_AREAS.map(a => '<option' + (d.loc === a  ? ' selected' : '') + '>' + _esc(a) + '</option>').join('');
+      return '<div class="my-review-row" style="background:#fffceb;border:1px solid #f0d873;">'
+        + '<div style="font-size:11px;color:var(--text-sub);margin-bottom:4px;">スポット名</div>'
+        + '<input id="editSpotName-' + s.id + '" class="form-input" type="text" value="' + _esc(d.name || '') + '" style="margin-bottom:8px;">'
+        + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">'
+        +   '<div><div style="font-size:11px;color:var(--text-sub);margin-bottom:4px;">カテゴリ</div>'
+        +     '<div class="select-wrap"><select id="editSpotCat-' + s.id + '" class="form-select">' + catOpts + '</select></div>'
+        +   '</div>'
+        +   '<div><div style="font-size:11px;color:var(--text-sub);margin-bottom:4px;">エリア</div>'
+        +     '<div class="select-wrap"><select id="editSpotArea-' + s.id + '" class="form-select">' + areaOpts + '</select></div>'
+        +   '</div>'
+        + '</div>'
+        + '<div style="font-size:11px;color:var(--text-sub);margin-bottom:4px;">住所</div>'
+        + '<input id="editSpotAddr-' + s.id + '" class="form-input" type="text" value="' + _esc(d.addr || '') + '" style="margin-bottom:10px;">'
+        + '<div style="display:flex;gap:6px;justify-content:flex-end;">'
+        +   '<button onclick="cancelEditMySpot()" style="background:transparent;border:1px solid var(--line);color:var(--text-sub);font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;padding:5px 12px;border-radius:6px;">キャンセル</button>'
+        +   '<button onclick="saveEditMySpot(\'' + s.id + '\')" style="background:var(--green-deep);border:0;color:#fff;font-size:11px;cursor:pointer;font-family:inherit;font-weight:700;padding:5px 14px;border-radius:6px;">保存</button>'
+        + '</div>'
+        + '</div>';
+    }
+
     const reason = (s.status === 'rejected' && s.reject_reason)
       ? '<div style="font-size:11px;color:#C14545;background:#FBE8E8;padding:6px 10px;border-radius:6px;margin-top:6px;">却下理由: ' + _esc(s.reject_reason) + '</div>'
       : '';
+    const canEdit = (s.status === 'pending');
     const canDelete = (s.status === 'pending' || s.status === 'rejected');
+    const editBtn = canEdit
+      ? '<button onclick="startEditMySpot(\'' + s.id + '\')" style="background:transparent;border:0;color:var(--green-deep);font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;padding:2px 6px;">編集</button>'
+      : '';
     const delBtn = canDelete
       ? '<button onclick="deleteMySpot(\'' + s.id + '\')" style="background:transparent;border:0;color:#C14545;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;padding:2px 6px;">取り下げ</button>'
       : '';
@@ -7263,10 +7352,38 @@ async function renderMySpotsSection() {
       + reason
       + '<div style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--text-sub);margin-top:6px;">'
       +   '<span>' + ts + '</span>'
-      +   delBtn
+      +   '<div style="display:flex;gap:4px;">' + editBtn + delBtn + '</div>'
       + '</div>'
       + '</div>';
   }).join('');
+}
+function startEditMySpot(id) {
+  _editingSpotId = id;
+  renderMySpotsSection();
+}
+function cancelEditMySpot() {
+  _editingSpotId = null;
+  renderMySpotsSection();
+}
+async function saveEditMySpot(id) {
+  const name = document.getElementById('editSpotName-' + id)?.value.trim();
+  const cat  = document.getElementById('editSpotCat-'  + id)?.value;
+  const loc  = document.getElementById('editSpotArea-' + id)?.value;
+  const addr = document.getElementById('editSpotAddr-' + id)?.value.trim();
+  if (!name) { alert('スポット名を入力してください'); return; }
+  // 既存 data に上書きして保持される他フィールドを失わないように merge
+  const { data: cur, error: rErr } = await window.kodocoSupabase
+    .from('kodoco_user_spots').select('data').eq('id', id).single();
+  if (rErr) { alert('読み込み失敗: ' + rErr.message); return; }
+  const merged = Object.assign({}, cur?.data || {}, { name, cat, loc, addr });
+  const { error } = await window.kodocoSupabase
+    .from('kodoco_user_spots')
+    .update({ data: merged })
+    .eq('id', id);
+  if (error) { alert('保存失敗: ' + error.message); return; }
+  _editingSpotId = null;
+  if (typeof toast === 'function') toast('スポット申請を更新しました');
+  renderMySpotsSection();
 }
 async function deleteMySpot(id) {
   if (!confirm('このスポット申請を取り下げますか？\n承認待ち or 却下のもののみ取り下げ可能。')) return;
