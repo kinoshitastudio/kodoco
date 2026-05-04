@@ -406,8 +406,18 @@ function _spotHashSeed(s) {
   for (let i = 0; i < id.length; i++) h = ((h * 31) + id.charCodeAt(i)) & 0x7fffffff;
   return h || 1;
 }
+// data/spot-photos.json の og:image / Wikipedia 画像を優先 → spots-data.js の photoUrl → picsum
+let SPOT_PHOTOS = {};
+async function loadSpotPhotos() {
+  try {
+    const r = await fetch('data/spot-photos.json', { cache: 'no-cache' });
+    if (r.ok) SPOT_PHOTOS = await r.json();
+  } catch (_) { /* fall back to picsum seed */ }
+}
 function autoPhotoUrl(s) {
   if (s.photoUrl) return Array.isArray(s.photoUrl) ? s.photoUrl[0] : s.photoUrl;
+  const enriched = SPOT_PHOTOS[s.id];
+  if (enriched && enriched.photo) return enriched.photo;
   return 'https://picsum.photos/seed/kodoco-' + _spotHashSeed(s) + '/400/250';
 }
 function mapUrl(s) {
@@ -630,6 +640,8 @@ function resetChecks() {
     document.getElementById('tableWrap').style.display = 'none';
     return;
   }
+  // app.html と同じ画像セットを使うため spot-photos.json を先に読み込む
+  await loadSpotPhotos();
   wireToolbar();
   render();
   document.getElementById('gen').textContent = new Date().toLocaleString('ja-JP');
