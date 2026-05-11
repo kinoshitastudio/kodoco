@@ -243,6 +243,7 @@ html, body {
 .slide[data-bg="peach"] { background: linear-gradient(135deg, #F0C0A8 0%, #C88878 100%); }
 .slide[data-bg="blue"]  { background: linear-gradient(135deg, #A8C4D8 0%, #6B8FAC 100%); }
 .slide[data-bg="yellow"]{ background: linear-gradient(135deg, #F0D88A 0%, #B89A42 100%); }
+.slide[data-bg="coral"] { background: linear-gradient(135deg, #F4A9A0 0%, #C56F65 100%); }
 
 .slide-text {
   flex: 1;
@@ -2240,7 +2241,31 @@ html, body {
 
       <!-- スライドショー -->
       <div class="slideshow" id="homeSlideshow">
-        <div class="slide active" data-bg="green">
+        <div class="slide active" data-bg="yellow">
+          <div class="slide-text">
+            <div class="slide-eyebrow">📍 LOCATION × ☔ RAIN</div>
+            <div class="slide-title">現在地ONで、<br>今すぐの空が見える。</div>
+            <div class="slide-sub">近くのスポット・降水確率・週間天気 ぜんぶ揃う主力機能</div>
+          </div>
+          <div class="slide-chars">
+            <svg class="slide-char c-a" aria-hidden="true"><use href="#kodo"/></svg>
+            <svg class="slide-char c-b" aria-hidden="true"><use href="#kid"/></svg>
+            <svg class="slide-char c-c" aria-hidden="true"><use href="#mama"/></svg>
+          </div>
+        </div>
+        <div class="slide" data-bg="coral">
+          <div class="slide-text">
+            <div class="slide-eyebrow">🗺 LOST? → PLAN</div>
+            <div class="slide-title">どこ行くか迷ったら、<br>おでかけプランへ。</div>
+            <div class="slide-sub">天気・時間・年齢にあわせた20+のプランから選ぶだけ</div>
+          </div>
+          <div class="slide-chars">
+            <svg class="slide-char c-a" aria-hidden="true"><use href="#mama"/></svg>
+            <svg class="slide-char c-b" aria-hidden="true"><use href="#kid"/></svg>
+            <svg class="slide-char c-c" aria-hidden="true"><use href="#koto"/></svg>
+          </div>
+        </div>
+        <div class="slide" data-bg="green">
           <div class="slide-text">
             <div class="slide-eyebrow">TODAY'S JOURNEY</div>
             <div class="slide-title">今日、どこいく？</div>
@@ -2276,23 +2301,12 @@ html, body {
             <svg class="slide-char c-c" aria-hidden="true"><use href="#biwa"/></svg>
           </div>
         </div>
-        <div class="slide" data-bg="yellow">
-          <div class="slide-text">
-            <div class="slide-eyebrow">📍 LOCATION × ☔ RAIN</div>
-            <div class="slide-title">現在地ONで、<br>今すぐの空が見える。</div>
-            <div class="slide-sub">近くのスポット・降水確率・週間天気 ぜんぶ揃う主力機能</div>
-          </div>
-          <div class="slide-chars">
-            <svg class="slide-char c-a" aria-hidden="true"><use href="#kodo"/></svg>
-            <svg class="slide-char c-b" aria-hidden="true"><use href="#kid"/></svg>
-            <svg class="slide-char c-c" aria-hidden="true"><use href="#mama"/></svg>
-          </div>
-        </div>
         <div class="slide-dots" id="slideDots">
           <button class="dot active" onclick="gotoSlide(0)" aria-label="1枚目"></button>
           <button class="dot" onclick="gotoSlide(1)" aria-label="2枚目"></button>
           <button class="dot" onclick="gotoSlide(2)" aria-label="3枚目"></button>
           <button class="dot" onclick="gotoSlide(3)" aria-label="4枚目"></button>
+          <button class="dot" onclick="gotoSlide(4)" aria-label="5枚目"></button>
         </div>
       </div>
 
