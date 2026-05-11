@@ -381,6 +381,50 @@ html, body {
   border-bottom-left-radius: 3px;
 }
 
+/* Kodo hint: location feature — between sections */
+.kodo-hint-near {
+  margin: 26px 16px 30px;
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px 12px 6px;
+  background: linear-gradient(135deg, #FFF5E0 0%, #FFEFD7 50%, #FFE5DC 100%);
+  border-radius: 18px;
+  border: 1.5px solid rgba(255, 165, 80, 0.28);
+  position: relative;
+  box-shadow: 0 4px 12px rgba(255, 145, 60, 0.10);
+}
+.kodo-hint-near-mascot {
+  width: 60px; height: 68px; flex-shrink: 0;
+  filter: drop-shadow(0 3px 6px rgba(180, 100, 50, 0.18));
+  animation: pyokopyoko 1.1s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+@keyframes pyokopyoko {
+  0%, 100% { transform: translateY(0)    rotate(-3deg); }
+  20%      { transform: translateY(-7px) rotate(3deg);  }
+  40%      { transform: translateY(0)    rotate(-2deg); }
+  60%      { transform: translateY(-4px) rotate(2deg);  }
+  80%      { transform: translateY(0)    rotate(-1deg); }
+}
+.kodo-hint-near-bubble {
+  flex: 1;
+  font-size: 13px; line-height: 1.7; color: var(--text);
+  font-weight: 600;
+}
+.kodo-hint-near-bubble .hl {
+  color: #B85423;
+  background: #FFF;
+  padding: 1px 7px;
+  border-radius: 8px;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(184, 84, 35, 0.18);
+}
+.kodo-hint-near-bubble small {
+  display: block;
+  font-size: 11px; color: var(--text-sub);
+  font-weight: 500; margin-top: 4px;
+}
+
 /* Weather strip — emphasized */
 .weather-card {
   margin: 0 16px 16px;
@@ -605,6 +649,35 @@ html, body {
   border: 2px solid #fff;
   box-shadow: 0 2px 6px rgba(44,42,38,0.3);
   font-family: 'Inter', sans-serif;
+  transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+}
+.route-map-marker.active {
+  background: #e2553a;
+  width: 34px; height: 34px;
+  font-size: 13px;
+  border-width: 3px;
+  box-shadow: 0 4px 12px rgba(226,85,58,0.55), 0 0 0 4px rgba(226,85,58,0.18);
+  transform: translate(-4px, -4px);
+  z-index: 1000;
+}
+/* デスクトップ地図 — 通常ピン (青) / 選択中ピン (赤) */
+.ds-marker {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #4a90d9;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 6px rgba(44,42,38,0.35);
+  transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+}
+.ds-marker.active {
+  width: 30px; height: 30px;
+  background: #e2553a;
+  border-width: 4px;
+  box-shadow: 0 4px 14px rgba(226,85,58,0.6), 0 0 0 5px rgba(226,85,58,0.18);
+  animation: dsMarkerPulse 1.6s ease-in-out infinite;
+}
+@keyframes dsMarkerPulse {
+  0%,100% { box-shadow: 0 4px 14px rgba(226,85,58,0.6), 0 0 0 5px rgba(226,85,58,0.18); }
+  50%     { box-shadow: 0 4px 14px rgba(226,85,58,0.7), 0 0 0 10px rgba(226,85,58,0.05); }
 }
 .route-detail-title { display: none; } /* 旧マークアップ互換 */
 .route-detail-tag { display: none; }    /* 旧マークアップ互換 */
@@ -2397,6 +2470,15 @@ html, body {
           <div class="qf-btns">
             <button class="qf-btn" onclick="setFilter('dog','ok',this)">🐕 犬と一緒</button>
           </div>
+        </div>
+      </div>
+
+      <!-- Kodo hint: location feature -->
+      <div class="kodo-hint-near">
+        <svg class="kodo-hint-near-mascot" aria-hidden="true"><use href="#kodo"/></svg>
+        <div class="kodo-hint-near-bubble">
+          近くで探したい？<span class="hl">📍 現在地 ON</span> にすると、<br>近いスポットから順に並ぶよ。
+          <small>上の天気カードの 📍ボタン から切替できる</small>
         </div>
       </div>
 
@@ -4329,6 +4411,7 @@ const ROUTE_PLANS = [
     title: '夏のじゃぶじゃぶプラン',
     time: '約4時間',
     weather: 'sunny', ageRange: [2, 8], coverKey: 'water',
+    season: 'summer',
     steps: [
       { time: '10:00', name: 'ロクハ公園', note: 'じゃぶじゃぶ池で遊ぶ' },
       { time: '12:00', name: 'イオンモール草津', note: 'フードコートで涼む' },
@@ -4396,6 +4479,7 @@ const ROUTE_PLANS = [
     title: '春のお花見プラン',
     time: '約4時間',
     weather: 'sunny', ageRange: [0, 10], coverKey: 'nature',
+    season: 'spring',
     steps: [
       { time: '10:00', name: '皇子が丘公園', note: '桜並木さんぽ' },
       { time: '12:00', name: 'お弁当ランチ', note: '公園ピクニック' },
@@ -4407,10 +4491,23 @@ const ROUTE_PLANS = [
     title: '秋の絶景プラン',
     time: '約4時間',
     weather: 'sunny', ageRange: [2, 10], coverKey: 'nature',
+    season: 'autumn',
     steps: [
       { time: '10:00', name: '永源寺', note: '紅葉の名所' },
       { time: '12:00', name: '近隣そば処', note: '秋の味覚' },
       { time: '14:00', name: 'メタセコイア並木', note: '並木の紅葉を車窓から' },
+    ]
+  },
+  {
+    tag: '⛄ 冬のあったか',
+    title: '冬の屋内ぬくぬくプラン',
+    time: '約4時間',
+    weather: 'any', ageRange: [1, 10], coverKey: 'indoor',
+    season: 'winter',
+    steps: [
+      { time: '10:00', name: '琵琶湖博物館', note: '冬は屋内が一番' },
+      { time: '12:30', name: '館内レストラン', note: '温かいランチ' },
+      { time: '14:00', name: 'ピエリ守山', note: '午後も屋内で安心' },
     ]
   },
   {
@@ -4726,6 +4823,35 @@ function initApp() {
 
 // ── DESKTOP SIDE PANEL ─────────────────────────────────────────────
 let _desktopMap = null;
+let _desktopMarkers = {};
+let _desktopActiveId = null;
+const _desktopIconDefault = () => L.divIcon({
+  html: '<div class="ds-marker"></div>',
+  className: '', iconSize: [22, 22], iconAnchor: [11, 11]
+});
+const _desktopIconActive = () => L.divIcon({
+  html: '<div class="ds-marker active"></div>',
+  className: '', iconSize: [30, 30], iconAnchor: [15, 15]
+});
+function setDesktopActiveMarker(id) {
+  if (_desktopActiveId && _desktopMarkers[_desktopActiveId]) {
+    _desktopMarkers[_desktopActiveId].setIcon(_desktopIconDefault());
+  }
+  if (id && _desktopMarkers[id]) {
+    _desktopMarkers[id].setIcon(_desktopIconActive());
+    _desktopActiveId = id;
+    // 中心へ寄せる（既に範囲外なら）
+    try {
+      const m = _desktopMarkers[id];
+      const ll = m.getLatLng();
+      if (_desktopMap && !_desktopMap.getBounds().pad(-0.2).contains(ll)) {
+        _desktopMap.panTo(ll, { animate: true });
+      }
+    } catch (_) {}
+  } else {
+    _desktopActiveId = null;
+  }
+}
 function isDesktopLayout() {
   return window.matchMedia('(min-width: 1024px)').matches;
 }
@@ -4745,12 +4871,15 @@ function initDesktopSide() {
     if (typeof s.lat !== 'number' || typeof s.lng !== 'number') return;
     const marker = L.marker([s.lat, s.lng], {
       title: s.name,
+      icon: _desktopIconDefault(),
     }).addTo(_desktopMap);
     marker.bindTooltip(s.emoji + ' ' + s.name, { direction: 'top' });
     marker.on('click', () => {
+      setDesktopActiveMarker(s.id);
       renderDesktopDetail(s.id);
       openDetail(s.id);
     });
+    _desktopMarkers[s.id] = marker;
   });
   const badge = document.getElementById('desktopMapCount');
   if (badge) badge.textContent = SPOTS.length;
@@ -5271,8 +5400,21 @@ function buildHero() {
 // ── ROUTE PLANS ───────────────────────────────────────────────
 // プランを「今日の条件」に合わせてスコア付け＋ランダムソート
 // 同じ設定でも毎回違うおすすめが並ぶ
+function getCurrentSeason() {
+  const m = new Date().getMonth() + 1;
+  if (m >= 3 && m <= 5)  return 'spring';
+  if (m >= 6 && m <= 8)  return 'summer';
+  if (m >= 9 && m <= 11) return 'autumn';
+  return 'winter';
+}
+
 function scoreRoutePlan(plan, ctx) {
   let score = 0;
+  // 季節マッチング — season 指定プランは旬の月以外で出さない
+  if (plan.season) {
+    if (plan.season === ctx.season) score += 5;
+    else return -999; // 旬じゃないプランは強制的に最下位（実質非表示）
+  }
   // 天気マッチング
   if (plan.weather === ctx.weather) score += 4;
   else if (plan.weather === 'any') score += 2;
@@ -5312,10 +5454,12 @@ function buildRoutePlans() {
     weather: state.weather || 'sunny',
     time:    state.time || 'half',
     dog:     !!state.dog,
+    season:  getCurrentSeason(),
   };
 
-  // 全プランをスコア付けしてランダム要素込みでソート
+  // 全プランをスコア付けしてランダム要素込みでソート（旬外プランは除外）
   const scored = ROUTE_PLANS.map(p => ({ p, s: scoreRoutePlan(p, ctx) }))
+    .filter(x => x.s > -100)
     .sort((a, b) => b.s - a.s);
   const ordered = scored.map(x => x.p);
 
@@ -5503,6 +5647,14 @@ function renderRouteMap(plan, preset) {
       + '<div style="font-weight:700;font-size:12px;margin-bottom:6px;">' + c.step + '. ' + (c.spot.emoji || '📍') + ' ' + c.name + '</div>'
       + '<button onclick="closeRouteDetail();setTimeout(()=>openDetail(\'' + c.spot.id + '\'),300);" style="width:100%;padding:7px;background:#5B7F61;color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">詳細を見る →</button>'
       + '</div>');
+    m.on('popupopen', () => {
+      const dot = m._icon && m._icon.querySelector('.route-map-marker');
+      if (dot) dot.classList.add('active');
+    });
+    m.on('popupclose', () => {
+      const dot = m._icon && m._icon.querySelector('.route-map-marker');
+      if (dot) dot.classList.remove('active');
+    });
     _routeMapLayers.push(m);
   });
 
@@ -6145,6 +6297,7 @@ function openDetail(id) {
   if (!s) return;
   if (typeof _recordDetailView === 'function') _recordDetailView();
   state.currentDetail = id;
+  if (typeof setDesktopActiveMarker === 'function') setDesktopActiveMarker(id);
   const child = state.children[state.activeChild];
   const age = child ? child.age : 2;
   const facts = SPOT_FACTS[id] || {};
@@ -6397,6 +6550,7 @@ function closeDetail() {
   overlay.classList.remove('open');
   dimmer.style.opacity = '0';
   setTimeout(() => { dimmer.style.display = 'none'; }, 350);
+  if (typeof setDesktopActiveMarker === 'function') setDesktopActiveMarker(null);
   navPop();
 }
 function buildCongBars() {

@@ -193,6 +193,42 @@
     .hero-sprinkle.s4 { top: 60%;  right: 14%; animation: sparkle 6.5s ease-in-out infinite -3s; }
     .hero-sprinkle.s5 { top: 40%;  left: 4%;   animation: sparkle 8s ease-in-out infinite -4s; }
     .hero-sprinkle.s6 { top: 48%;  right: 5%;  animation: sparkle 7.5s ease-in-out infinite -2.5s; }
+    .hero-sprinkle.s7 { top: 8%;   left: 32%;  animation: sparkle 6.2s ease-in-out infinite -1.5s; }
+    .hero-sprinkle.s8 { top: 18%;  right: 28%; animation: sparkle 7.8s ease-in-out infinite -3.5s; }
+    .hero-sprinkle.s9 { top: 84%;  left: 28%;  animation: sparkle 6.8s ease-in-out infinite -0.8s; }
+    .hero-sprinkle.s10{ top: 88%;  right: 30%; animation: sparkle 7.2s ease-in-out infinite -4s;   }
+    .hero-sprinkle.s11{ top: 34%;  left: 22%;  animation: sparkle 8.5s ease-in-out infinite -2s;   }
+    .hero-sprinkle.s12{ top: 56%;  right: 20%; animation: sparkle 6.5s ease-in-out infinite -1.2s; }
+    .hero-sprinkle.s13{ top: 76%;  left: 18%;  animation: sparkle 7s ease-in-out infinite -3.2s;   }
+    .hero-sprinkle.s14{ top: 4%;   right: 38%; animation: sparkle 8s ease-in-out infinite -2.8s;   }
+
+    /* Floating mini characters scattered around hero */
+    .hero-mini-chars {
+      position: absolute; inset: 0;
+      pointer-events: none; z-index: 2;
+      overflow: hidden;
+    }
+    .hero-mini-char {
+      position: absolute;
+      width: 64px; height: auto;
+      filter: drop-shadow(0 4px 8px rgba(91, 127, 97, 0.18));
+      animation: floatBob 4s ease-in-out infinite;
+      transform-origin: center bottom;
+    }
+    .hero-mini-char.mc-1 { top: 6%;   left: 6%;   width: 70px; animation-delay: 0s;    transform: rotate(-8deg); }
+    .hero-mini-char.mc-2 { top: 12%;  right: 4%;  width: 66px; animation-delay: -1s;   transform: rotate(6deg);  }
+    .hero-mini-char.mc-3 { bottom: 14%; left: 2%; width: 60px; animation-delay: -2s;   transform: rotate(-4deg); }
+    .hero-mini-char.mc-4 { bottom: 8%;  right: 6%; width: 74px; animation-delay: -1.5s; transform: rotate(8deg); }
+    .hero-mini-char.mc-5 { top: 38%;  left: 14%;  width: 52px; animation-delay: -2.5s; transform: rotate(-6deg); }
+    .hero-mini-char.mc-6 { top: 46%;  right: 12%; width: 56px; animation-delay: -3s;   transform: rotate(5deg); }
+    @keyframes floatBob {
+      0%, 100% { transform: translateY(0) var(--rotZ, rotate(0deg)); }
+      50%      { transform: translateY(-10px) var(--rotZ, rotate(0deg)); }
+    }
+    @media (max-width: 720px) {
+      .hero-mini-char { width: 44px !important; opacity: 0.5; }
+      .hero-mini-char.mc-5, .hero-mini-char.mc-6 { display: none; }
+    }
     @keyframes sparkle {
       0%,100% { opacity: 0.45; transform: translateY(0) rotate(0); }
       50%     { opacity: 0.85; transform: translateY(-12px) rotate(10deg); }
@@ -1779,6 +1815,22 @@
   <span class="hero-sprinkle s4">☀️</span>
   <span class="hero-sprinkle s5">💫</span>
   <span class="hero-sprinkle s6">🌊</span>
+  <span class="hero-sprinkle s7">🍃</span>
+  <span class="hero-sprinkle s8">⭐</span>
+  <span class="hero-sprinkle s9">🌼</span>
+  <span class="hero-sprinkle s10">🐾</span>
+  <span class="hero-sprinkle s11">☁️</span>
+  <span class="hero-sprinkle s12">🌷</span>
+  <span class="hero-sprinkle s13">🦋</span>
+  <span class="hero-sprinkle s14">✨</span>
+</div>
+<div class="hero-mini-chars" aria-hidden="true">
+  <svg class="hero-mini-char mc-1"><use href="#koto"/></svg>
+  <svg class="hero-mini-char mc-2"><use href="#kodo"/></svg>
+  <svg class="hero-mini-char mc-3"><use href="#biwa"/></svg>
+  <svg class="hero-mini-char mc-4"><use href="#koto"/></svg>
+  <svg class="hero-mini-char mc-5"><use href="#kodo-mark"/></svg>
+  <svg class="hero-mini-char mc-6"><use href="#koto-mark"/></svg>
 </div>
 <div class="hero">
   <div class="hero-badge rv">公開中 · 滋賀168スポット / 10匹のキャラ / アカウント連携</div>
