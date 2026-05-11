@@ -2501,6 +2501,7 @@ html, body {
     <div class="auth-tabs">
       <div class="auth-tab is-active" data-mode="signup" onclick="switchAuthMode('signup')">新規登録</div>
       <div class="auth-tab" data-mode="login" onclick="switchAuthMode('login')">ログイン</div>
+      <div class="auth-tab" data-mode="reset" onclick="switchAuthMode('reset')">PWを忘れた</div>
     </div>
 
     <div class="auth-field" id="authHandleField">
@@ -2511,7 +2512,7 @@ html, body {
       <div class="auth-field-lbl">メールアドレス</div>
       <input type="email" id="authEmail" autocomplete="email" placeholder="you@example.com">
     </div>
-    <div class="auth-field">
+    <div class="auth-field" id="authPasswordField">
       <div class="auth-field-lbl">パスワード</div>
       <input type="password" id="authPassword" autocomplete="new-password" placeholder="6 文字以上" minlength="6">
     </div>
@@ -7071,9 +7072,12 @@ function switchAuthMode(mode) {
     t.classList.toggle('is-active', t.dataset.mode === mode);
   });
   const isSignup = mode === 'signup';
-  document.getElementById('authHandleField').style.display = isSignup ? '' : 'none';
-  document.getElementById('authTosField').style.display    = isSignup ? '' : 'none';
-  document.getElementById('authSubmitBtn').textContent     = isSignup ? 'アカウントを作成' : 'ログイン';
+  const isReset  = mode === 'reset';
+  document.getElementById('authHandleField').style.display   = isSignup ? '' : 'none';
+  document.getElementById('authTosField').style.display      = isSignup ? '' : 'none';
+  document.getElementById('authPasswordField').style.display = isReset  ? 'none' : '';
+  const submitText = isSignup ? 'アカウントを作成' : isReset ? 'リセットメール送信' : 'ログイン';
+  document.getElementById('authSubmitBtn').textContent = submitText;
   document.getElementById('authPassword').setAttribute('autocomplete', isSignup ? 'new-password' : 'current-password');
   document.getElementById('authError').textContent = '';
 }
@@ -7104,6 +7108,14 @@ async function submitAuth() {
           .eq('id', data.user.id);
       }
       if (typeof toast === 'function') toast('登録完了 ✨');
+      closeAuthModal();
+    } else if (_authMode === 'reset') {
+      if (!email) { errEl.textContent = 'メールアドレスを入力してください'; return; }
+      const { error } = await sb.auth.resetPasswordForEmail(email, {
+        redirectTo: location.origin + location.pathname.replace(/[^/]*$/, '') + 'reset-password.html',
+      });
+      if (error) { errEl.textContent = error.message; return; }
+      if (typeof toast === 'function') toast('リセットメールを送りました ✉️');
       closeAuthModal();
     } else {
       const { error } = await sb.auth.signInWithPassword({ email, password: pw });
