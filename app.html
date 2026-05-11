@@ -5498,6 +5498,9 @@ async function toggleGeolocation() {
     updateGeoToggleUI(false);
     setLocationLabel(DEFAULT_LOC.name);
     await refreshWeatherForLocation(DEFAULT_LOC);
+    // 距離ベースの並び/バッジ/hint を更新
+    if (typeof buildHero === 'function') buildHero();
+    if (typeof buildSpotList === 'function') buildSpotList();
     return;
   }
   if (!('geolocation' in navigator)) {
@@ -5516,6 +5519,9 @@ async function toggleGeolocation() {
     updateGeoToggleUI(true);
     setLocationLabel(name);
     await refreshWeatherForLocation(loc);
+    // 距離ベースの並び/バッジ/hint を更新
+    if (typeof buildHero === 'function') buildHero();
+    if (typeof buildSpotList === 'function') buildSpotList();
     toast('現在地（' + name + '）の天気に切り替えました');
   }, (err) => {
     btn.classList.remove('loading');
