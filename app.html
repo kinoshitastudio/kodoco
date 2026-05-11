@@ -104,7 +104,7 @@ html, body {
 /* ── ONBOARDING ─────────────────── */
 #onboarding {
   position: absolute; inset: 0; z-index: 200;
-  display: flex; flex-direction: column; overflow: hidden;
+  display: none; flex-direction: column; overflow: hidden;
 }
 .ob-screen { display: none; flex-direction: column; height: 100%; overflow: hidden; }
 .ob-screen.active { display: flex; }
@@ -5003,11 +5003,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     localStorage.setItem('kodoco_version', APP_VERSION);
   }
   if (loadState() && state.children.length > 0) {
-    document.getElementById('onboarding').style.display = 'none';
+    // 既存ユーザー: onboarding は CSS デフォルト display:none のまま、main-app 表示
     const ma = document.getElementById('main-app');
     ma.style.display = 'flex';
     initApp();
   } else {
+    // 新規ユーザー: onboarding を表示
+    document.getElementById('onboarding').style.display = 'flex';
     document.getElementById('main-app').style.display = 'none';
   }
 
@@ -7837,7 +7839,8 @@ function renderAccountSection() {
       '<div style="font-size:12.5px;line-height:1.7;color:var(--text-sub);margin-bottom:12px;">'
       +   'ログインすると、お気に入り・口コミ・解禁したキャラがどの端末からでも見られます。スポット投稿も可能に。'
       + '</div>'
-      + '<button class="settings-action-btn" onclick="openAuthModal()" style="background:var(--green-deep);color:white;border:0;font-size:15px;font-weight:800;padding:16px;letter-spacing:.04em;">🔑 ログインする / 新規登録</button>';
+      + '<button class="settings-action-btn" onclick="openAuthModal()" style="background:var(--green-deep);color:white;border:0;font-size:16px;font-weight:800;padding:16px;letter-spacing:.06em;border-radius:12px;">ログインする</button>'
+      + '<button class="settings-action-btn" onclick="openAuthModal();setTimeout(()=>{const t=document.querySelector(\'.auth-tab[data-mode=signup]\');if(t)t.click();},120);" style="background:transparent;color:var(--green-deep);border:1.5px solid var(--green-deep);font-size:14px;font-weight:700;padding:12px;letter-spacing:.04em;margin-top:8px;border-radius:12px;">新規登録はこちら</button>';
   }
   // ログイン状態によって 「あしあと / お気に入りキャラ」セクションを表示制御
   const loggedIn = !!user;
