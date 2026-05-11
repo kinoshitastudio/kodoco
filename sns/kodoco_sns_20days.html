@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>KODOCO — SNS 20日 予約 (private)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    /* KODOCO palette — light/cream theme (matching app.html) */
+    --bg:        #FAF6EC;
+    --bg-card:   #FFFFFF;
+    --bg-warm:   #F5EFE0;
+    --ink:       #2C2A26;
+    --ink-soft:  #4A453E;
+    --ink-faint: #8B8676;
+    --line:      #E5DFD2;
+    --green:     #5B7F61;
+    --green-deep:#3F6B2A;
+    --green-soft:#D8E8C8;
+    --peach:     #F2A88A;
+    --peach-deep:#B85423;
+    --peach-soft:#FFE5DC;
+    --yellow:    #F4D478;
+    --yellow-soft:#FFF5E0;
+  }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', 'Noto Sans JP', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 24px 16px 80px;
+    min-height: 100vh;
+    font-feature-settings: 'palt';
+  }
+  header { max-width: 720px; margin: 0 auto 28px; text-align: center; }
+  .brand {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900; font-size: 26px;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px; color: var(--green-deep);
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .brand svg { width: 32px; height: 36px; }
+  .sub { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 18px; font-weight: 700; }
+  .lead { font-size: 13px; line-height: 1.85; color: var(--ink-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; }
+  .lead b { color: var(--ink); }
+  .lead .green { color: var(--green-deep); font-weight: 700; }
+  main { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+  .card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 22px 18px 18px; box-shadow: 0 2px 8px rgba(44,42,38,0.04); }
+  .card-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; border-bottom: 1px dashed var(--line); padding-bottom: 10px; }
+  .day { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 0.22em; color: var(--green-deep); }
+  .date { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; font-weight: 600; }
+  .theme { font-size: 13px; color: var(--ink-soft); margin-bottom: 6px; font-style: italic; }
+  .kind {
+    display: inline-block; font-size: 10px; letter-spacing: 0.18em;
+    color: var(--green-deep); background: var(--green-soft);
+    padding: 3px 9px; border-radius: 999px; margin-bottom: 14px; font-weight: 800;
+  }
+  .image-wrap { margin: 12px -2px 18px; text-align: center; background: var(--bg-warm); padding: 12px; border-radius: 10px; border: 1px solid var(--line); }
+  .image-wrap img { width: 100%; max-width: 540px; height: auto; display: inline-block; -webkit-touch-callout: default; touch-action: manipulation; border-radius: 6px; }
+  .save-hint { font-size: 10.5px; color: var(--ink-faint); margin-top: 8px; letter-spacing: 0.02em; font-weight: 600; }
+  .tweet { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 14px; }
+  .tweet:first-of-type { border-top: 0; padding-top: 0; }
+  .lang-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .lang { font-weight: 800; font-size: 10px; letter-spacing: 0.2em; color: #fff; background: var(--green); padding: 3px 9px; border-radius: 999px; }
+  .copy {
+    font-size: 11px; background: transparent; color: var(--green-deep);
+    border: 1.5px solid var(--green); padding: 4px 12px; cursor: pointer;
+    letter-spacing: 0.06em; font-weight: 700; border-radius: 999px;
+    font-family: inherit;
+  }
+  .copy:active { background: var(--green); color: #fff; }
+  .copy.done { background: var(--green); color: #fff; }
+  .tweet-body { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; line-height: 1.75; color: var(--ink); white-space: pre-wrap; word-wrap: break-word; }
+  .tweet-meta { font-size: 10px; color: var(--ink-faint); margin-top: 6px; letter-spacing: 0.04em; font-weight: 600; }
+  footer { max-width: 720px; margin: 56px auto 0; text-align: center; font-size: 10.5px; color: var(--ink-faint); letter-spacing: 0.06em; font-weight: 600; }
+  footer .private { display: inline-block; border: 1px solid var(--ink-faint); padding: 3px 10px; margin-bottom: 8px; border-radius: 999px; }
+  @media (max-width: 480px) {
+    body { padding: 16px 10px 60px; }
+    .card { padding: 18px 14px 14px; }
+    .image-wrap img { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <svg viewBox="0 0 100 120" aria-hidden="true">
+      <path d="M 36 20 Q 22 8 18 20 Q 18 30 34 28 Z" fill="#7A9B7E"/>
+      <path d="M 64 20 Q 78 8 82 20 Q 82 30 66 28 Z" fill="#8DAE91"/>
+      <rect x="47" y="22" width="6" height="14" rx="3" fill="#6E8A70"/>
+      <ellipse cx="50" cy="72" rx="38" ry="36" fill="#F4E5D2"/>
+      <ellipse cx="29" cy="80" rx="7" ry="4" fill="#F2B89A" opacity="0.6"/>
+      <ellipse cx="71" cy="80" rx="7" ry="4" fill="#F2B89A" opacity="0.6"/>
+      <path d="M 34 64 Q 40 60, 46 64" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+      <path d="M 54 64 Q 60 60, 66 64" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+      <path d="M 42 87 Q 50 94, 58 87" stroke="#2C2A26" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>
+    KODOCO
+  </div>
+  <div class="sub">SNS · 20 days · private</div>
+  <div class="lead">
+    <span class="green">$ kodoco --sns 20days</span><br>
+    KODOCO 用の <b>20 日分の投稿草案</b>。<br>
+    画像は <b>長押し → 写真に保存</b>（iPhone）/ <b>右クリック → 名前を付けて保存</b>（PC）。<br>
+    🎉 hero / 📱 feature / 🌳 spot / 🍑 character の 4 種類混在。
+  </div>
+</header>
+
+<section id="paste-zone" style="max-width:720px;margin:0 auto 32px;background:var(--bg-card);border:1px dashed var(--green);border-radius:14px;padding:22px 18px;text-align:center;">
+  <div style="font-weight:800;font-size:11px;letter-spacing:0.22em;color:var(--green-deep);margin-bottom:8px;">📋 PASTE SCREENSHOTS · Cmd+V</div>
+  <div style="font-size:12px;color:var(--ink-soft);line-height:1.7;">
+    KODOCO アプリで撮ったスクショを <b style="color:var(--ink);">Cmd+V</b> で貼り付け。<br>
+    保存済み（localStorage）なのでリロードしても残ります。<br>
+    各カードに長押し / 右クリックで個別保存可。
+  </div>
+  <div id="screenshots-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:18px;text-align:left;"></div>
+  <button id="clear-shots" style="margin-top:14px;background:transparent;color:var(--peach-deep);border:1.5px solid var(--peach-deep);padding:6px 14px;font:700 11px 'Inter',sans-serif;cursor:pointer;letter-spacing:0.06em;display:none;border-radius:999px;">— clear all</button>
+</section>
+
+<main id="schedule"></main>
+
+<footer>
+  <div class="private">PRIVATE · do not share</div>
+  <div>kinoshita studio · KODOCO · 2026-05-11 release</div>
+</footer>
+
+<script>
+'use strict';
+
+// ── 20 日分: kind = hero / feature / spot / character ─────────────────
+const POSTS = [
+  {
+    day: 1, kind: 'hero', theme: 'release announcement',
+    jp: '「今日、子どもとどこ行く?」\nそのひと言に答えるアプリ、\nKODOCO をリリースしました 🎉\n\n✅ 滋賀 168 スポット\n✅ 50 プラン\n✅ 完全無料・無登録OK\n\nhttps://kodoco.jp',
+    en: 'Released KODOCO 🎉\nA Japanese parenting outing-app for Shiga.\n\n✅ 168 spots\n✅ 50 outing plans\n✅ Free, no signup needed\n\nhttps://kodoco.jp',
+    img: { kind: 'hero', emoji: '🎉', headline: 'KODOCO、', headline2: 'リリース', sub: '今日、子どもとどこ行く?', bg: 'launch' },
+  },
+  {
+    day: 2, kind: 'feature', theme: 'location ON — nearby spots',
+    jp: 'KODOCO の「📍 現在地 ON」ボタン、\n押すと近いスポットから順に並びます。\n\n大津市みたいな広い市でも、\n自分の家から 5km 圏が出る。\n地図開いて検索するより 3 秒早い。\n\nhttps://kodoco.jp',
+    en: 'Tap "📍 location ON" — and KODOCO sorts spots\nby actual distance from where you stand.\n\nFaster than opening Google Maps.\n\nhttps://kodoco.jp',
+    img: { kind: 'feature', emoji: '📍', headline: '現在地 ON で', headline2: '近い順に並ぶ', sub: '半径 5km の遊び場が秒で出る', bg: 'blue' },
+  },
+  {
+    day: 3, kind: 'feature', theme: 'weekly weather forecast',
+    jp: '今週ずっと晴れ予報なら、\nKODOCO は公園を前に出します。\n\n来週水曜だけ雨予報なら、\nその日だけ屋内施設を前に。\n\n週間天気を読んで、提案を自動で並び替え。\n\nhttps://kodoco.jp',
+    en: 'Sunny week? KODOCO surfaces parks.\nRain expected Wed? That day shifts to indoor spots.\n\nWeekly forecast drives the suggestion order.\n\nhttps://kodoco.jp',
+    img: { kind: 'feature', emoji: '☀️', headline: '週間天気で', headline2: '提案が変わる', sub: 'sunny → 公園 / rainy → 屋内', bg: 'yellow' },
+  },
+  {
+    day: 4, kind: 'feature', theme: 'rain ahead alert',
+    jp: '出かけた瞬間に雨。\nこれが一番つらい。\n\nKODOCO は「次 3 時間の雨予報」を\n毎日ホームに出します。\n「今は晴れだけど、14時から降る」が\n出発前にわかる。\n\nhttps://kodoco.jp',
+    en: 'Stepping out → instant rain.\nThe worst.\n\nKODOCO shows "next 3 hours rain forecast"\non the home screen. So you know\n"sunny now, raining from 2pm" before you leave.\n\nhttps://kodoco.jp',
+    img: { kind: 'feature', emoji: '☔', headline: '☔ RAIN AHEAD', headline2: '14時から 60%', sub: '出発前に「先読み」できる', bg: 'rain' },
+  },
+  {
+    day: 5, kind: 'hero', theme: '50 plans',
+    jp: 'KODOCO のおでかけプラン、\n50 種類あります。\n\n🌸 春のお花見プラン\n☀️ 琵琶湖ぐるっとプラン\n☔ 雨でも全力で遊ぶプラン\n🍓 いちご狩りプラン\n🐕 犬と子どもプラン…\n\n朝→昼→夕の動線をぜんぶ組んでくれる。\n\nhttps://kodoco.jp',
+    en: 'KODOCO ships with 50 outing plans.\n\n🌸 Spring cherry-blossom\n☀️ Lake Biwa loop\n☔ Rainy-day full-play\n🍓 Strawberry picking\n🐕 With dog + kids…\n\nMorning → noon → evening, all wired up.\n\nhttps://kodoco.jp',
+    img: { kind: 'hero', emoji: '🗺', headline: '50 プラン', headline2: '迷いをゼロに', sub: '朝→昼→夕の動線まで', bg: 'peach' },
+  },
+  {
+    day: 6, kind: 'hero', theme: '0-2yo: stroller-friendly',
+    jp: '0-2歳の頃って、\n「ベビーカー OK か / 段差ないか / 授乳室あるか」\nを毎回 Google で調べてた。\n\nKODOCO は最初に「子どもの年齢」を登録すると、\nその年齢に合うスポットだけ自動で前に。\n\nhttps://kodoco.jp',
+    en: 'With a 0-2 year old, every outing\nstarts with: stroller-friendly? step-free?\nnursing room?\n\nKODOCO learns the age once,\nthen filters spots that fit.\n\nhttps://kodoco.jp',
+    img: { kind: 'hero', emoji: '🍼', headline: '0-2 歳の', headline2: 'おでかけに', sub: 'ベビーカーOK だけ自動で前へ', bg: 'baby' },
+  },
+  {
+    day: 7, kind: 'hero', theme: '3-5yo: running grounds',
+    jp: '3歳すぎたら、もう\n「広場が広いか」が全て。\n\nKODOCO の TODAY\'S PICK は、\n🌳 矢橋帰帆島公園 (草津)\n🌿 びわこ地球市民の森 (守山)\n🏃 希望が丘文化公園 (野洲)\nを年齢に合わせて切り替えます。\n\nhttps://kodoco.jp',
+    en: 'Past age 3, the question is simple:\nIs the field wide enough?\n\nKODOCO swaps TODAY\'S PICK by age —\nrunning grounds for 3-5,\nlearning spots for 5+.\n\nhttps://kodoco.jp',
+    img: { kind: 'hero', emoji: '🧒', headline: '3-5 歳は', headline2: '広場が全て', sub: 'TODAY\'S PICK が年齢に合わせ自動切替', bg: 'green' },
+  },
+  {
+    day: 8, kind: 'hero', theme: 'dog + kid spots',
+    jp: '犬と子と一緒に出かけたい、\nって意外と選択肢がない。\n\nKODOCO は「🐕 犬連れ」フィルタで、\n🐾 矢橋帰帆島公園 (ドッグラン併設)\n🐾 Cafe 森の木 (300坪ドッグラン)\n🐾 なぎさWARMS (テラス犬OK)\nを1タップで絞れます。\n\nhttps://kodoco.jp',
+    en: 'Dog + kid + outing.\nThat combo is hard to plan.\n\nKODOCO has a 🐕 filter — one tap shows\n3+ dog-and-kid friendly spots in Shiga.\n\nhttps://kodoco.jp',
+    img: { kind: 'hero', emoji: '🐕', headline: '犬と子、', headline2: '一緒に。', sub: '1タップで犬OKスポットだけ', bg: 'dog' },
+  },
+  {
+    day: 9, kind: 'spot', theme: 'yabashi-kihanjima park',
+    jp: '矢橋帰帆島公園 (草津)。\nKODOCO で最初に解放されるスポットの 1 つ。\n\n✅ 琵琶湖に浮かぶ人工島まるごと公園\n✅ 大型遊具・芝生・BBQ・ドッグラン全部入り\n✅ 2 歳でもベビーカー OK\n✅ 駐車場無料\n\nhttps://kodoco.jp/app.html',
+    en: 'Yabashi-Kihanjima Park (Kusatsu, Shiga).\nA man-made island, fully a park.\n\n✅ Big playground + lawn + BBQ + dog run\n✅ Stroller-friendly\n✅ Free parking\n\nhttps://kodoco.jp/app.html',
+    img: { kind: 'spot', emoji: '🌳', spotName: '矢橋帰帆島公園', loc: '📍 草津市', tags: ['🚼 ベビーカー OK', '🐕 犬OK', '🅿️ 駐車場無料'], bg: 'park' },
+  },
+  {
+    day: 10, kind: 'spot', theme: 'hikone castle plan',
+    jp: '彦根、雨の予報の日でも実は楽しい。\n\nKODOCO の「彦根&黒壁プラン」:\n10:00 彦根城・玄宮園 (国宝天守)\n12:30 夢京橋キャッスルロード (城下町ランチ)\n14:30 黒壁スクエア (ガラス体験で雨宿り)\n\n4歳以上、4時間コース。\n\nhttps://kodoco.jp',
+    en: 'Hikone, even on a rainy day, works.\n\nKODOCO "Hikone & Kurokabe history plan":\n10am: Hikone Castle\n12:30pm: Castle-town lunch\n2:30pm: Glass-craft workshop (indoor)\n\nhttps://kodoco.jp',
+    img: { kind: 'spot', emoji: '🏯', spotName: '彦根城プラン', loc: '📍 彦根市', tags: ['🏯 国宝天守', '🍴 城下町ランチ', '🎨 ガラス体験'], bg: 'castle' },
+  },
+  {
+    day: 11, kind: 'hero', theme: 'spring strawberry plan',
+    jp: '5月、まだ春。\nKODOCO は「春のいちご狩りプラン」を\n今だけ前に出してます。\n\n10:00 アグリパーク竜王 (いちご狩り)\n12:30 園内レストラン (野菜ランチ)\n14:00 三井アウトレットパーク 滋賀竜王\n\nハウス内だから雨でも OK。\n\nhttps://kodoco.jp',
+    en: 'May = still spring.\nKODOCO surfaces strawberry-picking plans\nonly for the season.\n\n10am: Strawberry farm @ Aguri Park Ryuō\n12:30pm: Farm lunch\n2pm: Outlet shopping\n\nhttps://kodoco.jp',
+    img: { kind: 'hero', emoji: '🍓', headline: '春の', headline2: 'いちご狩り', sub: 'ハウス内だから雨でも OK', bg: 'strawberry' },
+  },
+  {
+    day: 12, kind: 'hero', theme: 'summer preview — water play',
+    jp: '6月以降、KODOCO が前に出すのは\n☀️ ロクハ公園 (じゃぶじゃぶ池)\n🌊 矢橋帰帆島公園 (大型遊具+水場)\n💦 イオン草津屋内プール (雨でもOK)\n\n夏は水を切らさない。\n今のうちに「ここいいかも」を ♡ 保存しといて。\n\nhttps://kodoco.jp',
+    en: 'From June, KODOCO promotes water spots:\n• Rokuha Park (splash pool)\n• Yabashi-Kihanjima (lake-side play)\n• Aeon Kusatsu (indoor pool, rain-proof)\n\nDon\'t run dry in summer.\n\nhttps://kodoco.jp',
+    img: { kind: 'hero', emoji: '💦', headline: '夏が来たら、', headline2: '水を切らさない', sub: 'じゃぶじゃぶ池・水場・室内プール', bg: 'water' },
+  },
+  {
+    day: 13, kind: 'feature', theme: 'season filter — no off-season plans',
+    jp: 'KODOCO、秋プランは秋まで出しません。\n\n「紅葉プラン」が5月に出てきて\n"今行けないやつ" が混ざる\n→ プラン全体が信用できなくなる\n\nので、季節フィルタで春は春、秋は秋。\nちゃんと「今」役に立つやつだけ。\n\nhttps://kodoco.jp',
+    en: 'KODOCO never shows autumn plans in May.\n\nIf an off-season "fall foliage" plan sneaks in,\nthe whole list loses trust.\n\nSo: spring → spring, autumn → autumn.\nWhat\'s actually useful, right now.\n\nhttps://kodoco.jp',
+    img: { kind: 'feature', emoji: '🌸', headline: '旬のプラン', headline2: 'だけ並ぶ', sub: '春夏秋冬 — 季節フィルタで自動', bg: 'season' },
+  },
+  {
+    day: 14, kind: 'character', theme: 'kodo-chan the mascot',
+    jp: 'KODOCO の主役、コドちゃん。\n\n新芽 2 枚と、笑顔。\nホーム画面で、その日の天気と気分でひとこと言ってくれる:\n\n「今日は公園が気持ちいいよ。お水忘れずに 💧」\n「サクッと 1 時間、近所の公園はどう?」\n「雨の日こそ穴場が空いてるよ ✨」\n\nhttps://kodoco.jp',
+    en: 'Meet Kodo-chan, KODOCO\'s star.\n\nTwo sprouts, one smile.\nDaily voice line on the home screen:\n\n"A park\'s perfect today. Bring water 💧"\n"An hour? Just walk to the corner park."\n"Rainy days = the secret spots are empty ✨"\n\nhttps://kodoco.jp',
+    img: { kind: 'character', char: 'kodo', name: 'コドちゃん', quote: '今日は公園が\n気持ちいいよ。\nお水忘れずに 💧', bg: 'kodo' },
+  },
+  {
+    day: 15, kind: 'character', theme: 'all 10 characters',
+    jp: 'コトちゃんは、5 スポット閲覧で解禁。\nピンク色で花を咲かせた相棒。\n\nKODOCO は使うほど 10 匹のキャラが解禁。\nビックリマン風レアリティ:\n🟢 コモン 🌸 レア ✨ ホロ\n\n「行った場所のあしあと」が、収集の楽しみに。\n\nhttps://kodoco.jp',
+    en: 'Koto-chan unlocks after viewing 5 spots.\nA pink companion, peach-flowered.\n\nKODOCO unlocks 10 characters total —\nthe more you explore, the more friends you meet.\nBikkuriman-style rarity (common / rare / holo).\n\nhttps://kodoco.jp',
+    img: { kind: 'character', char: 'all', name: '10匹の仲間', quote: '使うほど解禁。\nあしあとを集めよう。', bg: 'koto' },
+  },
+  {
+    day: 16, kind: 'feature', theme: 'parent reviews',
+    jp: 'KODOCO のスポット詳細、\nパパママの声がそのまま読めます。\n\n✅ 「広い芝生で思いっきり走れて、ベビーカーもラク」\n✅ 「アスレチックに夢中。1日遊べた!」\n✅ 「ベビーカー OK + 授乳室確認済」\n\n匿名 OK、感覚タグ付き。\n\nhttps://kodoco.jp',
+    en: 'KODOCO spot pages include real parent voices.\n\n✅ "Wide lawn — kid ran wild, stroller easy."\n✅ "Athletic playground = full day of joy."\n✅ "Stroller OK, nursing room confirmed."\n\nAnonymous OK. Tagged by feel.\n\nhttps://kodoco.jp',
+    img: { kind: 'feature', emoji: '💬', headline: 'パパママ', headline2: 'の声、そのまま', sub: '匿名OK · 感覚タグ付き · 写真添付可', bg: 'voice' },
+  },
+  {
+    day: 17, kind: 'feature', theme: 'map mode',
+    jp: 'KODOCO の地図モード、\n滋賀全域 168 スポットが一画面で見えます。\n\n🌳 公園 / 🏠 室内 / ☕ カフェ / 🎨 体験\nカテゴリ別に色分け。\n\n旅行中、ドライブ中、いまどこにいても、\n"半径 5km の遊び場" が一目で分かります。\n\nhttps://kodoco.jp',
+    en: 'KODOCO\'s map mode shows all 168 Shiga spots\non one screen — color-coded by category.\n\nOn a drive, on a trip,\n"playgrounds within 5km" at a glance.\n\nhttps://kodoco.jp',
+    img: { kind: 'feature', emoji: '🗺', headline: '滋賀全域', headline2: '168 スポット', sub: 'カテゴリ色分け · 半径5kmが一目で', bg: 'map' },
+  },
+  {
+    day: 18, kind: 'hero', theme: 'free, no signup',
+    jp: 'KODOCO は完全無料です。\n広告も入れません。\n\n✅ アカウントなしで全機能\n✅ お気に入り保存もデバイス内に\n✅ 口コミ投稿だけ、ログイン (任意)\n✅ 子どもの情報は完全ローカル\n\n子育て中の家計に、もう 1 つ subscription を増やしません。\n\nhttps://kodoco.jp',
+    en: 'KODOCO is completely free.\nNo ads.\n\n✅ All features without signup\n✅ Favorites stored on device\n✅ Login only for posting reviews (optional)\n✅ Kids\' data stays local\n\nNo new subscription for your parenting budget.\n\nhttps://kodoco.jp',
+    img: { kind: 'hero', emoji: '🆓', headline: '¥0', headline2: '広告ゼロ', sub: 'アカウント不要・データはローカル', bg: 'free' },
+  },
+  {
+    day: 19, kind: 'feature', theme: 'PWA — add to home screen',
+    jp: 'KODOCO は iPhone でアプリ化できます。\n\n1. Safari で kodoco.jp/app.html を開く\n2. 共有 → ホーム画面に追加\n3. 完了\n\nアドレスバーなし、全画面表示、\nアイコンも kodoco。\nインストール不要のネイティブアプリ化。\n\nhttps://kodoco.jp',
+    en: 'KODOCO becomes an iPhone app via PWA.\n\n1. Open kodoco.jp/app.html in Safari\n2. Share → Add to Home Screen\n3. Done.\n\nFullscreen, no address bar,\nkodoco icon on your home grid.\nNo App Store install.\n\nhttps://kodoco.jp',
+    img: { kind: 'feature', emoji: '📱', headline: 'ホーム画面に', headline2: '追加でアプリ化', sub: 'インストール不要 · 全画面 · PWA', bg: 'pwa' },
+  },
+  {
+    day: 20, kind: 'character', theme: 'thanks + community',
+    jp: 'リリースから 20 日。\nありがとうございました。\n\nKODOCO は kinoshita studio の個人プロジェクト。\n気になったこと・欲しい機能・スポットの誤情報は、\n直接メールでお待ちしてます:\n99letters99@gmail.com\n\n子どもが大きくなるまで、ずっと使えるアプリにします。\n\nhttps://kodoco.jp',
+    en: 'Twenty days since release.\nThank you.\n\nKODOCO is an indie project by kinoshita studio.\nFeedback, requests, corrections — anything,\ndirect to: 99letters99@gmail.com\n\nI\'ll keep it alive until your kid grows up.\n\nhttps://kodoco.jp',
+    img: { kind: 'character', char: 'thanks', name: 'ありがとう', quote: '20 日間、\nありがとうございました。', bg: 'thanks' },
+  },
+];
+
+// ── 画像生成: 1080x1080 (KODOCO light palette) ─────────────────────
+const BG_MAP = {
+  launch:     { from: '#F8C8A8', to: '#E89E80' },
+  blue:       { from: '#DCE8F4', to: '#8FB0D0' },
+  yellow:     { from: '#FFF5E0', to: '#FFC78A' },
+  rain:       { from: '#FFE5DC', to: '#F4A88A' },
+  peach:      { from: '#FFE5D0', to: '#FFB089' },
+  baby:       { from: '#FFE6E0', to: '#F4A8B8' },
+  green:      { from: '#D8E8C8', to: '#88AC78' },
+  dog:        { from: '#F4E5D2', to: '#B89878' },
+  park:       { from: '#C8E5D0', to: '#88B098' },
+  castle:     { from: '#E0D0C0', to: '#8C7050' },
+  strawberry: { from: '#FFE0E0', to: '#F88888' },
+  water:      { from: '#CCE8F0', to: '#5896A8' },
+  season:     { from: '#FFE5DC', to: '#FFE0B5' },
+  kodo:       { from: '#DDEFD0', to: '#ACD0A0' },
+  koto:       { from: '#FFE0E0', to: '#FFB8B8' },
+  voice:      { from: '#F8E8D0', to: '#E8C8A8' },
+  map:        { from: '#DCE8E5', to: '#8FBFA8' },
+  free:       { from: '#FFF8DC', to: '#F4D478' },
+  pwa:        { from: '#FAF6EC', to: '#5B7F61' },
+  thanks:     { from: '#FFF0E0', to: '#F8C898' },
+};
+const INK = '#2C2A26';
+const INK_SOFT = '#4A453E';
+const INK_FAINT = '#8B8676';
+const GREEN_DEEP = '#3F6B2A';
+const PEACH_DEEP = '#B85423';
+const FG_WHITE = '#FFFFFF';
+
+function paintBg(ctx, W, H, bgKey) {
+  const colors = BG_MAP[bgKey] || BG_MAP.launch;
+  const grad = ctx.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, colors.from);
+  grad.addColorStop(1, colors.to);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+}
+
+function paintHeader(ctx, W, H) {
+  // KODOCO brand top-left
+  ctx.fillStyle = INK;
+  ctx.font = '900 28px "Inter", sans-serif';
+  ctx.textAlign = 'left';
+  drawKodoMark(ctx, 84, 78, 40);
+  ctx.fillText('KODOCO', 140, 105);
+  // Day number top-right
+  ctx.fillStyle = 'rgba(44,42,38,0.55)';
+  ctx.font = '800 16px "Inter", sans-serif';
+  ctx.textAlign = 'right';
+  ctx.fillText('— SHIGA / OUTING / FREE', W - 84, 105);
+}
+
+function paintFooter(ctx, W, H) {
+  // URL pill bottom-left
+  const url = 'kodoco.jp';
+  ctx.font = '700 28px "Inter", sans-serif';
+  ctx.textAlign = 'left';
+  const urlW = ctx.measureText(url).width;
+  const pillW = urlW + 50;
+  const pillH = 52;
+  const px = 84, py = H - 84 - pillH;
+  // pill bg
+  ctx.fillStyle = 'rgba(255,255,255,0.92)';
+  roundRect(ctx, px, py, pillW, pillH, 999);
+  ctx.fill();
+  // url text
+  ctx.fillStyle = INK;
+  ctx.fillText(url, px + 25, py + 36);
+}
+
+// kodo-mark (simplified) at (x,y) center, size W
+function drawKodoMark(ctx, cx, cy, size) {
+  const s = size / 100;
+  const x = cx - size / 2, y = cy - size / 2;
+  // left sprout
+  ctx.fillStyle = '#7A9B7E';
+  ctx.beginPath();
+  ctx.moveTo(x + 36 * s, y + 20 * s);
+  ctx.quadraticCurveTo(x + 22 * s, y + 8 * s, x + 18 * s, y + 20 * s);
+  ctx.quadraticCurveTo(x + 18 * s, y + 30 * s, x + 34 * s, y + 28 * s);
+  ctx.closePath(); ctx.fill();
+  // right sprout
+  ctx.fillStyle = '#8DAE91';
+  ctx.beginPath();
+  ctx.moveTo(x + 64 * s, y + 20 * s);
+  ctx.quadraticCurveTo(x + 78 * s, y + 8 * s, x + 82 * s, y + 20 * s);
+  ctx.quadraticCurveTo(x + 82 * s, y + 30 * s, x + 66 * s, y + 28 * s);
+  ctx.closePath(); ctx.fill();
+  // stem
+  ctx.fillStyle = '#6E8A70';
+  roundRect(ctx, x + 47 * s, y + 22 * s, 6 * s, 14 * s, 3 * s);
+  ctx.fill();
+  // body
+  ctx.fillStyle = '#F4E5D2';
+  ctx.beginPath();
+  ctx.ellipse(x + 50 * s, y + 72 * s, 38 * s, 36 * s, 0, 0, Math.PI * 2);
+  ctx.fill();
+  // cheeks
+  ctx.fillStyle = 'rgba(242,184,154,0.6)';
+  ctx.beginPath(); ctx.ellipse(x + 29 * s, y + 80 * s, 7 * s, 4 * s, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x + 71 * s, y + 80 * s, 7 * s, 4 * s, 0, 0, Math.PI * 2); ctx.fill();
+  // eyes
+  ctx.strokeStyle = INK; ctx.lineWidth = 2.8 * s; ctx.lineCap = 'round'; ctx.fillStyle = 'transparent';
+  ctx.beginPath();
+  ctx.moveTo(x + 34 * s, y + 64 * s);
+  ctx.quadraticCurveTo(x + 40 * s, y + 60 * s, x + 46 * s, y + 64 * s);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x + 54 * s, y + 64 * s);
+  ctx.quadraticCurveTo(x + 60 * s, y + 60 * s, x + 66 * s, y + 64 * s);
+  ctx.stroke();
+  // smile
+  ctx.lineWidth = 2.5 * s;
+  ctx.beginPath();
+  ctx.moveTo(x + 42 * s, y + 87 * s);
+  ctx.quadraticCurveTo(x + 50 * s, y + 94 * s, x + 58 * s, y + 87 * s);
+  ctx.stroke();
+}
+
+function drawKotoMark(ctx, cx, cy, size) {
+  const s = size / 100;
+  const x = cx - size / 2, y = cy - size / 2;
+  // flower petals (4 circles + center)
+  ctx.fillStyle = '#F4A898';
+  [[44,18],[56,18],[50,12],[50,24]].forEach(([px,py]) => {
+    ctx.beginPath(); ctx.arc(x + px * s, y + py * s, 5 * s, 0, Math.PI * 2); ctx.fill();
+  });
+  ctx.fillStyle = '#E8D28A';
+  ctx.beginPath(); ctx.arc(x + 50 * s, y + 18 * s, 3 * s, 0, Math.PI * 2); ctx.fill();
+  // stem
+  ctx.fillStyle = '#8DAE91';
+  roundRect(ctx, x + 47 * s, y + 22 * s, 6 * s, 14 * s, 3 * s);
+  ctx.fill();
+  // body (peachy)
+  ctx.fillStyle = '#F8D8BA';
+  ctx.beginPath();
+  ctx.ellipse(x + 50 * s, y + 72 * s, 38 * s, 36 * s, 0, 0, Math.PI * 2);
+  ctx.fill();
+  // cheeks
+  ctx.fillStyle = 'rgba(232,136,120,0.55)';
+  ctx.beginPath(); ctx.ellipse(x + 29 * s, y + 80 * s, 7 * s, 4 * s, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x + 71 * s, y + 80 * s, 7 * s, 4 * s, 0, 0, Math.PI * 2); ctx.fill();
+  // eyes (dots)
+  ctx.fillStyle = INK;
+  ctx.beginPath(); ctx.arc(x + 40 * s, y + 64 * s, 3 * s, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(x + 60 * s, y + 64 * s, 3 * s, 0, Math.PI * 2); ctx.fill();
+  // open mouth
+  ctx.beginPath(); ctx.ellipse(x + 50 * s, y + 86 * s, 6 * s, 4 * s, 0, 0, Math.PI * 2); ctx.fill();
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  if (typeof ctx.roundRect === 'function') {
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, r);
+  } else {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+}
+
+// 🎉 HERO — big emoji + headline + sub
+function renderHero(canvas, p) {
+  const W = 1080, H = 1080;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  paintBg(ctx, W, H, p.img.bg);
+  paintHeader(ctx, W, H);
+  // sprinkle emoji corners
+  ctx.font = '80px sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('✨', 92, 240);
+  ctx.textAlign = 'right';
+  ctx.fillText('🌿', W - 92, 240);
+  // big emoji center-top
+  ctx.font = '260px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(p.img.emoji, W / 2, 460);
+  // headline
+  ctx.fillStyle = INK;
+  ctx.font = '900 88px "Inter", "Noto Sans JP", sans-serif';
+  ctx.fillText(p.img.headline, W / 2, 580);
+  ctx.fillStyle = GREEN_DEEP;
+  ctx.fillText(p.img.headline2, W / 2, 690);
+  // green underline
+  ctx.fillStyle = GREEN_DEEP;
+  ctx.fillRect(W / 2 - 30, 720, 60, 8);
+  // sub
+  ctx.fillStyle = INK_SOFT;
+  ctx.font = '600 32px "Inter", "Noto Sans JP", sans-serif';
+  ctx.fillText(p.img.sub, W / 2, 800);
+  paintFooter(ctx, W, H);
+}
+
+// 📱 FEATURE — feature badge + UI preview
+function renderFeature(canvas, p) {
+  const W = 1080, H = 1080;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  paintBg(ctx, W, H, p.img.bg);
+  paintHeader(ctx, W, H);
+  // big emoji (left, big)
+  ctx.font = '220px sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText(p.img.emoji, 80, 380);
+  // feature badge (top-right)
+  ctx.font = '700 22px "Inter", sans-serif';
+  ctx.textAlign = 'left';
+  const badgeTxt = '★ MAIN FEATURE';
+  const badgeW = ctx.measureText(badgeTxt).width + 40;
+  ctx.fillStyle = 'rgba(255,255,255,0.92)';
+  roundRect(ctx, 400, 230, badgeW, 44, 999);
+  ctx.fill();
+  ctx.fillStyle = GREEN_DEEP;
+  ctx.fillText(badgeTxt, 420, 260);
+  // headline (right of emoji)
+  ctx.fillStyle = INK;
+  ctx.font = '900 76px "Inter", "Noto Sans JP", sans-serif';
+  ctx.fillText(p.img.headline, 400, 360);
+  ctx.fillStyle = GREEN_DEEP;
+  ctx.fillText(p.img.headline2, 400, 450);
+  // sub (centered below)
+  ctx.fillStyle = INK_SOFT;
+  ctx.font = '700 30px "Inter", "Noto Sans JP", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(p.img.sub, W / 2, 600);
+  // mock UI card (bottom)
+  drawFeatureMock(ctx, W, H, p.img);
+  paintFooter(ctx, W, H);
+}
+
+function drawFeatureMock(ctx, W, H, img) {
+  // simple white card with text mockup
+  const cx = W / 2, cy = 800;
+  const cw = 720, ch = 200;
+  ctx.fillStyle = '#FFFFFF';
+  roundRect(ctx, cx - cw / 2, cy - ch / 2, cw, ch, 18);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(44,42,38,0.1)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  // varies per bg
+  if (img.bg === 'yellow') {
+    // 7-day weather row
+    const days = ['月☀️24°','火🌤22°','水☔19°','木☁️20°','金☀️25°','土☀️26°','日🌤24°'];
+    ctx.textAlign = 'center';
+    ctx.font = '700 26px "Inter", "Noto Sans JP", sans-serif';
+    ctx.fillStyle = INK;
+    const colW = cw / 7;
+    days.forEach((d, i) => {
+      const dx = cx - cw / 2 + colW * i + colW / 2;
+      ctx.fillText(d, dx, cy + 10);
+    });
+  } else if (img.bg === 'rain') {
+    ctx.textAlign = 'center';
+    ctx.font = '900 36px "Inter", "Noto Sans JP", sans-serif';
+    ctx.fillStyle = PEACH_DEEP;
+    ctx.fillText('☔ 14時から 60%', cx, cy + 18);
+  } else if (img.bg === 'voice') {
+    ctx.textAlign = 'left';
+    ctx.font = '600 24px "Noto Sans JP", sans-serif';
+    ctx.fillStyle = INK;
+    ctx.fillText('💬 「広い芝生でラク」  💬 「アスレチック最高」', cx - cw / 2 + 30, cy - 15);
+    ctx.fillText('💬 「ベビーカーOK、授乳室確認済」', cx - cw / 2 + 30, cy + 30);
+  } else if (img.bg === 'map') {
+    // simple map grid
+    const emojis = ['🌳','🏯','☕','🎨','🌊','🌳','🏠','🌿','🐕','🌳','🎢','🍴'];
+    ctx.textAlign = 'center';
+    ctx.font = '36px sans-serif';
+    emojis.forEach((e, i) => {
+      const col = i % 6;
+      const row = Math.floor(i / 6);
+      const ex = cx - cw / 2 + 60 + col * (cw - 120) / 5;
+      const ey = cy - 30 + row * 70;
+      ctx.fillText(e, ex, ey);
+    });
+  } else if (img.bg === 'season') {
+    const seasons = [['🌸','春'],['🌊','夏'],['🍁','秋'],['⛄','冬']];
+    seasons.forEach((s, i) => {
+      const sx = cx - cw / 2 + 60 + i * (cw - 120) / 3;
+      ctx.textAlign = 'center';
+      ctx.font = '64px sans-serif';
+      ctx.fillText(s[0], sx, cy);
+      ctx.font = '700 22px "Noto Sans JP", sans-serif';
+      ctx.fillStyle = INK;
+      ctx.fillText(s[1], sx, cy + 50);
+    });
+  } else if (img.bg === 'pwa') {
+    ctx.textAlign = 'center';
+    ctx.font = '600 24px "Noto Sans JP", sans-serif';
+    ctx.fillStyle = INK;
+    ctx.fillText('Safari → 共有 → ホーム画面に追加 → 完了', cx, cy + 12);
+  } else if (img.bg === 'blue') {
+    ctx.textAlign = 'center';
+    ctx.font = '700 28px "Noto Sans JP", sans-serif';
+    ctx.fillStyle = GREEN_DEEP;
+    ctx.fillText('🚗 矢橋帰帆島 · 5.2km    🚗 草津川 · 8.4km', cx, cy + 12);
+  }
+}
+
+// 🌳 SPOT — emoji + spot name + location pill + tags
+function renderSpot(canvas, p) {
+  const W = 1080, H = 1080;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  paintBg(ctx, W, H, p.img.bg);
+  paintHeader(ctx, W, H);
+  // big emoji center
+  ctx.font = '320px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(p.img.emoji, W / 2, 470);
+  // location pill (above name)
+  ctx.font = '700 24px "Inter", "Noto Sans JP", sans-serif';
+  ctx.textAlign = 'center';
+  const locTxt = p.img.loc;
+  const locW = ctx.measureText(locTxt).width + 40;
+  ctx.fillStyle = 'rgba(255,255,255,0.92)';
+  roundRect(ctx, W / 2 - locW / 2, 540, locW, 44, 999);
+  ctx.fill();
+  ctx.fillStyle = GREEN_DEEP;
+  ctx.fillText(locTxt, W / 2, 572);
+  // spot name (big)
+  ctx.fillStyle = INK;
+  ctx.font = '900 84px "Inter", "Noto Sans JP", sans-serif';
+  ctx.fillText(p.img.spotName, W / 2, 680);
+  // tags row
+  ctx.font = '700 22px "Inter", "Noto Sans JP", sans-serif';
+  const tags = p.img.tags || [];
+  let totalW = 0;
+  const tagWidths = tags.map(t => {
+    const w = ctx.measureText(t).width + 32;
+    totalW += w;
+    return w;
+  });
+  totalW += (tags.length - 1) * 14;
+  let cursorX = W / 2 - totalW / 2;
+  tags.forEach((t, i) => {
+    const tw = tagWidths[i];
+    ctx.fillStyle = '#FFFFFF';
+    roundRect(ctx, cursorX, 740, tw, 44, 999);
+    ctx.fill();
+    ctx.fillStyle = INK;
+    ctx.textAlign = 'center';
+    ctx.fillText(t, cursorX + tw / 2, 770);
+    cursorX += tw + 14;
+  });
+  paintFooter(ctx, W, H);
+}
+
+// 🍑 CHARACTER — character SVG + name + speech
+function renderCharacter(canvas, p) {
+  const W = 1080, H = 1080;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  paintBg(ctx, W, H, p.img.bg);
+  paintHeader(ctx, W, H);
+  // character (big, center-top)
+  if (p.img.char === 'kodo') {
+    drawKodoMark(ctx, W / 2, 380, 380);
+  } else if (p.img.char === 'all') {
+    // 4 characters side by side
+    const spacing = 200;
+    drawKodoMark(ctx, W / 2 - spacing * 1.5, 360, 160);
+    drawKotoMark(ctx, W / 2 - spacing * 0.5, 360, 160);
+    drawKodoMark(ctx, W / 2 + spacing * 0.5, 360, 160);
+    drawKotoMark(ctx, W / 2 + spacing * 1.5, 360, 160);
+    // "+6"
+    ctx.fillStyle = INK_SOFT;
+    ctx.font = '900 56px "Inter", sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('+6', W / 2 + spacing * 2.0, 380);
+  } else if (p.img.char === 'thanks') {
+    // 3 characters
+    drawKodoMark(ctx, W / 2 - 200, 380, 200);
+    drawKotoMark(ctx, W / 2, 380, 200);
+    drawKodoMark(ctx, W / 2 + 200, 380, 200);
+  }
+  // name pill
+  ctx.font = '900 36px "Inter", "Noto Sans JP", sans-serif';
+  ctx.textAlign = 'center';
+  const nameW = ctx.measureText(p.img.name).width + 48;
+  ctx.fillStyle = 'rgba(255,255,255,0.92)';
+  roundRect(ctx, W / 2 - nameW / 2, 580, nameW, 60, 999);
+  ctx.fill();
+  ctx.fillStyle = GREEN_DEEP;
+  ctx.fillText(p.img.name, W / 2, 622);
+  // quote box
+  ctx.fillStyle = INK;
+  ctx.font = '700 40px "Noto Sans JP", sans-serif';
+  const lines = p.img.quote.split('\n');
+  lines.forEach((l, i) => {
+    ctx.fillText(l, W / 2, 730 + i * 56);
+  });
+  paintFooter(ctx, W, H);
+}
+
+function _esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+
+function buildCards() {
+  const root = document.getElementById('schedule');
+  const base = new Date(); base.setDate(base.getDate());
+
+  POSTS.forEach((p, i) => {
+    const date = new Date(base); date.setDate(base.getDate() + i);
+    const dateStr = date.toLocaleDateString('ja-JP', { month: 'short', day: 'numeric', weekday: 'short' });
+    const kindLabel = p.kind === 'hero' ? '🎉 HERO'
+                    : p.kind === 'feature' ? '📱 FEATURE'
+                    : p.kind === 'spot' ? '🌳 SPOT'
+                    : '🍑 CHARACTER';
+    const card = document.createElement('section');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-head">
+        <div class="day">DAY ${String(p.day).padStart(2,'0')}</div>
+        <div class="date">${_esc(dateStr)}</div>
+      </div>
+      <div class="theme">${_esc(p.theme)}</div>
+      <div class="kind">${kindLabel}</div>
+      <div class="image-wrap">
+        <canvas style="display:none" data-canvas="${i}"></canvas>
+        <img data-img="${i}" alt="Day ${p.day} image">
+        <div class="save-hint">↑ 長押し / 右クリックで保存</div>
+      </div>
+      <div class="tweet">
+        <div class="lang-row"><span class="lang">JP</span><button class="copy" data-copy="jp-${i}">copy</button></div>
+        <div class="tweet-body" id="jp-${i}">${_esc(p.jp)}</div>
+        <div class="tweet-meta">${[...p.jp].length} 文字</div>
+      </div>
+      <div class="tweet">
+        <div class="lang-row"><span class="lang">EN</span><button class="copy" data-copy="en-${i}">copy</button></div>
+        <div class="tweet-body" id="en-${i}">${_esc(p.en)}</div>
+        <div class="tweet-meta">${p.en.length} chars</div>
+      </div>
+    `;
+    root.appendChild(card);
+  });
+
+  function renderAll() {
+    POSTS.forEach((p, i) => {
+      const canvas = document.querySelector('canvas[data-canvas="' + i + '"]');
+      const imgEl = document.querySelector('img[data-img="' + i + '"]');
+      if (!canvas || !imgEl) return;
+      if (p.kind === 'hero') renderHero(canvas, p);
+      else if (p.kind === 'feature') renderFeature(canvas, p);
+      else if (p.kind === 'spot') renderSpot(canvas, p);
+      else if (p.kind === 'character') renderCharacter(canvas, p);
+      imgEl.src = canvas.toDataURL('image/png');
+    });
+  }
+
+  document.querySelectorAll('.copy').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = btn.dataset.copy;
+      const text = document.getElementById(id).textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.classList.add('done'); btn.textContent = '✓ copied';
+        setTimeout(() => { btn.classList.remove('done'); btn.textContent = 'copy'; }, 1600);
+      } catch (e) {
+        const sel = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(document.getElementById(id));
+        sel.removeAllRanges(); sel.addRange(range);
+        btn.textContent = '⌘+C';
+      }
+    });
+  });
+
+  // Render after fonts are ready
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(renderAll);
+  } else {
+    setTimeout(renderAll, 600);
+  }
+}
+
+// ── Paste-to-add screenshots (Cmd+V), persist to localStorage ──────────
+const SHOTS_KEY = 'kodoco_sns_screenshots_v1';
+function loadShots() {
+  try { return JSON.parse(localStorage.getItem(SHOTS_KEY) || '[]'); } catch (_) { return []; }
+}
+function saveShots(arr) {
+  try { localStorage.setItem(SHOTS_KEY, JSON.stringify(arr)); } catch (e) {
+    if (e.name === 'QuotaExceededError') alert('localStorage が一杯です。古いスクショを消してから貼り直してください。');
+  }
+}
+function tsLabel() {
+  const d = new Date();
+  return d.getFullYear() + ('0' + (d.getMonth()+1)).slice(-2) + ('0' + d.getDate()).slice(-2)
+       + '-' + ('0' + d.getHours()).slice(-2) + ('0' + d.getMinutes()).slice(-2) + ('0' + d.getSeconds()).slice(-2);
+}
+function renderShot(arr, dataUrl, ts) {
+  const grid = document.getElementById('screenshots-grid');
+  const cell = document.createElement('div');
+  cell.style.cssText = 'background:var(--bg-card);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;';
+  const fname = `kodoco-shot-${ts}.png`;
+  cell.innerHTML = `
+    <a href="${dataUrl}" download="${fname}" style="display:block;">
+      <img src="${dataUrl}" alt="shot" style="width:100%;height:auto;display:block;-webkit-touch-callout:default;border:1px solid var(--line);border-radius:6px;">
+    </a>
+    <div style="font-family:'Inter',monospace;font-size:10px;color:var(--ink-faint);margin-top:8px;letter-spacing:0.04em;word-break:break-all;">${fname}</div>
+    <div style="display:flex;justify-content:space-between;gap:6px;margin-top:6px;">
+      <a href="${dataUrl}" download="${fname}" style="font-family:'Inter',sans-serif;font-size:10.5px;font-weight:700;color:#fff;background:var(--green);text-decoration:none;border:1px solid var(--green);padding:4px 8px;flex:1;border-radius:6px;">⬇ DL</a>
+      <button data-rm="${ts}" style="background:transparent;border:1px solid var(--peach-deep);color:var(--peach-deep);font:700 10.5px 'Inter',sans-serif;cursor:pointer;padding:4px 8px;flex:1;border-radius:6px;">✕ remove</button>
+    </div>
+  `;
+  cell.querySelector('button[data-rm]').onclick = () => {
+    const next = loadShots().filter(s => s.ts !== ts);
+    saveShots(next); refreshShots();
+  };
+  grid.appendChild(cell);
+}
+function refreshShots() {
+  const grid = document.getElementById('screenshots-grid');
+  grid.innerHTML = '';
+  const arr = loadShots();
+  arr.forEach(s => renderShot(arr, s.dataUrl, s.ts));
+  document.getElementById('clear-shots').style.display = arr.length ? 'inline-block' : 'none';
+}
+document.addEventListener('paste', (e) => {
+  const items = e.clipboardData ? e.clipboardData.items : [];
+  for (const item of items) {
+    if (item.type && item.type.startsWith('image/')) {
+      const file = item.getAsFile();
+      if (!file) continue;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const ts = tsLabel();
+        const arr = loadShots();
+        arr.push({ ts, dataUrl: reader.result });
+        saveShots(arr);
+        refreshShots();
+      };
+      reader.readAsDataURL(file);
+      e.preventDefault();
+    }
+  }
+});
+document.getElementById('clear-shots').addEventListener('click', () => {
+  if (!confirm('貼り付けた全スクショを削除しますか？')) return;
+  saveShots([]); refreshShots();
+});
+
+buildCards();
+refreshShots();
+</script>
+
+</body>
+</html>

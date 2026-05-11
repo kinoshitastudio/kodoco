@@ -15,11 +15,17 @@
 <meta name="theme-color" content="#FAF8F4">
 <meta property="og:title" content="KODOCO — 今日どこいく？">
 <meta property="og:description" content="子連れで失敗しない場所が、今日の状況でわかる。滋賀県の子連れおでかけWebアプリ。">
-<meta property="og:image" content="./ogp.svg">
+<meta property="og:image" content="https://kodoco.jp/ogp.png?v=20260511">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
 <meta property="og:url" content="https://kodoco.jp/app.html">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="KODOCO">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="./ogp.svg">
+<meta name="twitter:image" content="https://kodoco.jp/ogp.png?v=20260511">
+<meta name="twitter:title" content="KODOCO — 今日どこいく？">
+<meta name="twitter:description" content="子連れで失敗しない場所が、今日の状況でわかる。滋賀県の子連れおでかけWebアプリ。">
 <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=33" sizes="any">
 <link rel="apple-touch-icon" href="./apple-touch-icon.svg?v=34">
 <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.svg?v=34">
@@ -2474,11 +2480,11 @@ html, body {
       </div>
 
       <!-- Kodo hint: location feature -->
-      <div class="kodo-hint-near">
+      <div class="kodo-hint-near" id="kodoHintNear">
         <svg class="kodo-hint-near-mascot" aria-hidden="true"><use href="#kodo"/></svg>
-        <div class="kodo-hint-near-bubble">
-          近くで探したい？<span class="hl">📍 現在地 ON</span> にすると、<br>近いスポットから順に並ぶよ。
-          <small>上の天気カードの 📍ボタン から切替できる</small>
+        <div class="kodo-hint-near-bubble" id="kodoHintNearBubble">
+          近くで探したい？<span class="hl">📍 現在地 ON</span> にすると、<br>下のスポット一覧が近い順に並びます。
+          <small>「探す」タブでも距離順で見られるよ。位置情報は天気カードの 📍ボタン から切替</small>
         </div>
       </div>
 
@@ -5753,10 +5759,10 @@ function scoreRoutePlan(plan, ctx) {
     if (plan.season === ctx.season) score += 5;
     else return -999; // 旬じゃないプランは強制的に最下位（実質非表示）
   }
-  // 天気マッチング
+  // 天気マッチング — 反対の天気のプランは出さない (晴れの日に "雨でも全力" など)
   if (plan.weather === ctx.weather) score += 4;
   else if (plan.weather === 'any') score += 2;
-  else score -= 3; // 反対の天気は大きく減点
+  else return -999;
   // 年齢マッチング
   if (plan.ageRange) {
     if (ctx.age >= plan.ageRange[0] && ctx.age <= plan.ageRange[1]) score += 3;
@@ -6062,10 +6068,29 @@ function buildSpotList() {
   if (state._heroPick) filtered = filtered.filter(s => s.id !== state._heroPick);
 
   // 滋賀と周辺エリアで分割
-  const shigaSpots = filtered.filter(s => spotPref(s) === '滋賀');
+  let shigaSpots = filtered.filter(s => spotPref(s) === '滋賀');
   const nearbySpots = filtered.filter(s => spotPref(s) !== '滋賀');
 
-  document.getElementById('spotListTitle').textContent = 'その他のスポット（' + shigaSpots.length + '件）';
+  // 現在地 ON なら 距離が近い順 にソート (kodo-hint-near の文言と整合)
+  const _loc = (typeof _currentLoc !== 'undefined' && _currentLoc) || (typeof getSavedLocation === 'function' && getSavedLocation());
+  const _geoOn = !!(_loc && _loc.source === 'geo');
+  if (_geoOn) {
+    shigaSpots = shigaSpots
+      .map(s => ({ s, d: (typeof s.lat === 'number') ? haversineKm(_loc.lat, _loc.lng, s.lat, s.lng) : Infinity }))
+      .sort((a, b) => a.d - b.d)
+      .map(x => x.s);
+  }
+  // kodo-hint-near の文言を ON/OFF で切替
+  const _hintBubble = document.getElementById('kodoHintNearBubble');
+  if (_hintBubble) {
+    if (_geoOn) {
+      _hintBubble.innerHTML = '<span class="hl">📍 現在地 ON</span> 中。<br>下のスポット一覧は<b>近い順</b>に並んでます。<small>' + (_loc.name ? _loc.name + 'から計算 · ' : '') + '解除は天気カードの 📍ボタン</small>';
+    } else {
+      _hintBubble.innerHTML = '近くで探したい？<span class="hl">📍 現在地 ON</span> にすると、<br>下のスポット一覧が<b>近い順</b>に並びます。<small>「探す」タブでも距離順で見られる。位置情報は天気カードの 📍ボタン から切替</small>';
+    }
+  }
+
+  document.getElementById('spotListTitle').textContent = (_geoOn ? '近い順に並んでます（' : 'その他のスポット（') + shigaSpots.length + '件）';
   // 年齢がぴったりマッチする最初の2件に「おすすめ」バッジ
   const recIds = new Set(shigaSpots.slice(0, 2).map(s => s.id));
   shigaSpots.forEach(s => cont.appendChild(buildSpotCard(s, recIds.has(s.id), age)));
