@@ -195,8 +195,67 @@ html, body {
 .topbar-mark { width: 28px; height: 32px; flex-shrink: 0; }
 .topbar-brand { font-family: 'Inter', 'Noto Sans JP', sans-serif; font-size: 20px; font-weight: 800; color: var(--text); letter-spacing: -0.03em; }
 .topbar-sub { font-size: 11px; font-weight: 400; color: var(--text-sub); letter-spacing: 0; }
-.topbar-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--card); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.topbar-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--card); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background .15s ease, color .15s ease, box-shadow .15s ease; }
 .topbar-btn svg { width: 17px; height: 17px; }
+.topbar-actions { display: flex; align-items: center; gap: 8px; }
+.topbar-btn-geo .topbar-geo-ic { font-size: 17px; line-height: 1; }
+.topbar-btn-geo { color: var(--text-sub, var(--ink-sub)); }
+.topbar-btn-geo.on {
+  background: #3F6B2A;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(63,107,42,0.35), 0 0 0 2px rgba(255,255,255,0.7);
+  animation: geoBtnPulse 2.4s ease-in-out infinite;
+}
+@keyframes geoBtnPulse {
+  0%,100% { box-shadow: 0 2px 6px rgba(63,107,42,0.35), 0 0 0 2px rgba(255,255,255,0.7); }
+  50%     { box-shadow: 0 2px 10px rgba(63,107,42,0.5), 0 0 0 4px rgba(63,107,42,0.18); }
+}
+
+/* ═══ 季節アニメーション (春=桜 / 夏=雲 / 秋=葉 / 冬=雪 / 雨=雨粒) ═══ */
+.season-layer {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+.season-particle {
+  position: absolute;
+  top: -8vh;
+  display: inline-block;
+  will-change: transform, opacity;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.season-particle.sp-petal { animation: spFall linear infinite; }
+.season-particle.sp-leaf  { animation: spLeafFall linear infinite; }
+.season-particle.sp-snow  { animation: spSnow linear infinite; }
+.season-particle.sp-rain  { animation: spRain linear infinite; opacity: 0.55; filter: blur(0.3px); }
+.season-particle.sp-cloud { animation: spCloud linear infinite; top: 6vh; opacity: 0.45; }
+@keyframes spFall {
+  0%   { transform: translateY(-10vh) translateX(0) rotate(0deg); }
+  50%  { transform: translateY(50vh) translateX(40px) rotate(220deg); }
+  100% { transform: translateY(110vh) translateX(-30px) rotate(540deg); }
+}
+@keyframes spLeafFall {
+  0%   { transform: translateY(-10vh) translateX(0) rotate(0deg); }
+  50%  { transform: translateY(50vh) translateX(60px) rotate(180deg); }
+  100% { transform: translateY(110vh) translateX(-40px) rotate(360deg); }
+}
+@keyframes spSnow {
+  0%   { transform: translateY(-10vh) translateX(0); }
+  100% { transform: translateY(110vh) translateX(20px); }
+}
+@keyframes spRain {
+  0%   { transform: translateY(-10vh) translateX(0); }
+  100% { transform: translateY(110vh) translateX(40px); }
+}
+@keyframes spCloud {
+  0%   { transform: translateX(-30vw); }
+  100% { transform: translateX(130vw); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .season-layer { display: none; }
+}
 
 /* tabs */
 .tab-content { flex: 1; overflow: hidden; display: none; flex-direction: column; }
@@ -2326,9 +2385,14 @@ html, body {
       <span class="topbar-brand">KODOCO</span>
       <span class="topbar-sub">今日どこいく？</span>
     </div>
-    <button class="topbar-btn" onclick="openSettings()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg>
-    </button>
+    <div class="topbar-actions">
+      <button class="topbar-btn topbar-btn-geo" id="topbarGeoBtn" onclick="toggleGeolocation()" title="現在地 ON / OFF" aria-label="現在地切替">
+        <span class="topbar-geo-ic">📍</span>
+      </button>
+      <button class="topbar-btn" onclick="openSettings()" title="設定">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg>
+      </button>
+    </div>
   </div>
 
   <!-- HOME -->
@@ -5159,6 +5223,7 @@ function initApp() {
   buildHero();
   updateKodoTip();
   buildSpotList();
+  if (typeof initSeasonalAnimation === 'function') initSeasonalAnimation();
   // 各スポットのリアルタイム降水確率をバックグラウンド取得
   if (typeof loadSpotsRain === 'function') loadSpotsRain();
   // 解禁状態のベースラインを確定＋アクセサリー反映
@@ -5547,10 +5612,19 @@ async function toggleGeolocation() {
 
 function updateGeoToggleUI(on) {
   const btn = document.getElementById('geoToggle');
-  if (!btn) return;
-  btn.classList.toggle('on', on);
-  document.getElementById('geoToggleIcon').textContent = on ? '📍' : '📍';
-  document.getElementById('geoToggleLabel').textContent = on ? '現在地ON' : '現在地OFF';
+  if (btn) {
+    btn.classList.toggle('on', on);
+    const icEl = document.getElementById('geoToggleIcon');
+    if (icEl) icEl.textContent = on ? '📍' : '📍';
+    const lblEl = document.getElementById('geoToggleLabel');
+    if (lblEl) lblEl.textContent = on ? '現在地ON' : '現在地OFF';
+  }
+  // topbar アイコンも連動
+  const tb = document.getElementById('topbarGeoBtn');
+  if (tb) {
+    tb.classList.toggle('on', on);
+    tb.title = on ? '現在地 ON (タップで OFF)' : '現在地 OFF (タップで ON)';
+  }
 }
 function setLocationLabel(name) {
   const el = document.getElementById('weatherLocName');
@@ -5669,10 +5743,15 @@ function renderWeatherDays(data) {
   });
   // reflect today into filter state so recommendations adapt
   const today = data[0];
+  const prevWeather = state.weather;
   if (today && today.wcode >= 50) {
     state.weather = 'rainy';
   } else {
     state.weather = 'sunny';
+  }
+  // 季節アニメも天気切替に追従
+  if (prevWeather !== state.weather && typeof initSeasonalAnimation === 'function') {
+    initSeasonalAnimation();
   }
 }
 
@@ -5792,6 +5871,49 @@ function getCurrentSeason() {
   if (m >= 6 && m <= 8)  return 'summer';
   if (m >= 9 && m <= 11) return 'autumn';
   return 'winter';
+}
+
+// ── 季節アニメーション ─────────────────────────────────────────
+// 画面全体に粒 (桜/葉/雪/雨/雲) を流す。state.weather と getCurrentSeason() で出し分け。
+// 雨の日は天気アニメ最優先 (季節と重ねない)
+function initSeasonalAnimation() {
+  // 既存レイヤー削除 (再呼び出し時)
+  document.querySelectorAll('.season-layer').forEach(el => el.remove());
+  // ユーザー設定で OFF にできる余地 (今は常時 ON)
+  if (localStorage.getItem('kodoco_seasonal_anim_off') === '1') return;
+  // モバイル省電力モード考慮: prefers-reduced-motion は CSS 側で display:none
+
+  const isRainy = state && state.weather === 'rainy';
+  const season = getCurrentSeason();
+
+  let cls, char, count, sizeMin, sizeMax;
+  if (isRainy) {
+    cls = 'sp-rain';  char = '💧'; count = 22; sizeMin = 14; sizeMax = 22;
+  } else if (season === 'spring') {
+    cls = 'sp-petal'; char = '🌸'; count = 14; sizeMin = 14; sizeMax = 24;
+  } else if (season === 'summer') {
+    cls = 'sp-cloud'; char = '☁️'; count = 6;  sizeMin = 40; sizeMax = 70;
+  } else if (season === 'autumn') {
+    cls = 'sp-leaf';  char = '🍂'; count = 14; sizeMin = 16; sizeMax = 26;
+  } else {
+    cls = 'sp-snow';  char = '❄️'; count = 18; sizeMin = 12; sizeMax = 22;
+  }
+
+  const layer = document.createElement('div');
+  layer.className = 'season-layer';
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('span');
+    p.className = 'season-particle ' + cls;
+    p.textContent = char;
+    p.style.left = (Math.random() * 100) + 'vw';
+    p.style.fontSize = (sizeMin + Math.random() * (sizeMax - sizeMin)) + 'px';
+    const dur = cls === 'sp-cloud' ? (60 + Math.random() * 40) : (8 + Math.random() * 10);
+    p.style.animationDuration = dur + 's';
+    p.style.animationDelay = (-Math.random() * dur) + 's'; // 全部最初から散らす
+    p.style.opacity = (0.5 + Math.random() * 0.4).toFixed(2);
+    layer.appendChild(p);
+  }
+  document.body.appendChild(layer);
 }
 
 function scoreRoutePlan(plan, ctx) {
