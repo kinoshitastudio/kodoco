@@ -235,8 +235,13 @@ html, body {
 .season-particle.sp-petal { animation: spFall linear infinite; }
 .season-particle.sp-leaf  { animation: spLeafFall linear infinite; }
 .season-particle.sp-snow  { animation: spSnow linear infinite; }
-.season-particle.sp-rain  { animation: spRain linear infinite; opacity: 0.55; filter: blur(0.3px); }
-.season-particle.sp-cloud { animation: spCloud linear infinite; top: 6vh; opacity: 0.45; }
+.season-particle.sp-rain  { animation: spRain linear infinite; opacity: 0.4; filter: blur(0.3px); }
+.season-particle.sp-cloud { animation: spCloud linear infinite; top: 6vh; opacity: 0.32; }
+/* スマホは更に小さく、透明度も下げる */
+@media (max-width: 720px) {
+  .season-particle { font-size: 0.7em; }
+  .season-particle.sp-cloud { opacity: 0.22; }
+}
 @keyframes spFall {
   0%   { transform: translateY(-10vh) translateX(0) rotate(0deg); }
   50%  { transform: translateY(50vh) translateX(40px) rotate(220deg); }
@@ -5925,7 +5930,7 @@ function initSeasonalAnimation() {
     const dur = cls === 'sp-cloud' ? (60 + Math.random() * 40) : (8 + Math.random() * 10);
     p.style.animationDuration = dur + 's';
     p.style.animationDelay = (-Math.random() * dur) + 's'; // 全部最初から散らす
-    p.style.opacity = (0.5 + Math.random() * 0.4).toFixed(2);
+    p.style.opacity = (0.32 + Math.random() * 0.28).toFixed(2);
     layer.appendChild(p);
   }
   document.body.appendChild(layer);
