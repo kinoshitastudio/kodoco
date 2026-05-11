@@ -345,20 +345,20 @@
       line-height: 1;
       opacity: 0.95;
     }
-    .hero-orbit-emoji { font-size: clamp(28px, 4vw, 42px); }
+    .hero-orbit-emoji { font-size: clamp(36px, 5vw, 56px); }
     .hero-orbit-card {
       background: #fff;
-      border-radius: 14px;
-      padding: 10px 14px;
+      border-radius: 16px;
+      padding: 13px 18px;
       font-family: 'Inter','Noto Sans JP',sans-serif;
-      font-size: 11px; font-weight: 600; color: var(--ink);
-      box-shadow: 0 14px 34px rgba(44,42,38,0.12);
+      font-size: 13.5px; font-weight: 700; color: var(--ink);
+      box-shadow: 0 16px 40px rgba(44,42,38,0.14);
       white-space: nowrap;
-      display: inline-flex; align-items: center; gap: 6px;
+      display: inline-flex; align-items: center; gap: 8px;
     }
-    .hero-orbit-card .ho-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
-    .hero-orbit-card .ho-emoji { font-size: 16px; }
-    .hero-orbit-card .ho-pill { background: var(--green-soft); color: var(--green-deep); font-size: 9px; padding: 2px 6px; border-radius: 8px; font-weight: 700; letter-spacing: 0.06em; }
+    .hero-orbit-card .ho-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); }
+    .hero-orbit-card .ho-emoji { font-size: 20px; }
+    .hero-orbit-card .ho-pill { background: var(--green-soft); color: var(--green-deep); font-size: 11px; padding: 3px 8px; border-radius: 10px; font-weight: 800; letter-spacing: 0.06em; }
     /* positions */
     .ho-1 { top: 6%;  left: 3%;   transform: rotate(-6deg); animation: orbFloat 5s ease-in-out infinite; }
     .ho-2 { top: 4%;  right: 4%;  transform: rotate(5deg);  animation: orbFloat 5.5s ease-in-out infinite -1s; }
@@ -383,25 +383,25 @@
       -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
     }
     .mascot-slot { display: flex; justify-content: center; align-items: flex-end; height: 100%; position: relative; z-index: 3; }
-    .mascot-slot svg { width: 160px; height: auto; }
+    .mascot-slot svg { width: 220px; height: auto; }
     .mascot-slot.left svg { transform: translateY(20px) rotate(-6deg); animation: orbFloat 4s ease-in-out infinite; }
     .mascot-slot.right svg { transform: translateY(20px) rotate(6deg); animation: orbFloat 4.5s ease-in-out infinite -1s; }
     /* 親子シーン (左スロット) — 大きく imagery を伝える */
     .mascot-slot.family svg.family-scene {
-      width: clamp(220px, 24vw, 300px);
+      width: clamp(280px, 32vw, 380px);
       height: auto;
       transform: translateY(12px) rotate(-2deg);
-      filter: drop-shadow(0 12px 28px rgba(44,42,38,0.16));
+      filter: drop-shadow(0 14px 32px rgba(44,42,38,0.18));
       animation: orbFloat 5.2s ease-in-out infinite;
     }
     .mascot-slot.family { align-items: flex-end; }
 
     .phone-frame {
-      width: 280px;
-      aspect-ratio: 9/18.5;
+      width: 320px;
+      aspect-ratio: 9/19.2;
       background: #2C2A26;
-      border-radius: 42px;
-      padding: 8px;
+      border-radius: 46px;
+      padding: 9px;
       box-shadow: 0 30px 80px rgba(44,42,38,0.18), 0 4px 12px rgba(44,42,38,0.08);
       position: relative;
       margin: 0 auto;
@@ -429,12 +429,49 @@
     .phone-screen {
       width: 100%; height: 100%;
       background: var(--bg);
-      border-radius: 34px;
+      border-radius: 36px;
       overflow: hidden;
-      padding: 40px 14px 16px;
-      display: flex; flex-direction: column; gap: 9px;
+      padding: 44px 13px 0;
+      display: flex; flex-direction: column; gap: 8px;
       position: relative;
     }
+    /* Rain strip (☔ これからの雨) */
+    .pp-rain {
+      background: linear-gradient(135deg, #FFE5DC 0%, #FFD0BA 100%);
+      border-radius: 10px;
+      padding: 6px 9px;
+      display: flex; align-items: center; gap: 6px;
+      border: 1px solid rgba(184,84,35,0.18);
+    }
+    .pp-rain-badge { font-size: 7px; font-weight: 800; color: #B85423; letter-spacing: .08em; background: #fff; padding: 2px 5px; border-radius: 5px; }
+    .pp-rain-text { font-size: 8px; font-weight: 700; color: var(--ink); flex: 1; }
+    .pp-rain-pct { font-size: 9px; font-weight: 800; color: #B85423; }
+    /* Kodo hint near */
+    .pp-kodo-hint {
+      background: linear-gradient(135deg, #FFF5E0 0%, #FFE5DC 100%);
+      border-radius: 10px;
+      padding: 5px 8px;
+      display: flex; align-items: center; gap: 5px;
+      border: 1px solid rgba(255,165,80,0.18);
+    }
+    .pp-kodo-hint svg { width: 18px; height: 20px; flex-shrink: 0; }
+    .pp-kodo-hint-text { font-size: 7.5px; font-weight: 700; color: var(--ink); line-height: 1.35; }
+    .pp-kodo-hint-text .hl { color: #B85423; background: #fff; padding: 0 4px; border-radius: 3px; }
+    /* Footer nav */
+    .pp-footer {
+      margin: auto -13px 0;
+      background: #fff;
+      border-top: 1px solid var(--line);
+      padding: 6px 10px 12px;
+      display: flex; justify-content: space-around;
+    }
+    .pp-foot-tab {
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      font-size: 6.5px; font-weight: 700;
+      color: var(--ink-faint);
+    }
+    .pp-foot-tab.active { color: var(--green-deep); }
+    .pp-foot-tab .pp-foot-ic { font-size: 14px; }
     /* mini-app inside phone */
     .pp-header {
       display: flex; justify-content: space-between; align-items: center;
@@ -1194,14 +1231,19 @@
     }
     .preview-card {
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .preview-phone {
       background: var(--bg-warm);
       border-radius: var(--radius-lg);
-      padding: 32px 24px;
-      margin-bottom: 20px;
-      aspect-ratio: 3/4;
-      display: flex; align-items: center; justify-content: center;
+      padding: 0;
+      margin: 0 auto 20px;
+      width: 100%;
+      max-width: 240px;
+      aspect-ratio: 9/16;
+      display: flex; align-items: stretch; justify-content: center;
       position: relative;
       transition: transform .3s;
     }
@@ -2074,18 +2116,26 @@
             <svg class="pp-logo-mark"><use href="#kodo-mark"/></svg>
             <div>
               <div class="pp-logo-name">KODOCO</div>
-              <div class="pp-logo-sub">今日どこいく？</div>
+              <div class="pp-logo-sub">📍 大津市 · 今日どこいく？</div>
             </div>
           </div>
-          <div class="pp-date">4/23 🌤</div>
+          <div class="pp-date">5/11 🌤</div>
         </div>
 
         <div class="pp-weather">
-          <div class="pp-day"><div class="pp-day-dow">火</div><div class="pp-day-ic">☀️</div><div class="pp-day-t">24°</div></div>
-          <div class="pp-day today"><div class="pp-day-dow">水</div><div class="pp-day-ic">🌤</div><div class="pp-day-t">22°</div></div>
-          <div class="pp-day"><div class="pp-day-dow">木</div><div class="pp-day-ic">☔</div><div class="pp-day-t">19°</div></div>
-          <div class="pp-day"><div class="pp-day-dow">金</div><div class="pp-day-ic">☁️</div><div class="pp-day-t">20°</div></div>
-          <div class="pp-day"><div class="pp-day-dow">土</div><div class="pp-day-ic">☀️</div><div class="pp-day-t">25°</div></div>
+          <div class="pp-day"><div class="pp-day-dow">月</div><div class="pp-day-ic">☀️</div><div class="pp-day-t">24°</div></div>
+          <div class="pp-day today"><div class="pp-day-dow">火</div><div class="pp-day-ic">🌤</div><div class="pp-day-t">22°</div></div>
+          <div class="pp-day"><div class="pp-day-dow">水</div><div class="pp-day-ic">☔</div><div class="pp-day-t">19°</div></div>
+          <div class="pp-day"><div class="pp-day-dow">木</div><div class="pp-day-ic">☁️</div><div class="pp-day-t">20°</div></div>
+          <div class="pp-day"><div class="pp-day-dow">金</div><div class="pp-day-ic">☀️</div><div class="pp-day-t">25°</div></div>
+          <div class="pp-day"><div class="pp-day-dow">土</div><div class="pp-day-ic">☀️</div><div class="pp-day-t">26°</div></div>
+          <div class="pp-day"><div class="pp-day-dow">日</div><div class="pp-day-ic">🌤</div><div class="pp-day-t">24°</div></div>
+        </div>
+
+        <div class="pp-rain">
+          <span class="pp-rain-badge">☔ RAIN AHEAD</span>
+          <span class="pp-rain-text">水曜の午後から雨</span>
+          <span class="pp-rain-pct">60%</span>
         </div>
 
         <div class="pp-hero">
@@ -2100,12 +2150,25 @@
           <span class="pp-chip active">☀️ 晴れ</span>
           <span class="pp-chip">🌧 雨</span>
           <span class="pp-chip active">🌅 半日</span>
+          <span class="pp-chip">🐕 犬連れ</span>
         </div>
 
         <div class="pp-plan">
-          <span class="pp-plan-tag">HALF DAY</span>
+          <span class="pp-plan-tag">🗺 OUTING PLAN</span>
           <div class="pp-plan-title">琵琶湖ぐるっとプラン</div>
-          <div class="pp-plan-time">⏱ 3〜4時間 · 3スポット</div>
+          <div class="pp-plan-time">⏱ 3〜4時間 · 3スポット · 移動45分</div>
+        </div>
+
+        <div class="pp-kodo-hint">
+          <svg><use href="#kodo-mark"/></svg>
+          <div class="pp-kodo-hint-text">近くで探したい？<br><span class="hl">📍 現在地 ON</span> で近いスポットから順に。</div>
+        </div>
+
+        <div class="pp-footer">
+          <div class="pp-foot-tab active"><span class="pp-foot-ic">🏠</span><span>ホーム</span></div>
+          <div class="pp-foot-tab"><span class="pp-foot-ic">🔍</span><span>探す</span></div>
+          <div class="pp-foot-tab"><span class="pp-foot-ic">🗺</span><span>地図</span></div>
+          <div class="pp-foot-tab"><span class="pp-foot-ic">📝</span><span>日記</span></div>
         </div>
       </div>
     </div>

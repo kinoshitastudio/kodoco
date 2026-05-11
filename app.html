@@ -5691,6 +5691,15 @@ function buildHero() {
   if (state.weather === 'rainy') pool = pool.filter(s => (s.facilities || []).includes('雨の日OK') || s.catClass === 'indoor' || s.catClass === 'museum');
   if (state.time === 'short') pool = pool.filter(s => { const f = SPOT_FACTS[s.id]; return f && f.stay && f.stay.includes('1'); });
   if (state.dog) pool = pool.filter(s => { const f = SPOT_FACTS[s.id]; return (f && f.dogOk) || (s.dogInfo && s.dogInfo.ok); });
+  // 現在地 ON なら近い順に並び替え、上位 10 件から random pick (堅田に住む人に湖南の遠スポットが出ない)
+  const loc = (typeof _currentLoc !== 'undefined' && _currentLoc) || (typeof getSavedLocation === 'function' && getSavedLocation());
+  if (loc && loc.source === 'geo' && pool.length > 0) {
+    pool = pool
+      .map(s => ({ s, d: (typeof s.lat === 'number') ? haversineKm(loc.lat, loc.lng, s.lat, s.lng) : Infinity }))
+      .sort((a, b) => a.d - b.d)
+      .slice(0, 10)
+      .map(x => x.s);
+  }
   const pick = pool[Math.floor(Math.random() * Math.min(pool.length, 5))] || pool[0];
   if (!pick) return;
   state._heroPick = pick.id;
@@ -5716,6 +5725,9 @@ function buildHero() {
   // meta
   const metaCont = document.getElementById('heroMeta');
   const metaItems = [];
+  // 現在地 ON なら距離をトップに
+  const dStr = spotDistanceStr(pick);
+  if (dStr) metaItems.push(dStr.replace(/^ · /, ''));
   if (facts.ageMin) metaItems.push('👶 ' + facts.ageMin);
   if (facts.stay) metaItems.push('⏱ ' + facts.stay);
   if (facts.rain) metaItems.push('🌧 雨でもOK');
@@ -5815,6 +5827,15 @@ function haversineKm(lat1, lng1, lat2, lng2) {
   const dLng = toRad(lng2 - lng1);
   const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng/2)**2;
   return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+// スポットカード用 — 現在地がONなら「· 5.2km」を返す。OFFや座標欠損なら空文字
+function spotDistanceStr(s) {
+  if (typeof s.lat !== 'number' || typeof s.lng !== 'number') return '';
+  const loc = (typeof _currentLoc !== 'undefined' && _currentLoc) || (typeof getSavedLocation === 'function' && getSavedLocation());
+  if (!loc || loc.source !== 'geo') return '';
+  const km = haversineKm(loc.lat, loc.lng, s.lat, s.lng);
+  if (km < 1) return ' · 🚗 ' + Math.round(km * 1000) + 'm';
+  return ' · 🚗 ' + km.toFixed(1) + 'km';
 }
 // 車での概算移動時間（分）：曲がり補正×1.3、平均40km/h（15km超は高速想定で60km/h）
 function estimateDriveMinutes(lat1, lng1, lat2, lng2) {
@@ -6137,7 +6158,7 @@ function buildSpotCard(s, isRec, age) {
     + (s.rating ? '<span class="spot-rating">★ ' + Number(s.rating).toFixed(1) + '</span>' : '')
     + '</div>'
     + '<button class="heart-btn' + (liked?' liked':'') + '" data-id="' + s.id + '" onclick="event.stopPropagation();toggleHeart(this,\'' + s.id + '\')">' + (liked?'♥':'♡') + '</button></div>'
-    + '<div class="spot-meta-row"><span class="spot-cat ' + s.catClass + '">' + s.cat + '</span><span class="spot-loc">📍 ' + s.loc + '</span></div>'
+    + '<div class="spot-meta-row"><span class="spot-cat ' + s.catClass + '">' + s.cat + '</span><span class="spot-loc">📍 ' + s.loc + spotDistanceStr(s) + '</span></div>'
     + '<div class="spot-value">' + value + '</div>'
     + '<div class="spot-facts">' + factBadges.join('') + '</div>'
     + dogBadge + kidsBadge

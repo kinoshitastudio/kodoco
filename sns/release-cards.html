@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>KODOCO リリース SNS カード (20日分)</title>
+<style>
+  :root {
+    --ink: #2C2A26;
+    --ink-soft: #4A453E;
+    --ink-faint: #8B8676;
+    --green: #5B7F61;
+    --green-deep: #3F6B2A;
+    --green-soft: #D8E8C8;
+    --peach: #F2A88A;
+    --peach-deep: #B85423;
+    --peach-soft: #FFE5DC;
+    --yellow-soft: #FFF5E0;
+    --yellow-deep: #B88923;
+    --blue: #4A90D9;
+    --blue-soft: #DCE8F4;
+    --bg: #FAF6EC;
+    --card: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #2c2826;
+    font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif;
+    padding: 40px 0;
+  }
+  .card {
+    width: 1080px; height: 1080px;
+    margin: 0 auto 40px;
+    border-radius: 0;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    font-feature-settings: 'palt';
+  }
+  .card-num {
+    position: absolute; top: 48px; left: 56px;
+    font-family: 'Inter', sans-serif;
+    font-size: 22px; font-weight: 800;
+    letter-spacing: 0.18em;
+    color: rgba(44,42,38,0.5);
+  }
+  .card-brand {
+    position: absolute; top: 48px; right: 56px;
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 24px;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .card-brand svg { width: 36px; height: 40px; }
+  .card-url {
+    position: absolute; bottom: 56px; left: 56px;
+    font-family: 'Inter', sans-serif;
+    font-size: 28px; font-weight: 700;
+    color: var(--ink);
+    background: rgba(255,255,255,.85);
+    padding: 10px 22px;
+    border-radius: 999px;
+    box-shadow: 0 4px 14px rgba(44,42,38,0.12);
+  }
+  .card-hash {
+    position: absolute; bottom: 56px; right: 56px;
+    font-size: 15px; font-weight: 600;
+    color: rgba(44,42,38,0.55);
+    text-align: right;
+    line-height: 1.5;
+    max-width: 360px;
+  }
+  .card-headline {
+    position: absolute; left: 56px; right: 56px;
+    top: 38%; transform: translateY(-50%);
+    font-size: 92px;
+    font-weight: 900;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .card-headline em {
+    color: var(--green-deep);
+    font-style: normal;
+  }
+  .card-sub {
+    position: absolute; left: 56px; right: 360px;
+    top: 60%;
+    font-size: 26px; font-weight: 600;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+  .card-mascot {
+    position: absolute;
+    bottom: 60px; right: 60px;
+    width: 260px; height: auto;
+    filter: drop-shadow(0 12px 30px rgba(44,42,38,0.18));
+  }
+  .card-emoji-big {
+    position: absolute;
+    font-size: 260px;
+    line-height: 1;
+    filter: drop-shadow(0 12px 30px rgba(44,42,38,0.18));
+  }
+  .card-tag {
+    display: inline-block;
+    background: rgba(255,255,255,.92);
+    padding: 8px 22px;
+    border-radius: 999px;
+    font-size: 22px; font-weight: 800;
+    letter-spacing: 0.1em;
+    color: var(--green-deep);
+    margin-bottom: 22px;
+    box-shadow: 0 4px 14px rgba(44,42,38,0.1);
+  }
+  .card-divider { position:absolute; bottom: 130px; left: 56px; right: 56px; height: 1px; background: rgba(44,42,38,0.15); }
+  /* per-day backgrounds */
+  .bg-launch     { background: radial-gradient(ellipse at top right, #F8C8A8 0%, #E89E80 50%, #C97A5A 100%); }
+  .bg-loc        { background: linear-gradient(135deg, #DCE8F4 0%, #B8D0E8 60%, #8FB0D0 100%); }
+  .bg-weather    { background: linear-gradient(135deg, #FFF5E0 0%, #FFE0B5 60%, #FFC78A 100%); }
+  .bg-rain       { background: linear-gradient(135deg, #FFE5DC 0%, #FFC9A8 60%, #F4A88A 100%); }
+  .bg-plan       { background: linear-gradient(135deg, #FFE5D0 0%, #FFB089 100%); }
+  .bg-baby       { background: linear-gradient(135deg, #FFE6E0 0%, #FFC0CB 60%, #F4A8B8 100%); }
+  .bg-kid        { background: linear-gradient(135deg, #D8E8C8 0%, #A8C898 60%, #88AC78 100%); }
+  .bg-dog        { background: linear-gradient(135deg, #F4E5D2 0%, #D8C0A0 60%, #B89878 100%); }
+  .bg-park       { background: linear-gradient(180deg, #C8E5D0 0%, #88B098 100%); }
+  .bg-castle     { background: linear-gradient(135deg, #E0D0C0 0%, #B89878 60%, #8C7050 100%); }
+  .bg-strawberry { background: linear-gradient(135deg, #FFE0E0 0%, #F88888 100%); }
+  .bg-water      { background: linear-gradient(180deg, #CCE8F0 0%, #88C8D8 50%, #5896A8 100%); }
+  .bg-season     { background: linear-gradient(135deg, #FFE5DC 0%, #D8E8C8 25%, #FFE0B5 50%, #C8D8E8 100%); }
+  .bg-kodo       { background: linear-gradient(180deg, #DDEFD0 0%, #ACD0A0 100%); }
+  .bg-koto       { background: linear-gradient(135deg, #FFE0E0 0%, #FFB8B8 100%); }
+  .bg-voice      { background: linear-gradient(135deg, #F8E8D0 0%, #E8C8A8 100%); }
+  .bg-map        { background: linear-gradient(180deg, #DCE8E5 0%, #8FBFA8 100%); }
+  .bg-free       { background: linear-gradient(135deg, #FFF8DC 0%, #F4D478 100%); }
+  .bg-pwa        { background: linear-gradient(135deg, #2C2A26 0%, #5B7F61 100%); color: white; }
+  .bg-pwa .card-headline { color: #fff; }
+  .bg-pwa .card-sub { color: rgba(255,255,255,0.85); }
+  .bg-pwa .card-brand { color: #fff; }
+  .bg-pwa .card-num { color: rgba(255,255,255,0.5); }
+  .bg-pwa .card-url { background: rgba(255,255,255,0.95); color: var(--ink); }
+  .bg-pwa .card-hash { color: rgba(255,255,255,0.6); }
+  .bg-thanks     { background: linear-gradient(135deg, #FFF0E0 0%, #FFE0C0 40%, #F8C898 100%); }
+  /* sprinkles */
+  .sprinkle {
+    position: absolute;
+    font-size: 64px;
+    line-height: 1;
+    opacity: 0.6;
+    filter: drop-shadow(0 4px 10px rgba(44,42,38,0.15));
+  }
+  .big-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 380px; font-weight: 900;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.04em;
+  }
+  .check-list {
+    position: absolute; left: 56px; right: 56px;
+    top: 50%; transform: translateY(-50%);
+    font-size: 38px; font-weight: 700; color: var(--ink);
+    line-height: 1.7;
+  }
+  .check-list li { list-style: none; padding-left: 60px; position: relative; }
+  .check-list li::before {
+    content: "✓"; position: absolute; left: 0; top: 0;
+    width: 44px; height: 44px;
+    background: var(--green); color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; font-weight: 900;
+  }
+  .phone-mock {
+    position: absolute; top: 50%; right: 80px; transform: translateY(-50%);
+    width: 280px; height: 580px;
+    background: #2C2A26;
+    border-radius: 38px;
+    padding: 8px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+  }
+  .phone-mock-screen { width: 100%; height: 100%; background: var(--bg); border-radius: 32px; padding: 30px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .phone-mock h4 { font-size: 16px; font-weight: 900; color: var(--green-deep); }
+  .phone-mock .row { background: #fff; border-radius: 10px; padding: 10px 12px; font-size: 12px; }
+  /* print page break */
+  @media print {
+    body { background: white; padding: 0; }
+    .card { page-break-after: always; box-shadow: none; margin: 0; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- KODO -->
+    <symbol id="kodo" viewBox="0 0 160 180">
+      <path d="M 64 32 Q 46 14 38 28 Q 36 42 58 38 Q 66 36 64 32 Z" fill="#7A9B7E"/>
+      <path d="M 96 32 Q 114 14 122 28 Q 124 42 102 38 Q 94 36 96 32 Z" fill="#8DAE91"/>
+      <rect x="77" y="30" width="6" height="24" rx="3" fill="#6E8A70"/>
+      <ellipse cx="80" cy="108" rx="58" ry="54" fill="#F4E5D2"/>
+      <ellipse cx="80" cy="158" rx="40" ry="4" fill="#D8C8B0" opacity="0.35"/>
+      <ellipse cx="45" cy="116" rx="10" ry="6" fill="#F2B89A" opacity="0.65"/>
+      <ellipse cx="115" cy="116" rx="10" ry="6" fill="#F2B89A" opacity="0.65"/>
+      <path d="M 56 98 Q 63 92, 70 98" stroke="#2C2A26" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <path d="M 90 98 Q 97 92, 104 98" stroke="#2C2A26" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <path d="M 68 126 Q 80 138, 92 126" stroke="#2C2A26" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <ellipse cx="62" cy="166" rx="11" ry="4" fill="#E5D0B6"/>
+      <ellipse cx="98" cy="166" rx="11" ry="4" fill="#E5D0B6"/>
+    </symbol>
+    <!-- KODO MARK -->
+    <symbol id="kodo-mark" viewBox="0 0 100 120">
+      <path d="M 36 20 Q 22 8 18 20 Q 18 30 34 28 Z" fill="#7A9B7E"/>
+      <path d="M 64 20 Q 78 8 82 20 Q 82 30 66 28 Z" fill="#8DAE91"/>
+      <rect x="47" y="22" width="6" height="14" rx="3" fill="#6E8A70"/>
+      <ellipse cx="50" cy="72" rx="38" ry="36" fill="#F4E5D2"/>
+      <ellipse cx="29" cy="80" rx="7" ry="4" fill="#F2B89A" opacity="0.6"/>
+      <ellipse cx="71" cy="80" rx="7" ry="4" fill="#F2B89A" opacity="0.6"/>
+      <path d="M 34 64 Q 40 60, 46 64" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+      <path d="M 54 64 Q 60 60, 66 64" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+      <path d="M 42 87 Q 50 94, 58 87" stroke="#2C2A26" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <!-- KOTO -->
+    <symbol id="koto" viewBox="0 0 160 180">
+      <circle cx="70" cy="22" r="8" fill="#F4A898"/>
+      <circle cx="90" cy="22" r="8" fill="#F4A898"/>
+      <circle cx="80" cy="12" r="8" fill="#F8B8A8"/>
+      <circle cx="80" cy="32" r="8" fill="#F4A898"/>
+      <circle cx="80" cy="22" r="5" fill="#E8D28A"/>
+      <rect x="77" y="32" width="6" height="16" rx="3" fill="#8DAE91"/>
+      <ellipse cx="80" cy="108" rx="58" ry="54" fill="#F8D8BA"/>
+      <ellipse cx="80" cy="158" rx="40" ry="4" fill="#DAB898" opacity="0.35"/>
+      <ellipse cx="45" cy="116" rx="10" ry="6" fill="#E88878" opacity="0.55"/>
+      <ellipse cx="115" cy="116" rx="10" ry="6" fill="#E88878" opacity="0.55"/>
+      <circle cx="60" cy="96" r="4" fill="#2C2A26"/>
+      <circle cx="100" cy="96" r="4" fill="#2C2A26"/>
+      <circle cx="61.5" cy="94.5" r="1.4" fill="#fff"/>
+      <circle cx="101.5" cy="94.5" r="1.4" fill="#fff"/>
+      <ellipse cx="80" cy="128" rx="9" ry="6" fill="#2C2A26"/>
+      <ellipse cx="80" cy="130" rx="6" ry="3" fill="#F4A0A0"/>
+      <ellipse cx="62" cy="166" rx="11" ry="4" fill="#E5C4A6"/>
+      <ellipse cx="98" cy="166" rx="11" ry="4" fill="#E5C4A6"/>
+    </symbol>
+    <!-- BIWA -->
+    <symbol id="biwa" viewBox="0 0 160 200">
+      <ellipse cx="80" cy="42" rx="36" ry="22" fill="#7AB0D0"/>
+      <ellipse cx="80" cy="42" rx="20" ry="12" fill="#5890B5"/>
+      <ellipse cx="80" cy="118" rx="58" ry="54" fill="#F4E5D2"/>
+      <ellipse cx="80" cy="168" rx="40" ry="4" fill="#D8C8B0" opacity="0.35"/>
+      <ellipse cx="45" cy="126" rx="10" ry="6" fill="#F2B89A" opacity="0.55"/>
+      <ellipse cx="115" cy="126" rx="10" ry="6" fill="#F2B89A" opacity="0.55"/>
+      <circle cx="62" cy="106" r="3.5" fill="#2C2A26"/>
+      <circle cx="98" cy="106" r="3.5" fill="#2C2A26"/>
+      <path d="M 68 138 Q 80 146, 92 138" stroke="#2C2A26" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <ellipse cx="62" cy="176" rx="11" ry="4" fill="#E5D0B6"/>
+      <ellipse cx="98" cy="176" rx="11" ry="4" fill="#E5D0B6"/>
+    </symbol>
+    <!-- HANA -->
+    <symbol id="hana" viewBox="0 0 160 180">
+      <circle cx="70" cy="22" r="10" fill="#F8C0D8"/>
+      <circle cx="90" cy="22" r="10" fill="#F8C0D8"/>
+      <circle cx="80" cy="10" r="10" fill="#F8C0D8"/>
+      <circle cx="80" cy="34" r="10" fill="#F8C0D8"/>
+      <circle cx="80" cy="22" r="6" fill="#E8D28A"/>
+      <rect x="77" y="32" width="6" height="14" rx="3" fill="#8DAE91"/>
+      <ellipse cx="80" cy="108" rx="56" ry="52" fill="#F4D8E0"/>
+      <ellipse cx="80" cy="156" rx="38" ry="4" fill="#D8B0BC" opacity="0.35"/>
+      <ellipse cx="46" cy="116" rx="9" ry="5" fill="#E89090" opacity="0.6"/>
+      <ellipse cx="114" cy="116" rx="9" ry="5" fill="#E89090" opacity="0.6"/>
+      <circle cx="62" cy="98" r="3.5" fill="#2C2A26"/>
+      <circle cx="98" cy="98" r="3.5" fill="#2C2A26"/>
+      <path d="M 68 124 Q 80 132, 92 124" stroke="#2C2A26" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+      <ellipse cx="62" cy="164" rx="11" ry="4" fill="#E5C4C8"/>
+      <ellipse cx="98" cy="164" rx="11" ry="4" fill="#E5C4C8"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ════════ DAY 1 — リリース告知 ════════ -->
+<div class="card bg-launch">
+  <span class="card-num">DAY 01 / 20 · 2026.05.11</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <span class="sprinkle" style="top:18%;left:48%;font-size:120px;">🎉</span>
+  <span class="sprinkle" style="top:24%;right:14%;">✨</span>
+  <span class="sprinkle" style="bottom:32%;left:8%;font-size:48px;">🌿</span>
+  <div class="card-headline" style="top:42%;">
+    KODOCO、<br><em>リリースしました</em>
+  </div>
+  <div class="card-sub" style="top:64%;">
+    「今日、子どもとどこ行く?」<br>に答える、滋賀のおでかけWebアプリ
+  </div>
+  <svg class="card-mascot"><use href="#kodo"/></svg>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#KODOCO #子連れおでかけ<br>#滋賀 #育児</span>
+</div>
+
+<!-- ════════ DAY 2 — 現在地ON ════════ -->
+<div class="card bg-loc">
+  <span class="card-num">DAY 02 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <span class="card-emoji-big" style="top:18%;right:6%;">📍</span>
+  <div class="card-headline" style="top:38%;">
+    <em>📍 現在地 ON</em>で、<br>近いスポットから順に
+  </div>
+  <div class="card-sub" style="top:62%;right:480px;">
+    地図を開いて検索するより<br>3秒早く、半径 5km の遊び場が出る
+  </div>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#滋賀ドライブ<br>#子連れスポット #現在地</span>
+</div>
+
+<!-- ════════ DAY 3 — 週間天気 ════════ -->
+<div class="card bg-weather">
+  <span class="card-num">DAY 03 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <div style="position:absolute;top:18%;left:56px;right:56px;display:flex;justify-content:space-between;gap:10px;">
+    <div style="text-align:center;background:rgba(255,255,255,.9);border-radius:18px;padding:18px 14px;flex:1;"><div style="font-size:14px;color:#888;font-weight:700;">月</div><div style="font-size:48px;">☀️</div><div style="font-size:20px;color:#B85423;font-weight:800;">24°</div></div>
+    <div style="text-align:center;background:#FFF;border-radius:18px;padding:18px 14px;flex:1;border:3px solid #B88923;"><div style="font-size:14px;color:#888;font-weight:700;">火</div><div style="font-size:48px;">🌤</div><div style="font-size:20px;color:#B85423;font-weight:800;">22°</div></div>
+    <div style="text-align:center;background:rgba(255,255,255,.9);border-radius:18px;padding:18px 14px;flex:1;"><div style="font-size:14px;color:#888;font-weight:700;">水</div><div style="font-size:48px;">☔</div><div style="font-size:20px;color:#B85423;font-weight:800;">19°</div></div>
+    <div style="text-align:center;background:rgba(255,255,255,.9);border-radius:18px;padding:18px 14px;flex:1;"><div style="font-size:14px;color:#888;font-weight:700;">木</div><div style="font-size:48px;">☁️</div><div style="font-size:20px;color:#B85423;font-weight:800;">20°</div></div>
+    <div style="text-align:center;background:rgba(255,255,255,.9);border-radius:18px;padding:18px 14px;flex:1;"><div style="font-size:14px;color:#888;font-weight:700;">金</div><div style="font-size:48px;">☀️</div><div style="font-size:20px;color:#B85423;font-weight:800;">25°</div></div>
+  </div>
+  <div class="card-headline" style="top:52%;">
+    <em>週間天気</em>を読んで、<br>提案を自動で並び替え
+  </div>
+  <div class="card-sub" style="top:78%;">
+    晴れなら公園、雨なら屋内。<br>当日の決断スピードが変わる。
+  </div>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#週末プラン #子連れ<br>#滋賀</span>
+</div>
+
+<!-- ════════ DAY 4 — 雨予報 ════════ -->
+<div class="card bg-rain">
+  <span class="card-num">DAY 04 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <div style="position:absolute;top:20%;left:56px;background:#fff;padding:18px 28px;border-radius:999px;display:inline-flex;align-items:center;gap:16px;box-shadow:0 8px 24px rgba(184,84,35,.25);font-size:30px;font-weight:900;color:#B85423;letter-spacing:.06em;">
+    ☔ RAIN AHEAD <span style="background:#FFE5DC;padding:6px 16px;border-radius:999px;font-size:24px;">14時から 60%</span>
+  </div>
+  <div class="card-headline" style="top:44%;">
+    出発する前に<br><em>「これからの雨」</em>を先読み
+  </div>
+  <div class="card-sub" style="top:68%;">
+    出かけた瞬間に雨、を防ぐ。<br>子連れにこそ必要だった機能。
+  </div>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#雨予報 #滋賀ママ<br>#育児あるある</span>
+</div>
+
+<!-- ════════ DAY 5 — 50プラン ════════ -->
+<div class="card bg-plan">
+  <span class="card-num">DAY 05 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <div style="position:absolute;top:14%;right:60px;text-align:right;">
+    <div class="big-num" style="font-size:300px;color:#fff;text-shadow:0 8px 24px rgba(184,84,35,.3);">50</div>
+    <div style="font-size:32px;font-weight:900;color:#B85423;margin-top:-20px;">PLANS</div>
+  </div>
+  <div class="card-headline" style="top:36%;left:56px;right:520px;">
+    朝→昼→夕、<br>動線まで <em>セット済み</em>
+  </div>
+  <div class="card-sub" style="top:68%;right:520px;">
+    🌸 春のお花見<br>☀️ 琵琶湖ぐるっと<br>☔ 雨でも全力<br>🍓 いちご狩り<br>🐕 犬と子どもプラン…
+  </div>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#滋賀観光 #子連れプラン</span>
+</div>
+
+<!-- ════════ DAY 6 — ベビーカー OK ════════ -->
+<div class="card bg-baby">
+  <span class="card-num">DAY 06 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <span class="card-emoji-big" style="top:14%;right:8%;font-size:200px;">🍼</span>
+  <span class="sprinkle" style="top:14%;left:14%;font-size:80px;">🚼</span>
+  <div class="card-headline" style="top:42%;">
+    <em>0-2 歳</em>のママへ。<br>ベビーカー OK だけ絞る
+  </div>
+  <div class="card-sub" style="top:66%;">
+    段差なし、授乳室あり、ベビーカー貸出。<br>毎回 Google で調べてた条件、自動で。
+  </div>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#0歳育児 #1歳児ママ<br>#ベビーカー #滋賀ベビー</span>
+</div>
+
+<!-- ════════ DAY 7 — 走り回れる広場 ════════ -->
+<div class="card bg-kid">
+  <span class="card-num">DAY 07 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <div class="card-headline" style="top:32%;">
+    <em>3 歳すぎたら</em>、<br>「広場が広いか」が全て
+  </div>
+  <div class="card-sub" style="top:60%;">
+    🌳 矢橋帰帆島公園 (草津)<br>🌿 びわこ地球市民の森 (守山)<br>🏃 希望が丘文化公園 (野洲)<br>年齢に合わせて自動で切り替え。
+  </div>
+  <svg class="card-mascot" style="bottom:80px;right:80px;width:300px;"><use href="#koto"/></svg>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#滋賀公園<br>#3歳児ママ #5歳児</span>
+</div>
+
+<!-- ════════ DAY 8 — 犬連れ OK ════════ -->
+<div class="card bg-dog">
+  <span class="card-num">DAY 08 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <span class="card-emoji-big" style="top:14%;right:8%;font-size:220px;">🐕</span>
+  <div class="card-headline" style="top:42%;">
+    <em>犬と子</em>、一緒に。<br>1 タップで絞れる
+  </div>
+  <div class="card-sub" style="top:64%;">
+    🐾 矢橋帰帆島公園 (ドッグラン併設)<br>🐾 Cafe 森の木 (300坪ドッグラン)<br>🐾 なぎさWARMS (テラス犬OK)
+  </div>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#犬連れ #滋賀ドッグラン<br>#犬と子供</span>
+</div>
+
+<!-- ════════ DAY 9 — 矢橋帰帆島 ════════ -->
+<div class="card bg-park">
+  <span class="card-num">DAY 09 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <div style="position:absolute;top:60px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.92);padding:8px 22px;border-radius:999px;font-size:22px;font-weight:800;color:#3F6B2A;">📍 草津市</div>
+  <span class="card-emoji-big" style="top:22%;left:50%;transform:translateX(-50%);">🌳</span>
+  <div class="card-headline" style="top:62%;text-align:center;left:56px;right:56px;">
+    <em>矢橋帰帆島公園</em>
+  </div>
+  <div class="card-sub" style="top:80%;text-align:center;left:56px;right:56px;">
+    琵琶湖に浮かぶ人工島まるごと公園。<br>大型遊具・芝生・BBQ・ドッグラン全部入り。
+  </div>
+  <span class="card-url">kodoco.jp/app.html</span>
+  <span class="card-hash">#矢橋帰帆島公園<br>#草津市 #滋賀</span>
+</div>
+
+<!-- ════════ DAY 10 — 彦根プラン ════════ -->
+<div class="card bg-castle">
+  <span class="card-num">DAY 10 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <div class="card-headline" style="top:18%;">
+    🏯 <em>彦根 & 黒壁</em><br>ヒストリープラン
+  </div>
+  <ul class="check-list" style="top:46%;font-size:30px;">
+    <li>10:00 彦根城・玄宮園 (国宝天守)</li>
+    <li>12:30 夢京橋キャッスルロード (城下町ランチ)</li>
+    <li>14:30 黒壁スクエア (ガラス体験で雨宿り)</li>
+  </ul>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#彦根城 #黒壁スクエア<br>#滋賀観光 #子連れ旅</span>
+</div>
+
+<!-- ════════ DAY 11 — いちご狩り ════════ -->
+<div class="card bg-strawberry">
+  <span class="card-num">DAY 11 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <span class="card-emoji-big" style="top:14%;right:6%;font-size:200px;">🍓</span>
+  <span class="sprinkle" style="top:32%;left:14%;font-size:90px;">🍓</span>
+  <span class="sprinkle" style="bottom:38%;left:20%;">🍓</span>
+  <div class="card-headline" style="top:42%;">
+    <em>春のいちご狩り</em>、<br>プランごと出します
+  </div>
+  <div class="card-sub" style="top:66%;">
+    10:00 アグリパーク竜王 (いちご狩り)<br>14:00 三井アウトレットパーク 滋賀竜王<br>ハウス内だから雨でも OK。
+  </div>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#いちご狩り<br>#アグリパーク竜王 #春</span>
+</div>
+
+<!-- ════════ DAY 12 — 夏予告 (水遊び) ════════ -->
+<div class="card bg-water">
+  <span class="card-num">DAY 12 / 20</span>
+  <div class="card-brand" style="color:white;"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <span class="card-emoji-big" style="top:18%;right:10%;font-size:220px;">💦</span>
+  <div class="card-headline" style="top:42%;color:white;text-shadow:0 4px 16px rgba(0,0,0,.2);">
+    夏が来たら、<br><em style="color:#FFE0B5;">水を切らさない</em>
+  </div>
+  <div class="card-sub" style="top:66%;color:rgba(255,255,255,.92);">
+    ☀️ ロクハ公園 (じゃぶじゃぶ池)<br>🌊 矢橋帰帆島公園 (水場+大型遊具)<br>💦 イオン草津屋内プール (雨でも)<br>♡ 保存しておいて。
+  </div>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash" style="color:rgba(255,255,255,.7);">#水遊び #夏のお出かけ<br>#滋賀</span>
+</div>
+
+<!-- ════════ DAY 13 — 季節フィルタ ════════ -->
+<div class="card bg-season">
+  <span class="card-num">DAY 13 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <div style="position:absolute;top:18%;left:56px;right:56px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+    <div style="background:#FFE0EC;padding:32px 18px;border-radius:24px;text-align:center;"><div style="font-size:80px;">🌸</div><div style="font-size:24px;font-weight:900;color:#B85423;">SPRING</div></div>
+    <div style="background:#D8E8F4;padding:32px 18px;border-radius:24px;text-align:center;"><div style="font-size:80px;">🌊</div><div style="font-size:24px;font-weight:900;color:#3878A0;">SUMMER</div></div>
+    <div style="background:#FFE0C0;padding:32px 18px;border-radius:24px;text-align:center;"><div style="font-size:80px;">🍁</div><div style="font-size:24px;font-weight:900;color:#A85820;">AUTUMN</div></div>
+    <div style="background:#E0E8EC;padding:32px 18px;border-radius:24px;text-align:center;"><div style="font-size:80px;">⛄</div><div style="font-size:24px;font-weight:900;color:#506878;">WINTER</div></div>
+  </div>
+  <div class="card-headline" style="top:54%;">
+    <em>旬</em>のプランだけ<br>並ぶようにしました
+  </div>
+  <div class="card-sub" style="top:78%;">
+    5月に紅葉プランは出さない。<br>"今、行けるやつ" だけ。
+  </div>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#KODOCO #季節 #滋賀</span>
+</div>
+
+<!-- ════════ DAY 14 — コドちゃん ════════ -->
+<div class="card bg-kodo">
+  <span class="card-num">DAY 14 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <div class="card-headline" style="top:18%;text-align:center;">
+    主役、<em>コドちゃん</em>。
+  </div>
+  <svg style="position:absolute;top:30%;left:50%;transform:translateX(-50%);width:340px;filter:drop-shadow(0 16px 40px rgba(44,42,38,0.2));"><use href="#kodo"/></svg>
+  <div class="card-sub" style="top:74%;text-align:center;left:56px;right:56px;line-height:1.8;font-style:italic;color:var(--ink);font-weight:700;">
+    「今日は公園が気持ちいいよ。<br>お水忘れずにね 💧」
+  </div>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#コドちゃん<br>#KODOCO #育児アプリ</span>
+</div>
+
+<!-- ════════ DAY 15 — キャラ全員 ════════ -->
+<div class="card bg-koto">
+  <span class="card-num">DAY 15 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <div class="card-headline" style="top:14%;">
+    <em>10匹</em>の仲間と、<br>あしあとを集める
+  </div>
+  <div style="position:absolute;top:38%;left:56px;right:56px;display:grid;grid-template-columns:repeat(5,1fr);gap:20px;">
+    <div style="text-align:center;"><svg style="width:140px;"><use href="#kodo"/></svg><div style="font-size:20px;font-weight:800;margin-top:8px;">コドちゃん</div></div>
+    <div style="text-align:center;"><svg style="width:140px;"><use href="#koto"/></svg><div style="font-size:20px;font-weight:800;margin-top:8px;">コトちゃん</div></div>
+    <div style="text-align:center;"><svg style="width:140px;"><use href="#biwa"/></svg><div style="font-size:20px;font-weight:800;margin-top:8px;">ビワちゃん</div></div>
+    <div style="text-align:center;"><svg style="width:140px;"><use href="#hana"/></svg><div style="font-size:20px;font-weight:800;margin-top:8px;">ハナちゃん</div></div>
+    <div style="text-align:center;padding-top:30px;font-size:80px;">+6</div>
+  </div>
+  <div class="card-sub" style="top:80%;left:56px;right:56px;text-align:center;">
+    お気に入り・口コミで解禁。<br>ビックリマン風レアリティ。
+  </div>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#コレクション</span>
+</div>
+
+<!-- ════════ DAY 16 — パパママの口コミ ════════ -->
+<div class="card bg-voice">
+  <span class="card-num">DAY 16 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <div class="card-headline" style="top:14%;">
+    <em>パパママの声</em>が、<br>そのまま読める
+  </div>
+  <div style="position:absolute;top:38%;left:56px;right:56px;display:flex;flex-direction:column;gap:18px;">
+    <div style="background:#fff;border-radius:18px;padding:22px 28px;box-shadow:0 4px 16px rgba(44,42,38,.08);font-size:24px;line-height:1.55;font-weight:600;">💬 「広い芝生で思いっきり走れて、ベビーカーもラク」<span style="font-size:18px;color:#888;margin-left:10px;">— 2 歳児パパ · 4/22</span></div>
+    <div style="background:#fff;border-radius:18px;padding:22px 28px;box-shadow:0 4px 16px rgba(44,42,38,.08);font-size:24px;line-height:1.55;font-weight:600;">💬 「アスレチックに夢中。1日遊べた!」<span style="font-size:18px;color:#888;margin-left:10px;">— 5 歳児ママ · 4/30</span></div>
+    <div style="background:#fff;border-radius:18px;padding:22px 28px;box-shadow:0 4px 16px rgba(44,42,38,.08);font-size:24px;line-height:1.55;font-weight:600;">💬 「ベビーカー OK + 授乳室確認済で安心」<span style="font-size:18px;color:#888;margin-left:10px;">— 0 歳児ママ · 5/1</span></div>
+  </div>
+  <div class="card-sub" style="top:80%;">匿名 OK、感覚タグ付き、写真添付可。</div>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#口コミ #育児リアル</span>
+</div>
+
+<!-- ════════ DAY 17 — 地図 ════════ -->
+<div class="card bg-map">
+  <span class="card-num">DAY 17 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <div style="position:absolute;top:14%;left:56px;right:56px;height:60%;background:linear-gradient(180deg,#D8E6E8,#B8D0D8);border-radius:24px;position:absolute;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:24px;padding:40px;font-size:60px;">
+    🌳 🏯 ☕ 🎨 🌊 🌳 🌳 🏠 ☕ 🌿 🎢 🐕 🌳 🏛 🦕
+    <div style="position:absolute;top:30%;left:48%;width:24px;height:24px;border-radius:50%;background:#e2553a;box-shadow:0 0 0 10px rgba(226,85,58,.3);"></div>
+  </div>
+  <div class="card-headline" style="top:78%;font-size:62px;">
+    滋賀全域 <em>168 スポット</em>、<br>地図で一覧
+  </div>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#滋賀ドライブ<br>#子連れ旅行</span>
+</div>
+
+<!-- ════════ DAY 18 — 無料 ════════ -->
+<div class="card bg-free">
+  <span class="card-num">DAY 18 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <div style="position:absolute;top:16%;right:60px;">
+    <div class="big-num" style="color:#B88923;text-shadow:0 8px 24px rgba(184,137,35,.3);">¥0</div>
+  </div>
+  <div class="card-headline" style="top:22%;left:56px;right:520px;">
+    <em>完全無料</em>、<br>広告も入れません
+  </div>
+  <ul class="check-list" style="top:62%;font-size:32px;">
+    <li>アカウントなしで全機能</li>
+    <li>お気に入りはデバイス内に</li>
+    <li>口コミ投稿だけログイン任意</li>
+    <li>子どもの情報は完全ローカル</li>
+  </ul>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#無料アプリ #育児</span>
+</div>
+
+<!-- ════════ DAY 19 — PWA ════════ -->
+<div class="card bg-pwa">
+  <span class="card-num">DAY 19 / 20</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <span class="card-emoji-big" style="top:14%;right:8%;font-size:220px;">📱</span>
+  <div class="card-headline" style="top:32%;">
+    iPhone で<br><em style="color:#FFE0B5;">アプリ化</em>できる
+  </div>
+  <div class="card-sub" style="top:60%;">
+    Safari で kodoco.jp/app.html を開く<br>共有 → ホーム画面に追加 → 完了<br><br>アドレスバーなし、全画面、アイコンも kodoco。
+  </div>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">#PWA #iPhone<br>#子連れアプリ</span>
+</div>
+
+<!-- ════════ DAY 20 — ありがとう ════════ -->
+<div class="card bg-thanks">
+  <span class="card-num">DAY 20 / 20 · 2026.05.30</span>
+  <div class="card-brand"><svg><use href="#kodo-mark"/></svg>KODOCO</div>
+  <div class="card-headline" style="top:14%;text-align:center;left:56px;right:56px;">
+    20 日間、<br><em>ありがとうございました</em>
+  </div>
+  <div style="position:absolute;top:40%;left:50%;transform:translateX(-50%);display:flex;gap:30px;">
+    <svg style="width:200px;"><use href="#kodo"/></svg>
+    <svg style="width:200px;"><use href="#koto"/></svg>
+    <svg style="width:200px;"><use href="#biwa"/></svg>
+    <svg style="width:200px;"><use href="#hana"/></svg>
+  </div>
+  <div class="card-sub" style="top:78%;text-align:center;left:56px;right:56px;line-height:1.7;">
+    KODOCO は kinoshita studio の個人プロジェクト。<br>気になったこと・欲しい機能、待ってます。
+  </div>
+  <span class="card-url">kodoco.jp</span>
+  <span class="card-hash">99letters99@gmail.com</span>
+</div>
+
+</body>
+</html>
