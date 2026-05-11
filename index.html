@@ -386,6 +386,15 @@
     .mascot-slot svg { width: 160px; height: auto; }
     .mascot-slot.left svg { transform: translateY(20px) rotate(-6deg); animation: orbFloat 4s ease-in-out infinite; }
     .mascot-slot.right svg { transform: translateY(20px) rotate(6deg); animation: orbFloat 4.5s ease-in-out infinite -1s; }
+    /* 親子シーン (左スロット) — 大きく imagery を伝える */
+    .mascot-slot.family svg.family-scene {
+      width: clamp(220px, 24vw, 300px);
+      height: auto;
+      transform: translateY(12px) rotate(-2deg);
+      filter: drop-shadow(0 12px 28px rgba(44,42,38,0.16));
+      animation: orbFloat 5.2s ease-in-out infinite;
+    }
+    .mascot-slot.family { align-items: flex-end; }
 
     .phone-frame {
       width: 280px;
@@ -1881,6 +1890,110 @@
       <ellipse cx="62" cy="166" rx="11" ry="4" fill="#1a1816"/>
       <ellipse cx="98" cy="166" rx="11" ry="4" fill="#1a1816"/>
     </symbol>
+
+    <!-- ═══ パパ・ママ・子供 (個別 / Features 用) ═══ -->
+    <symbol id="mama" viewBox="0 0 160 200">
+      <ellipse cx="80" cy="80" rx="38" ry="42" fill="#5C4838"/>
+      <ellipse cx="80" cy="84" rx="30" ry="30" fill="#F8DDC5"/>
+      <path d="M 54 70 Q 66 56 80 60 Q 94 56 106 70 Q 102 80 92 78 Q 80 72 68 78 Q 58 80 54 70 Z" fill="#5C4838"/>
+      <circle cx="70" cy="86" r="2.8" fill="#2C2A26"/>
+      <circle cx="90" cy="86" r="2.8" fill="#2C2A26"/>
+      <ellipse cx="58" cy="96" rx="6" ry="3.5" fill="#F2A88A" opacity="0.55"/>
+      <ellipse cx="102" cy="96" rx="6" ry="3.5" fill="#F2A88A" opacity="0.55"/>
+      <path d="M 73 102 Q 80 108 87 102" stroke="#2C2A26" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M 52 116 L 46 184 Q 46 192 56 192 L 104 192 Q 114 192 114 184 L 108 116 Q 95 122 80 122 Q 65 122 52 116 Z" fill="#E89E80"/>
+      <path d="M 70 116 L 80 126 L 90 116 Z" fill="#F8DDC5"/>
+      <ellipse cx="44" cy="140" rx="8" ry="28" fill="#E89E80"/>
+      <ellipse cx="116" cy="140" rx="8" ry="28" fill="#E89E80"/>
+      <circle cx="44" cy="172" r="9" fill="#F8DDC5"/>
+      <circle cx="116" cy="172" r="9" fill="#F8DDC5"/>
+    </symbol>
+
+    <symbol id="papa" viewBox="0 0 160 200">
+      <ellipse cx="80" cy="46" rx="36" ry="10" fill="#3D5B43"/>
+      <path d="M 50 50 Q 50 28 80 28 Q 110 28 110 50 Z" fill="#5B7F61"/>
+      <ellipse cx="80" cy="86" rx="32" ry="32" fill="#F4E5D2"/>
+      <circle cx="70" cy="88" r="2.8" fill="#2C2A26"/>
+      <circle cx="90" cy="88" r="2.8" fill="#2C2A26"/>
+      <ellipse cx="58" cy="98" rx="6" ry="3.5" fill="#F2B89A" opacity="0.5"/>
+      <ellipse cx="102" cy="98" rx="6" ry="3.5" fill="#F2B89A" opacity="0.5"/>
+      <path d="M 72 104 Q 80 110 88 104" stroke="#2C2A26" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M 50 118 L 50 186 Q 50 194 60 194 L 100 194 Q 110 194 110 186 L 110 118 Q 95 124 80 124 Q 65 124 50 118 Z" fill="#B8D0D8"/>
+      <path d="M 70 118 L 80 130 L 90 118 Z" fill="#F4E5D2"/>
+      <ellipse cx="42" cy="142" rx="8" ry="28" fill="#B8D0D8"/>
+      <ellipse cx="118" cy="142" rx="8" ry="28" fill="#B8D0D8"/>
+      <circle cx="42" cy="174" r="9" fill="#F4E5D2"/>
+      <circle cx="118" cy="174" r="9" fill="#F4E5D2"/>
+    </symbol>
+
+    <symbol id="kid" viewBox="0 0 160 200">
+      <ellipse cx="80" cy="80" rx="32" ry="32" fill="#5C4838"/>
+      <ellipse cx="58" cy="64" rx="8" ry="12" fill="#5C4838"/>
+      <ellipse cx="102" cy="64" rx="8" ry="12" fill="#5C4838"/>
+      <ellipse cx="80" cy="88" rx="28" ry="28" fill="#F8DDC5"/>
+      <path d="M 56 78 Q 68 70 80 73 Q 92 70 104 78 Q 100 86 92 84 Q 80 78 68 84 Q 60 86 56 78 Z" fill="#5C4838"/>
+      <circle cx="68" cy="92" r="3.5" fill="#2C2A26"/>
+      <circle cx="92" cy="92" r="3.5" fill="#2C2A26"/>
+      <circle cx="69" cy="91" r="1.2" fill="#fff"/>
+      <circle cx="93" cy="91" r="1.2" fill="#fff"/>
+      <ellipse cx="56" cy="102" rx="7" ry="4" fill="#F2A88A" opacity="0.7"/>
+      <ellipse cx="104" cy="102" rx="7" ry="4" fill="#F2A88A" opacity="0.7"/>
+      <ellipse cx="80" cy="108" rx="5" ry="3" fill="#2C2A26"/>
+      <path d="M 56 122 L 56 184 Q 56 192 64 192 L 96 192 Q 104 192 104 184 L 104 122 Q 92 128 80 128 Q 68 128 56 122 Z" fill="#FFC368"/>
+      <ellipse cx="80" cy="122" rx="9" ry="4" fill="#F8DDC5"/>
+      <ellipse cx="48" cy="144" rx="7" ry="22" fill="#FFC368"/>
+      <ellipse cx="112" cy="144" rx="7" ry="22" fill="#FFC368"/>
+      <circle cx="48" cy="170" r="7" fill="#F8DDC5"/>
+      <circle cx="112" cy="170" r="7" fill="#F8DDC5"/>
+    </symbol>
+
+    <!-- ═══ ヒーロー親子シーン (大きく imagery を伝える) ═══ -->
+    <symbol id="scene-mama-kid" viewBox="0 0 320 340">
+      <ellipse cx="160" cy="326" rx="118" ry="6" fill="#D8C8B0" opacity="0.35"/>
+      <!-- ─ MAMA (左、大きめ) ─ -->
+      <ellipse cx="110" cy="92" rx="42" ry="48" fill="#5C4838"/>
+      <ellipse cx="110" cy="94" rx="32" ry="32" fill="#F8DDC5"/>
+      <path d="M 82 80 Q 95 64 110 70 Q 125 64 138 80 Q 134 90 124 88 Q 110 82 96 88 Q 86 90 82 80 Z" fill="#5C4838"/>
+      <circle cx="100" cy="96" r="2.8" fill="#2C2A26"/>
+      <circle cx="122" cy="96" r="2.8" fill="#2C2A26"/>
+      <ellipse cx="88" cy="106" rx="6" ry="3.5" fill="#F2A88A" opacity="0.55"/>
+      <ellipse cx="132" cy="106" rx="6" ry="3.5" fill="#F2A88A" opacity="0.55"/>
+      <path d="M 103 112 Q 110 118 117 112" stroke="#2C2A26" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+      <path d="M 80 126 L 70 270 Q 68 282 80 282 L 140 282 Q 152 282 150 270 L 140 126 Q 130 132 110 132 Q 90 132 80 126 Z" fill="#E89E80"/>
+      <path d="M 70 270 Q 80 276 88 270 Q 96 276 104 270 Q 112 276 120 270 Q 128 276 136 270 Q 144 276 150 270" stroke="#D88E70" stroke-width="2" fill="none"/>
+      <path d="M 80 140 Q 62 170 56 212 Q 54 224 64 226 Q 72 226 72 216 Q 76 180 86 146 Z" fill="#E89E80"/>
+      <circle cx="62" cy="228" r="10" fill="#F8DDC5"/>
+      <path d="M 140 140 Q 156 168 178 200 Q 184 208 178 214 Q 170 220 164 210 Q 148 184 134 146 Z" fill="#E89E80"/>
+      <circle cx="180" cy="214" r="10" fill="#F8DDC5"/>
+      <rect x="88" y="278" width="14" height="34" rx="4" fill="#5B7F61"/>
+      <rect x="118" y="278" width="14" height="34" rx="4" fill="#5B7F61"/>
+      <ellipse cx="95" cy="316" rx="12" ry="5" fill="#2C2A26"/>
+      <ellipse cx="125" cy="316" rx="12" ry="5" fill="#2C2A26"/>
+      <!-- ─ KID (右、小さめ) ─ -->
+      <ellipse cx="244" cy="166" rx="28" ry="28" fill="#5C4838"/>
+      <ellipse cx="224" cy="148" rx="8" ry="10" fill="#5C4838"/>
+      <ellipse cx="264" cy="148" rx="8" ry="10" fill="#5C4838"/>
+      <ellipse cx="244" cy="172" rx="24" ry="24" fill="#F8DDC5"/>
+      <path d="M 224 162 Q 234 156 244 158 Q 254 156 264 162 Q 260 168 254 166 Q 244 162 234 166 Q 228 168 224 162 Z" fill="#5C4838"/>
+      <circle cx="234" cy="176" r="3.5" fill="#2C2A26"/>
+      <circle cx="254" cy="176" r="3.5" fill="#2C2A26"/>
+      <circle cx="235" cy="175" r="1.2" fill="#fff"/>
+      <circle cx="255" cy="175" r="1.2" fill="#fff"/>
+      <ellipse cx="224" cy="186" rx="6" ry="3.5" fill="#F2A88A" opacity="0.7"/>
+      <ellipse cx="264" cy="186" rx="6" ry="3.5" fill="#F2A88A" opacity="0.7"/>
+      <path d="M 237 192 Q 244 198 251 192" stroke="#2C2A26" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M 220 200 L 218 270 Q 218 278 226 278 L 262 278 Q 270 278 270 270 L 268 200 Q 256 206 244 206 Q 232 206 220 200 Z" fill="#FFC368"/>
+      <path d="M 220 210 Q 204 216 192 220 Q 188 223 192 228 Q 196 230 200 226 L 222 218 Z" fill="#FFC368"/>
+      <circle cx="190" cy="226" r="7" fill="#F8DDC5"/>
+      <!-- 繋いだ手のしるし (ハート) -->
+      <text x="184" y="208" font-size="14" fill="#E2553A" opacity="0.85" text-anchor="middle" font-family="serif">♡</text>
+      <ellipse cx="270" cy="236" rx="7" ry="22" fill="#FFC368"/>
+      <circle cx="270" cy="260" r="6" fill="#F8DDC5"/>
+      <rect x="226" y="272" width="16" height="32" rx="4" fill="#5B7F61"/>
+      <rect x="246" y="272" width="16" height="32" rx="4" fill="#5B7F61"/>
+      <ellipse cx="234" cy="308" rx="11" ry="5" fill="#2C2A26"/>
+      <ellipse cx="254" cy="308" rx="11" ry="5" fill="#2C2A26"/>
+    </symbol>
   </defs>
 </svg>
 
@@ -1951,8 +2064,8 @@
       <div class="hero-orbit hero-orbit-emoji ho-7">✨</div>
       <div class="hero-orbit hero-orbit-emoji ho-8">🌸</div>
     </div>
-    <div class="mascot-slot left">
-      <svg><use href="#kodo-wave"/></svg>
+    <div class="mascot-slot left family">
+      <svg class="family-scene" viewBox="0 0 320 340" aria-hidden="true"><use href="#scene-mama-kid"/></svg>
     </div>
     <div class="phone-frame">
       <div class="phone-screen">
@@ -2359,29 +2472,33 @@
     </div>
     <div class="preview-card rv d2">
       <div class="preview-phone">
-        <div class="preview-phone-screen" style="padding:28px 6px 6px;position:relative;">
-          <div style="position:absolute;inset:26px 6px 6px;background:linear-gradient(180deg,#D8E6E8 0%,#B8D0D8 50%,#C8D8CC 100%);border-radius:18px;"></div>
-          <div style="position:relative;z-index:2;font-size:11px;padding:4px;color:var(--ink-soft);font-weight:700;">🗺 滋賀エリア</div>
-          <div style="position:relative;z-index:2;flex:1;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;padding:10px;">
-            <span style="font-size:16px;">🌳</span>
-            <span style="font-size:14px;">🏯</span>
-            <span style="font-size:14px;">☕</span>
-            <span style="font-size:14px;">🎨</span>
-            <span style="font-size:14px;">🌊</span>
-            <span style="font-size:14px;">🌳</span>
-            <span style="font-size:16px;">🌳</span>
-            <span style="font-size:14px;">🏠</span>
-            <span style="font-size:14px;">☕</span>
-            <span style="font-size:14px;">🌿</span>
-            <span style="font-size:14px;">🎢</span>
-            <span style="font-size:14px;">🐕</span>
+        <div class="preview-phone-screen">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px;">
+            <span style="font-size:10px;font-weight:800;color:var(--ink);">🗺 滋賀エリア</span>
+            <span style="background:rgba(0,0,0,0.06);padding:2px 7px;border-radius:10px;font-size:7px;font-weight:700;color:var(--ink);">📍 168件</span>
           </div>
-          <div style="position:absolute;bottom:14px;left:10px;right:10px;z-index:3;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);display:flex;align-items:center;gap:6px;">
+          <div style="flex:1;position:relative;background:linear-gradient(180deg,#D8E6E8 0%,#B8D0D8 50%,#C8D8CC 100%);border-radius:14px;overflow:hidden;min-height:0;">
+            <div style="position:absolute;inset:0;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;padding:14px;">
+              <span style="font-size:16px;">🌳</span>
+              <span style="font-size:14px;">🏯</span>
+              <span style="font-size:14px;">☕</span>
+              <span style="font-size:14px;">🎨</span>
+              <span style="font-size:14px;">🌊</span>
+              <span style="font-size:14px;">🌳</span>
+              <span style="font-size:16px;">🌳</span>
+              <span style="font-size:14px;">🏠</span>
+              <span style="font-size:14px;">☕</span>
+              <span style="font-size:14px;">🌿</span>
+              <span style="font-size:14px;">🎢</span>
+              <span style="font-size:14px;">🐕</span>
+            </div>
+            <div style="position:absolute;top:8px;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:#e2553a;box-shadow:0 0 0 4px rgba(226,85,58,0.25);"></div>
+          </div>
+          <div style="background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 8px;box-shadow:0 4px 12px rgba(0,0,0,0.06);display:flex;align-items:center;gap:6px;">
             <div style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#C8EDE0,#A8D8C4);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;">🌳</div>
             <div style="flex:1;min-width:0;"><div style="font-size:8.5px;font-weight:700;">矢橋帰帆島公園</div><div style="font-size:7px;color:var(--ink-faint);">📍草津市</div></div>
-            <div style="font-size:13px;">›</div>
+            <div style="font-size:13px;color:var(--ink-faint);">›</div>
           </div>
-          <div style="position:absolute;top:34px;right:10px;z-index:3;background:rgba(255,255,255,0.95);padding:2px 8px;border-radius:10px;font-size:7px;font-weight:700;color:var(--ink);">📍 168件</div>
         </div>
       </div>
       <h3 class="preview-name">地図</h3>
