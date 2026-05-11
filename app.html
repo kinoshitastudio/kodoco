@@ -7024,12 +7024,15 @@ function _spotHashSeed(s) {
 // spot ID のハッシュで決定的に選ぶので、同じスポットは常に同じ写真。
 const CATEGORY_PHOTOS = {
   park: [
-    'https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=800&q=80', // playground
-    'https://images.unsplash.com/photo-1500964757637-c85e8a162699?w=800&q=80', // japanese park
-    'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=800&q=80', // forest path
-    'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80',   // lakeside lawn
-    'https://images.unsplash.com/photo-1543335026-0e0d8e3d6c0f?w=800&q=80',   // green grass
-    'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80', // sunlit ridge
+    // すべて遊具 / 芝生 / 家族向け公園の構図 (山の風景や森ではなく "公園" だとパッと分かる)
+    'https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=800&q=80', // 遊具のある公園
+    'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=800&q=80', // すべり台
+    'https://images.unsplash.com/photo-1591084728795-1149f32d9866?w=800&q=80', // ブランコ
+    'https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=800&q=80',    // 子供と遊具
+    'https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?w=800&q=80', // 公園ベンチ + 緑
+    'https://images.unsplash.com/photo-1503095396549-807759245b35?w=800&q=80', // 公園遊具 + 芝生
+    'https://images.unsplash.com/photo-1597040663338-fb1c7fcca06c?w=800&q=80', // カラフル遊具
+    'https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=800&q=80', // 砂場 / 子供
   ],
   indoor: [
     'https://images.unsplash.com/photo-1597040663338-fb1c7fcca06c?w=800&q=80', // kids indoor
