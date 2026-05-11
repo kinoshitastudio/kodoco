@@ -347,7 +347,18 @@ html, body {
 .hero-photo { height: 180px; display: flex; align-items: center; justify-content: center; position: relative; }
 .hero-emoji { font-size: 52px; }
 .hero-photo-note { position: absolute; bottom: 8px; left: 0; right: 0; text-align: center; font-size: 10px; color: rgba(255,255,255,0.6); }
-.hero-badge { position: absolute; top: 12px; left: 12px; background: rgba(255,255,255,0.18); backdrop-filter: blur(4px); color: white; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+.hero-badge {
+  position: absolute; top: 12px; left: 12px;
+  background: linear-gradient(135deg, #FF5C3A 0%, #E02017 100%);
+  color: #fff;
+  font-size: 12px; font-weight: 800;
+  padding: 6px 14px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 14px rgba(224,32,23,0.45), 0 0 0 2px rgba(255,255,255,0.7);
+  z-index: 4;
+  white-space: nowrap;
+}
 .hero-body { padding: 16px; }
 .hero-judge { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.85); margin-bottom: 4px; letter-spacing: 0.02em; }
 .hero-name { font-size: 20px; font-weight: 700; color: white; margin-bottom: 6px; line-height: 1.2; }
@@ -5727,7 +5738,7 @@ function buildHero() {
   document.getElementById('heroName').textContent = pick.name;
   document.getElementById('heroValue').textContent = value;
   document.getElementById('heroJudge').textContent = age + '歳のお子さんに、今日はここで間違いない';
-  document.getElementById('heroBadge').textContent = '◎ ' + age + '歳に特におすすめ';
+  document.getElementById('heroBadge').textContent = '🥇 ' + age + '歳児に一番のおすすめ';
   // JUDGMENT（結論・理由・NG）
   const j = JUDGMENT[pick.id] || { conclusion: '', reason: pick.desc, ng: '' };
   document.getElementById('heroConclusion').textContent = j.conclusion;
