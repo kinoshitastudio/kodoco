@@ -5905,18 +5905,18 @@ function initSeasonalAnimation() {
   const isRainy = state && state.weather === 'rainy';
   const season = getCurrentSeason();
 
-  // 粒は控えめに。邪魔にならない大きさ + 透明度。
+  // 粒は控えめ&少なめに。邪魔にならない大きさ + 透明度。
   let cls, char, count, sizeMin, sizeMax;
   if (isRainy) {
-    cls = 'sp-rain';  char = '💧'; count = 20; sizeMin = 8;  sizeMax = 12;
+    cls = 'sp-rain';  char = '💧'; count = 12; sizeMin = 8;  sizeMax = 12;
   } else if (season === 'spring') {
-    cls = 'sp-petal'; char = '🌸'; count = 16; sizeMin = 8;  sizeMax = 14;
+    cls = 'sp-petal'; char = '🌸'; count = 8;  sizeMin = 8;  sizeMax = 12;
   } else if (season === 'summer') {
-    cls = 'sp-cloud'; char = '☁️'; count = 5;  sizeMin = 28; sizeMax = 46;
+    cls = 'sp-cloud'; char = '☁️'; count = 4;  sizeMin = 28; sizeMax = 42;
   } else if (season === 'autumn') {
-    cls = 'sp-leaf';  char = '🍂'; count = 14; sizeMin = 9;  sizeMax = 14;
+    cls = 'sp-leaf';  char = '🍂'; count = 8;  sizeMin = 9;  sizeMax = 13;
   } else {
-    cls = 'sp-snow';  char = '❄️'; count = 18; sizeMin = 7;  sizeMax = 12;
+    cls = 'sp-snow';  char = '❄️'; count = 10; sizeMin = 7;  sizeMax = 11;
   }
 
   const layer = document.createElement('div');
@@ -5933,6 +5933,12 @@ function initSeasonalAnimation() {
     p.style.opacity = (0.32 + Math.random() * 0.28).toFixed(2);
     layer.appendChild(p);
   }
+  // 1分後にフェードアウトして停止 (邪魔にならないように)
+  layer.style.transition = 'opacity 4s ease-out';
+  setTimeout(() => {
+    if (layer.parentNode) layer.style.opacity = '0';
+    setTimeout(() => { if (layer.parentNode) layer.remove(); }, 4200);
+  }, 60000);
   document.body.appendChild(layer);
 }
 
