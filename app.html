@@ -7986,8 +7986,10 @@ function renderAccountSection() {
       '<div style="font-size:12.5px;line-height:1.7;color:var(--text-sub);margin-bottom:12px;">'
       +   'ログインすると、お気に入り・口コミ・解禁したキャラがどの端末からでも見られます。スポット投稿も可能に。'
       + '</div>'
-      + '<button class="settings-action-btn" onclick="openAuthModal()" style="background:var(--green-deep);color:white;border:0;font-size:16px;font-weight:800;padding:16px;letter-spacing:.06em;border-radius:12px;">ログインする</button>'
-      + '<button class="settings-action-btn" onclick="openAuthModal();setTimeout(()=>{const t=document.querySelector(\'.auth-tab[data-mode=signup]\');if(t)t.click();},120);" style="background:transparent;color:var(--green-deep);border:1.5px solid var(--green-deep);font-size:14px;font-weight:700;padding:12px;letter-spacing:.04em;margin-top:8px;border-radius:12px;">新規登録はこちら</button>';
+      + '<div style="background:#F0F7E8;border:1.5px solid var(--green-deep);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px;">'
+      +   '<button class="settings-action-btn" onclick="openAuthModal()" style="background:var(--green-deep);color:#fff;border:0;font-size:16px;font-weight:800;padding:16px;letter-spacing:.06em;border-radius:10px;justify-content:center;text-align:center;box-shadow:0 4px 12px rgba(63,107,42,0.35);">🔐 ログインする</button>'
+      +   '<button class="settings-action-btn" onclick="openAuthModal();setTimeout(()=>{const t=document.querySelector(\'.auth-tab[data-mode=signup]\');if(t)t.click();},120);" style="background:#FFF;color:var(--green-deep);border:2px solid var(--green-deep);font-size:15px;font-weight:800;padding:14px;letter-spacing:.04em;border-radius:10px;justify-content:center;text-align:center;">✏️ 新規登録はこちら</button>'
+      + '</div>';
   }
   // ログイン状態によって 「あしあと / お気に入りキャラ」セクションを表示制御
   const loggedIn = !!user;
