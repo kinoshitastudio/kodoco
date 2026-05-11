@@ -184,11 +184,6 @@
     "source": "wiki",
     "name": "びわ湖花噴水"
   },
-  "michigan": {
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Flag_of_Michigan.svg/960px-Flag_of_Michigan.svg.png",
-    "source": "wiki",
-    "name": "ミシガン（琵琶湖遊覧船）"
-  },
   "tachiki_jinja": {
     "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/%E7%AB%8B%E6%9C%A8%E7%A5%9E%E7%A4%BE.jpg/960px-%E7%AB%8B%E6%9C%A8%E7%A5%9E%E7%A4%BE.jpg",
     "source": "wiki",
@@ -248,11 +243,6 @@
     "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/211021_Kurokabe_Square_Nagahama_Shiga_prefecture_Japan01s3.jpg/960px-211021_Kurokabe_Square_Nagahama_Shiga_prefecture_Japan01s3.jpg",
     "source": "wiki",
     "name": "黒壁スクエア"
-  },
-  "mizudori_station": {
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Michinoeki_shinshu_tsutakijuku.jpg/960px-Michinoeki_shinshu_tsutakijuku.jpg",
-    "source": "wiki",
-    "name": "道の駅 湖北みずどりステーション"
   },
   "ibuki": {
     "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Ibukiyama_from_Kannonzaka%28Maibara-Nagahama%29.jpg/960px-Ibukiyama_from_Kannonzaka%28Maibara-Nagahama%29.jpg",
@@ -419,16 +409,6 @@
     "source": "wiki",
     "name": "トロッコ亀岡駅（嵯峨野観光鉄道）"
   },
-  "keihanna": {
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Map_of_Kyoto_Prefecture_Ja.svg/960px-Map_of_Kyoto_Prefecture_Ja.svg.png",
-    "source": "wiki",
-    "name": "けいはんな記念公園"
-  },
-  "kizugawa_sports": {
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Taiyogaoka_Park-02.jpg/960px-Taiyogaoka_Park-02.jpg",
-    "source": "wiki",
-    "name": "山城総合運動公園（太陽が丘）"
-  },
   "minamiyamashiro": {
     "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Michinoeki_shinshu_tsutakijuku.jpg/960px-Michinoeki_shinshu_tsutakijuku.jpg",
     "source": "wiki",
@@ -443,11 +423,6 @@
     "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Kyoto_g%C3%A9olocalisation_relief.svg/960px-Kyoto_g%C3%A9olocalisation_relief.svg.png",
     "source": "wiki",
     "name": "るり渓温泉（るり渓高原）"
-  },
-  "moriyama_park": {
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Moriyama-juku01s3200.jpg/960px-Moriyama-juku01s3200.jpg",
-    "source": "wiki",
-    "name": "守山市民運動公園"
   },
   "shigaraki": {
     "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Tanuki_Mura%2C_Shigaraki_T%C5%8Den_01.jpg/960px-Tanuki_Mura%2C_Shigaraki_T%C5%8Den_01.jpg",
@@ -519,11 +494,6 @@
     "source": "wiki",
     "name": "夫婦岩・二見興玉神社"
   },
-  "suzuka_mori": {
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/SUZUKA_CIRCUIT_on_26th_November_2022.jpg/960px-SUZUKA_CIRCUIT_on_26th_November_2022.jpg",
-    "source": "wiki",
-    "name": "鈴鹿の森庭園"
-  },
   "nagashima_spa_ami": {
     "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Hotel_hanamizuki.jpg/960px-Hotel_hanamizuki.jpg",
     "source": "wiki",
@@ -534,11 +504,6 @@
     "source": "wiki",
     "name": "スイトピアセンター 大垣"
   },
-  "kasagi_camp": {
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Shogatsudo.JPG/960px-Shogatsudo.JPG",
-    "source": "wiki",
-    "name": "笠置キャンプ場"
-  },
   "kameoka_cosmos": {
     "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Yume-Cosmos-Park_Kameoka.JPG/960px-Yume-Cosmos-Park_Kameoka.JPG",
     "source": "wiki",
@@ -548,21 +513,6 @@
     "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Yumotokan-Ogoto_onsen_%26_Ogoto_port.jpg/960px-Yumotokan-Ogoto_onsen_%26_Ogoto_port.jpg",
     "source": "wiki",
     "name": "雄琴公園"
-  },
-  "ogi_park": {
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Kita-Otsu-HS.jpg/960px-Kita-Otsu-HS.jpg",
-    "source": "wiki",
-    "name": "仰木公園"
-  },
-  "ogisato_central": {
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Kita-Otsu-HS.jpg/960px-Kita-Otsu-HS.jpg",
-    "source": "wiki",
-    "name": "仰木の里中央公園"
-  },
-  "ono_park": {
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Onoji_Park_in_Machida.JPG/960px-Onoji_Park_in_Machida.JPG",
-    "source": "wiki",
-    "name": "小野公園"
   },
   "wani_park": {
     "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/East_entrance_of_Wani_station.jpg/960px-East_entrance_of_Wani_station.jpg",
