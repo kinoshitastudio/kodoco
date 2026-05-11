@@ -767,18 +767,27 @@ html, body {
 .spot-photo-arr { position: absolute; bottom: 8px; right: 8px; width: 26px; height: 26px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
 .rec-badge-card {
   position: absolute; top: 10px; left: 10px;
-  background: var(--green-deep);
-  color: #FFFFFF;
-  font-size: 12px; font-weight: 700;
-  padding: 5px 14px 5px 6px;
+  font-size: 12px; font-weight: 800;
+  padding: 6px 12px;
   border-radius: 999px;
-  display: inline-flex; align-items: center; gap: 6px;
-  box-shadow: 0 2px 12px rgba(44,42,38,0.32), inset 0 0 0 1.5px rgba(255,255,255,0.55);
+  display: inline-flex; align-items: center; gap: 5px;
+  box-shadow: 0 4px 14px rgba(44,42,38,0.32), 0 0 0 2px rgba(255,255,255,0.6);
   letter-spacing: 0.02em;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.18);
+  z-index: 4;
+  white-space: nowrap;
 }
-.rec-badge-mark { width: 22px; height: 24px; flex-shrink: 0; color: #FFFFFF; }
-.rec-badge-mark * { fill: #FFFFFF !important; stroke: none !important; }
+.rec-badge-card.tier-top  { background: linear-gradient(135deg, #E2553A 0%, #C03A1F 100%); color: #fff; }
+.rec-badge-card.tier-geo  { background: linear-gradient(135deg, #4A90D9 0%, #2F70B8 100%); color: #fff; }
+.rec-badge-card.tier-wx   { background: linear-gradient(135deg, #F4B860 0%, #E89E40 100%); color: #2C2A26; }
+.rec-badge-card.tier-rain { background: linear-gradient(135deg, #7BA8D8 0%, #5B88B8 100%); color: #fff; }
+.rec-badge-card.tier-age  { background: linear-gradient(135deg, #F2A88A 0%, #D88C6E 100%); color: #fff; }
+.rec-badge-card.tier-rate { background: linear-gradient(135deg, #E8C440 0%, #C8A420 100%); color: #2C2A26; }
+.rec-badge-card.tier-dog  { background: linear-gradient(135deg, #A78060 0%, #876040 100%); color: #fff; }
+.rec-badge-card.tier-park { background: linear-gradient(135deg, #6FA078 0%, #4F8058 100%); color: #fff; }
+.rec-badge-card.tier-indoor { background: linear-gradient(135deg, #8898B8 0%, #687898 100%); color: #fff; }
+.rec-badge-card.tier-museum { background: linear-gradient(135deg, #A88AC0 0%, #886AA0 100%); color: #fff; }
+.rec-badge-card.tier-cafe { background: linear-gradient(135deg, #C8956A 0%, #A8754A 100%); color: #fff; }
+.rec-badge-card.tier-water { background: linear-gradient(135deg, #6FB8C8 0%, #4F98A8 100%); color: #fff; }
 
 /* スポット画像右上の降水確率バッジ */
 .spot-rain-now {
@@ -6091,9 +6100,8 @@ function buildSpotList() {
   }
 
   document.getElementById('spotListTitle').textContent = (_geoOn ? '近い順に並んでます（' : 'その他のスポット（') + shigaSpots.length + '件）';
-  // 年齢がぴったりマッチする最初の2件に「おすすめ」バッジ
-  const recIds = new Set(shigaSpots.slice(0, 2).map(s => s.id));
-  shigaSpots.forEach(s => cont.appendChild(buildSpotCard(s, recIds.has(s.id), age)));
+  // 全カードに rank ベースのバッジを付ける
+  shigaSpots.forEach((s, i) => cont.appendChild(buildSpotCard(s, i === 0, age, i)));
   if (shigaSpots.length === 0) {
     const empty = document.createElement('div');
     empty.style.cssText = 'text-align:center;padding:32px;color:var(--text-light);font-size:14px;';
@@ -6124,12 +6132,53 @@ function buildSpotList() {
       label.className = 'nearby-pref-label';
       label.textContent = pref + '（' + byPref[pref].length + '件）';
       cont.appendChild(label);
-      byPref[pref].forEach(s => cont.appendChild(buildSpotCard(s, false, age)));
+      byPref[pref].forEach((s, j) => cont.appendChild(buildSpotCard(s, false, age, j + 1)));
     });
   }
 }
 
-function buildSpotCard(s, isRec, age) {
+// スポットカード左上バッジを「文脈に応じた理由」で選ぶ。
+// rank=0 (一番上) は強制 TOP。それ以外は地理→天気→年齢→評価→カテゴリの優先で1個だけ選ぶ。
+function pickSpotBadge(s, rank, age) {
+  if (rank === 0) return { cls: 'tier-top', text: '🥇 一番のおすすめ' };
+  // 距離
+  const loc = (typeof _currentLoc !== 'undefined' && _currentLoc) || (typeof getSavedLocation === 'function' && getSavedLocation());
+  if (loc && loc.source === 'geo' && typeof s.lat === 'number' && typeof s.lng === 'number') {
+    const km = haversineKm(loc.lat, loc.lng, s.lat, s.lng);
+    if (km < 3)  return { cls: 'tier-geo', text: '📍 すぐ近く ' + km.toFixed(1) + 'km' };
+    if (km < 8)  return { cls: 'tier-geo', text: '📍 近場 ' + km.toFixed(1) + 'km' };
+  }
+  // 天気マッチ
+  if (state.weather === 'rainy' && (s.catClass === 'indoor' || s.catClass === 'museum')) {
+    return { cls: 'tier-rain', text: '☔ 雨でも安心' };
+  }
+  if (state.weather === 'sunny' && s.catClass === 'park') {
+    return { cls: 'tier-wx', text: '☀️ 今日の天気にピッタリ' };
+  }
+  // 年齢ぴったり
+  const facts = SPOT_FACTS[s.id] || {};
+  if (facts.ageMin && /0歳|1歳|2歳/.test(facts.ageMin) && age <= 3) {
+    return { cls: 'tier-age', text: '👶 小さい子もOK' };
+  }
+  // 評価
+  if (s.rating && s.rating >= 4.5) {
+    return { cls: 'tier-rate', text: '⭐ 評価 ' + Number(s.rating).toFixed(1) };
+  }
+  // 犬OK (犬モード時)
+  const dogOk = (facts && facts.dogOk) || (s.dogInfo && s.dogInfo.ok);
+  if (state.dog && dogOk) {
+    return { cls: 'tier-dog', text: '🐕 犬OK' };
+  }
+  // カテゴリ fallback
+  if (s.catClass === 'park')    return { cls: 'tier-park',   text: '🌳 走り回れる' };
+  if (s.catClass === 'indoor')  return { cls: 'tier-indoor', text: '🏠 屋内でゆっくり' };
+  if (s.catClass === 'museum')  return { cls: 'tier-museum', text: '🎨 体験できる' };
+  if (s.catClass === 'cafe' || s.catClass === 'restaurant') return { cls: 'tier-cafe', text: '🍴 食事できる' };
+  if (/水遊び|湖|川/.test(s.cat + (s.keywords||[]).join(' '))) return { cls: 'tier-water', text: '💦 水あそび' };
+  return { cls: 'tier-park', text: '✓ おすすめ' };
+}
+
+function buildSpotCard(s, isRec, age, rank) {
   const liked = state.likes.includes(s.id);
   const facts = SPOT_FACTS[s.id] || {};
   const value = VALUE_LINES[s.id] || s.desc;
@@ -6169,8 +6218,10 @@ function buildSpotCard(s, isRec, age) {
   const rainBadge = rainInfo && rainInfo.prob >= 20
     ? '<div class="spot-rain-now ' + (rainInfo.prob >= 60 ? 'high' : rainInfo.prob >= 40 ? 'mid' : 'low') + '">☔ 今 ' + rainInfo.prob + '%</div>'
     : '';
+  // バッジ: rank が指定されていればコンテキスト判定、なければ従来の isRec を使う
+  const badge = (typeof rank === 'number') ? pickSpotBadge(s, rank, age) : (isRec ? { cls: 'tier-top', text: '🥇 ' + age + '歳におすすめ' } : null);
   div.innerHTML = '<div class="spot-photo" style="background:' + spotBackgroundCss(s) + ';">'
-    + (isRec ? '<div class="rec-badge-card"><svg class="rec-badge-mark" aria-hidden="true"><use href="#kodo-mark"/></svg>◎ ' + age + '歳におすすめ</div>' : '')
+    + (badge ? '<div class="rec-badge-card ' + badge.cls + '">' + badge.text + '</div>' : '')
     + rainBadge
     + (hasPhoto ? '' : '<div class="spot-emoji-lg">' + s.emoji + '</div>')
     + (isPlaceholder ? '<div class="img-placeholder-note"><span class="ipn-icon">💭</span>イメージ画像</div>' : '')
@@ -6365,7 +6416,7 @@ function renderFavList() {
   hdr.style.cssText = 'padding:14px 16px 8px;font-size:14px;font-weight:700;';
   hdr.textContent = 'お気に入り ' + liked.length + '件';
   cont.appendChild(hdr);
-  liked.forEach(s => cont.appendChild(buildSpotCard(s, false, age)));
+  liked.forEach((s, i) => cont.appendChild(buildSpotCard(s, false, age, i + 1)));
   const credit = document.createElement('div');
   credit.className = 'footer-credit'; credit.innerHTML = '<p>Developed by <strong>KINOSHITA STUDIO</strong></p>';
   cont.appendChild(credit);
@@ -6492,7 +6543,7 @@ function renderSagasuCards(spots) {
       </div>`;
     return;
   }
-  spots.forEach(s => cont.appendChild(buildSpotCard(s, s.ageGroups.includes(age), age)));
+  spots.forEach((s, i) => cont.appendChild(buildSpotCard(s, s.ageGroups.includes(age), age, i)));
 }
 
 function resetSagasuFilters() {
