@@ -2915,10 +2915,10 @@ html, body {
     <div class="settings-section-title" style="margin-top:28px;">お子さん情報</div>
     <div class="settings-card" id="settingsChildren"></div>
 
-    <div class="settings-section-title" style="margin-top:28px;">🏆 コドちゃんとのあしあと</div>
+    <div class="settings-section-title" id="titleAchievements" style="margin-top:28px;">🏆 コドちゃんとのあしあと</div>
     <div class="settings-card" id="settingsAchievements"></div>
 
-    <div class="settings-section-title" style="margin-top:28px;">🎨 お気に入りキャラ</div>
+    <div class="settings-section-title" id="titleMascotPicker" style="margin-top:28px;">🎨 お気に入りキャラ</div>
     <div class="settings-card" id="settingsMascotPicker">
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
         <button class="mascot-pick" data-pick="kodo" onclick="setMascotPref('kodo')">
@@ -4528,6 +4528,332 @@ const ROUTE_PLANS = [
     steps: [
       { time: '10:00', name: '草津川跡地公園', note: '舗装路ベビーカーOK' },
       { time: '11:30', name: 'ベビーカーOKカフェ', note: '授乳室確認済み' },
+    ]
+  },
+  {
+    tag: '🚂 電車だいすき',
+    title: '長浜鉄道ふれあいプラン',
+    time: '約4時間',
+    weather: 'any', ageRange: [2, 8], coverKey: 'indoor',
+    steps: [
+      { time: '10:00', name: '長浜鉄道スクエア', note: 'D51と旧駅舎で電車気分' },
+      { time: '12:00', name: 'えきまちテラス長浜', note: '駅前ランチ' },
+      { time: '14:00', name: 'ヤンマーミュージアム', note: '体験展示で工作' },
+    ]
+  },
+  {
+    tag: '🦕 恐竜デー',
+    title: '福井恐竜まるごとプラン',
+    time: '約6時間',
+    weather: 'any', ageRange: [3, 10], coverKey: 'indoor',
+    steps: [
+      { time: '10:00', name: '福井県立恐竜博物館', note: '化石と全身骨格' },
+      { time: '13:00', name: '館内レストラン', note: '恐竜カレー' },
+      { time: '14:30', name: 'かつやまディノパーク', note: '屋外で動く恐竜と遭遇' },
+    ]
+  },
+  {
+    tag: '🐟 水族館コース',
+    title: '鳥羽水族館ぐるっとプラン',
+    time: '約5時間',
+    weather: 'any', ageRange: [1, 10], coverKey: 'indoor',
+    steps: [
+      { time: '10:00', name: '鳥羽水族館', note: 'ジュゴンと出会う' },
+      { time: '12:30', name: '館内レストラン', note: '海を見ながらランチ' },
+      { time: '14:00', name: 'ミキモト真珠島', note: '海女さん実演' },
+    ]
+  },
+  {
+    tag: '⛷ 冬のゲレンデ',
+    title: '雪あそびデビュープラン',
+    time: '約6時間',
+    weather: 'sunny', ageRange: [3, 10], coverKey: 'sunny',
+    season: 'winter',
+    steps: [
+      { time: '9:30',  name: 'グランスノー奥伊吹（奥伊吹スキー場）', note: 'キッズパークでそり' },
+      { time: '12:30', name: 'ゲレンデレストラン', note: 'あったかランチ' },
+      { time: '14:00', name: '雪あそびタイム', note: 'もう一回滑る' },
+    ]
+  },
+  {
+    tag: '🌿 新緑メタセコイア',
+    title: '春の並木ドライブプラン',
+    time: '約5時間',
+    weather: 'sunny', ageRange: [0, 10], coverKey: 'nature',
+    season: 'spring',
+    steps: [
+      { time: '10:00', name: 'マキノ メタセコイア並木', note: '新緑の並木道' },
+      { time: '12:00', name: 'マキノピックランド', note: 'マルシェランチ' },
+      { time: '14:00', name: 'パフェ専門店LAMP（びわこ箱館山）', note: 'デザートで一息' },
+    ]
+  },
+  {
+    tag: '🍓 いちご狩り',
+    title: '春の果実体験プラン',
+    time: '約4時間',
+    weather: 'any', ageRange: [2, 10], coverKey: 'nature',
+    season: 'spring',
+    steps: [
+      { time: '10:00', name: 'アグリパーク竜王', note: 'いちご狩り体験' },
+      { time: '12:30', name: '園内レストラン', note: '採れたて野菜ランチ' },
+      { time: '14:00', name: '三井アウトレットパーク 滋賀竜王', note: '近隣でお買い物' },
+    ]
+  },
+  {
+    tag: '🐄 牧場のんびり',
+    title: 'ブルーメの丘ファミリープラン',
+    time: '約5時間',
+    weather: 'sunny', ageRange: [1, 8], coverKey: 'nature',
+    steps: [
+      { time: '10:00', name: 'ブルーメの丘', note: '動物ふれあい広場' },
+      { time: '12:30', name: '園内レストラン', note: 'ソーセージプレート' },
+      { time: '14:00', name: 'パン作り体験', note: '園内でクラフト' },
+    ]
+  },
+  {
+    tag: '🎂 室内全力',
+    title: '雨でも飽きない屋内プラン',
+    time: '約4時間',
+    weather: 'rainy', ageRange: [1, 8], coverKey: 'indoor',
+    steps: [
+      { time: '10:00', name: 'キッズユーエスランド 近江八幡店', note: '時間制で遊び放題' },
+      { time: '12:30', name: 'フードコート', note: '館内でラクラクランチ' },
+      { time: '14:00', name: 'ザキッズ エイスクエア草津店', note: 'ハシゴで延長戦' },
+    ]
+  },
+  {
+    tag: '🛍 アウトレット',
+    title: '家族でショッピングプラン',
+    time: '約5時間',
+    weather: 'any', ageRange: [0, 10], coverKey: 'default',
+    steps: [
+      { time: '10:30', name: '三井アウトレットパーク 滋賀竜王', note: '広い敷地でぶらぶら' },
+      { time: '12:30', name: 'フードコート', note: 'バラエティ豊富' },
+      { time: '14:30', name: 'こどもっちパーク栗東', note: '帰り道で子どもの遊び枠' },
+    ]
+  },
+  {
+    tag: '🏰 城下町散策',
+    title: '彦根&黒壁ヒストリープラン',
+    time: '約5時間',
+    weather: 'sunny', ageRange: [4, 10], coverKey: 'default',
+    steps: [
+      { time: '10:00', name: '彦根城・玄宮園', note: '国宝天守と庭園' },
+      { time: '12:30', name: '夢京橋キャッスルロード', note: '城下町ランチ' },
+      { time: '14:30', name: '黒壁スクエア', note: 'ガラス体験' },
+    ]
+  },
+  {
+    tag: '🌲 自然観察',
+    title: 'みなくち森の探検プラン',
+    time: '約3時間',
+    weather: 'sunny', ageRange: [2, 8], coverKey: 'nature',
+    steps: [
+      { time: '10:00', name: 'みなくち子どもの森 自然館カフェ', note: '森を歩いて昆虫探し' },
+      { time: '12:30', name: '館内カフェ', note: '森を眺めながらランチ' },
+    ]
+  },
+  {
+    tag: '📚 図書館で',
+    title: 'まったり読書プラン',
+    time: '約2.5時間',
+    weather: 'rainy', ageRange: [0, 8], coverKey: 'indoor',
+    steps: [
+      { time: '10:00', name: '彦根市立図書館・湖東こどもセンター', note: '絵本コーナーで朝読書' },
+      { time: '12:00', name: '近隣カフェ', note: 'のんびりランチ' },
+    ]
+  },
+  {
+    tag: '🍦 道の駅めぐり',
+    title: '湖東スイートプラン',
+    time: '約4時間',
+    weather: 'sunny', ageRange: [0, 10], coverKey: 'default',
+    steps: [
+      { time: '10:00', name: '道の駅 あいとうマーガレットステーション', note: '地元野菜と花' },
+      { time: '12:00', name: '園内レストラン', note: '湖東野菜のランチ' },
+      { time: '14:00', name: 'イオンモール東近江', note: 'ソフトクリーム休憩' },
+    ]
+  },
+  {
+    tag: '🐾 犬連れ草津',
+    title: '草津で犬と子どもプラン',
+    time: '約3時間',
+    weather: 'sunny', ageRange: [3, 10], coverKey: 'sunny',
+    steps: [
+      { time: '10:00', name: 'ROCK BAY GARDEN（道の駅草津）', note: 'テラス席OK' },
+      { time: '12:00', name: 'ドッグカフェ（草津市・ドッグラン120坪）', note: '本格ドッグラン' },
+      { time: '14:00', name: '草津川跡地公園 de愛ひろば', note: '舗装路でお散歩' },
+    ]
+  },
+  {
+    tag: '⛩ 神社めぐり',
+    title: '湖西の神社2社プラン',
+    time: '約5時間',
+    weather: 'sunny', ageRange: [0, 10], coverKey: 'default',
+    steps: [
+      { time: '10:00', name: '白鬚神社', note: '湖中鳥居で参拝' },
+      { time: '12:30', name: '近隣カフェ', note: '湖を眺めてランチ' },
+      { time: '14:30', name: '多賀大社', note: 'お多賀さんに参拝' },
+    ]
+  },
+  {
+    tag: '🚢 琵琶湖クルーズ',
+    title: 'ミシガン船で湖上プラン',
+    time: '約4時間',
+    weather: 'sunny', ageRange: [3, 10], coverKey: 'water',
+    steps: [
+      { time: '10:00', name: '琵琶湖汽船ミシガン', note: '船上で湖を一望' },
+      { time: '13:00', name: '大津港周辺', note: '港カフェでランチ' },
+      { time: '14:30', name: 'なぎさ公園', note: '湖沿い散歩' },
+    ]
+  },
+  {
+    tag: '🪐 プラネタリウム',
+    title: '宇宙体験プラン',
+    time: '約4時間',
+    weather: 'any', ageRange: [3, 10], coverKey: 'indoor',
+    steps: [
+      { time: '10:00', name: '大津市科学館', note: 'プラネタリウム鑑賞' },
+      { time: '12:00', name: '近隣カフェ', note: 'ランチ' },
+      { time: '14:00', name: 'ASOBLEオーミー大津テラス店', note: '午後は思いっきり遊ぶ' },
+    ]
+  },
+  {
+    tag: '⛺ キャンプ気分',
+    title: '日帰りアウトドアプラン',
+    time: '約6時間',
+    weather: 'sunny', ageRange: [4, 10], coverKey: 'nature',
+    season: 'summer',
+    steps: [
+      { time: '10:00', name: '笠置キャンプ場', note: '川辺デイキャンプ' },
+      { time: '12:30', name: 'BBQ ランチ', note: '焼き物満喫' },
+      { time: '15:00', name: '川あそび', note: '夕方まで水辺' },
+    ]
+  },
+  {
+    tag: '🌅 朝モーニング',
+    title: '湖岸モーニングプラン',
+    time: '約2時間',
+    weather: 'sunny', ageRange: [0, 5], coverKey: 'short',
+    steps: [
+      { time: '8:30', name: '堅田駅前公園', note: '朝の公園' },
+      { time: '9:30', name: '近隣モーニングカフェ', note: '朝ごはん' },
+    ]
+  },
+  {
+    tag: '🍵 茶畑ハイキング',
+    title: '和束の新茶プラン',
+    time: '約5時間',
+    weather: 'sunny', ageRange: [4, 10], coverKey: 'nature',
+    season: 'spring',
+    steps: [
+      { time: '10:00', name: '和束町茶畑ハイキング', note: '段々茶畑を散策' },
+      { time: '12:30', name: '茶畑カフェ', note: '抹茶スイーツ' },
+      { time: '14:00', name: '道の駅 お茶の京都みなみやましろ', note: 'お土産探し' },
+    ]
+  },
+  {
+    tag: '🦆 水鳥観察',
+    title: '冬の湖北バードウォッチプラン',
+    time: '約4時間',
+    weather: 'sunny', ageRange: [4, 10], coverKey: 'nature',
+    season: 'winter',
+    steps: [
+      { time: '10:00', name: '道の駅 湖北みずどりステーション', note: '湖北の渡り鳥観察' },
+      { time: '12:30', name: '館内レストラン', note: '湖魚定食' },
+      { time: '14:00', name: '豊公園（長浜城跡）', note: '城跡散策' },
+    ]
+  },
+  {
+    tag: '🍂 古道さんぽ',
+    title: '東海道関宿レトロプラン',
+    time: '約4時間',
+    weather: 'sunny', ageRange: [4, 10], coverKey: 'default',
+    season: 'autumn',
+    steps: [
+      { time: '10:00', name: '関宿（東海道）', note: '江戸の街並みを歩く' },
+      { time: '12:30', name: '宿場町ランチ', note: '和食でほっこり' },
+      { time: '14:00', name: '近隣のお茶屋', note: 'お茶と団子' },
+    ]
+  },
+  {
+    tag: '🌊 真夏の海',
+    title: '日本海ビーチプラン',
+    time: '約6時間',
+    weather: 'sunny', ageRange: [3, 10], coverKey: 'water',
+    season: 'summer',
+    steps: [
+      { time: '10:00', name: '気比の松原', note: '白砂の海岸で遊ぶ' },
+      { time: '12:30', name: '海鮮ランチ', note: '魚介を堪能' },
+      { time: '15:00', name: '若狭湾 海浜自然センター', note: '夕方は涼しい館内で' },
+    ]
+  },
+  {
+    tag: '🍡 商人の町',
+    title: '日野まちなみプラン',
+    time: '約4時間',
+    weather: 'any', ageRange: [4, 10], coverKey: 'indoor',
+    steps: [
+      { time: '10:00', name: '日野祭り資料館（近江日野商人館）', note: '商人文化を学ぶ' },
+      { time: '12:00', name: '町家カフェランチ', note: '湖国の郷土料理' },
+      { time: '14:00', name: 'ラコリーナ近江八幡', note: 'お菓子買って帰る' },
+    ]
+  },
+  {
+    tag: '♨ 雪と温泉',
+    title: 'るり渓ぬくぬくプラン',
+    time: '約5時間',
+    weather: 'any', ageRange: [2, 10], coverKey: 'indoor',
+    season: 'winter',
+    steps: [
+      { time: '11:00', name: 'るり渓温泉（るり渓高原）', note: '日帰り温泉' },
+      { time: '13:00', name: '温泉レストラン', note: '湯上がりランチ' },
+      { time: '14:30', name: '館内くつろぎ', note: 'のんびり過ごす' },
+    ]
+  },
+  {
+    tag: '🍴 がっつりBBQ',
+    title: '夏の青空ランチプラン',
+    time: '約4時間',
+    weather: 'sunny', ageRange: [3, 10], coverKey: 'sunny',
+    season: 'summer',
+    steps: [
+      { time: '11:00', name: 'カフェ＆BBQ いちごとミルク', note: 'BBQランチ' },
+      { time: '14:00', name: 'なぎさ公園', note: '腹ごなしで湖岸散歩' },
+    ]
+  },
+  {
+    tag: '🐰 動物ふれあい',
+    title: 'ファームふれあいプラン',
+    time: '約4時間',
+    weather: 'sunny', ageRange: [1, 6], coverKey: 'nature',
+    steps: [
+      { time: '10:00', name: 'アグリパーク竜王', note: 'うさぎ・ヤギふれあい' },
+      { time: '12:30', name: '園内ランチ', note: '農場ごはん' },
+      { time: '14:00', name: '草花の散策', note: '園内ぶらぶら' },
+    ]
+  },
+  {
+    tag: '🎏 こどもの日',
+    title: '5月の特別おでかけプラン',
+    time: '約4時間',
+    weather: 'sunny', ageRange: [0, 10], coverKey: 'sunny',
+    season: 'spring',
+    steps: [
+      { time: '10:00', name: '希望が丘文化公園', note: '広い芝生で走り回る' },
+      { time: '12:00', name: 'お弁当ランチ', note: '芝生でピクニック' },
+      { time: '14:00', name: 'びわ湖こどもの国', note: '午後は遊具と工作' },
+    ]
+  },
+  {
+    tag: '🏊 室内プール',
+    title: '一年中水あそびプラン',
+    time: '約4時間',
+    weather: 'rainy', ageRange: [3, 10], coverKey: 'water',
+    steps: [
+      { time: '10:00', name: '湯あみの島（長島温泉）', note: '室内プールで遊ぶ' },
+      { time: '12:30', name: '館内レストラン', note: 'プール後のランチ' },
+      { time: '14:00', name: '館内くつろぎ', note: '温泉でリフレッシュ' },
     ]
   },
 ];
@@ -7393,8 +7719,14 @@ function renderAccountSection() {
       '<div style="font-size:12.5px;line-height:1.7;color:var(--text-sub);margin-bottom:12px;">'
       +   'ログインすると、お気に入り・口コミ・解禁したキャラがどの端末からでも見られます。スポット投稿も可能に。'
       + '</div>'
-      + '<button class="settings-action-btn" onclick="openAuthModal()" style="background:var(--green-deep);color:white;border:0;">👤 ログイン / 新規登録</button>';
+      + '<button class="settings-action-btn" onclick="openAuthModal()" style="background:var(--green-deep);color:white;border:0;font-size:15px;font-weight:800;padding:16px;letter-spacing:.04em;">🔑 ログインする / 新規登録</button>';
   }
+  // ログイン状態によって 「あしあと / お気に入りキャラ」セクションを表示制御
+  const loggedIn = !!user;
+  ['titleAchievements','settingsAchievements','titleMascotPicker','settingsMascotPicker'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = loggedIn ? '' : 'none';
+  });
 }
 
 document.addEventListener('kodoco:auth-ready',  renderAccountSection);

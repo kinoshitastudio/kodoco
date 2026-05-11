@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KODOCO — 今日、子どもとどこいく？ | KINOSHITA STUDIO</title>
-  <meta name="description" content="「今日、子どもとどこいく？」そのひと言に答えるWebアプリ。天気・年齢・時間で1スポットに絞って提案。滋賀168スポット／20プラン／10匹のキャラ。完全無料、アカウント連携で複数端末同期・口コミ投稿対応。">
+  <meta name="description" content="「今日、子どもとどこいく？」そのひと言に答えるWebアプリ。天気・年齢・時間で1スポットに絞って提案。滋賀168スポット／50プラン／10匹のキャラ。完全無料、アカウント連携で複数端末同期・口コミ投稿対応。">
   <meta property="og:title" content="KODOCO — 今日、子どもとどこいく？">
   <meta property="og:description" content="子連れで失敗しない場所が、今日の状況でわかる。滋賀県の子連れおでかけWebアプリ。">
   <meta property="og:image" content="./ogp.svg">
@@ -595,6 +595,99 @@
       color: var(--ink-soft);
       line-height: 1.75;
       max-width: 640px;
+    }
+
+    /* ═══ SIGNATURE FEATURES STRIP — 主力機能のカラフル強調 ═══ */
+    .sig-strip {
+      padding: 72px 24px 40px;
+      max-width: 1200px; margin: 0 auto;
+      text-align: center;
+    }
+    .sig-strip-eyebrow {
+      font-size: 11px; letter-spacing: .18em; font-weight: 800;
+      color: var(--ink-faint);
+      margin-bottom: 8px;
+    }
+    .sig-strip-title {
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 900; color: var(--ink);
+      line-height: 1.3; margin-bottom: 28px;
+      letter-spacing: -.01em;
+    }
+    .sig-strip-title small {
+      display: block; margin-top: 6px;
+      font-size: 13px; font-weight: 600; color: var(--ink-soft);
+      letter-spacing: 0;
+    }
+    .sig-strip-inner {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      max-width: 980px; margin: 0 auto;
+    }
+    .sig-card {
+      position: relative;
+      padding: 32px 22px 26px;
+      border-radius: 22px;
+      text-align: left;
+      text-decoration: none;
+      color: var(--ink);
+      box-shadow: 0 8px 24px rgba(44,42,38,0.08);
+      transition: transform .18s ease, box-shadow .18s ease;
+      overflow: hidden;
+      border: 1.5px solid rgba(255,255,255,.6);
+    }
+    .sig-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 32px rgba(44,42,38,0.14);
+    }
+    .sig-card.sig-weather {
+      background: linear-gradient(135deg, #E8F4DD 0%, #D8EBC8 60%, #C7E0B5 100%);
+    }
+    .sig-card.sig-rain {
+      background: linear-gradient(135deg, #FFF0E8 0%, #FFDFD0 60%, #FFCDB8 100%);
+    }
+    .sig-card.sig-plan {
+      background: linear-gradient(135deg, #FFE5D0 0%, #FFC9A8 55%, #FFB089 100%);
+    }
+    .sig-badge {
+      display: inline-block;
+      font-size: 10px; font-weight: 800;
+      letter-spacing: .12em;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.78);
+      color: var(--ink);
+      box-shadow: 0 2px 6px rgba(44,42,38,0.1);
+      margin-bottom: 16px;
+    }
+    .sig-weather .sig-badge { color: #3F6B2A; }
+    .sig-rain    .sig-badge { color: #B85423; }
+    .sig-plan    .sig-badge { color: #B85423; }
+    .sig-emoji {
+      position: absolute;
+      top: 14px; right: 14px;
+      font-size: 32px;
+      opacity: .55;
+      transform: rotate(-8deg);
+    }
+    .sig-title {
+      font-size: 18px; font-weight: 800; line-height: 1.4;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .sig-sub {
+      font-size: 12.5px; line-height: 1.65;
+      color: var(--ink-soft);
+      font-weight: 600;
+    }
+    @media (max-width: 720px) {
+      .sig-strip { padding: 48px 16px 24px; }
+      .sig-strip-inner { grid-template-columns: 1fr; gap: 12px; max-width: 420px; }
+      .sig-card { padding: 24px 18px 22px; }
+      .sig-emoji { font-size: 28px; top: 12px; right: 12px; }
+      .sig-title { font-size: 16px; }
+      .sig-sub { font-size: 12px; }
     }
 
     /* ═══ FEATURE BANDS ═══ */
@@ -1853,7 +1946,7 @@
       <div class="hero-orbit hero-orbit-card ho-2" style="--rot:5deg;"><span class="ho-emoji">☔</span>次3時間 60%</div>
       <div class="hero-orbit hero-orbit-card ho-3" style="--rot:-4deg;"><span class="ho-pill">🍼 2歳</span>63件</div>
       <div class="hero-orbit hero-orbit-card ho-4" style="--rot:8deg;"><span class="ho-dot"></span>Live 168スポット</div>
-      <div class="hero-orbit hero-orbit-card ho-5" style="--rot:-8deg;"><span class="ho-emoji">🗺</span>20プラン</div>
+      <div class="hero-orbit hero-orbit-card ho-5" style="--rot:-8deg;"><span class="ho-emoji">🗺</span>50プラン</div>
       <div class="hero-orbit hero-orbit-card ho-6" style="--rot:6deg;"><span class="ho-emoji">💬</span>パパママの声</div>
       <div class="hero-orbit hero-orbit-emoji ho-7">✨</div>
       <div class="hero-orbit hero-orbit-emoji ho-8">🌸</div>
@@ -1914,9 +2007,35 @@
 <div class="trust">
   <div class="trust-inner">
     <div class="trust-item rv"><div class="trust-num">168</div><div class="trust-label">Spots</div></div>
-    <div class="trust-item rv d1"><div class="trust-num">20</div><div class="trust-label">Plans</div></div>
+    <div class="trust-item rv d1"><div class="trust-num">50</div><div class="trust-label">Plans</div></div>
     <div class="trust-item rv d2"><div class="trust-num">0-10</div><div class="trust-label">Age</div></div>
     <div class="trust-item rv d3"><div class="trust-num">¥0</div><div class="trust-label">Free</div></div>
+  </div>
+</div>
+
+<!-- ═══ SIGNATURE FEATURES STRIP ═══ -->
+<div class="sig-strip">
+  <div class="sig-strip-eyebrow">★ SIGNATURE FEATURES</div>
+  <h2 class="sig-strip-title">他にはない、KODOCO の主力機能。<small>使うほどに「これがあって助かる」になる3つ。</small></h2>
+  <div class="sig-strip-inner">
+    <a href="#features" class="sig-card sig-weather">
+      <span class="sig-emoji">☀️</span>
+      <span class="sig-badge">☀️ WEEKLY FORECAST</span>
+      <div class="sig-title">週間天気から<br>提案を切替</div>
+      <div class="sig-sub">晴れなら公園、雨なら屋内へ。出発前に空を見て悩む時間をゼロに。</div>
+    </a>
+    <a href="#features" class="sig-card sig-rain">
+      <span class="sig-emoji">☔</span>
+      <span class="sig-badge">☔ RAIN AHEAD</span>
+      <div class="sig-title">これからの雨も<br>事前にお知らせ</div>
+      <div class="sig-sub">「いま晴れでも午後から雨」。子連れに大事な"先読み"を毎日ホームで。</div>
+    </a>
+    <a href="#features" class="sig-card sig-plan">
+      <span class="sig-emoji">🗺</span>
+      <span class="sig-badge">🗺 OUTING PLAN</span>
+      <div class="sig-title">50プランで<br>迷いをゼロに</div>
+      <div class="sig-sub">朝→昼→夕の動線を季節・天気・年齢に合わせて自動でセット。</div>
+    </a>
   </div>
 </div>
 
@@ -2537,7 +2656,7 @@
     </div>
     <div class="faq-item">
       <button class="faq-q">どのエリアに対応していますか？</button>
-      <div class="faq-a">現在は<strong>滋賀県内109スポット</strong>（大津・草津・守山・野洲・近江八幡・東近江・彦根・長浜・高島など県全域）＋<strong>周辺エリア59スポット</strong>（福井・三重・岐阜・京都北部）の<strong>合計168スポット</strong>に対応。<strong>20種類のおでかけプラン</strong>も用意。お気に入り・口コミの達成度で新キャラやアクセサリーが解禁されていきます。</div>
+      <div class="faq-a">現在は<strong>滋賀県内109スポット</strong>（大津・草津・守山・野洲・近江八幡・東近江・彦根・長浜・高島など県全域）＋<strong>周辺エリア59スポット</strong>（福井・三重・岐阜・京都北部）の<strong>合計168スポット</strong>に対応。<strong>50種類のおでかけプラン</strong>も用意。お気に入り・口コミの達成度で新キャラやアクセサリーが解禁されていきます。</div>
     </div>
     <div class="faq-item">
       <button class="faq-q">投稿したコメントは他の人にも見える？</button>
