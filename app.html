@@ -7207,7 +7207,8 @@ async function renderMyReviewsSection() {
       ).join('');
       return '<div class="my-review-row" style="background:#fffceb;border:1px solid #f0d873;">'
         + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;">'
-        +   '<div style="font-size:13px;font-weight:700;flex:1;min-width:0;">' + _esc(spotName) + '</div>'
+        +   (spot ? '<div onclick="closeSettings(); openDetail(\'' + r.spot_id + '\');" style="font-size:13px;font-weight:700;flex:1;min-width:0;cursor:pointer;color:var(--green-deep);text-decoration:underline;text-underline-offset:2px;">' + _esc(spotName) + '</div>'
+                  : '<div style="font-size:13px;font-weight:700;flex:1;min-width:0;color:var(--text-sub);">' + _esc(spotName) + '</div>')
         +   '<select id="editRevRating-' + r.id + '" class="form-select" style="font-size:11px;padding:4px 22px 4px 8px;height:auto;width:auto;">' + ratingOpts + '</select>'
         + '</div>'
         + '<textarea id="editRevBody-' + r.id + '" class="form-input" rows="3" style="margin-bottom:8px;resize:vertical;font-size:12px;">' + _esc(r.body || '') + '</textarea>'
@@ -7226,7 +7227,8 @@ async function renderMyReviewsSection() {
       : '';
     return '<div class="my-review-row">'
       + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px;">'
-      +   '<div style="font-size:13px;font-weight:700;flex:1;min-width:0;">' + _esc(spotName) + '</div>'
+      +   (spot ? '<div onclick="closeSettings(); openDetail(\'' + r.spot_id + '\');" style="font-size:13px;font-weight:700;flex:1;min-width:0;cursor:pointer;color:var(--green-deep);text-decoration:underline;text-underline-offset:2px;">' + _esc(spotName) + '</div>'
+                : '<div style="font-size:13px;font-weight:700;flex:1;min-width:0;color:var(--text-sub);">' + _esc(spotName) + '</div>')
       +   '<span style="font-size:10px;color:#d4a000;font-weight:600;flex-shrink:0;">' + stars + '</span>'
       + '</div>'
       + '<div style="font-size:12px;color:var(--text);line-height:1.55;margin-bottom:6px;white-space:pre-wrap;">' + _esc(r.body || '') + '</div>'
