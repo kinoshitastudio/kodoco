@@ -16,6 +16,7 @@
 <meta property="og:title" content="KODOCO — 今日どこいく？">
 <meta property="og:description" content="子連れで失敗しない場所が、今日の状況でわかる。滋賀県の子連れおでかけWebアプリ。">
 <meta property="og:image" content="./ogp.svg">
+<meta property="og:url" content="https://kodoco.jp/app.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="./ogp.svg">
@@ -379,8 +380,26 @@ html, body {
   border-bottom-left-radius: 3px;
 }
 
-/* Weather strip */
-.weather-card { margin: 0 16px 16px; background: var(--card); border-radius: var(--radius); padding: 14px 16px; }
+/* Weather strip — emphasized */
+.weather-card {
+  margin: 0 16px 16px;
+  background: linear-gradient(135deg, #FFF8E8 0%, #FFFFFF 40%, #EFF6FF 100%);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+  box-shadow: 0 4px 14px rgba(255, 175, 50, 0.10), 0 2px 8px rgba(100, 140, 200, 0.08);
+}
+.weather-card::before {
+  content: '☀️ WEEKLY FORECAST';
+  position: absolute; top: -10px; left: 14px;
+  background: linear-gradient(90deg, #FFB04A, #FFD580);
+  color: #fff;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.12em;
+  padding: 3px 10px; border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(255, 176, 74, 0.35);
+}
 .weather-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
 .weather-title-wrap { display: flex; flex-direction: column; gap: 2px; }
 .weather-title { font-size: 12px; color: var(--text-sub); font-weight: 500; letter-spacing: 0.02em; }
@@ -410,11 +429,27 @@ html, body {
 }
 .geo-toggle.loading #geoToggleIcon { animation: spin 1s linear infinite; display: inline-block; }
 
-/* Hourly rain strip */
-.rain-strip { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); }
+/* Hourly rain strip — emphasized inner card */
+.rain-strip {
+  margin: 14px -6px 0;
+  padding: 14px 14px 12px;
+  background: linear-gradient(135deg, #E8F1FB 0%, #F2F8FF 50%, #E0EBF8 100%);
+  border-radius: 12px;
+  border: 1.5px solid rgba(91, 120, 153, 0.18);
+  position: relative;
+}
+.rain-strip::before {
+  content: '☔ RAIN AHEAD';
+  position: absolute; top: -9px; left: 12px;
+  background: linear-gradient(90deg, #5B7899, #7DA5C2);
+  color: #fff;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.12em;
+  padding: 3px 9px; border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(91, 120, 153, 0.3);
+}
 .rain-strip-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
-.rain-strip-title { font-size: 12px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
-.rain-strip-sub { font-size: 10px; color: var(--text-sub); font-weight: 500; }
+.rain-strip-title { font-size: 13px; font-weight: 800; color: #2C4A6E; letter-spacing: -0.01em; }
+.rain-strip-sub { font-size: 10px; color: #5B7899; font-weight: 600; }
 .rain-strip-bars {
   display: flex; gap: 2px; align-items: flex-end;
   height: 56px;
@@ -466,11 +501,30 @@ html, body {
 .qf-btn { padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--bg); font-size: 13px; font-family: inherit; cursor: pointer; transition: all .2s; white-space: nowrap; color: var(--text-sub); }
 .qf-btn.active { background: var(--green); border-color: var(--green); color: white; font-weight: 600; }
 
-/* Route plans */
-.route-section { padding: 0 16px 32px; }
+/* Route plans — emphasized colorful frame */
+.route-section {
+  margin: 0 16px 28px;
+  padding: 20px 16px 18px;
+  background: linear-gradient(135deg, #FFF5E6 0%, #FFEFD7 25%, #FFE5DC 60%, #FFE0E5 100%);
+  border-radius: 20px;
+  border: 2px solid rgba(255, 165, 80, 0.25);
+  position: relative;
+  overflow: visible;
+  box-shadow: 0 6px 18px rgba(255, 145, 60, 0.12), 0 2px 8px rgba(255, 105, 130, 0.08);
+}
+.route-section::before {
+  content: '🗺 OUTING PLAN ・ おでかけプラン';
+  position: absolute; top: -11px; left: 18px;
+  background: linear-gradient(90deg, #FF8C5A, #FFA85C, #FFC074);
+  color: #fff;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.1em;
+  padding: 4px 12px; border-radius: 14px;
+  box-shadow: 0 3px 8px rgba(255, 140, 90, 0.4);
+}
+.route-section .section-title { color: #B85423; }
 .section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px; }
-.section-title { font-size: 16px; font-weight: 700; letter-spacing: 0.01em; }
-.section-sub { font-size: 11px; color: var(--text-sub); font-weight: 500; }
+.section-title { font-size: 17px; font-weight: 800; letter-spacing: 0.01em; }
+.section-sub { font-size: 11px; color: var(--text-sub); font-weight: 600; }
 .route-cards { display: flex; gap: 12px; overflow-x: auto; padding: 2px 2px 6px; scroll-snap-type: x proximity; }
 .route-cards::-webkit-scrollbar { display: none; }
 .route-card { flex-shrink: 0; width: 260px; background: var(--card); border-radius: var(--radius); padding: 16px 14px 14px 16px; cursor: pointer; border: 1px solid var(--border); transition: all .2s; scroll-snap-align: start; position: relative; overflow: hidden; }
@@ -2222,10 +2276,23 @@ html, body {
             <svg class="slide-char c-c" aria-hidden="true"><use href="#biwa"/></svg>
           </div>
         </div>
+        <div class="slide" data-bg="yellow">
+          <div class="slide-text">
+            <div class="slide-eyebrow">📍 LOCATION × ☔ RAIN</div>
+            <div class="slide-title">現在地ONで、<br>今すぐの空が見える。</div>
+            <div class="slide-sub">近くのスポット・降水確率・週間天気 ぜんぶ揃う主力機能</div>
+          </div>
+          <div class="slide-chars">
+            <svg class="slide-char c-a" aria-hidden="true"><use href="#kodo"/></svg>
+            <svg class="slide-char c-b" aria-hidden="true"><use href="#kid"/></svg>
+            <svg class="slide-char c-c" aria-hidden="true"><use href="#mama"/></svg>
+          </div>
+        </div>
         <div class="slide-dots" id="slideDots">
           <button class="dot active" onclick="gotoSlide(0)" aria-label="1枚目"></button>
           <button class="dot" onclick="gotoSlide(1)" aria-label="2枚目"></button>
           <button class="dot" onclick="gotoSlide(2)" aria-label="3枚目"></button>
+          <button class="dot" onclick="gotoSlide(3)" aria-label="4枚目"></button>
         </div>
       </div>
 
