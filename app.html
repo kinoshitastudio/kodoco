@@ -776,18 +776,18 @@ html, body {
   z-index: 4;
   white-space: nowrap;
 }
-.rec-badge-card.tier-top  { background: linear-gradient(135deg, #E2553A 0%, #C03A1F 100%); color: #fff; }
-.rec-badge-card.tier-geo  { background: linear-gradient(135deg, #4A90D9 0%, #2F70B8 100%); color: #fff; }
-.rec-badge-card.tier-wx   { background: linear-gradient(135deg, #F4B860 0%, #E89E40 100%); color: #2C2A26; }
-.rec-badge-card.tier-rain { background: linear-gradient(135deg, #7BA8D8 0%, #5B88B8 100%); color: #fff; }
-.rec-badge-card.tier-age  { background: linear-gradient(135deg, #F2A88A 0%, #D88C6E 100%); color: #fff; }
-.rec-badge-card.tier-rate { background: linear-gradient(135deg, #E8C440 0%, #C8A420 100%); color: #2C2A26; }
-.rec-badge-card.tier-dog  { background: linear-gradient(135deg, #A78060 0%, #876040 100%); color: #fff; }
-.rec-badge-card.tier-park { background: linear-gradient(135deg, #6FA078 0%, #4F8058 100%); color: #fff; }
-.rec-badge-card.tier-indoor { background: linear-gradient(135deg, #8898B8 0%, #687898 100%); color: #fff; }
-.rec-badge-card.tier-museum { background: linear-gradient(135deg, #A88AC0 0%, #886AA0 100%); color: #fff; }
-.rec-badge-card.tier-cafe { background: linear-gradient(135deg, #C8956A 0%, #A8754A 100%); color: #fff; }
-.rec-badge-card.tier-water { background: linear-gradient(135deg, #6FB8C8 0%, #4F98A8 100%); color: #fff; }
+.rec-badge-card.tier-top    { background: linear-gradient(135deg, #FF5C3A 0%, #E02017 100%); color: #fff; }
+.rec-badge-card.tier-geo    { background: linear-gradient(135deg, #2E8FFF 0%, #0F5BD8 100%); color: #fff; }
+.rec-badge-card.tier-wx     { background: linear-gradient(135deg, #FFC830 0%, #F08808 100%); color: #2C2A26; }
+.rec-badge-card.tier-rain   { background: linear-gradient(135deg, #5894FF 0%, #2860D8 100%); color: #fff; }
+.rec-badge-card.tier-age    { background: linear-gradient(135deg, #FF8FB0 0%, #E83878 100%); color: #fff; }
+.rec-badge-card.tier-rate   { background: linear-gradient(135deg, #FFD820 0%, #F0A800 100%); color: #2C2A26; }
+.rec-badge-card.tier-dog    { background: linear-gradient(135deg, #E07830 0%, #B05010 100%); color: #fff; }
+.rec-badge-card.tier-park   { background: linear-gradient(135deg, #4FCC70 0%, #2A9040 100%); color: #fff; }
+.rec-badge-card.tier-indoor { background: linear-gradient(135deg, #6478F8 0%, #3848C8 100%); color: #fff; }
+.rec-badge-card.tier-museum { background: linear-gradient(135deg, #C060F0 0%, #8030C0 100%); color: #fff; }
+.rec-badge-card.tier-cafe   { background: linear-gradient(135deg, #FF9050 0%, #D86020 100%); color: #fff; }
+.rec-badge-card.tier-water  { background: linear-gradient(135deg, #2EC8E8 0%, #0890B8 100%); color: #fff; }
 
 /* スポット画像右上の降水確率バッジ */
 .spot-rain-now {
@@ -6155,10 +6155,20 @@ function pickSpotBadge(s, rank, age) {
   if (state.weather === 'sunny' && s.catClass === 'park') {
     return { cls: 'tier-wx', text: '☀️ 今日の天気にピッタリ' };
   }
-  // 年齢ぴったり
+  // 年齢ぴったり — ageMin (例: "0歳〜") を具体数値でバッジ表示
   const facts = SPOT_FACTS[s.id] || {};
-  if (facts.ageMin && /0歳|1歳|2歳/.test(facts.ageMin) && age <= 3) {
-    return { cls: 'tier-age', text: '👶 小さい子もOK' };
+  if (facts.ageMin) {
+    const m = facts.ageMin.match(/(\d+)/);
+    if (m) {
+      const minAge = parseInt(m[1], 10);
+      if (age >= minAge) {
+        if (minAge === 0) return { cls: 'tier-age', text: '🍼 0歳から安心して使える' };
+        if (minAge === 1) return { cls: 'tier-age', text: '👶 1歳児からOK' };
+        if (minAge === 2) return { cls: 'tier-age', text: '👶 2歳児からOK' };
+        if (minAge === 3) return { cls: 'tier-age', text: '🧒 3歳児からOK' };
+        return { cls: 'tier-age', text: '🧒 ' + minAge + '歳児からOK' };
+      }
+    }
   }
   // 評価
   if (s.rating && s.rating >= 4.5) {
