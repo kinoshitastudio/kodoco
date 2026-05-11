@@ -199,7 +199,7 @@ Launching from the home-screen icon shows it full-screen (no address bar).
 - Your children's age, favorites, etc. are stored in your browser (localStorage) by default
 - With an account, the same info is also synced to the cloud (visible only to you)
 - Reviews are stored anonymously — no personally identifying information
-- See [Privacy Policy](https://kinoshitastudio.github.io/projects/kodoco/privacy.html)
+- See [Privacy Policy](https://kodoco.jp/privacy.html)
 
 ---
 

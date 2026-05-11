@@ -199,7 +199,7 @@ iPhone は **Safari →「ホーム画面に追加」** で通常のアプリと
 - お子さんの年齢・お気に入りなどは、基本的にあなたのブラウザ内（localStorage）にのみ保存されます
 - アカウント登録した場合、上記情報はあなただけが見られる形でクラウドにも同期されます
 - 投稿された口コミは匿名扱いで、個人を特定できる情報は保存しません
-- 詳しくは [プライバシーポリシー](https://kinoshitastudio.github.io/projects/kodoco/privacy.html)
+- 詳しくは [プライバシーポリシー](https://kodoco.jp/privacy.html)
 
 ---
 

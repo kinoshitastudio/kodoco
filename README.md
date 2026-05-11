@@ -11,7 +11,7 @@
 
 | | |
 |---|---|
-| 公開サイト | <https://kinoshitastudio.github.io/projects/kodoco/> |
+| 公開サイト | <https://kodoco.jp/> |
 | 利用料 | **完全無料** |
 | 対応エリア | 滋賀県 168 スポット（順次拡充中）|
 | 対応端末 | スマートフォン / タブレット / PC（PWA 対応） |
