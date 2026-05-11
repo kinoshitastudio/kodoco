@@ -2386,11 +2386,14 @@ html, body {
       <span class="topbar-sub">今日どこいく？</span>
     </div>
     <div class="topbar-actions">
-      <button class="topbar-btn topbar-btn-geo" id="topbarGeoBtn" onclick="toggleGeolocation()" title="現在地 ON / OFF" aria-label="現在地切替">
-        <span class="topbar-geo-ic">📍</span>
+      <button class="geo-toggle" id="topbarGeoToggle" onclick="toggleGeolocation()" title="現在地 ON / OFF">
+        <span aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;vertical-align:-2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </span>
+        <span id="topbarGeoLabel">現在地OFF</span>
       </button>
       <button class="topbar-btn" onclick="openSettings()" title="設定">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg>
       </button>
     </div>
   </div>
@@ -2524,7 +2527,9 @@ html, body {
             <div class="weather-loc" id="weatherLoc">📍 <span id="weatherLocName">大津市</span></div>
           </div>
           <button class="geo-toggle" id="geoToggle" onclick="toggleGeolocation()">
-            <span id="geoToggleIcon">📍</span>
+            <span id="geoToggleIcon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;vertical-align:-2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </span>
             <span id="geoToggleLabel">現在地ON</span>
           </button>
         </div>
@@ -5614,16 +5619,16 @@ function updateGeoToggleUI(on) {
   const btn = document.getElementById('geoToggle');
   if (btn) {
     btn.classList.toggle('on', on);
-    const icEl = document.getElementById('geoToggleIcon');
-    if (icEl) icEl.textContent = on ? '📍' : '📍';
     const lblEl = document.getElementById('geoToggleLabel');
     if (lblEl) lblEl.textContent = on ? '現在地ON' : '現在地OFF';
   }
-  // topbar アイコンも連動
-  const tb = document.getElementById('topbarGeoBtn');
+  // topbar の geo-toggle (同じ pill UI) も連動
+  const tb = document.getElementById('topbarGeoToggle');
   if (tb) {
     tb.classList.toggle('on', on);
     tb.title = on ? '現在地 ON (タップで OFF)' : '現在地 OFF (タップで ON)';
+    const tbLbl = document.getElementById('topbarGeoLabel');
+    if (tbLbl) tbLbl.textContent = on ? '現在地ON' : '現在地OFF';
   }
 }
 function setLocationLabel(name) {
