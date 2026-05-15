@@ -38,9 +38,10 @@ Supabase Dashboard → **SQL Editor** → **New query** で以下を **順番通
 それを Dashboard の SQL Editor で admin に昇格させる:
 
 ```sql
+-- 自分の admin email に置換してから実行してください
 update public.profiles
 set role = 'admin'
-where id = (select id from auth.users where email = '99letters99@gmail.com');
+where id = (select id from auth.users where email = '<YOUR_ADMIN_EMAIL>');
 ```
 
 ---

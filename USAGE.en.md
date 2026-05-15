@@ -88,7 +88,7 @@ Settings → **"💬 My Reviews"**:
 ### Reporting
 
 If you see an inappropriate review, tap the **⚠** button on the right side of that review.
-Report goes to: `99letters99@gmail.com`
+Report goes to: `tkinoshita.studio@gmail.com`
 
 ---
 
@@ -213,7 +213,7 @@ Launching from the home-screen icon shows it full-screen (no address bar).
 | Photos not loading | Check connectivity → reload |
 | Character not unlocking | Try reloading after meeting the condition |
 
-Anything else: `99letters99@gmail.com`
+Anything else: `tkinoshita.studio@gmail.com`
 
 ---
 
