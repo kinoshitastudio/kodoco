@@ -736,7 +736,7 @@ window.KODOCO_SPOTS = (function(){
     kidsSpace: false, privateRoom: false,
     highlight:'テラスで地元野菜ランチ、春はいちご狩りも。犬連れデビューに◎。',
     rating:4.1, galleryBg:'linear-gradient(135deg,#e8f8d0,#d0f0b8)',
-    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.0167, lng:135.9534,
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.0093, lng:135.9587,
     phone:'077-568-3078', officialUrl:'https://rockbaygarden.com/'
   },
   {
