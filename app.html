@@ -665,7 +665,8 @@ html, body {
 .route-card:active { transform: scale(0.98); }
 .route-card-tag { font-size: 11px; font-weight: 700; color: var(--green); background: var(--green-light); padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 8px; letter-spacing: 0.02em; }
 .route-card-title { font-size: 15px; font-weight: 700; margin-bottom: 5px; line-height: 1.4; }
-.route-card-time { font-size: 12px; color: var(--text-sub); margin-bottom: 12px; }
+.route-card-time { font-size: 12px; color: var(--text-sub); margin-bottom: 6px; }
+.route-card-tip { font-size: 11px; color: #7a6020; background: #fffbe8; border-radius: 6px; padding: 4px 8px; margin-bottom: 10px; }
 .route-card-steps { display: flex; flex-direction: column; gap: 7px; }
 .route-card-cta { margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--border); font-size: 12px; color: var(--green); font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
 /* ルートプラン詳細モーダル */
@@ -4584,18 +4585,6 @@ const ROUTE_PLANS = [
     ]
   },
   {
-    tag: '🌸 桜シーズン',
-    title: '春のお花見プラン',
-    time: '約4時間',
-    weather: 'sunny', ageRange: [0, 10], coverKey: 'nature',
-    season: 'spring',
-    steps: [
-      { time: '10:00', name: '皇子が丘公園', note: '桜並木さんぽ' },
-      { time: '12:00', name: 'お弁当ランチ', note: '公園ピクニック' },
-      { time: '14:00', name: '大津市内 桜スポット', note: '午後もゆっくり' },
-    ]
-  },
-  {
     tag: '🍁 紅葉コース',
     title: '秋の絶景プラン',
     time: '約4時間',
@@ -4605,6 +4594,44 @@ const ROUTE_PLANS = [
       { time: '10:00', name: '永源寺', note: '紅葉の名所' },
       { time: '12:00', name: '近隣そば処', note: '秋の味覚' },
       { time: '14:00', name: 'メタセコイア並木', note: '並木の紅葉を車窓から' },
+    ]
+  },
+  {
+    tag: '🌿 新緑さんぽ',
+    title: '初夏の自然プラン',
+    time: '約4時間',
+    weather: 'sunny', ageRange: [1, 10], coverKey: 'nature',
+    season: 'summer',
+    tip: '日差しは強いけど木陰は涼しい。薄手の羽織りを一枚持っていくと安心。',
+    steps: [
+      { time: '10:00', name: '草津川跡地公園', note: '新緑の緑道をのんびりさんぽ' },
+      { time: '12:00', name: '近隣のカフェ', note: 'テラス席でランチ' },
+      { time: '13:30', name: '琵琶湖博物館', note: '暑くなってきたら屋内へ' },
+    ]
+  },
+  {
+    tag: '🌧 梅雨の屋内プラン',
+    title: '雨でも全然OK！屋内たっぷりコース',
+    time: '約4時間',
+    weather: 'any', ageRange: [1, 10], coverKey: 'indoor',
+    season: 'summer',
+    tip: '梅雨の時期は気温差が激しい。脱ぎ着できる一枚を持っておくと快適。',
+    steps: [
+      { time: '10:00', name: 'ピエリ守山', note: '雨でも遊べる大型施設' },
+      { time: '12:30', name: '館内フードコート', note: 'ゆっくりランチ' },
+      { time: '14:00', name: 'イオンモール草津', note: 'そのまま移動も楽チン' },
+    ]
+  },
+  {
+    tag: '💦 水遊びデビュー',
+    title: 'はじめての水遊びプラン',
+    time: '約3時間',
+    weather: 'sunny', ageRange: [0, 5], coverKey: 'short',
+    season: 'summer',
+    tip: '着替えとタオルは多めに。夕方は気温が下がるので薄手の羽織りを一枚忘れずに。',
+    steps: [
+      { time: '10:00', name: '草津川跡地公園', note: '浅い水遊び場でデビュー' },
+      { time: '11:30', name: 'お弁当タイム', note: '木陰でのんびり' },
     ]
   },
   {
@@ -5886,8 +5913,9 @@ function buildHero() {
 // 同じ設定でも毎回違うおすすめが並ぶ
 function getCurrentSeason() {
   const m = new Date().getMonth() + 1;
-  if (m >= 3 && m <= 5)  return 'spring';
-  if (m >= 6 && m <= 8)  return 'summer';
+  if (m >= 3 && m <= 4)  return 'spring';
+  if (m >= 5 && m <= 7)  return 'none';   // 梅雨〜初夏: 雨の日のみアニメ
+  if (m >= 8 && m <= 8)  return 'summer';
   if (m >= 9 && m <= 11) return 'autumn';
   return 'winter';
 }
@@ -5904,6 +5932,9 @@ function initSeasonalAnimation() {
 
   const isRainy = state && state.weather === 'rainy';
   const season = getCurrentSeason();
+
+  // 5〜7月は雨の日のみアニメ、晴れは何もしない
+  if (!isRainy && season === 'none') return;
 
   // 粒は控えめ&少なめに。邪魔にならない大きさ + 透明度。
   let cls, char, count, sizeMin, sizeMax;
@@ -6005,6 +6036,7 @@ function buildRoutePlans() {
     card.innerHTML = '<div class="route-card-tag">' + plan.tag + '</div>'
       + '<div class="route-card-title">' + plan.title + '</div>'
       + '<div class="route-card-time">⏱ ' + plan.time + '</div>'
+      + (plan.tip ? '<div class="route-card-tip">💡 ' + plan.tip + '</div>' : '')
       + '<div class="route-card-steps">'
       + plan.steps.map(s => '<div class="route-step"><div class="route-step-dot"></div><span>' + (s.time !== '─' ? s.time + ' ' : '') + s.name + '</span></div>').join('')
       + '</div>'
@@ -6139,6 +6171,17 @@ function openRouteDetail(plan) {
       cont.appendChild(conn);
     }
   });
+  // tip があれば詳細モーダルのスポットリスト上部に表示
+  const existingTip = document.getElementById('rdTip');
+  if (existingTip) existingTip.remove();
+  if (plan.tip) {
+    const tipEl = document.createElement('div');
+    tipEl.id = 'rdTip';
+    tipEl.style.cssText = 'font-size:12px;color:#7a6020;background:#fffbe8;border-radius:8px;padding:8px 12px;margin-bottom:12px;';
+    tipEl.textContent = '💡 ' + plan.tip;
+    document.getElementById('rdSpots').insertAdjacentElement('beforebegin', tipEl);
+  }
+
   document.getElementById('routeDetailModal').style.display = 'flex';
 
   // ─ 地図描画：プランのスポット座標をつないで表示 ─
