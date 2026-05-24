@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#FAF8F4"/>
+  <!-- Green accent strip top -->
+  <rect width="1200" height="8" fill="#5B7F61"/>
+  <!-- Map-like grid (subtle) -->
+  <line x1="0" y1="315" x2="1200" y2="315" stroke="#E8E3D9" stroke-width="1"/>
+  <line x1="600" y1="0" x2="600" y2="630" stroke="#E8E3D9" stroke-width="1"/>
+  <!-- Lake Biwa shape (simple blob, right side) -->
+  <ellipse cx="800" cy="315" rx="180" ry="280" fill="#D6EAF5" opacity="0.55"/>
+  <ellipse cx="780" cy="430" rx="80" ry="60" fill="#D6EAF5" opacity="0.55"/>
+  <!-- Route lines (decorative) -->
+  <path d="M100 500 Q300 300 500 350 Q650 380 800 200" stroke="#5B7F61" stroke-width="4" fill="none" opacity="0.25" stroke-dasharray="12 6"/>
+  <path d="M150 200 Q350 250 550 180 Q720 150 900 220" stroke="#7A9B7E" stroke-width="3" fill="none" opacity="0.2" stroke-dasharray="8 5"/>
+  <!-- Stop dots -->
+  <circle cx="300" cy="320" r="8" fill="#5B7F61" opacity="0.5"/>
+  <circle cx="480" cy="350" r="6" fill="#5B7F61" opacity="0.4"/>
+  <circle cx="640" cy="280" r="8" fill="#7A9B7E" opacity="0.5"/>
+  <!-- Bus character (large, center-left) -->
+  <g transform="translate(120,170) scale(4.8)">
+    <rect x="1" y="6" width="44" height="22" rx="6" fill="#5B7F61"/>
+    <rect x="3" y="6" width="38" height="6" rx="4" fill="#7A9B7E"/>
+    <rect x="5" y="4" width="14" height="4" rx="1.5" fill="#2C2A26" opacity="0.4"/>
+    <rect x="3" y="9" width="18" height="14" rx="3" fill="white" opacity="0.96"/>
+    <circle cx="8.5" cy="15" r="2.8" fill="#2C2A26"/>
+    <circle cx="9.6" cy="13.8" r="1" fill="white"/>
+    <circle cx="16" cy="15" r="2.8" fill="#2C2A26"/>
+    <circle cx="17.1" cy="13.8" r="1" fill="white"/>
+    <ellipse cx="5.5" cy="19" rx="2.2" ry="1.4" fill="#E8836A" opacity="0.38"/>
+    <ellipse cx="19" cy="19" rx="2.2" ry="1.4" fill="#E8836A" opacity="0.38"/>
+    <path d="M7.5 19.5 Q12.5 22.5 17 19.5" stroke="#5B7F61" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    <rect x="24" y="10" width="9" height="8" rx="2" fill="white" opacity="0.85"/>
+    <rect x="35" y="10" width="8" height="8" rx="2" fill="white" opacity="0.85"/>
+    <rect x="1" y="25" width="44" height="3" rx="2" fill="#4A6B50"/>
+    <circle cx="12" cy="33" r="5" fill="#2C2A26"/>
+    <circle cx="12" cy="33" r="2.8" fill="#D4CCBC"/>
+    <circle cx="34" cy="33" r="5" fill="#2C2A26"/>
+    <circle cx="34" cy="33" r="2.8" fill="#D4CCBC"/>
+    <circle cx="45" cy="20" r="2.5" fill="#FAF3D0" opacity="0.9"/>
+  </g>
+  <!-- Text -->
+  <text x="620" y="240" font-family="'Noto Sans JP',sans-serif" font-size="72" font-weight="800" fill="#2C2A26" letter-spacing="-2">しがバスくん</text>
+  <text x="622" y="310" font-family="'Inter',sans-serif" font-size="28" fill="#6E6A62" letter-spacing="2">KODOCO × 滋賀のバス情報</text>
+  <!-- Pill badges -->
+  <rect x="620" y="350" width="160" height="38" rx="19" fill="#E7EEE3"/>
+  <text x="700" y="374" font-family="sans-serif" font-size="17" fill="#5B7F61" font-weight="700" text-anchor="middle">48路線対応</text>
+  <rect x="796" y="350" width="200" height="38" rx="19" fill="#E7EEE3"/>
+  <text x="896" y="374" font-family="sans-serif" font-size="17" fill="#5B7F61" font-weight="700" text-anchor="middle">現在地から検索</text>
+  <!-- KODOCO logo bottom right -->
+  <text x="1150" y="600" font-family="'Inter',sans-serif" font-size="22" fill="#A8A39A" text-anchor="end" font-weight="600">KODOCO</text>
+  <!-- Bottom green strip -->
+  <rect y="622" width="1200" height="8" fill="#5B7F61"/>
+</svg>
