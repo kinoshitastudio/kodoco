@@ -116,7 +116,9 @@ body{font-family:'Inter','Noto Sans JP',sans-serif;background:var(--bg);color:va
 .map-wrap{flex:1;position:relative;overflow:hidden;}
 #map{width:100%;height:100%;}
 .leaflet-container{background:#ede8df;}
-.locate-fab{display:none;position:absolute;right:14px;bottom:180px;z-index:300;width:44px;height:44px;background:var(--card);border:1.5px solid var(--line);border-radius:50%;box-shadow:0 3px 12px rgba(44,42,38,.12);cursor:pointer;align-items:center;justify-content:center;font-size:18px;transition:box-shadow .15s;font-family:inherit;}
+.locate-fab{display:none;position:absolute;right:14px;bottom:248px;z-index:300;width:48px;height:48px;background:var(--green);border:none;border-radius:50%;box-shadow:0 4px 14px rgba(91,127,97,.38);cursor:pointer;align-items:center;justify-content:center;font-size:20px;transition:box-shadow .15s,transform .15s;font-family:inherit;color:#fff;}
+.locate-fab:active{transform:scale(.92);}
+.map-hint{display:none;position:absolute;bottom:252px;left:50%;transform:translateX(-50%);z-index:299;background:rgba(44,42,38,.75);color:#fff;font-size:11px;font-weight:600;padding:6px 14px;border-radius:20px;white-space:nowrap;pointer-events:none;backdrop-filter:blur(4px);letter-spacing:.02em;}
 .locate-fab:hover{box-shadow:0 4px 16px rgba(44,42,38,.18);}
 .locate-fab.loading{opacity:.5;pointer-events:none;}
 .pulse-wrap{position:relative;width:24px;height:24px;}
@@ -198,10 +200,11 @@ body{font-family:'Inter','Noto Sans JP',sans-serif;background:var(--bg);color:va
 }
 
 /* ━━ BOTTOM PANEL ━━ */
-.bottom-panel{display:none;position:absolute;bottom:0;left:0;right:0;z-index:300;background:var(--bg);border-top:1px solid var(--line);border-radius:20px 20px 0 0;transition:height .3s ease;flex-direction:column;overflow:hidden;height:200px;}
-.bottom-panel.expanded{height:62vh;}
-.panel-handle-wrap{display:flex;justify-content:center;padding:10px 0 0;cursor:pointer;flex-shrink:0;}
+.bottom-panel{display:none;position:absolute;bottom:0;left:0;right:0;z-index:300;background:var(--bg);border-top:1px solid var(--line);border-radius:20px 20px 0 0;transition:height .3s cubic-bezier(.25,1,.5,1);flex-direction:column;overflow:hidden;height:230px;}
+.bottom-panel.expanded{height:68vh;}
+.panel-handle-wrap{display:flex;flex-direction:column;align-items:center;padding:10px 0 4px;cursor:pointer;flex-shrink:0;gap:4px;}
 .panel-handle{width:36px;height:4px;background:var(--line);border-radius:2px;}
+.panel-handle-hint{font-size:9px;color:var(--ink-faint);letter-spacing:.04em;}
 .panel-tabs{display:flex;padding:8px 16px 0;flex-shrink:0;}
 .panel-tab{flex:1;text-align:center;font-size:12px;font-weight:600;color:var(--ink-faint);padding:8px 0;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;font-family:inherit;transition:color .15s;}
 .panel-tab.active{color:var(--green-deep);border-bottom-color:var(--green-deep);}
@@ -211,6 +214,7 @@ body{font-family:'Inter','Noto Sans JP',sans-serif;background:var(--bg);color:va
   .sidebar{display:none;}
   .locate-fab{display:flex;}
   .bottom-panel{display:flex;}
+  .map-hint{display:block;}
 }
 /* ── What's New Banner ──────────────────────────── */
 .wn-overlay{position:fixed;inset:0;z-index:900;background:rgba(44,42,38,.45);display:flex;align-items:flex-end;justify-content:center;padding-bottom:0;}
@@ -366,6 +370,7 @@ body{font-family:'Inter','Noto Sans JP',sans-serif;background:var(--bg);color:va
   <div class="map-wrap">
     <div id="map"></div>
     <button class="locate-fab" id="locateBtnM" onclick="locateMe()">📍</button>
+    <div class="map-hint" id="mapHint">🚌 バスをタップ &nbsp;|&nbsp; 📍 現在地を取得</div>
   </div>
 
   <div class="bus-panel" id="busPanel">
@@ -386,7 +391,7 @@ body{font-family:'Inter','Noto Sans JP',sans-serif;background:var(--bg);color:va
 </div>
 
 <div class="bottom-panel" id="bottomPanel">
-  <div class="panel-handle-wrap" onclick="togglePanel()"><div class="panel-handle"></div></div>
+  <div class="panel-handle-wrap" onclick="togglePanel()"><div class="panel-handle"></div><div class="panel-handle-hint">引いて展開</div></div>
   <div class="panel-tabs">
     <button class="panel-tab active" id="tabNear"   onclick="switchTab('near')">📍 近くのバス停</button>
     <button class="panel-tab"        id="tabRoutes" onclick="switchTab('routes')">🚌 路線一覧</button>
@@ -441,9 +446,9 @@ function fmtDist(m){
 function findNear(lat,lng,n=4){return ALL_STOPS.map(s=>({...s,d:dist(lat,lng,s.lat,s.lng)})).sort((a,b)=>a.d-b.d).slice(0,n);}
 
 // ━━ MAP INIT ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const map=L.map('map',{center:[35.1,136.0],zoom:9,zoomControl:false});
+const map=L.map('map',{center:[35.1,136.0],zoom:9,zoomControl:false,preferCanvas:true,tap:false});
 L.control.zoom({position:'topright'}).addTo(map);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19,updateWhenIdle:true,updateWhenZooming:false,keepBuffer:2}).addTo(map);
 
 // ━━ ROUTE RENDERING ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const routeLayers={},stopMarkers={},busMarkers={};
@@ -481,14 +486,19 @@ function interp(lls,t){
   const a=lls[Math.min(i,n)],b=lls[Math.min(i+1,n)];
   return[a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f];
 }
-setInterval(()=>{
+let _lastBusAnim=0;
+function _animBuses(ts){
+  requestAnimationFrame(_animBuses);
+  if(ts-_lastBusAnim<120)return;
+  _lastBusAnim=ts;
   const now=Date.now()/1000;
   ROUTES.forEach(r=>{
     const bm=busMarkers[r.route_id];if(!bm)return;
     const t=(now*0.012+busPhase[r.route_id])%2,tt=t<=1?t:2-t;
     bm.marker.setLatLng(interp(bm.lls,tt));
   });
-},80);
+}
+requestAnimationFrame(_animBuses);
 
 // ━━ STOP POPUP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function openStopPopup(stopId,name,latlng){
@@ -665,6 +675,7 @@ function locateMe(){
     userMarker=L.marker([lat,lng],{icon:L.divIcon({html:ph,className:'',iconSize:[32,32],iconAnchor:[16,16]}),zIndexOffset:1000}).addTo(map);
     renderNear(findNear(lat,lng,4));
     ['locateBtnD','locateBtnM'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('loading');});
+    const hint=document.getElementById('mapHint');if(hint)hint.style.display='none';
     if(window.innerWidth<=640){document.getElementById('bottomPanel').classList.add('expanded');switchTab('near');}
   },()=>{
     ['locateBtnD','locateBtnM'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('loading');});
@@ -725,7 +736,7 @@ function switchTab(tab){
   document.getElementById('tabRoutes').classList.toggle('active',tab==='routes');
   const pc=document.getElementById('panelContent');
   if(tab==='routes'){pc.innerHTML=`<div class="sec-label" style="margin-bottom:8px">路線一覧</div>`+ROUTES.map(routeCardHTML).join('');}
-  else{const nd=document.getElementById('nearListD').innerHTML;pc.innerHTML=nd||`<div class="near-empty">📍 「現在地を表示」をタップしてください</div>`;}
+  else{const nd=document.getElementById('nearListD').innerHTML;pc.innerHTML=nd||`<div style="display:flex;flex-direction:column;align-items:center;padding:20px 0 8px;gap:10px"><div style="font-size:32px">🚌</div><div style="font-size:13px;font-weight:700;color:var(--ink)">近くのバス停を探す</div><div style="font-size:11px;color:var(--ink-faint);text-align:center;line-height:1.6">現在地を使ってバス停と<br>次の発車時刻を確認できます</div><button onclick="locateMe()" style="margin-top:4px;background:var(--green);color:#fff;border:none;border-radius:22px;padding:11px 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">📍 現在地を取得</button></div>`;}
 }
 
 // ━━ SEARCH ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
