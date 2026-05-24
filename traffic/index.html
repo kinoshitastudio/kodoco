@@ -295,7 +295,7 @@ body{font-family:'Inter','Noto Sans JP',sans-serif;background:var(--bg);color:va
         </div>
       </div>
     </div>
-    <button class="wn-close" onclick="document.getElementById('wnOverlay').classList.add('wn-hidden')">はじめる →</button>
+    <button class="wn-close" onclick="localStorage.setItem('wnSeen_v1','1');document.getElementById('wnOverlay').classList.add('wn-hidden')">はじめる →</button>
     <div class="wn-note">📡 湖西エリアのデータはOpenStreetMapによる参考情報です</div>
   </div>
 </div>
@@ -446,6 +446,7 @@ function fmtDist(m){
 function findNear(lat,lng,n=4){return ALL_STOPS.map(s=>({...s,d:dist(lat,lng,s.lat,s.lng)})).sort((a,b)=>a.d-b.d).slice(0,n);}
 
 // ━━ MAP INIT ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const _svgR=L.svg();
 const map=L.map('map',{center:[35.1,136.0],zoom:9,zoomControl:false,preferCanvas:true,tap:false});
 L.control.zoom({position:'topright'}).addTo(map);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19,updateWhenIdle:true,updateWhenZooming:false,keepBuffer:2}).addTo(map);
@@ -464,7 +465,8 @@ ROUTES.forEach(r=>{
   r.stops.forEach((s,i)=>{
     if(stopMarkers[s.id])return;
     const isT=i===0||i===r.stops.length-1;
-    const mk=L.circleMarker([s.lat,s.lng],{radius:isT?7:4,color:'#fff',weight:isT?2:1.5,fillColor:r.color,fillOpacity:isT?0.95:0.75}).addTo(map);
+    const isMob=window.innerWidth<=640;
+    const mk=L.circleMarker([s.lat,s.lng],{radius:isT?(isMob?11:7):(isMob?7:4),color:'#fff',weight:isT?2:1.5,fillColor:r.color,fillOpacity:isT?0.95:0.75}).addTo(map);
     mk.on('click',()=>openStopPopup(s.id,s.name,[s.lat,s.lng]));
     stopMarkers[s.id]=mk;
   });
@@ -501,8 +503,38 @@ function _animBuses(ts){
 requestAnimationFrame(_animBuses);
 
 // ━━ STOP POPUP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ── Stop route highlight ─────────────────────────
+let _hlActive=false;
+const _hlLayers=[];
+function _highlightRoutes(hlRoutes){
+  _clearHighlight();
+  _hlActive=true;
+  const hlIds=new Set(hlRoutes.map(r=>r.route_id));
+  ROUTES.forEach(r=>{
+    const layer=routeLayers[r.route_id];if(!layer)return;
+    if(hlIds.has(r.route_id)){
+      // グロー（太い半透明）＋本線（細い）の2層
+      const glow=L.polyline(r.lls,{color:r.color,weight:12,opacity:.22,lineCap:'round',lineJoin:'round',renderer:_svgR}).addTo(map);
+      const line=L.polyline(r.lls,{color:r.color,weight:5,opacity:1,lineCap:'round',lineJoin:'round',renderer:_svgR}).addTo(map);
+      _hlLayers.push(glow,line);
+      layer.setStyle({opacity:0});
+    } else {
+      layer.setStyle({opacity:.07,weight:2});
+    }
+  });
+}
+function _clearHighlight(){
+  if(!_hlActive)return;
+  _hlActive=false;
+  _hlLayers.forEach(l=>map.removeLayer(l));
+  _hlLayers.length=0;
+  ROUTES.forEach(r=>{const layer=routeLayers[r.route_id];if(layer)layer.setStyle({opacity:.8,weight:3});});
+}
+map.on('popupclose',_clearHighlight);
+
 function openStopPopup(stopId,name,latlng){
   const routes=stopIndex[stopId]?.routes||[];
+  _highlightRoutes(routes);
   const tags=routes.map(r=>`<span class="pop-tag" style="background:${r.color}">${r.name.length>8?r.name.slice(0,8)+'…':r.name}</span>`).join('');
   const deps=routes.map(r=>{
     const d=getNextDeps(r,stopId,3);if(!d.length)return'';
@@ -750,6 +782,7 @@ document.getElementById('searchInput').addEventListener('input',function(){
 
 // ━━ INIT ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 renderRoutes();switchTab('near');
+if(localStorage.getItem('wnSeen_v1'))document.getElementById('wnOverlay').classList.add('wn-hidden');
 if(navigator.geolocation){
   navigator.geolocation.getCurrentPosition(pos=>{
     const{latitude:lat,longitude:lng}=pos.coords;

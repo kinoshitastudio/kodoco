@@ -430,6 +430,9 @@ html, body {
   white-space: nowrap;
 }
 .hero-body { padding: 16px; }
+.hero-heart{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.25);backdrop-filter:blur(6px);border:none;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;z-index:4;transition:transform .15s,background .15s;}
+.hero-heart:active{transform:scale(.85);}
+.hero-heart.liked{background:rgba(255,255,255,.9);}
 .hero-judge { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.85); margin-bottom: 4px; letter-spacing: 0.02em; }
 .hero-name { font-size: 20px; font-weight: 700; color: white; margin-bottom: 6px; line-height: 1.2; }
 .hero-value { font-size: 13.5px; color: rgba(255,255,255,0.88); line-height: 1.7; margin-bottom: 14px; }
@@ -2513,6 +2516,7 @@ html, body {
         <svg class="hero-mascot" aria-hidden="true" data-mascot="standing"><use href="#kodo"/></svg>
         <div class="hero-photo" id="heroPhoto">
           <div class="hero-badge" id="heroBadge">今日はここで間違いない</div>
+          <button class="hero-heart" id="heroHeart" onclick="event.stopPropagation();toggleHeroHeart()">♡</button>
           <div style="font-size:52px;" id="heroEmoji">🌳</div>
           <div class="img-placeholder-note long" id="heroPlaceholderNote" style="display:none;">
             <span class="ipn-icon">💭</span>いまはイメージだよ。いつかみんなの投稿写真が載せられたらうれしいな
@@ -2653,6 +2657,7 @@ html, body {
           <div class="qf-label">外出できる時間</div>
           <div class="qf-btns">
             <button class="qf-btn active" onclick="setFilter('time','half',this)">🌅 半日</button>
+            <button class="qf-btn" onclick="setFilter('time','medium',this)">🕑 2時間</button>
             <button class="qf-btn" onclick="setFilter('time','short',this)">⏱ 30分〜1時間</button>
           </div>
         </div>
@@ -2691,7 +2696,15 @@ html, body {
       <div id="map"></div>
       <div class="map-count" id="mapCount">57件</div>
     </div>
-    <div class="footer-credit" style="flex-shrink:0;padding:8px 16px 12px;"><p>Developed by <strong>KINOSHITA STUDIO</strong></p></div>
+    <a href="/traffic/" target="_blank" style="display:flex;align-items:center;gap:12px;margin:10px 16px;padding:12px 16px;background:linear-gradient(135deg,#EFF6F0,#E6F0E8);border:1.5px solid #C8DEC9;border-radius:14px;text-decoration:none;flex-shrink:0;">
+      <span style="font-size:24px;flex-shrink:0;">🚌</span>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:800;color:#2C2A26;">しがバスくんで近くのバスを見る</div>
+        <div style="font-size:11px;color:#6E6A62;margin-top:2px;">バス停・時刻表・路線図を確認</div>
+      </div>
+      <span style="font-size:13px;color:#5B7F61;font-weight:700;flex-shrink:0;">開く →</span>
+    </a>
+    <div class="footer-credit" style="flex-shrink:0;padding:4px 16px 12px;"><p>Developed by <strong>KINOSHITA STUDIO</strong></p></div>
   </div>
 
   <!-- SAGASU -->
@@ -2785,14 +2798,7 @@ html, body {
         </div>
         <div class="form-section">
           <div class="form-section-title">🏷 感覚タグ（複数選択可）</div>
-          <div class="tag-row">
-            <button class="tag-btn" onclick="this.classList.toggle('active')">🌿 自然感あり</button>
-            <button class="tag-btn" onclick="this.classList.toggle('active')">🔇 静かめ</button>
-            <button class="tag-btn" onclick="this.classList.toggle('active')">🔊 にぎやか</button>
-            <button class="tag-btn" onclick="this.classList.toggle('active')">🏃 走り回れる</button>
-            <button class="tag-btn" onclick="this.classList.toggle('active')">👶 抱っこでOK</button>
-            <button class="tag-btn" onclick="this.classList.toggle('active')">🐕 犬OKだった</button>
-          </div>
+          <div class="tag-row" id="diaryTagBtns"></div>
         </div>
         <button class="action-btn-full" onclick="diaryNext(3)">次へ →</button>
         <button class="action-btn-back" onclick="diaryNext(1)">← 戻る</button>
@@ -3265,6 +3271,14 @@ html, body {
 //
 // ヘルパー: spotMapUrl(s) / spotPhoneHref(s) は下部の script で定義
 // ═══════════════════════════════════════════════════════════════════════════
+
+const SENSE_TAGS = [
+  '🌿 自然感あり','🏗 施設感つよい','🔇 静かめ','🔊 にぎやか',
+  '🏃 走り回れる','👶 抱っこでOK','🚼 ベビーカーOK','🌊 水遊びできる',
+  '🎪 体験・工作できる','🌧 雨でもOK','☀️ 日陰たっぷり','😌 のんびりできる',
+  '🍴 食事できる','💰 コスパいい','📸 写真映え','🐕 犬OKだった',
+  '🅿️ 駐車場余裕','🚻 トイレきれい',
+];
 
 const SPOTS = [
   // ── 公園 ──────────────────────────────────────────
@@ -5211,6 +5225,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       navigator.serviceWorker.register('./sw.js').catch(() => {});
     });
   }
+  // 感覚タグ動的描画（日記フォーム）
+  const _dTags = document.getElementById('diaryTagBtns');
+  if (_dTags) _dTags.innerHTML = SENSE_TAGS.map(t => `<button class="tag-btn" onclick="this.classList.toggle('active')">${t}</button>`).join('');
 });
 
 // ── ONBOARDING ────────────────────────────────────────────────
@@ -5943,6 +5960,7 @@ function buildHero() {
   const age = child ? child.age : 2;
   let pool = SPOTS.filter(s => s.ageGroups.includes(age));
   if (state.weather === 'rainy') pool = pool.filter(s => (s.facilities || []).includes('雨の日OK') || s.catClass === 'indoor' || s.catClass === 'museum');
+  if (state.time === 'medium') pool = pool.filter(s => { const f = SPOT_FACTS[s.id]; return f && f.stay && parseInt(f.stay) <= 2; });
   if (state.time === 'short') pool = pool.filter(s => { const f = SPOT_FACTS[s.id]; return f && f.stay && f.stay.includes('1'); });
   if (state.dog) pool = pool.filter(s => { const f = SPOT_FACTS[s.id]; return (f && f.dogOk) || (s.dogInfo && s.dogInfo.ok); });
   // 現在地 ON なら近い順に並び替え、上位 10 件から random pick (堅田に住む人に湖南の遠スポットが出ない)
@@ -5957,6 +5975,7 @@ function buildHero() {
   const pick = pool[Math.floor(Math.random() * Math.min(pool.length, 5))] || pool[0];
   if (!pick) return;
   state._heroPick = pick.id;
+  _syncHeroHeart();
   const facts = SPOT_FACTS[pick.id] || {};
   const value = VALUE_LINES[pick.id] || pick.desc;
   document.getElementById('heroEmoji').textContent = spotPhotoSrc(pick) ? '' : pick.emoji;
@@ -6082,6 +6101,9 @@ function scoreRoutePlan(plan, ctx) {
   if (!ctx.dog && isDogPlan) score -= 2;
   // 時間マッチング（30分/短時間モード）
   const isShortPlan = /30分|サクッ|朝さんぽ|赤ちゃん|ベビーカー楽ちん/.test(plan.tag + plan.title) || plan.coverKey === 'short';
+  const isMediumPlan = /2時間|サクッと半日|ちょうど/.test(plan.tag + plan.title);
+  if (ctx.time === 'medium' && isMediumPlan) score += 3;
+  if (ctx.time === 'medium' && isShortPlan) score += 1;
   if (ctx.time === 'short' && isShortPlan) score += 3;
   if (ctx.time === 'short' && !isShortPlan) score -= 1;
   // ランダム要素（毎回違う順番で出すため）
@@ -6706,11 +6728,23 @@ function restoreUiState() {
 }
 
 // ── LIKES ─────────────────────────────────────────────────────
+function _syncHeroHeart() {
+  const btn = document.getElementById('heroHeart'); if (!btn) return;
+  const liked = state.likes.includes(state._heroPick);
+  btn.classList.toggle('liked', liked);
+  btn.textContent = liked ? '♥' : '♡';
+}
+function toggleHeroHeart() {
+  const btn = document.getElementById('heroHeart'); if (!btn || !state._heroPick) return;
+  toggleHeart(btn, state._heroPick);
+  _syncHeroHeart();
+}
 function toggleHeart(btn, id) {
   const liked = state.likes.includes(id);
   if (liked) { state.likes = state.likes.filter(x => x !== id); btn.classList.remove('liked'); btn.textContent = '♡'; }
   else { state.likes.push(id); btn.classList.add('liked'); btn.textContent = '♥'; kodoCheer(); _checkUnlocks(); }
   saveState();
+  _syncHeroHeart();
   if (document.getElementById('tab-fav').classList.contains('active')) renderFavList();
 }
 function toggleDetailHeart() {
@@ -7798,7 +7832,7 @@ function openVoiceForm() {
   // タグボタン
   const tagCont = document.getElementById('vfTagBtns');
   tagCont.innerHTML = '';
-  ['🌿 自然感あり','🔇 静かめ','🔊 にぎやか','🏃 走り回れる','👶 抱っこでOK','🐕 犬OKだった','🅿️ 駐車場余裕','🚼 ベビーカーで楽々','🚻 トイレきれい'].forEach(tag => {
+  SENSE_TAGS.forEach(tag => {
     const btn = document.createElement('button');
     btn.className = 'tag-btn'; btn.textContent = tag;
     btn.onclick = () => btn.classList.toggle('active');
