@@ -20,7 +20,7 @@
   <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=33" sizes="any">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <script type="application/ld+json">
   {
@@ -53,13 +53,11 @@
     "publisher": {
       "@type": "Organization",
       "name": "kinoshita studio",
-      "alternateName": "木下スタジオ",
       "url": "https://kinoshita.studio/"
     },
     "about": {
       "@type": "WebApplication",
       "name": "KODOCO",
-      "alternateName": "コドコ",
       "url": "https://kodoco.jp/",
       "applicationCategory": "TravelApplication",
       "operatingSystem": "Any",
@@ -87,26 +85,17 @@
       {
         "@type": "Question",
         "name": "KODOCOはどのエリアのスポットが掲載されていますか？",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "現在は滋賀県の168スポット・50プランを掲載しています。琵琶湖周辺を中心に、地元住民が実際に子連れで訪れた場所を手作業でキュレーションしています。"
-        }
+        "acceptedAnswer": { "@type": "Answer", "text": "現在は滋賀県の168スポット・50プランを掲載しています。琵琶湖周辺を中心に、地元住民が実際に子連れで訪れた場所を手作業でキュレーションしています。" }
       },
       {
         "@type": "Question",
         "name": "KODOCOは無料で使えますか？",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "はい、完全無料で公開しています。アカウント登録をすると口コミの投稿や複数端末での同期も無料で使えます。"
-        }
+        "acceptedAnswer": { "@type": "Answer", "text": "はい、完全無料で公開しています。アカウント登録をすると口コミの投稿や複数端末での同期も無料で使えます。" }
       },
       {
         "@type": "Question",
         "name": "どうやってスポットを提案してもらえますか？",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "天気・子どもの年齢・使える時間を入力すると、その日の条件に合った1スポットを提案します。選択肢を並べるのではなく、答えを1つ出すのがKODOCOの設計思想です。"
-        }
+        "acceptedAnswer": { "@type": "Answer", "text": "天気・子どもの年齢・使える時間を入力すると、その日の条件に合った1スポットを提案します。選択肢を並べるのではなく、答えを1つ出すのがKODOCOの設計思想です。" }
       }
     ]
   }
@@ -115,190 +104,195 @@
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --bg: #FAF8F4;
-      --bg-alt: #F3EEE4;
-      --ink: #2C2A26;
-      --ink-soft: #6E6A62;
-      --ink-faint: #A8A39A;
-      --border: rgba(44,42,38,0.12);
-      --green: #5B7F61;
+      --bg:         #FAF8F4;
+      --bg-warm:    #F3EEE4;
+      --card:       #FFFFFF;
+      --ink:        #2C2A26;
+      --ink-soft:   #6E6A62;
+      --ink-faint:  #A8A39A;
+      --line:       #E8E3D9;
+      --green:      #7A9B7E;
+      --green-deep: #5B7F61;
+      --green-soft: #E7EEE3;
+      --radius:     16px;
     }
     html { scroll-behavior: smooth; overflow-x: hidden; }
     body {
       background: var(--bg); color: var(--ink);
-      font-family: 'Noto Sans JP', -apple-system, sans-serif;
-      font-weight: 300; overflow-x: hidden; line-height: 1.9;
+      font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif;
+      font-weight: 400; overflow-x: hidden; line-height: 1.8;
     }
 
+    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0;
-      padding: 1.2rem 3rem;
+      padding: 14px 24px;
       display: flex; justify-content: space-between; align-items: center;
-      z-index: 100; background: rgba(250,248,244,0.94);
+      z-index: 100; background: rgba(250,248,244,0.95);
       backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--line);
     }
     .nav-back {
-      font-family: 'Noto Sans JP', sans-serif; font-size: 0.72rem;
-      letter-spacing: 0.08em; color: var(--ink-faint);
-      text-decoration: none; transition: color 0.3s;
+      font-size: 13px; font-weight: 500; color: var(--ink-soft);
+      text-decoration: none; transition: color 0.2s;
+      display: flex; align-items: center; gap: 6px;
     }
     .nav-back:hover { color: var(--ink); }
     .nav-logo {
-      font-family: 'DM Serif Display', serif; font-size: 1rem;
-      letter-spacing: 0.02em; color: var(--ink); text-decoration: none;
+      font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 800;
+      color: var(--ink); text-decoration: none; letter-spacing: -0.01em;
     }
 
-    .story-hero {
-      padding-top: 6rem;
-      border-bottom: 1px solid var(--border);
+    /* HERO */
+    .hero {
+      padding-top: 80px;
+      background: var(--bg-warm);
+      border-bottom: 1px solid var(--line);
     }
-    .story-hero-inner {
-      max-width: 800px; margin: 0 auto;
-      padding: 5rem 3rem 4rem;
+    .hero-inner {
+      max-width: 720px; margin: 0 auto;
+      padding: 56px 24px 48px;
     }
-    .story-tag {
-      font-family: 'Noto Sans JP', sans-serif; font-size: 0.62rem;
-      letter-spacing: 0.2em; color: var(--green);
-      margin-bottom: 2rem; display: block;
+    .hero-eyebrow {
+      display: inline-block;
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--green-deep); margin-bottom: 20px;
     }
-    .story-title {
-      font-family: 'DM Serif Display', serif; font-weight: 400;
-      font-size: clamp(2rem, 5vw, 3.4rem);
-      line-height: 1.3; letter-spacing: 0.02em;
-      color: var(--ink); margin-bottom: 1.5rem;
+    .hero-title {
+      font-family: 'Inter', 'Noto Sans JP', sans-serif; font-weight: 800;
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.25; letter-spacing: -0.02em;
+      color: var(--ink); margin-bottom: 20px;
     }
-    .story-subtitle {
-      font-family: 'Noto Sans JP', sans-serif; font-size: 0.8rem;
-      line-height: 2.1; color: var(--ink-soft); max-width: 520px;
+    .hero-sub {
+      font-size: 15px; line-height: 1.9; color: var(--ink-soft);
+      max-width: 520px; margin-bottom: 32px;
     }
-    .story-byline {
-      margin-top: 3rem; padding-top: 2rem;
-      border-top: 1px solid var(--border);
-      font-family: 'Noto Sans JP', sans-serif; font-size: 0.65rem;
-      letter-spacing: 0.08em; color: var(--ink-faint);
-      display: flex; gap: 2rem;
+    .hero-byline {
+      padding-top: 20px; border-top: 1px solid var(--line);
+      font-size: 12px; color: var(--ink-faint);
+      display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
     }
-    .story-byline a { color: var(--green); text-decoration: none; }
+    .hero-byline a { color: var(--green-deep); text-decoration: none; font-weight: 500; }
 
-    .story-body { max-width: 640px; margin: 0 auto; padding: 0 3rem; }
+    /* BODY */
+    .story-body { max-width: 640px; margin: 0 auto; padding: 0 24px; }
 
-    .story-section { padding: 5rem 0; border-bottom: 1px solid var(--border); }
+    .story-section { padding: 56px 0; border-bottom: 1px solid var(--line); }
     .story-section:last-child { border-bottom: none; }
 
-    .story-label {
-      font-family: 'Noto Sans JP', sans-serif; font-size: 0.6rem;
-      letter-spacing: 0.22em; color: var(--green);
-      margin-bottom: 2rem; display: block;
+    .story-eyebrow {
+      display: inline-block;
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--green-deep); margin-bottom: 20px;
     }
     .story-p {
-      font-size: 0.82rem; color: var(--ink-soft); line-height: 2.4;
+      font-size: 15px; color: var(--ink-soft); line-height: 2;
     }
-    .story-p + .story-p { margin-top: 1.6rem; }
-    .story-p strong { color: var(--ink); font-weight: 400; }
+    .story-p + .story-p { margin-top: 18px; }
+    .story-p strong { color: var(--ink); font-weight: 600; }
 
     .story-quote {
-      margin: 3rem 0;
-      padding: 1.8rem 2.5rem;
-      border-left: 2px solid var(--green);
-      font-family: 'DM Serif Display', serif; font-weight: 400;
-      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      margin: 28px 0;
+      padding: 20px 24px;
+      background: var(--green-soft);
+      border-radius: var(--radius);
+      font-family: 'Noto Sans JP', sans-serif; font-weight: 500;
+      font-size: clamp(16px, 2.2vw, 20px);
       line-height: 1.8; color: var(--ink);
     }
 
-    .story-img {
-      width: calc(100% + 6rem); margin: 3rem -3rem;
-      display: block; object-fit: cover;
+    /* FOUNDER */
+    .founder {
+      padding: 56px 24px; border-top: 1px solid var(--line);
+      max-width: 720px; margin: 0 auto;
+      display: grid; grid-template-columns: 160px 1fr; gap: 32px; align-items: center;
     }
-    .story-img-cap {
-      font-size: 0.62rem; color: var(--ink-faint);
-      letter-spacing: 0.1em; margin-top: 0.8rem; text-align: center;
-    }
-
-    .story-founder {
-      padding: 5rem 3rem; border-top: 1px solid var(--border);
-      max-width: 800px; margin: 0 auto;
-      display: grid; grid-template-columns: 180px 1fr; gap: 3rem; align-items: center;
-    }
-    .story-founder-photo {
+    .founder-photo {
       width: 100%; aspect-ratio: 3/4;
-      object-fit: cover; object-position: center top; display: block;
+      object-fit: cover; object-position: center top;
+      border-radius: var(--radius); display: block;
     }
-    .story-founder-name {
-      font-family: 'DM Serif Display', serif; font-size: 1rem;
-      color: var(--ink); margin-bottom: 0.4rem;
+    .founder-name {
+      font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700;
+      color: var(--ink); margin-bottom: 4px;
     }
-    .story-founder-role {
-      font-size: 0.68rem; color: var(--ink-faint); margin-bottom: 1.5rem;
-      letter-spacing: 0.04em;
+    .founder-role {
+      font-size: 12px; color: var(--ink-faint); margin-bottom: 16px; line-height: 1.6;
     }
-    .story-founder-bio {
-      font-size: 0.78rem; color: var(--ink-soft); line-height: 2.2; margin-bottom: 1.5rem;
+    .founder-bio {
+      font-size: 14px; color: var(--ink-soft); line-height: 2; margin-bottom: 16px;
     }
-    .story-founder-link {
-      font-size: 0.72rem; color: var(--green); text-decoration: none;
+    .founder-link {
+      display: inline-block; font-size: 13px; font-weight: 500;
+      color: var(--green-deep); text-decoration: none;
       border-bottom: 1px solid rgba(91,127,97,0.3); padding-bottom: 2px;
-      transition: border-color 0.3s;
+      transition: border-color 0.2s;
     }
-    .story-founder-link:hover { border-color: var(--green); }
+    .founder-link:hover { border-color: var(--green-deep); }
 
-    .story-cta {
-      padding: 5rem 3rem; text-align: center;
-      border-top: 1px solid var(--border); background: var(--bg-alt);
+    /* CTA */
+    .cta {
+      padding: 56px 24px; text-align: center;
+      background: var(--green-soft);
     }
-    .story-cta-tag {
-      font-size: 0.62rem; letter-spacing: 0.2em; color: var(--green);
-      margin-bottom: 1.5rem; display: block;
+    .cta-eyebrow {
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--green-deep); margin-bottom: 16px; display: block;
     }
-    .story-cta-title {
-      font-family: 'DM Serif Display', serif; font-weight: 400;
-      font-size: clamp(1.3rem, 3vw, 1.9rem);
-      line-height: 1.5; margin-bottom: 2.5rem; color: var(--ink);
+    .cta-title {
+      font-family: 'Inter', 'Noto Sans JP', sans-serif; font-weight: 800;
+      font-size: clamp(22px, 3.5vw, 32px);
+      line-height: 1.4; margin-bottom: 28px; color: var(--ink);
     }
-    .story-cta-btn {
+    .cta-btn {
       display: inline-block;
-      font-size: 0.72rem; letter-spacing: 0.12em;
-      color: #fff; background: var(--green); text-decoration: none;
-      padding: 0.9rem 2.5rem; border-radius: 2px;
-      transition: opacity 0.3s;
+      font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+      letter-spacing: 0.02em; color: #fff;
+      background: var(--green-deep); text-decoration: none;
+      padding: 14px 32px; border-radius: 100px;
+      transition: opacity 0.2s;
     }
-    .story-cta-btn:hover { opacity: 0.85; }
+    .cta-btn:hover { opacity: 0.85; }
 
     footer {
-      padding: 2rem 3rem; border-top: 1px solid var(--border);
+      padding: 20px 24px; border-top: 1px solid var(--line);
       display: flex; justify-content: space-between; align-items: center;
+      background: var(--bg);
     }
     footer span, footer a {
-      font-size: 0.62rem; color: var(--ink-faint);
-      letter-spacing: 0.06em; text-decoration: none; transition: color 0.3s;
+      font-size: 12px; color: var(--ink-faint);
+      text-decoration: none; transition: color 0.2s;
     }
     footer a:hover { color: var(--ink); }
 
-    .rv { opacity: 0; transform: translateY(16px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .rv { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .rv.visible { opacity: 1; transform: translateY(0); }
 
-    @media (max-width: 640px) {
-      nav, .story-hero-inner, .story-body, .story-founder, .story-cta, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
-      .story-img { width: calc(100% + 3rem); margin: 2rem -1.5rem; }
-      .story-founder { grid-template-columns: 1fr; }
-      footer { flex-direction: column; gap: 0.8rem; }
+    @media (max-width: 600px) {
+      .hero-inner, .story-body, .cta, footer { padding-left: 20px; padding-right: 20px; }
+      .founder { grid-template-columns: 1fr; padding: 40px 20px; }
+      .founder-photo { max-width: 140px; aspect-ratio: 1/1; border-radius: 50%; }
     }
   </style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html" class="nav-back">← KODOCO</a>
-  <a href="index.html" class="nav-logo">KODOCO</a>
+  <a href="index.html" class="nav-back">← KODOCO に戻る</a>
+  <span class="nav-logo">KODOCO</span>
 </nav>
 
 <!-- HERO -->
-<header class="story-hero">
-  <div class="story-hero-inner">
-    <span class="story-tag">— Product Story / KODOCO</span>
-    <h1 class="story-title">「今日、子どもと<br>どこいく？」に答える。</h1>
-    <p class="story-subtitle">週末のたびに詰まるあの問い。情報は多いのに決められない、その構造的な詰まりを解きたかった——そこからKODOCOは始まった。</p>
-    <div class="story-byline">
+<header class="hero">
+  <div class="hero-inner">
+    <span class="hero-eyebrow">— Product Story</span>
+    <h1 class="hero-title">「今日、子どもと<br>どこいく？」に答える。</h1>
+    <p class="hero-sub">週末のたびに詰まるあの問い。情報は多いのに決められない、その詰まりを解きたかった——そこからKODOCOは始まった。</p>
+    <div class="hero-byline">
       <span>木下 貴博 / Takahiro Kinoshita</span>
       <span>木下スタジオ · 滋賀</span>
       <a href="https://kinoshita.studio/about.html" target="_blank" rel="noopener">Profile →</a>
@@ -310,7 +304,7 @@
 <div class="story-body">
 
   <div class="story-section rv">
-    <span class="story-label">— Origin</span>
+    <span class="story-eyebrow">— Origin</span>
     <p class="story-p">子どもとの週末、毎回同じ会話をしていた。</p>
     <div class="story-quote">
       「今日、どこいこっか」<br>
@@ -320,88 +314,78 @@
     </div>
     <p class="story-p">
       Googleで「子連れ おでかけ 滋賀」と検索すると、スポット情報は山ほど出てくる。<br>
-      でも今日の天気は雨で、子どもは4歳で、午後の2時間しかない——そこまで条件を絞ると、結局「自分で判断してください」になる。<br><br>
-      情報は多いのに、答えが出ない。その構造的な詰まりを解きたかった。
+      でも今日の天気は雨で、子どもは4歳で、午後の2時間しかない——そこまで絞ると、結局「自分で判断してください」になる。
     </p>
+    <p class="story-p">情報は多いのに、答えが出ない。その構造的な詰まりを解きたかった。</p>
   </div>
 
   <div class="story-section rv">
-    <span class="story-label">— Name</span>
+    <span class="story-eyebrow">— Name</span>
     <p class="story-p">KODOCOは「子どもと、どこ行こ？」の略だ。</p>
     <div class="story-quote">
       問いをそのまま名前にした。<br>
       「今日、子どもとどこいく？」——<br>この一言に答えるために作ったから。
     </div>
     <p class="story-p">
-      ユーザーが検索ボックスに打ち込む言葉と、プロダクトの名前が重なるとしたら——<br>
-      「探している人に、ちゃんと届く」と思った。<br><br>
+      ユーザーが検索ボックスに打ち込む言葉と、プロダクト名が重なるとしたら——<br>
+      「探している人に、ちゃんと届く」と思った。<br>
       KODOCO。4文字。口にしやすい。子どもでも覚えられる。
     </p>
   </div>
 
   <div class="story-section rv">
-    <span class="story-label">— Design</span>
-    <p class="story-p">
-      設計の核心は「答えは1つ」だ。<br><br>
-      <strong>天気・子どもの年齢・使える時間を入力すると、1スポットを提案する。</strong><br><br>
-      選択肢を並べない。「AにするかBにするか」という判断をもうひとつ増やさない。<br>
-      「今日はここに行けばいい」という確信を、渡したかった。
-    </p>
+    <span class="story-eyebrow">— Design</span>
+    <p class="story-p">設計の核心は「答えは1つ」だ。</p>
     <div class="story-quote">
-      「おでかけ情報を増やすより、<br>決断のコストを下げることが先だった。」
+      天気・子どもの年齢・使える時間を入力すると、<strong>1スポットを提案する。</strong><br>
+      選択肢を並べない。「今日はここ」という確信を渡したかった。
     </div>
     <p class="story-p">
-      滋賀の168スポット・50プランを手作業でキュレーション。<br>
-      10匹のオリジナルキャラクターが、その日の行き先を案内する。<br><br>
+      滋賀の168スポット・50プランを手作業でキュレーション。10匹のオリジナルキャラクターが案内する。
+    </p>
+    <p class="story-p">
       口コミ機能、複数端末同期、完全無料。<br>
       使い始めるハードルをゼロに近づけることも、設計の一部だった。
     </p>
   </div>
 
   <div class="story-section rv">
-    <span class="story-label">— Local</span>
-    <p class="story-p">
-      KODOCOの舞台は滋賀だ。琵琶湖のある県。<br>
-      「滋賀ってなにもないよね」という言葉を、ずっと聞いてきた。
-    </p>
+    <span class="story-eyebrow">— Local</span>
+    <p class="story-p">KODOCOの舞台は滋賀だ。琵琶湖のある県。「滋賀ってなにもないよね」という言葉を、ずっと聞いてきた。</p>
     <div class="story-quote">
       でも滋賀には、ちゃんとある。<br>
       地元の人しか知らない場所、子どもが走り回れる空間、<br>季節ごとに変わる景色——それが168スポットになった。
     </div>
     <p class="story-p">
-      都市のサービスが地方を無視する構造に、ひとりで抵抗したかった。<br>
-      「滋賀の子連れ家族」が、ちゃんと答えをもらえるプロダクトを。<br><br>
-      いつか滋賀を出て、もっと広い場所に届けたいとも思っている。<br>
-      でも今は、この湖のそばから。ここで作り、ここで使い、ここで育てる。
+      「滋賀の子連れ家族」が、ちゃんと答えをもらえるプロダクトを。<br>
+      今は、この湖のそばから。ここで作り、ここで使い、ここで育てる。
     </p>
   </div>
 
 </div>
 
 <!-- FOUNDER -->
-<div class="story-founder rv">
+<div class="founder rv">
   <img src="https://kinoshita.studio/assets/img/founder-studio.jpg"
     alt="木下 貴博 — 木下スタジオ代表 / 滋賀"
-    class="story-founder-photo" loading="lazy">
+    class="founder-photo" loading="lazy">
   <div>
-    <p class="story-founder-name">木下 貴博 / Takahiro Kinoshita</p>
-    <p class="story-founder-role">Designer & Developer — 木下スタジオ / kinoshita studio · 滋賀</p>
-    <p class="story-founder-bio">
+    <p class="founder-name">木下 貴博 / Takahiro Kinoshita</p>
+    <p class="founder-role">Designer & Developer — 木下スタジオ / kinoshita studio · 滋賀</p>
+    <p class="founder-bio">
       滋賀・琵琶湖を拠点に活動するデザイナー・プロダクト開発者。<br>
       UX/UIデザイン・アートディレクション・個人開発まで、ひとりで担う。<br>
       BMBoard・Atelier・KODOCOを個人開発。
     </p>
-    <a href="https://kinoshita.studio/about.html" target="_blank" rel="noopener" class="story-founder-link">木下 貴博について →</a>
+    <a href="https://kinoshita.studio/about.html" target="_blank" rel="noopener" class="founder-link">木下 貴博について →</a>
   </div>
 </div>
 
 <!-- CTA -->
-<div class="story-cta">
-  <span class="story-cta-tag">— Try KODOCO</span>
-  <p class="story-cta-title">
-    「今日、子どもとどこいく？」<br>答えは、ここにある。
-  </p>
-  <a href="index.html" class="story-cta-btn">KODOCO を開く →</a>
+<div class="cta">
+  <span class="cta-eyebrow">— Try KODOCO</span>
+  <p class="cta-title">「今日、子どもとどこいく？」<br>答えは、ここにある。</p>
+  <a href="index.html" class="cta-btn">KODOCOを開く →</a>
 </div>
 
 <footer>
