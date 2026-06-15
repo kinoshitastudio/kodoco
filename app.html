@@ -4311,7 +4311,70 @@ const SPOTS = [
   { id:'katata_station', emoji:'🚉', name:'堅田駅前公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市堅田', addr:'滋賀県大津市本堅田1丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'JR堅田駅前のコンパクトなポケット公園。待ち合わせと遊具。', keywords:['堅田駅','駅前','ポケット公園','待ち合わせ'], play:['小型遊具','ベンチ','広場'], highlight:'駅待ち時間のついでに。日陰少なめ。', rating:3.6, galleryBg:'linear-gradient(135deg,#c8d8c0,#a0a890)', ageGroups:[1,2,3,4,5,6], lat:35.1179, lng:135.9196 },
   { id:'kasuga_park', emoji:'⛩', name:'春日児童公園（春日神社前）', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市堅田', addr:'滋賀県大津市本堅田2丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'春日神社の隣にある小さな児童公園。地元の静かな遊び場。', keywords:['春日神社','児童公園','静か','地元'], play:['滑り台','ブランコ','砂場'], highlight:'神社の境内と合わせて散歩に。お参りついでに。', rating:3.7, galleryBg:'linear-gradient(135deg,#d0c8a8,#a89880)', ageGroups:[0,1,2,3,4,5,6], lat:35.1227, lng:135.9038 },
   { id:'kurihara_park', emoji:'🌳', name:'栗原児童公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市栗原', addr:'滋賀県大津市栗原', hours:'常時開放', closed:'なし', price:'無料', desc:'栗原地区の住宅地にある児童公園。基本遊具あり。', keywords:['栗原','住宅地','児童公園'], play:['滑り台','ブランコ','砂場','鉄棒'], highlight:'住宅地のど真ん中、近所の子が集まる。', rating:3.6, galleryBg:'linear-gradient(135deg,#c0d0b8,#98a890)', ageGroups:[0,1,2,3,4,5,6], lat:35.1746, lng:135.8851 },
-  { id:'hiei_plaza', emoji:'🌲', name:'比叡平中央公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市比叡平', addr:'滋賀県大津市比叡平3丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'比叡平ニュータウンの中央公園。山の緑に囲まれた遊び場。', keywords:['比叡平','ニュータウン','山','緑豊か'], play:['複合遊具','芝生','散歩道','木陰'], highlight:'標高ある住宅地で夏でも比較的涼しい。車でアクセス。', rating:3.9, galleryBg:'linear-gradient(135deg,#b0c898,#88a070)', ageGroups:[1,2,3,4,5,6,7,8,9], lat:35.0327, lng:135.8285 }
+  { id:'hiei_plaza', emoji:'🌲', name:'比叡平中央公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市比叡平', addr:'滋賀県大津市比叡平3丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'比叡平ニュータウンの中央公園。山の緑に囲まれた遊び場。', keywords:['比叡平','ニュータウン','山','緑豊か'], play:['複合遊具','芝生','散歩道','木陰'], highlight:'標高ある住宅地で夏でも比較的涼しい。車でアクセス。', rating:3.9, galleryBg:'linear-gradient(135deg,#b0c898,#88a070)', ageGroups:[1,2,3,4,5,6,7,8,9], lat:35.0327, lng:135.8285 },
+
+  // ── 新規追加スポット ────────────────────────────────────────
+  {
+    id:'moriyama_nagisa', emoji:'🌼', name:'守山なぎさ公園', cat:'公園', catClass:'park', pref:'滋賀',
+    loc:'守山市', addr:'滋賀県守山市今浜町地先（琵琶湖岸）', hours:'常時開放', closed:'なし', price:'無料',
+    desc:'琵琶湖岸に広がる草津〜守山エリアの定番スポット。早春は一面の菜の花、8月はひまわり畑が咲き誇り、季節ごとに違う顔を見せる。背景には比叡山と琵琶湖大橋が絵になる撮影スポットとしても有名。',
+    sense:['🌿 自然感あり','🏃 走り回れる','👶 抱っこでOK'],
+    keywords:['菜の花','ひまわり','琵琶湖岸','湖岸緑地','桜','撮影スポット','水遊び場（夏季）'],
+    facilities:['無料','駐車場あり','ベビーカーOK'],
+    play:['菜の花・ひまわり鑑賞（季節限定）','琵琶湖岸散歩','芝生でピクニック','夏の水遊び（じゃぶじゃぶ池）'],
+    highlight:'早春の菜の花シーズン（2〜3月）は混雑するので早朝がおすすめ。ベビーカーでも歩きやすい遊歩道あり。',
+    rating:4.4, galleryBg:'linear-gradient(135deg,#f0f0a8,#d8e890)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0724, lng:135.9973,
+    parkingSpots:{count:200, free:true}, durationMin:90,
+    weatherProof:'open', reservation:'none',
+    accessibility:{wheelchair:true, stroller:'easy'}
+  },
+  {
+    id:'makino_beach', emoji:'🏖', name:'マキノサニービーチ高木浜', cat:'公園', catClass:'park', pref:'滋賀',
+    loc:'高島市', addr:'滋賀県高島市マキノ町知内（琵琶湖畔）', hours:'常時開放（海水浴場は7〜8月）', closed:'なし', price:'無料（海水浴場期間中：駐車場有料）',
+    desc:'透明度の高い琵琶湖の砂浜ビーチ。夏は海水浴場として開設され、浅瀬で小さな子でも安心して水遊びができる。周辺にはマキノ高原や浜茶屋も充実。メタセコイア並木へも車ですぐ。',
+    sense:['🌿 自然感あり','🏃 走り回れる','🔊 にぎやか'],
+    keywords:['水遊び','砂浜','琵琶湖ビーチ','じゃぶじゃぶ','海水浴','砂遊び','夏','川遊び','プール'],
+    facilities:['駐車場あり','飲食可'],
+    play:['水遊び・砂浜遊び（夏）','浜茶屋でかき氷','波打ち際で魚観察','メタセコイア並木とセット'],
+    highlight:'水が透き通っていて浅瀬が長く続く。小さい子の水遊びに最適。夏以外も砂浜散歩ができる。',
+    rating:4.4, galleryBg:'linear-gradient(135deg,#a8d8f0,#78c0e8)',
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.4762, lng:136.0245,
+    parkingSpots:{count:300, free:false, note:'海水浴期間中は有料（約500円）'}, durationMin:180,
+    weatherProof:'open', reservation:'none',
+    accessibility:{stroller:'hard'}
+  },
+  {
+    id:'ritto_nature', emoji:'🌲', name:'栗東自然観察の森', cat:'公園', catClass:'park', pref:'滋賀',
+    loc:'栗東市', addr:'滋賀県栗東市荒張890-1', hours:'9:00〜17:00（月〜土）・10:00〜17:00（日・祝）', closed:'月曜', price:'無料',
+    desc:'栗東市が運営する完全無料の自然体験施設。雑木林の中に整備された散策路でどんぐり拾いや昆虫観察が楽しめる。ネイチャーセンターには自然の展示や顕微鏡体験コーナーもあり、雨の日も一部楽しめる。',
+    sense:['🌿 自然感あり','🔇 静かめ','🏃 走り回れる'],
+    keywords:['どんぐり','昆虫観察','散策路','ネイチャーセンター','無料','自然体験','里山'],
+    facilities:['無料','駐車場あり','ベビーカーOK','雨の日OK（センター内）'],
+    play:['雑木林散策','どんぐり・木の実拾い','昆虫・野鳥観察','ネイチャーセンター展示'],
+    highlight:'完全無料なのに内容充実。秋のどんぐりシーズンが特に人気。ベビーカーは一部のコースで利用可能。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#c8e8b8,#a0d090)',
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.0162, lng:136.0126,
+    parkingSpots:{count:60, free:true}, durationMin:90,
+    weatherProof:'open', reservation:'none',
+    accessibility:{stroller:'moderate'}
+  },
+  {
+    id:'biwako_ohashi_plaza', emoji:'🍦', name:'道の駅 びわ湖大橋米プラザ', cat:'カフェ・レストラン', catClass:'cafe', pref:'滋賀',
+    loc:'大津市', addr:'滋賀県大津市今堅田3-1-1', hours:'9:00〜18:00', closed:'なし', price:'入場無料・食事700円〜',
+    desc:'琵琶湖大橋（西詰）のたもとにある道の駅。地元滋賀のお土産やグルメが充実し、近江牛バーガーやふなずしソフトなどユニークなB級グルメも。テラス席から琵琶湖大橋と湖面を一望できる。',
+    sense:['🌿 自然感あり','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['道の駅','琵琶湖大橋','ソフトクリーム','近江牛','お土産','琵琶湖ビュー'],
+    facilities:['駐車場あり','飲食可','ベビーカーOK','おむつ替え'],
+    play:['滋賀グルメ体験','お土産購入','テラスからの琵琶湖ビュー','ドライブ途中の休憩'],
+    highlight:'ドライブ途中に絶対立ち寄りたい。ソフトクリームが子どもに大人気。授乳室・おむつ替えも完備。',
+    rating:4.1, galleryBg:'linear-gradient(135deg,#d0e8f8,#b0cce8)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1051, lng:135.9290,
+    durationMin:45, officialUrl:'https://www.yoneplaza.com/',
+    weatherProof:'roof', reservation:'none',
+    accessibility:{wheelchair:true, stroller:'easy'},
+    toilets:{diaperChange:true, multipurpose:true}
+  }
 ];
 
 // ── VALUE LINES (体験翻訳コピー) ──────────────────────────────
@@ -6829,7 +6892,8 @@ function doSearch() {
   const q = document.getElementById('searchInput').value.toLowerCase();
   const activeChip = document.querySelector('#catFilterRow .cat-chip.active');
   const chipText = activeChip ? activeChip.textContent.trim() : 'すべて';
-  const catMap = { '🌳 公園':'公園', '🏠 室内遊び場':'室内遊び場', '☕ カフェ':'カフェ・レストラン', '🍽 ご飯':'ご飯・レストラン', '🎨 体験':'ミュージアム・体験', '🐕 犬連れ':'犬連れOK', '🏊 水遊び':'水遊び' };
+  const catMap = { '🌳 公園':'公園', '🏠 室内遊び場':'室内遊び場', '☕ カフェ':'カフェ・レストラン', '🍽 ご飯':'ご飯・レストラン', '🎨 体験':'ミュージアム・体験', '🐕 犬連れ':'犬連れOK' };
+  const WATER_TERMS = ['水遊び','じゃぶじゃぶ','川遊び','砂浜','ビーチ','プール','海水浴'];
   let filtered = SPOTS;
   // エリア絞り込み
   if (_prefFilter === '滋賀') filtered = filtered.filter(s => spotPref(s) === '滋賀');
@@ -6848,7 +6912,18 @@ function doSearch() {
     }
   }
   else if (_prefFilter && _prefFilter !== 'all') filtered = filtered.filter(s => spotPref(s) === _prefFilter);
-  if (catMap[chipText]) filtered = filtered.filter(s => s.cat === catMap[chipText]);
+  if (chipText === '🏊 水遊び') {
+    filtered = filtered.filter(s =>
+      WATER_TERMS.some(t =>
+        (s.keywords||[]).some(k => k.includes(t)) ||
+        (s.play||[]).some(k => k.includes(t)) ||
+        (s.sense||[]).some(k => k.includes(t)) ||
+        (s.desc||'').includes(t)
+      )
+    );
+  } else if (catMap[chipText]) {
+    filtered = filtered.filter(s => s.cat === catMap[chipText]);
+  }
   if (q) filtered = filtered.filter(s => (s.name||'').includes(q) || (s.loc||'').includes(q) || (s.desc||'').includes(q) || (s.keywords||[]).some(k => k.includes(q)));
   renderSagasuCards(filtered);
   let countLabel = filtered.length + '件';
@@ -6899,8 +6974,13 @@ function renderSagasuCards(spots) {
 function resetSagasuFilters() {
   const input = document.getElementById('searchInput');
   if (input) input.value = '';
-  document.querySelectorAll('#tab-sagasu .cat-chip').forEach((c, i) => {
-    c.classList.toggle('active', i === 0);   // first chip is 'すべて'
+  document.querySelectorAll('#catFilterRow .cat-chip').forEach((c, i) => {
+    c.classList.toggle('active', i === 0);
+  });
+  // エリアフィルターも「すべて」にリセット
+  _prefFilter = 'all';
+  document.querySelectorAll('#prefFilterRow .pref-chip').forEach((c, i) => {
+    c.classList.toggle('active', i === 0);
   });
   doSearch();
 }

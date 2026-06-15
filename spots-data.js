@@ -1,5 +1,4 @@
-// Auto-generated.
-window.KODOCO_SPOTS = (function(){
+window.KODOCO_SPOTS=(function(){
   const SPOTS = [
   // ── 公園 ──────────────────────────────────────────
   {
@@ -12,7 +11,7 @@ window.KODOCO_SPOTS = (function(){
     play:['ピラミッド型ネット遊具','大型ブランコ','ローラーすべり台','芝生広場','サイクリングコース'],
     highlight:'ベビーカーでも回りやすい。琵琶湖の景色が最高。早朝は空いていて気持ちいい。',
     rating:4.2, galleryBg:'linear-gradient(135deg,#c8ede0,#a8d8c4)',
-    ageGroups:[0,1,2,3,4,5,6,7], lat:35.0112, lng:135.9483,
+    ageGroups:[0,1,2,3,4,5,6,7], lat:35.0088, lng:135.9133,
     phone:'077-567-1969', officialUrl:'https://hikari-g.com/kihan/',
     parkingSpots:{count:380, free:true, note:'土日は昼前に埋まることあり'},
     durationMin:120, station:'JR草津駅 バス20分',
@@ -30,7 +29,7 @@ window.KODOCO_SPOTS = (function(){
     play:['大型コンビネーション遊具','冒険の森（木製アスレチック）','ターザンロープ','砂場','バーベキューエリア'],
     highlight:'平日は空いていてゆったり。木製アスレチックは子どもが大興奮。自然の中を散歩するだけでも気持ちいい。',
     rating:4.1, galleryBg:'linear-gradient(135deg,#d0ebd8,#b4d8bc)',
-    ageGroups:[1,2,3,4,5,6,7], lat:35.0701, lng:135.9891,
+    ageGroups:[1,2,3,4,5,6,7], lat:35.1037, lng:135.9635,
     phone:'077-585-6333', officialUrl:'https://www.moridukuri.info/',
     parkingSpots:{count:400, free:true},
     durationMin:180, station:'JR守山駅 バス15分',
@@ -47,7 +46,7 @@ window.KODOCO_SPOTS = (function(){
     play:['芝生広場','カフェエリア','水遊び場（夏季限定）','地域マルシェ（定期開催）'],
     highlight:'広い芝生でピクニック気分。カフェのクレープが美味しい。子どもが走り回れる。',
     rating:4.3, galleryBg:'linear-gradient(135deg,#e8f0c8,#d0e4a8)',
-    ageGroups:[0,1,2,3,4], lat:35.0138, lng:135.9595
+    ageGroups:[0,1,2,3,4], lat:35.0184, lng:135.9611
   },
   {
     id:'otsu_park', emoji:'🌳', name:'皇子が丘公園', cat:'公園', catClass:'park',
@@ -59,7 +58,7 @@ window.KODOCO_SPOTS = (function(){
     play:['大型すべり台','芝生広場','じゃぶじゃぶ池（夏季）','アスレチック'],
     highlight:'夏のじゃぶじゃぶ池が大人気。駐車場近くて便利。週末は家族連れで賑わう。',
     rating:4.2, galleryBg:'linear-gradient(135deg,#d0f0d8,#b0e0b8)',
-    ageGroups:[0,1,2,3,4,5,6], lat:35.0089, lng:135.8598
+    ageGroups:[0,1,2,3,4,5,6], lat:35.0198, lng:135.8568
   },
   {
     id:'moriyama_park', emoji:'🌊', name:'守山市民運動公園', cat:'公園', catClass:'park',
@@ -71,7 +70,7 @@ window.KODOCO_SPOTS = (function(){
     play:['大型複合遊具','芝生広場','水遊びエリア（夏季）','ターザンロープ','砂場'],
     highlight:'夏の水遊びが人気。複合遊具は年齢別エリアで安心。',
     rating:4.0, galleryBg:'linear-gradient(135deg,#c8e8f8,#a8d0f0)',
-    ageGroups:[0,1,2,3,4,5,6,7], lat:35.0523, lng:135.9934
+    ageGroups:[0,1,2,3,4,5,6,7], lat:35.0658, lng:135.9795
   },
 
   // ── 室内遊び場 ────────────────────────────────────
@@ -102,7 +101,7 @@ window.KODOCO_SPOTS = (function(){
     play:['マット遊びエリア','ハイハイコーナー','絵本・おもちゃ','親子体操（定期開催）'],
     highlight:'0歳でも安心して遊べる。スタッフが常駐していて相談もできる。同じ月齢の親と仲良くなれる。',
     rating:4.4, galleryBg:'linear-gradient(135deg,#fce8f8,#f8d0f0)',
-    ageGroups:[0,1,2,3], lat:35.0067, lng:135.8689
+    ageGroups:[0,1,2,3], lat:35.0123, lng:135.8630
   },
   {
     id:'challenge_museum', emoji:'🔬', name:'チャレンジミュージアム', cat:'室内遊び場', catClass:'indoor',
@@ -114,7 +113,7 @@ window.KODOCO_SPOTS = (function(){
     play:['科学実験コーナー','工作体験','デジタル体験ゾーン','自然学習展示'],
     highlight:'雨の日でも1日楽しめる。スタッフが実験を教えてくれる。小学生になっても来られる。',
     rating:4.2, galleryBg:'linear-gradient(135deg,#e0f0ff,#c0d8f8)',
-    ageGroups:[3,4,5,6,7,8,9,10], lat:34.9723, lng:136.1634
+    ageGroups:[3,4,5,6,7,8,9,10], lat:34.9579, lng:136.1690
   },
 
   // ── カフェ・レストラン ────────────────────────────
@@ -128,7 +127,7 @@ window.KODOCO_SPOTS = (function(){
     play:['テラスで琵琶湖を眺める','水辺の散歩','アヒルに会える'],
     highlight:'テラスから琵琶湖が目の前。週末は混むので早めに到着推奨。水辺に降りれて子どもが大喜び。',
     rating:4.4, galleryBg:'linear-gradient(135deg,#d0e8f8,#b0d0f0)',
-    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1523, lng:136.0812
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1682, lng:136.0597
   },
   {
     id:'loco_cafe', emoji:'☕', name:'子育て応援カフェ LOCO', cat:'カフェ・レストラン', catClass:'cafe',
@@ -140,7 +139,7 @@ window.KODOCO_SPOTS = (function(){
     play:['キッズスペース','絵本コーナー','ママ向けワークショップ'],
     highlight:'新生児から使えるベビーリクライニングチェアが◎。ママ同士の交流の場として人気。',
     rating:4.5, galleryBg:'linear-gradient(135deg,#fce8e8,#f8d0d0)',
-    ageGroups:[0,1,2,3], lat:35.3156, lng:136.2812
+    ageGroups:[0,1,2,3], lat:35.3150, lng:136.2896
   },
   {
     id:'higoro', emoji:'🍽', name:'higoro TERRACE（ヒゴロテラス）', cat:'カフェ・レストラン', catClass:'cafe',
@@ -152,7 +151,7 @@ window.KODOCO_SPOTS = (function(){
     play:['ぬりえ・絵本コーナー','大きな窓から田園風景'],
     highlight:'週替わり定食が美味しい。大きな窓から田園風景が見える。子どもに優しい接客が嬉しい。',
     rating:4.3, galleryBg:'linear-gradient(135deg,#f0e8d0,#e8d4b0)',
-    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1378, lng:136.0545
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1431, lng:136.0224
   },
   {
     id:'ichigo_milk', emoji:'🍓', name:'カフェ＆BBQ いちごとミルク', cat:'カフェ・レストラン', catClass:'cafe',
@@ -164,7 +163,7 @@ window.KODOCO_SPOTS = (function(){
     play:['いちごスイーツ体験','屋内BBQ','フルーツ狩り（季節限定）'],
     highlight:'いちごスイーツが絶品。屋内BBQなので雨でも安心。子どもが自分でBBQする体験が好評。',
     rating:4.2, galleryBg:'linear-gradient(135deg,#fce8e8,#f8c8c8)',
-    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.3823, lng:136.2456
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.3809, lng:136.2785
   },
   {
     id:'makino', emoji:'🍇', name:'マキノピックランド', cat:'カフェ・レストラン', catClass:'cafe',
@@ -176,7 +175,7 @@ window.KODOCO_SPOTS = (function(){
     play:['果物狩り（季節により異なる）','直売所でお買い物'],
     highlight:'子どもが自分で収穫する体験は特別。食べ放題プランも人気。季節ごとに来られる。',
     rating:4.3, galleryBg:'linear-gradient(135deg,#e8f0d0,#d0e4a8)',
-    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.4823, lng:136.0234,
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.4725, lng:136.0368,
     phone:'0740-27-1811', officialUrl:'https://pic-land.com/'
   },
 
@@ -191,7 +190,7 @@ window.KODOCO_SPOTS = (function(){
     play:['0-2歳専用遊び場（2階）','明太子工場見学（ガラス越し）','めんたいフードコーナー','ミニゲームコーナー','お土産ショップ'],
     highlight:'授乳室が2階にあり静か。工場見学は子どもウケ抜群。明太子おにぎり絶品。',
     rating:4.0, galleryBg:'linear-gradient(135deg,#cfe0f8,#b0c8f0)',
-    ageGroups:[0,1,2,3], lat:35.0756, lng:136.0012,
+    ageGroups:[0,1,2,3], lat:35.1298, lng:135.9810,
     phone:'077-589-8105', officialUrl:'https://mentai-park.com/biwako/'
   },
   {
@@ -217,7 +216,7 @@ window.KODOCO_SPOTS = (function(){
     play:['絵付け体験','たぬきオブジェ巡り','陶芸体験','お土産選び'],
     highlight:'世界最大のたぬきがいる！絵付け体験は小さい子でも楽しめる。家族の記念品にも最適。',
     rating:4.0, galleryBg:'linear-gradient(135deg,#f0e0d0,#e0c8b0)',
-    ageGroups:[2,3,4,5,6,7,8,9,10], lat:34.8923, lng:136.0234,
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:34.9112, lng:136.0870,
     officialUrl:'https://tanukimura.com/'
   },
   {
@@ -230,7 +229,7 @@ window.KODOCO_SPOTS = (function(){
     play:['デッキからの絶景鑑賞','船内レストラン','船内イベント'],
     highlight:'非日常感が最高。子どもは船の操舵室見学が人気。天気のいい日は最高の思い出に。',
     rating:4.3, galleryBg:'linear-gradient(135deg,#c8e0f8,#a8c8f0)',
-    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.0089, lng:135.8723,
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.0131, lng:135.8671,
     officialUrl:'https://www.biwakokisen.co.jp/cruise/michigan/'
   },
   // ── 公園（追加）────────────────────────────────
@@ -244,7 +243,7 @@ window.KODOCO_SPOTS = (function(){
     play:['フィールドアスレチック','芝生広場','バーベキューエリア','サイクリングコース'],
     highlight:'とにかく広い！1日いられる。芝生でお弁当が最高。アスレチックは本格的で子どもが大興奮。',
     rating:4.3, galleryBg:'linear-gradient(135deg,#c8ede0,#a0d8c0)',
-    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0234, lng:136.0123,
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0682, lng:136.0225,
     phone:'077-586-2111', officialUrl:'https://www.kiboupark-shiga.or.jp/'
   },
   {
@@ -257,7 +256,7 @@ window.KODOCO_SPOTS = (function(){
     play:['動物ふれあいコーナー','アスレチックタワー（高さ17m）','ジップライン','季節の花畑','お菓子作り体験'],
     highlight:'季節ごとに花の景色が変わる。動物ふれあいは小さい子でも大丈夫。BBQも楽しめる。',
     rating:4.2, galleryBg:'linear-gradient(135deg,#f8e8f0,#f0c8e0)',
-    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.0089, lng:136.1234,
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.0134, lng:136.2821,
     phone:'0748-52-2611', officialUrl:'https://www.blumenooka.jp/'
   },
   {
@@ -270,7 +269,7 @@ window.KODOCO_SPOTS = (function(){
     play:['ふわふわ遊具','ボルダリング','おもしろ自転車','水遊び場（夏季）','工作教室'],
     highlight:'入場無料なのに内容が充実。おもしろ自転車は子どもが大喜び。平日は空いていて快適。',
     rating:4.4, galleryBg:'linear-gradient(135deg,#d0e8f8,#b0d0f0)',
-    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.3567, lng:136.026,
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.3201, lng:136.0750,
     officialUrl:'http://www.biwa.ne.jp/~kodomo92/'
   },
   {
@@ -298,7 +297,7 @@ window.KODOCO_SPOTS = (function(){
     play:['スーパージャングルジム','ボールプール','トランポリン','ふわふわ遊具','設置ゲームフリープレイ'],
     highlight:'イオンの中なので買い物と合わせて行きやすい。ゲームフリープレイが嬉しい。雨の日の定番。',
     rating:4.0, galleryBg:'linear-gradient(135deg,#fce8d0,#f8c8a0)',
-    ageGroups:[0,1,2,3,4,5,6,7], lat:35.1234, lng:136.0912
+    ageGroups:[0,1,2,3,4,5,6,7], lat:35.1218, lng:136.1028
   },
   {
     id:'kodomotchi', emoji:'🏠', name:'こどもっちパーク栗東', cat:'室内遊び場', catClass:'indoor',
@@ -310,7 +309,7 @@ window.KODOCO_SPOTS = (function(){
     play:['大型複合遊具','ボールプール','ふわふわ遊具','キッズカー'],
     highlight:'南部エリアで便利な立地。ショッピングのついでに立ち寄れる。0歳から入れる。',
     rating:3.9, galleryBg:'linear-gradient(135deg,#e8f0ff,#c8d8f8)',
-    ageGroups:[0,1,2,3,4,5], lat:35.0012, lng:135.9845
+    ageGroups:[0,1,2,3,4,5], lat:35.0366, lng:135.9817
   },
   {
     id:'yanmar', emoji:'🔬', name:'ヤンマーミュージアム', cat:'室内遊び場', catClass:'indoor',
@@ -322,7 +321,7 @@ window.KODOCO_SPOTS = (function(){
     play:['農業機械シミュレーター','ものづくり体験','ビオトープ観察','足湯','体を使ったアトラクション'],
     highlight:'幼児は入場無料。農業機械のシミュレーターが子どもに大人気。足湯でゆったりできる。',
     rating:4.3, galleryBg:'linear-gradient(135deg,#e0f0e8,#c0e0d0)',
-    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.3891, lng:136.2734,
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.3743, lng:136.2702,
     officialUrl:'https://www.yanmar.com/jp/museum/'
   },
   {
@@ -335,7 +334,7 @@ window.KODOCO_SPOTS = (function(){
     play:['水族展示（琵琶湖の生き物）','ディスカバリールーム','体験展示','図書コーナー'],
     highlight:'小中学生は無料！大型の水槽で琵琶湖の魚が間近に見られる。1日いられる充実度。',
     rating:4.4, galleryBg:'linear-gradient(135deg,#c8e8f8,#a0c8f0)',
-    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0156, lng:135.9623,
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0741, lng:135.9349,
     officialUrl:'https://www.biwahaku.jp/'
   },
 
@@ -350,7 +349,7 @@ window.KODOCO_SPOTS = (function(){
     play:['バームクーヘン体験','田んぼアート鑑賞','広大な庭園散策','スイーツ購入'],
     highlight:'インスタ映え間違いなし。バームクーヘンの焼きたては絶品。広い敷地で子どもも走り回れる。',
     rating:4.6, galleryBg:'linear-gradient(135deg,#e8f0d8,#d0e8b8)',
-    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1289, lng:136.0823,
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1498, lng:136.0915,
     officialUrl:'https://taneya.jp/la_collina/'
   },
   {
@@ -389,7 +388,7 @@ window.KODOCO_SPOTS = (function(){
     play:['空中アスレチック（2Gコース）','ジップライン','クライミング','3Gコース（上級）'],
     highlight:'4歳から挑戦できる。達成感が最高。スタッフが丁寧にサポートしてくれるので初めてでも安心。',
     rating:4.4, galleryBg:'linear-gradient(135deg,#e8f8e8,#c0e8c0)',
-    ageGroups:[4,5,6,7,8,9,10], lat:35.2712, lng:136.2534
+    ageGroups:[4,5,6,7,8,9,10], lat:35.2720, lng:136.2704
   },
   {
     id:'ceramic_forest', emoji:'🏺', name:'滋賀県立陶芸の森', cat:'ミュージアム・体験', catClass:'museum',
@@ -441,7 +440,7 @@ window.KODOCO_SPOTS = (function(){
     play:['ロープウェイ乗車','びわ湖テラスで絶景','山頂散策','冬はスキー・スノーボード'],
     highlight:'3歳以下無料。山頂からの琵琶湖の景色は圧巻。夏は涼しくて最高の避暑地。',
     rating:4.4, galleryBg:'linear-gradient(135deg,#c8d8f8,#a8bce8)',
-    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.1234, lng:135.9012,
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.2029, lng:135.9071,
     officialUrl:'https://www.biwako-valley.com/'
   },
   {
@@ -454,7 +453,7 @@ window.KODOCO_SPOTS = (function(){
     play:['水生植物観察','温室見学','湖畔散策','季節の花鑑賞'],
     highlight:'中学生以下無料。ハスの花が咲く夏が特におすすめ。ベビーカーで回りやすい。',
     rating:4.1, galleryBg:'linear-gradient(135deg,#d8f0e8,#b8e0d0)',
-    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0089, lng:135.9534
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0744, lng:135.9394
   },
   {
     id:'nagahama_park', emoji:'🌳', name:'豊公園（長浜城跡）', cat:'公園', catClass:'park',
@@ -492,7 +491,7 @@ window.KODOCO_SPOTS = (function(){
     play:['巨大ジャングルジム','ボールプール','乗り物コーナー','フリープレイゲーム'],
     highlight:'飲食持込OKで出入り自由。ランチを持参してゆっくり過ごせる。2024年オープンで施設がきれい。',
     rating:4.1, galleryBg:'linear-gradient(135deg,#ffe8e8,#ffc8c8)',
-    ageGroups:[0,1,2,3,4,5,6,7,8], lat:35.0144, lng:135.961
+    ageGroups:[0,1,2,3,4,5,6,7,8], lat:35.0258, lng:135.9598
   },
   {
     id:'crazy_bane', emoji:'🏠', name:'クレイジーバネット イオンモール草津店', cat:'室内遊び場', catClass:'indoor',
@@ -504,7 +503,7 @@ window.KODOCO_SPOTS = (function(){
     play:['トランポリン','ブロックタワー','手あそびハウス','アクティブゾーン'],
     highlight:'2024年の新スポット。トランポリンで思いっきり跳び跳ねられる。買い物ついでに寄れる。',
     rating:4.0, galleryBg:'linear-gradient(135deg,#e8f0ff,#c0d4ff)',
-    ageGroups:[1,2,3,4,5,6,7,8], lat:35.0212, lng:135.9534
+    ageGroups:[1,2,3,4,5,6,7,8], lat:34.9982, lng:135.9123
   },
   {
     id:'zakids_konan', emoji:'🏠', name:'ザキッズ フレンドマート甲南店', cat:'室内遊び場', catClass:'indoor',
@@ -516,7 +515,7 @@ window.KODOCO_SPOTS = (function(){
     play:['巨大ジャングルジム','ボールプール','ふわふわ遊具','乗り物コーナー'],
     highlight:'甲賀エリアの貴重な室内遊び場。0歳から入れる。雨の日の定番スポット。',
     rating:3.9, galleryBg:'linear-gradient(135deg,#fff0e0,#ffe0c0)',
-    ageGroups:[0,1,2,3,4,5,6,7], lat:34.9612, lng:136.1423
+    ageGroups:[0,1,2,3,4,5,6,7], lat:34.9224, lng:136.1731
   },
   {
     id:'biwako_children_hall', emoji:'🏛', name:'びわこ学びの丘（大型児童館）', cat:'室内遊び場', catClass:'indoor',
@@ -540,7 +539,7 @@ window.KODOCO_SPOTS = (function(){
     play:['プラネタリウム番組','体験展示','プロジェクションマッピング','キッズトンネル（未就学児専用）'],
     highlight:'コスパ最高。プラネタリウム番組は季節ごとに変わる。未就学児専用コーナーが嬉しい。',
     rating:4.2, galleryBg:'linear-gradient(135deg,#e8e8f8,#d0d0f0)',
-    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.2823, lng:136.2312
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.2778, lng:136.2568
   },
 
   // ── カフェ・レストラン（追加）────────────────────
@@ -554,7 +553,7 @@ window.KODOCO_SPOTS = (function(){
     play:['地元産野菜ランチ','直売所でお買い物','芝生広場でピクニック'],
     highlight:'地元野菜がふんだんに使われたランチが美味しい。直売所でお土産も買える。',
     rating:4.0, galleryBg:'linear-gradient(135deg,#f8f0d8,#f0e0b0)',
-    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1134, lng:136.2012
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1097, lng:136.2587
   },
   {
     id:'ekimachi_nagahama', emoji:'🐟', name:'えきまちテラス長浜（長浜水族館）', cat:'カフェ・レストラン', catClass:'cafe',
@@ -592,7 +591,7 @@ window.KODOCO_SPOTS = (function(){
     play:['スキー・スノーボード','ソリ遊び','雪遊びエリア','幼児屋内プレイコーナー'],
     highlight:'入場無料で駐車場代だけで雪遊びができる。幼児コーナーがあるので小さい子でも安心。',
     rating:4.2, galleryBg:'linear-gradient(135deg,#e8f0f8,#d0e0f0)',
-    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.4123, lng:136.4012,
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.5220, lng:136.3872,
     phone:'0749-55-0123', officialUrl:'https://www.okuibuki.co.jp/'
   },
   {
@@ -650,7 +649,7 @@ window.KODOCO_SPOTS = (function(){
     dogInfo: null,
     kidsSpace: false, privateRoom: false,
     rating:4.0, galleryBg:'linear-gradient(135deg,#fce8e0,#f8d4c0)',
-    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.3712, lng:136.2534
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.3923, lng:136.2827
   },
   {
     id:'whats_lifestyle', emoji:'🍽', name:"What's The Life Style（大津）", cat:'ご飯・レストラン', catClass:'restaurant',
@@ -708,7 +707,7 @@ window.KODOCO_SPOTS = (function(){
     kidsSpace: false, privateRoom: false,
     highlight:'300坪のドッグランで犬を思いきり走らせながら親は週替わりランチ。',
     rating:4.3, galleryBg:'linear-gradient(135deg,#d8ecd8,#b8d8b8)',
-    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.4212, lng:136.0023
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.3314, lng:136.0272
   },
   {
     id:'horicafe', emoji:'🐕', name:'ほりかふぇ（近江八幡）', cat:'犬連れOK', catClass:'dog',
@@ -736,7 +735,7 @@ window.KODOCO_SPOTS = (function(){
     kidsSpace: false, privateRoom: false,
     highlight:'テラスで地元野菜ランチ、春はいちご狩りも。犬連れデビューに◎。',
     rating:4.1, galleryBg:'linear-gradient(135deg,#e8f8d0,#d0f0b8)',
-    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.0093, lng:135.9587,
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.0795, lng:135.9120,
     phone:'077-568-3078', officialUrl:'https://rockbaygarden.com/'
   },
   {
@@ -765,7 +764,7 @@ window.KODOCO_SPOTS = (function(){
     kidsSpace: false, privateRoom: false,
     highlight:'ゴンドラに犬と乗って山頂テラスへ。無料ドッグランも完備で非日常感。',
     rating:4.4, galleryBg:'linear-gradient(135deg,#e8e0f8,#d0c8f0)',
-    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.4118, lng:136.005
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.4392, lng:135.9871
   },
 
   // ═══════ 彦根エリア（滋賀） ═══════
@@ -859,7 +858,7 @@ window.KODOCO_SPOTS = (function(){
     play:['科学体験','プラネタリウム','屋外ジップライン','ふわふわドーム'],
     highlight:'屋外のふわふわドームが子どもに大人気。プラネタリウムは要時間確認。食事持ち込みOK。',
     rating:4.5, galleryBg:'linear-gradient(135deg,#c8c0e8,#a098d0)',
-    ageGroups:[2,3,4,5,6,7,8,9,10], lat:36.1667, lng:136.2547
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:36.1288, lng:136.2155
   },
   {
     id:'obama_marina', emoji:'⚓', name:'マーメイドテラス（小浜）', cat:'カフェ・レストラン', catClass:'cafe',
@@ -869,7 +868,7 @@ window.KODOCO_SPOTS = (function(){
     play:['港散策','海鮮ランチ','遊覧船','海風を浴びる'],
     highlight:'遊覧船もあり、海好きな子には特別感。海鮮ランチは日によって混雑するので早めに。',
     rating:4.0, galleryBg:'linear-gradient(135deg,#a8d0e0,#78a8c0)',
-    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.4966, lng:135.7479
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.5258, lng:135.7512
   },
 
   // ═══════ 三重エリア ═══════
@@ -891,7 +890,7 @@ window.KODOCO_SPOTS = (function(){
     play:['アスレチックコース','ゴーカート','芝ソリすべり','森の散策'],
     highlight:'1日遊べる規模。水分多めに用意。弁当持参OK、屋内食事スペースあり。',
     rating:4.3, galleryBg:'linear-gradient(135deg,#b8d8a8,#90b080)',
-    ageGroups:[3,4,5,6,7,8,9,10], lat:34.9734, lng:136.6125
+    ageGroups:[3,4,5,6,7,8,9,10], lat:34.9880, lng:136.5062
   },
   {
     id:'iga_ninja', emoji:'🥷', name:'伊賀流忍者博物館', cat:'ミュージアム・体験', catClass:'museum',
@@ -911,7 +910,7 @@ window.KODOCO_SPOTS = (function(){
     play:['花畑散策','イルミネーション鑑賞','アイランド富士（展望台）','園内レストラン'],
     highlight:'冬〜春のイルミ期間は激混。平日昼がおすすめ。広いのでベビーカー必須。',
     rating:4.4, galleryBg:'linear-gradient(135deg,#f0b8d0,#d088a8)',
-    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1116, lng:136.6614
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0799, lng:136.7049
   },
   {
     id:'menard_aoyama', emoji:'🌿', name:'メナード青山リゾート', cat:'ミュージアム・体験', catClass:'museum',
@@ -921,7 +920,7 @@ window.KODOCO_SPOTS = (function(){
     play:['ハーブガーデン散策','ラベンダー摘み（夏）','クラフト体験','テラスカフェ'],
     highlight:'標高が高く夏でも涼しい。アクセスは車推奨。食事もリゾート内で完結。',
     rating:4.2, galleryBg:'linear-gradient(135deg,#d0c0e8,#a890c0)',
-    ageGroups:[2,3,4,5,6,7,8,9,10], lat:34.6575, lng:136.1958
+    ageGroups:[2,3,4,5,6,7,8,9,10], lat:34.5947, lng:136.2578
   },
 
   // ═══════ 滋賀拡張（大津・草津・守山・栗東・野洲・近江八幡・東近江・日野・竜王・長浜・米原・高島・多賀）═══════
@@ -936,23 +935,23 @@ window.KODOCO_SPOTS = (function(){
   { id:'pieri_moriyama', emoji:'🏬', name:'ピエリ守山', cat:'室内遊び場', catClass:'indoor', pref:'滋賀', loc:'守山市', addr:'滋賀県守山市今浜町2620-5', hours:'10:00〜20:00（店舗による）', closed:'店舗による', price:'入場無料', desc:'琵琶湖畔の大型商業施設。プールやフードコートもある。', keywords:['ショッピング','フードコート','プール','琵琶湖','雨の日'], play:['買い物','フードコート','ゲームセンター','眺望'], highlight:'琵琶湖ビューが素敵。レストラン街でゆっくり食事可能。', rating:4.0, galleryBg:'linear-gradient(135deg,#c8d8e0,#a0b0c0)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1204, lng:135.973 },
   { id:'nagisa_nanohana', emoji:'🌼', name:'第一なぎさ公園（菜の花）', cat:'公園', catClass:'park', pref:'滋賀', loc:'守山市', addr:'滋賀県守山市今浜町地先', hours:'常時開放', closed:'なし', price:'無料', desc:'琵琶湖を背景に早春の菜の花畑が広がる絶景スポット。', keywords:['菜の花','琵琶湖','絶景','写真映え','春'], play:['菜の花鑑賞','湖畔散歩','写真撮影'], highlight:'1〜2月の菜の花の時期がベスト。駐車場は限られるので早朝推奨。', rating:4.4, galleryBg:'linear-gradient(135deg,#f0e0a0,#d8c880)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1265, lng:135.971 },
   { id:'ritto_shizen', emoji:'🌲', name:'栗東自然観察の森', cat:'公園', catClass:'park', pref:'滋賀', loc:'栗東市', addr:'滋賀県栗東市荒張696', hours:'9:00〜17:00', closed:'月曜', price:'無料', desc:'里山の自然を体感できる観察の森。昆虫観察や木の実拾いが楽しい。', keywords:['自然観察','里山','昆虫','木の実','森'], play:['自然観察','虫取り','木の実拾い','ネイチャーウォーク'], highlight:'虫よけ必須。季節ごとの生き物がいて何度訪れても楽しめる。', rating:4.2, galleryBg:'linear-gradient(135deg,#c0d8b0,#98b088)', ageGroups:[3,4,5,6,7,8,9,10], lat:34.9773, lng:135.9946 },
-  { id:'alplaza_ritto', emoji:'🏢', name:'アルプラザ栗東', cat:'室内遊び場', catClass:'indoor', pref:'滋賀', loc:'栗東市', addr:'滋賀県栗東市綣2丁目3-22', hours:'9:00〜21:00', closed:'なし', price:'入場無料', desc:'フードコートとキッズ広場のある地域密着型SC。', keywords:['SC','フードコート','キッズ','雨の日','買い物'], play:['買い物','フードコート','キッズ広場'], highlight:'駅近で便利。雨の日のランチ場所として重宝。', rating:3.9, galleryBg:'linear-gradient(135deg,#d8d8d0,#b8b8b0)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.9912, lng:136.0012 },
+  { id:'alplaza_ritto', emoji:'🏢', name:'アルプラザ栗東', cat:'室内遊び場', catClass:'indoor', pref:'滋賀', loc:'栗東市', addr:'滋賀県栗東市綣2丁目3-22', hours:'9:00〜21:00', closed:'なし', price:'入場無料', desc:'フードコートとキッズ広場のある地域密着型SC。', keywords:['SC','フードコート','キッズ','雨の日','買い物'], play:['買い物','フードコート','キッズ広場'], highlight:'駅近で便利。雨の日のランチ場所として重宝。', rating:3.9, galleryBg:'linear-gradient(135deg,#d8d8d0,#b8b8b0)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0366, lng:135.9817 },
   { id:'mikamiyama', emoji:'⛰', name:'三上山（近江富士）', cat:'公園', catClass:'park', pref:'滋賀', loc:'野洲市', addr:'滋賀県野洲市三上', hours:'常時開放', closed:'なし', price:'無料', desc:'富士山型の美しい低山。子連れ登山の入門に最適。', keywords:['登山','低山','近江富士','眺望','ハイキング'], play:['登山','ハイキング','山頂からの眺望'], highlight:'往復2-3時間。水分・動きやすい靴必須。山頂は琵琶湖一望。', rating:4.3, galleryBg:'linear-gradient(135deg,#b8d0b0,#90a888)', ageGroups:[5,6,7,8,9,10], lat:35.0447, lng:136.0319 },
   { id:'ooiwayama', emoji:'🗿', name:'大岩山古墳群', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'野洲市', addr:'滋賀県野洲市辻町', hours:'常時開放', closed:'なし', price:'無料', desc:'古代の銅鐸が出土した古墳群。歴史公園として整備。', keywords:['古墳','銅鐸','歴史','遺跡','公園'], play:['古墳見学','歴史散策','展望'], highlight:'野洲市歴史民俗博物館と合わせて訪問がおすすめ。', rating:3.9, galleryBg:'linear-gradient(135deg,#c8c0a8,#a09880)', ageGroups:[4,5,6,7,8,9,10], lat:35.0500, lng:136.0400 },
   { id:'hachimanbori', emoji:'🚤', name:'八幡堀', cat:'カフェ・レストラン', catClass:'cafe', pref:'滋賀', loc:'近江八幡市', addr:'滋賀県近江八幡市宮内町', hours:'散策自由', closed:'なし', price:'無料（船は別途）', desc:'八幡山城の堀跡に残る情緒ある水路。船で巡るのも風情がある。', keywords:['八幡堀','水路','散策','船めぐり','時代劇ロケ地'], play:['堀沿い散策','船めぐり','古建築写真','カフェ巡り'], highlight:'船は予約がベター。近くにパン屋・カフェも多い。', rating:4.4, galleryBg:'linear-gradient(135deg,#c0c8d0,#909aa8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1345, lng:136.0858 },
   { id:'lacollina', emoji:'🧁', name:'ラ コリーナ近江八幡', cat:'カフェ・レストラン', catClass:'cafe', pref:'滋賀', loc:'近江八幡市', addr:'滋賀県近江八幡市北之庄町615-1', hours:'9:00〜18:00', closed:'なし', price:'入場無料', desc:'たねやの本社敷地にあるバームクーヘンの聖地。景観も圧巻。', keywords:['たねや','バームクーヘン','景観','カフェ','子連れ'], play:['バームクーヘン','カステラ','カフェ','草屋根見学'], highlight:'広くて子連れでも快適。週末は激混。ランチも可能。', rating:4.5, galleryBg:'linear-gradient(135deg,#d8e0b8,#b0b890)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1237, lng:136.0969 },
   { id:'chomeiji', emoji:'⛩', name:'長命寺', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'近江八幡市', addr:'滋賀県近江八幡市長命寺町157', hours:'8:00〜17:00', closed:'なし', price:'無料', desc:'808段の石段で知られる古刹。山上からの琵琶湖展望が絶景。', keywords:['石段','808段','琵琶湖','絶景','古刹'], play:['石段登り','境内散策','眺望'], highlight:'石段はかなりキツい。小学生高学年以上推奨。上まで車でも行ける。', rating:4.1, galleryBg:'linear-gradient(135deg,#c0c8b0,#909888)', ageGroups:[6,7,8,9,10], lat:35.1493, lng:136.0601 },
-  { id:'eigenji', emoji:'🍁', name:'永源寺', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'東近江市', addr:'滋賀県東近江市永源寺高野町41', hours:'9:00〜16:00', closed:'なし', price:'大人500円 / 中学生以下無料', desc:'紅葉の名所として有名な禅寺。渓谷沿いの静かなお寺。', keywords:['紅葉','禅寺','渓谷','静か','中学生以下無料'], play:['紅葉狩り','境内散策','渓谷眺め'], highlight:'紅葉シーズン（11月）は激混、早朝推奨。それ以外は静か。', rating:4.3, galleryBg:'linear-gradient(135deg,#e8b898,#c89878)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0998, lng:136.2511 },
+  { id:'eigenji', emoji:'🍁', name:'永源寺', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'東近江市', addr:'滋賀県東近江市永源寺高野町41', hours:'9:00〜16:00', closed:'なし', price:'大人500円 / 中学生以下無料', desc:'紅葉の名所として有名な禅寺。渓谷沿いの静かなお寺。', keywords:['紅葉','禅寺','渓谷','静か','中学生以下無料'], play:['紅葉狩り','境内散策','渓谷眺め'], highlight:'紅葉シーズン（11月）は激混、早朝推奨。それ以外は静か。', rating:4.3, galleryBg:'linear-gradient(135deg,#e8b898,#c89878)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0806, lng:136.3200 },
   { id:'aeon_higashiomi', emoji:'🏬', name:'イオンモール東近江', cat:'室内遊び場', catClass:'indoor', pref:'滋賀', loc:'東近江市', addr:'滋賀県東近江市八日市緑町26-8', hours:'10:00〜21:00', closed:'なし', price:'入場無料', desc:'キッズスペースと専門店街のある地域のSC。', keywords:['SC','キッズ','フードコート','雨の日'], play:['買い物','フードコート','キッズスペース'], highlight:'東近江エリアの雨の日避難所。駐車場無料。', rating:3.9, galleryBg:'linear-gradient(135deg,#d0d0d8,#b0b0b8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1189, lng:136.1553 },
   { id:'blumenohill', emoji:'🐑', name:'滋賀農業公園ブルーメの丘', cat:'公園', catClass:'park', pref:'滋賀', loc:'日野町', addr:'滋賀県蒲生郡日野町西大路843', hours:'9:30〜18:00（季節変動）', closed:'冬季水曜', price:'大人1,200円 / 4歳以上500円', desc:'動物ふれあい、アスレチック、パターゴルフのある農業公園。', keywords:['動物','ふれあい','アスレチック','パターゴルフ','ドイツ'], play:['動物ふれあい','アスレチック','パターゴルフ','パン作り体験'], highlight:'1日遊べる。お弁当持参OK。イベント開催日は要予約。', rating:4.3, galleryBg:'linear-gradient(135deg,#d8e8c0,#b0c098)', ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:34.9870, lng:136.2420 },
   { id:'hino_matsuri', emoji:'🏮', name:'日野祭り資料館（近江日野商人館）', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'日野町', addr:'滋賀県蒲生郡日野町大窪1011', hours:'9:30〜16:00', closed:'月曜', price:'大人300円 / 小中100円', desc:'近江商人の歴史と日野祭りを紹介する資料館。', keywords:['近江商人','日野祭り','歴史','民俗','資料館'], play:['資料見学','歴史展示','町並み散策'], highlight:'小規模だが内容は濃い。日野祭り（5月）に合わせて訪問もおすすめ。', rating:3.9, galleryBg:'linear-gradient(135deg,#d0c0a8,#a89880)', ageGroups:[5,6,7,8,9,10], lat:35.0244, lng:136.2524 },
-  { id:'ryuo_outlet', emoji:'🛍', name:'三井アウトレットパーク 滋賀竜王', cat:'カフェ・レストラン', catClass:'cafe', pref:'滋賀', loc:'竜王町', addr:'滋賀県蒲生郡竜王町大字薬師字砂山1178-694', hours:'10:00〜20:00', closed:'不定休', price:'入場無料', desc:'広大な屋外型アウトレット。フードコート・遊び場も充実。犬連れOK（リード着用）。', keywords:['アウトレット','ショッピング','フードコート','ブランド','犬連れOK','ペット同伴'], play:['ショッピング','フードコート','キッズコーナー','イベント','犬とお散歩'], highlight:'週末は激混。平日午前が穴場。授乳室・キッズスペース完備。犬も一緒に屋外エリアを楽しめる。', rating:4.1, galleryBg:'linear-gradient(135deg,#d8d0c0,#b0a898)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1173, lng:136.1040, dogInfo: { ok: true, allowed: '屋外エリア・一部テラス席OK', size: '全犬種（リード着用必須）', notes: '屋内店舗は店舗ごとに判断。リード・マナー袋持参で。'} },
+  { id:'ryuo_outlet', emoji:'🛍', name:'三井アウトレットパーク 滋賀竜王', cat:'カフェ・レストラン', catClass:'cafe', pref:'滋賀', loc:'竜王町', addr:'滋賀県蒲生郡竜王町大字薬師字砂山1178-694', hours:'10:00〜20:00', closed:'不定休', price:'入場無料', desc:'広大な屋外型アウトレット。フードコート・遊び場も充実。犬連れOK（リード着用）。', keywords:['アウトレット','ショッピング','フードコート','ブランド','犬連れOK','ペット同伴'], play:['ショッピング','フードコート','キッズコーナー','イベント','犬とお散歩'], highlight:'週末は激混。平日午前が穴場。授乳室・キッズスペース完備。犬も一緒に屋外エリアを楽しめる。', rating:4.1, galleryBg:'linear-gradient(135deg,#d8d0c0,#b0a898)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0583, lng:136.0990, dogInfo: { ok: true, allowed: '屋外エリア・一部テラス席OK', size: '全犬種（リード着用必須）', notes: '屋内店舗は店舗ごとに判断。リード・マナー袋持参で。'} },
   { id:'kurokabe', emoji:'🏮', name:'黒壁スクエア', cat:'カフェ・レストラン', catClass:'cafe', pref:'滋賀', loc:'長浜市', addr:'滋賀県長浜市元浜町', hours:'店舗による', closed:'店舗による', price:'散策無料', desc:'ガラス工芸の街長浜の中心。レトロな町並みで食べ歩きが楽しい。', keywords:['ガラス工芸','町並み','食べ歩き','レトロ','カフェ'], play:['町並み散策','ガラス工房見学','食べ歩き','カフェ巡り'], highlight:'ガラス体験は要予約。週末混むが平日は静か。', rating:4.3, galleryBg:'linear-gradient(135deg,#c8c0b0,#988880)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.3849, lng:136.2658 },
   { id:'mizudori_station', emoji:'🦆', name:'道の駅 湖北みずどりステーション', cat:'カフェ・レストラン', catClass:'cafe', pref:'滋賀', loc:'長浜市', addr:'滋賀県長浜市湖北町今西1731-1', hours:'9:00〜18:00', closed:'なし', price:'入場無料', desc:'琵琶湖畔の道の駅。渡り鳥観察と地元グルメが楽しめる。', keywords:['道の駅','渡り鳥','琵琶湖','地元野菜','鴨鍋'], play:['渡り鳥観察','地元野菜買い','鴨鍋ランチ'], highlight:'冬は渡り鳥の時期。鴨料理は予約推奨。', rating:4.1, galleryBg:'linear-gradient(135deg,#b8c8d8,#8898a8)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.4510, lng:136.2390 },
   { id:'samegai', emoji:'💧', name:'醒井水の宿駅・地蔵川', cat:'公園', catClass:'park', pref:'滋賀', loc:'米原市', addr:'滋賀県米原市醒井93', hours:'常時開放（梅花藻は5-8月）', closed:'なし', price:'無料', desc:'清流に咲く梅花藻で有名な水の町。夏の涼スポット。', keywords:['清流','梅花藻','水の町','涼','夏'], play:['清流散策','梅花藻鑑賞','水遊び','写真撮影'], highlight:'夏の梅花藻（7-8月）がベスト。水が冷たく涼しい。', rating:4.3, galleryBg:'linear-gradient(135deg,#b0d0d8,#88a8b0)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.3202, lng:136.3575 },
   { id:'ibuki', emoji:'⛰', name:'伊吹山', cat:'公園', catClass:'park', pref:'滋賀', loc:'米原市', addr:'滋賀県米原市上野', hours:'ドライブウェイ8:00〜20:00（季節変動）', closed:'冬季通行止', price:'ドライブウェイ3,140円', desc:'滋賀最高峰。山頂までドライブウェイで行ける。夏の花畑が見事。', keywords:['山','ドライブウェイ','花畑','展望','夏'], play:['山頂散策','花畑鑑賞','展望','軽登山'], highlight:'山頂は標高1377mで夏でも涼しい。子連れ登山は山頂駐車場からがおすすめ。', rating:4.4, galleryBg:"linear-gradient(135deg,#b8c8b0,#809880)", ageGroups:[4,5,6,7,8,9,10], lat:35.4183, lng:136.4053 },
   { id:'shirahige', emoji:'⛩', name:'白鬚神社', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'高島市', addr:'滋賀県高島市鵜川215', hours:'参拝自由', closed:'なし', price:'無料', desc:'琵琶湖に浮かぶ鳥居が幻想的。近江最古の大社。', keywords:['鳥居','琵琶湖','神社','絶景','写真映え'], play:['参拝','鳥居見物','写真撮影','湖畔散歩'], highlight:'SNS映え鳥居。朝夕の光が特に美しい。国道沿いで駐車場混雑注意。', rating:4.4, galleryBg:'linear-gradient(135deg,#e0b098,#b88878)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.2769, lng:135.9472 },
-  { id:'metasequoia', emoji:'🌲', name:'マキノ メタセコイア並木', cat:'公園', catClass:'park', pref:'滋賀', loc:'高島市', addr:'滋賀県高島市マキノ町蛭口〜牧野', hours:'常時開放', closed:'なし', price:'無料', desc:'500本のメタセコイアが2.4km続く並木道。四季で表情を変える。', keywords:['並木','メタセコイア','絶景','ドライブ','写真'], play:['並木ドライブ','散歩','写真撮影','自転車'], highlight:'紅葉（11月）、新緑（5-6月）、雪（1-2月）すべて絶景。道路沿いのため駐車マナーに注意。', rating:4.6, galleryBg:'linear-gradient(135deg,#c8d8b8,#90a888)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.4052, lng:136.0164 },
+  { id:'metasequoia', emoji:'🌲', name:'マキノ メタセコイア並木', cat:'公園', catClass:'park', pref:'滋賀', loc:'高島市', addr:'滋賀県高島市マキノ町蛭口〜牧野', hours:'常時開放', closed:'なし', price:'無料', desc:'500本のメタセコイアが2.4km続く並木道。四季で表情を変える。', keywords:['並木','メタセコイア','絶景','ドライブ','写真'], play:['並木ドライブ','散歩','写真撮影','自転車'], highlight:'紅葉（11月）、新緑（5-6月）、雪（1-2月）すべて絶景。道路沿いのため駐車マナーに注意。', rating:4.6, galleryBg:'linear-gradient(135deg,#c8d8b8,#90a888)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.4720, lng:136.0363 },
   { id:'taga_taisha', emoji:'⛩', name:'多賀大社', cat:'ミュージアム・体験', catClass:'museum', pref:'滋賀', loc:'多賀町', addr:'滋賀県犬上郡多賀町多賀604', hours:'8:00〜16:00', closed:'なし', price:'無料', desc:'延命長寿の神様として親しまれる大社。境内も広く子連れで参拝しやすい。', keywords:['神社','延命','長寿','大社','御朱印'], play:['参拝','御朱印','境内散策','絵馬'], highlight:'初詣は混雑。駐車場は広めで無料。', rating:4.3, galleryBg:'linear-gradient(135deg,#d8c0a0,#a89880)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.2277, lng:136.2927 },
 
   // ═══════ 福井拡張 ═══════
@@ -961,32 +960,32 @@ window.KODOCO_SPOTS = (function(){
   { id:'dinosaur_museum', emoji:'🦖', name:'福井県立恐竜博物館', cat:'ミュージアム・体験', catClass:'museum', pref:'福井', loc:'勝山市', addr:'福井県勝山市村岡町寺尾51-11', hours:'9:00〜17:00', closed:'第2・4水曜', price:'大人1,000円 / 高大800円 / 小中500円', desc:'国内最大級の恐竜博物館。迫力の全身骨格と発掘体験。', keywords:['恐竜','化石','博物館','発掘','勝山'], play:['恐竜展示','発掘体験','ジオラマ','ショップ'], highlight:'予約制日あり。発掘体験は別途申込。1日遊べる規模。', rating:4.6, galleryBg:'linear-gradient(135deg,#c0a888,#907860)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:36.0754, lng:136.5272 },
   { id:'dinopark', emoji:'🦕', name:'かつやまディノパーク', cat:'公園', catClass:'park', pref:'福井', loc:'勝山市', addr:'福井県勝山市村岡町寺尾', hours:'9:00〜17:00', closed:'不定休', price:'大人700円 / 子ども600円', desc:'恐竜博物館隣の野外恐竜パーク。等身大の恐竜モデルが迫力。', keywords:['恐竜','野外','パーク','等身大','博物館併設'], play:['恐竜ウォーク','化石発掘体験','ジップライン'], highlight:'博物館と合わせて訪問推奨。屋外なので雨具必要。', rating:4.2, galleryBg:'linear-gradient(135deg,#b0c098,#88a070)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:36.0743, lng:136.5303 },
   { id:'asakura', emoji:'🏯', name:'一乗谷朝倉氏遺跡', cat:'ミュージアム・体験', catClass:'museum', pref:'福井', loc:'福井市', addr:'福井県福井市城戸ノ内町', hours:'散策自由（資料館9:00-17:00）', closed:'資料館12/28-1/4', price:'無料（資料館大人210円）', desc:'戦国時代の城下町を再現した国の特別史跡。時代劇ロケ地にもなる。', keywords:['戦国','城下町','史跡','朝倉氏','時代劇'], play:['町並み散策','資料館見学','歴史体験'], highlight:'広いので歩きやすい靴で。桜と紅葉のシーズンが特に美しい。', rating:4.4, galleryBg:"linear-gradient(135deg,#c0b098,#987868)", ageGroups:[4,5,6,7,8,9,10], lat:36.0225, lng:136.2929 },
-  { id:'echizen_togei', emoji:'🏺', name:'越前陶芸村', cat:'ミュージアム・体験', catClass:'museum', pref:'福井', loc:'越前町', addr:'福井県丹生郡越前町小曽原120-61', hours:'9:00〜17:00', closed:'月曜', price:'入園無料（体験別途）', desc:'日本六古窯のひとつ越前焼の総合施設。陶芸体験が人気。', keywords:['越前焼','陶芸','体験','古窯','文化'], play:['陶芸体験','博物館見学','公園散策','ショップ'], highlight:'陶芸体験は小学生以上推奨。予約推奨。', rating:4.2, galleryBg:'linear-gradient(135deg,#c8a898,#987868)', ageGroups:[5,6,7,8,9,10], lat:35.8556, lng:136.1844 },
+  { id:'echizen_togei', emoji:'🏺', name:'越前陶芸村', cat:'ミュージアム・体験', catClass:'museum', pref:'福井', loc:'越前町', addr:'福井県丹生郡越前町小曽原120-61', hours:'9:00〜17:00', closed:'月曜', price:'入園無料（体験別途）', desc:'日本六古窯のひとつ越前焼の総合施設。陶芸体験が人気。', keywords:['越前焼','陶芸','体験','古窯','文化'], play:['陶芸体験','博物館見学','公園散策','ショップ'], highlight:'陶芸体験は小学生以上推奨。予約推奨。', rating:4.2, galleryBg:'linear-gradient(135deg,#c8a898,#987868)', ageGroups:[5,6,7,8,9,10], lat:35.9330, lng:136.0597 },
   { id:'fukui_shizenshi', emoji:'🦌', name:'福井市立自然史博物館', cat:'ミュージアム・体験', catClass:'museum', pref:'福井', loc:'福井市', addr:'福井県福井市足羽上町147', hours:'9:00〜17:00', closed:'月曜', price:'大人100円 / 中学生以下無料', desc:'福井の自然と生物を学べる博物館。プラネタリウムも併設。', keywords:['自然史','博物館','プラネタリウム','生物','展示'], play:['展示見学','プラネタリウム','体験学習'], highlight:'コンパクトながら内容は充実。コスパ良好。', rating:4.0, galleryBg:'linear-gradient(135deg,#b8c8b0,#889888)', ageGroups:[3,4,5,6,7,8,9,10], lat:36.0625, lng:136.2221 },
-  { id:'katsuyama_castle', emoji:'🏯', name:'勝山城博物館', cat:'ミュージアム・体験', catClass:'museum', pref:'福井', loc:'勝山市', addr:'福井県勝山市平泉寺町林毛谷', hours:'9:00〜17:00', closed:'水曜', price:'大人500円 / 小中200円', desc:'高さ57.8mの日本一の天守高さの模擬天守。展望も良い。', keywords:['城','博物館','天守','展望','勝山'], play:['城内見学','展望台','歴史展示'], highlight:'模擬天守だが規模大きく見応えあり。恐竜博物館とセットで。', rating:3.9, galleryBg:'linear-gradient(135deg,#d0c0a8,#a09080)', ageGroups:[4,5,6,7,8,9,10], lat:36.0611, lng:136.5153 },
-  { id:'wakasa_marine', emoji:'🐠', name:'若狭湾 海浜自然センター', cat:'ミュージアム・体験', catClass:'museum', pref:'福井', loc:'若狭町', addr:'福井県三方上中郡若狭町世久見18-2', hours:'9:00〜17:00', closed:'月曜', price:'大人300円 / 小中100円', desc:'若狭湾の生き物と自然を学べる体験型施設。タッチプールあり。', keywords:['海','自然','タッチプール','体験','若狭湾'], play:['タッチプール','展示見学','磯観察','クラフト'], highlight:'海辺の体験ができる貴重なスポット。水着持参で磯遊びも。', rating:4.1, galleryBg:'linear-gradient(135deg,#a8c8d8,#7898a8)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.6000, lng:135.9000 },
+  { id:'katsuyama_castle', emoji:'🏯', name:'勝山城博物館', cat:'ミュージアム・体験', catClass:'museum', pref:'福井', loc:'勝山市', addr:'福井県勝山市平泉寺町林毛谷', hours:'9:00〜17:00', closed:'水曜', price:'大人500円 / 小中200円', desc:'高さ57.8mの日本一の天守高さの模擬天守。展望も良い。', keywords:['城','博物館','天守','展望','勝山'], play:['城内見学','展望台','歴史展示'], highlight:'模擬天守だが規模大きく見応えあり。恐竜博物館とセットで。', rating:3.9, galleryBg:'linear-gradient(135deg,#d0c0a8,#a09080)', ageGroups:[4,5,6,7,8,9,10], lat:36.0428, lng:136.5207 },
+  { id:'wakasa_marine', emoji:'🐠', name:'若狭湾 海浜自然センター', cat:'ミュージアム・体験', catClass:'museum', pref:'福井', loc:'若狭町', addr:'福井県三方上中郡若狭町世久見18-2', hours:'9:00〜17:00', closed:'月曜', price:'大人300円 / 小中100円', desc:'若狭湾の生き物と自然を学べる体験型施設。タッチプールあり。', keywords:['海','自然','タッチプール','体験','若狭湾'], play:['タッチプール','展示見学','磯観察','クラフト'], highlight:'海辺の体験ができる貴重なスポット。水着持参で磯遊びも。', rating:4.1, galleryBg:'linear-gradient(135deg,#a8c8d8,#7898a8)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.5645, lng:135.8415 },
   { id:'kehi_matsubara', emoji:'🌲', name:'気比の松原', cat:'公園', catClass:'park', pref:'福井', loc:'敦賀市', addr:'福井県敦賀市松島町', hours:'常時開放', closed:'なし', price:'無料', desc:'日本三大松原のひとつ。広大な砂浜と松林、夏は海水浴も。', keywords:['松原','砂浜','海水浴','日本三大','散策'], play:['散策','海水浴（夏）','砂遊び','松林ウォーク'], highlight:'夏は海水浴で賑わう。それ以外の季節は静か。ピクニックにも。', rating:4.3, galleryBg:'linear-gradient(135deg,#c0c8a0,#909878)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.6527, lng:136.0531 },
 
   // ═══════ 三重拡張 ═══════
   { id:'ise_naiku', emoji:'⛩', name:'伊勢神宮 内宮（皇大神宮）', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'伊勢市', addr:'三重県伊勢市宇治館町1', hours:'5:00〜18:00（季節変動）', closed:'なし', price:'無料', desc:'日本人の心のふるさと、日本で最も格式高い神社。', keywords:['伊勢神宮','内宮','神社','パワースポット','参拝'], play:['参拝','宇治橋','神楽殿','御朱印'], highlight:'早朝がベスト。駐車場は離れた場所から無料バスも。おかげ横丁併せて訪問。', rating:4.7, galleryBg:'linear-gradient(135deg,#d0c0a0,#a09080)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.4551, lng:136.7254 },
   { id:'ise_geku', emoji:'⛩', name:'伊勢神宮 外宮（豊受大神宮）', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'伊勢市', addr:'三重県伊勢市豊川町279', hours:'5:00〜18:00（季節変動）', closed:'なし', price:'無料', desc:'衣食住の神様。内宮から先に参拝する習わし。', keywords:['伊勢神宮','外宮','神社','豊受','参拝'], play:['参拝','神楽殿','御朱印'], highlight:'内宮より空いている。駅から近く便利。内宮と合わせて1日コース。', rating:4.5, galleryBg:"linear-gradient(135deg,#c8b898,#987868)", ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.4902, lng:136.7060 },
   { id:'okage_yokocho', emoji:'🍡', name:'おかげ横丁', cat:'カフェ・レストラン', catClass:'cafe', pref:'三重', loc:'伊勢市', addr:'三重県伊勢市宇治中之切町52', hours:'9:30〜17:30', closed:'なし', price:'散策無料', desc:'内宮前の江戸情緒あふれる商店街。食べ歩きとお土産の定番。', keywords:['商店街','食べ歩き','江戸','赤福','お土産'], play:['食べ歩き','赤福','焼き団子','お土産買い'], highlight:'週末激混。早朝か平日推奨。ベビーカーは混雑時困難。', rating:4.4, galleryBg:"linear-gradient(135deg,#d8b898,#a88878)", ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.4568, lng:136.7220 },
-  { id:'toba_aquarium', emoji:'🐬', name:'鳥羽水族館', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'鳥羽市', addr:'三重県鳥羽市鳥羽3-3-6', hours:'9:00〜17:00', closed:'なし', price:'大人2,800円 / 小中1,600円 / 幼児800円', desc:'国内最多1200種の海の生き物。ジュゴンが見られる日本唯一の水族館。', keywords:['水族館','ジュゴン','ラッコ','アシカショー','1200種'], play:['海獣ショー','ジュゴン見学','タッチプール','ラッコ'], highlight:'駐車場大きめ。隣接のミキモト真珠島とセットで1日コース可能。', rating:4.5, galleryBg:'linear-gradient(135deg,#a8c8d8,#7898a8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.4819, lng:136.8338 },
+  { id:'toba_aquarium', emoji:'🐬', name:'鳥羽水族館', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'鳥羽市', addr:'三重県鳥羽市鳥羽3-3-6', hours:'9:00〜17:00', closed:'なし', price:'大人2,800円 / 小中1,600円 / 幼児800円', desc:'国内最多1200種の海の生き物。ジュゴンが見られる日本唯一の水族館。', keywords:['水族館','ジュゴン','ラッコ','アシカショー','1200種'], play:['海獣ショー','ジュゴン見学','タッチプール','ラッコ'], highlight:'駐車場大きめ。隣接のミキモト真珠島とセットで1日コース可能。', rating:4.5, galleryBg:'linear-gradient(135deg,#a8c8d8,#7898a8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.4820, lng:136.8453 },
   { id:'shima_spain', emoji:'🏰', name:'志摩スペイン村', cat:'公園', catClass:'park', pref:'三重', loc:'志摩市', addr:'三重県志摩市磯部町坂崎', hours:'9:30〜17:00（季節変動）', closed:'不定休', price:'大人5,400円 / 小学生4,200円', desc:'スペインをテーマにしたテーマパーク。絶叫マシンから子ども向けまで。', keywords:['テーマパーク','絶叫マシン','スペイン','フラメンコ','リゾート'], play:['アトラクション','フラメンコショー','スペイン街','レストラン'], highlight:'小さい子向けエリアも充実。夏はプールもオープン。', rating:4.3, galleryBg:'linear-gradient(135deg,#f0c8a0,#c89878)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:34.3442, lng:136.8736 },
-  { id:'gozaisho', emoji:'🚠', name:'御在所ロープウエイ', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'菰野町', addr:'三重県三重郡菰野町湯の山温泉', hours:'9:00〜17:00（季節変動）', closed:'水曜（夏冬は無休）', price:'大人往復2,600円 / 小学生1,300円', desc:'標高1,212mの御在所岳へ空中散歩。四季の眺望が絶景。', keywords:['ロープウエイ','山頂','眺望','四季','温泉'], play:['ロープウエイ','山頂散策','景色','スキー（冬）'], highlight:'冬は雪景色、春は新緑、秋は紅葉、夏は涼。湯の山温泉も近い。', rating:4.5, galleryBg:'linear-gradient(135deg,#c0c8a0,#889878)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0264, lng:136.4164 },
+  { id:'gozaisho', emoji:'🚠', name:'御在所ロープウエイ', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'菰野町', addr:'三重県三重郡菰野町湯の山温泉', hours:'9:00〜17:00（季節変動）', closed:'水曜（夏冬は無休）', price:'大人往復2,600円 / 小学生1,300円', desc:'標高1,212mの御在所岳へ空中散歩。四季の眺望が絶景。', keywords:['ロープウエイ','山頂','眺望','四季','温泉'], play:['ロープウエイ','山頂散策','景色','スキー（冬）'], highlight:'冬は雪景色、春は新緑、秋は紅葉、夏は涼。湯の山温泉も近い。', rating:4.5, galleryBg:'linear-gradient(135deg,#c0c8a0,#889878)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0183, lng:136.4355 },
   { id:'matsusaka_jo', emoji:'🏯', name:'松阪城跡', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'松阪市', addr:'三重県松阪市殿町', hours:'常時開放', closed:'なし', price:'無料', desc:'石垣だけが残る城跡。城下町散策と松阪牛グルメの拠点。', keywords:['城跡','石垣','松阪牛','城下町','桜'], play:['石垣散策','本居宣長記念館','城下町','松阪牛'], highlight:'春は桜が見事。松阪牛ランチと合わせて訪問。', rating:4.1, galleryBg:"linear-gradient(135deg,#b8a888,#887868)", ageGroups:[3,4,5,6,7,8,9,10], lat:34.5747, lng:136.5278 },
   { id:'futami_meoto', emoji:'🌊', name:'夫婦岩・二見興玉神社', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'伊勢市', addr:'三重県伊勢市二見町江575', hours:'参拝自由', closed:'なし', price:'無料', desc:'夫婦岩で有名な神社。伊勢神宮参拝前の禊の地。', keywords:['夫婦岩','神社','海','禊','伊勢'], play:['夫婦岩見物','参拝','海辺散策','夕陽'], highlight:'日の出が特に美しい。伊勢神宮とセット参拝が伝統。', rating:4.3, galleryBg:'linear-gradient(135deg,#a8b8c8,#7888a8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.4996, lng:136.7840 },
-  { id:'akame48', emoji:'💧', name:'赤目四十八滝', cat:'公園', catClass:'park', pref:'三重', loc:'名張市', addr:'三重県名張市赤目町長坂861-1', hours:'8:30〜17:00', closed:'なし', price:'大人500円 / 小学生250円', desc:'渓谷沿いに48の滝が連なる名勝。ネイチャーウォークが楽しい。', keywords:['滝','渓谷','ネイチャー','サンショウウオ','ハイキング'], play:['滝めぐり','渓谷ウォーク','センター見学','忍者体験（隣接）'], highlight:'往復3時間程度。歩きやすい靴必須。夏は涼しい。', rating:4.5, galleryBg:'linear-gradient(135deg,#a0c0b0,#708890)', ageGroups:[4,5,6,7,8,9,10], lat:34.6472, lng:136.1461 },
-  { id:'nagashima_spa', emoji:'🎢', name:'ナガシマスパーランド', cat:'公園', catClass:'park', pref:'三重', loc:'桑名市', addr:'三重県桑名市長島町浦安333', hours:'9:30〜17:00（季節変動）', closed:'不定休', price:'大人3,500円 / 小学生2,400円 / 幼児1,300円', desc:'日本最大級の遊園地。絶叫マシン40種以上と夏のジャンボ海水プール。', keywords:['遊園地','絶叫マシン','プール','ジェットコースター'], play:['アトラクション','ジャンボ海水プール（夏）','キッズタウン','花火'], highlight:'小さい子向けキッズタウンも充実。1日遊べる。夏は水着持参。', rating:4.5, galleryBg:'linear-gradient(135deg,#f0a8a8,#c87878)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0869, lng:136.7272 },
+  { id:'akame48', emoji:'💧', name:'赤目四十八滝', cat:'公園', catClass:'park', pref:'三重', loc:'名張市', addr:'三重県名張市赤目町長坂861-1', hours:'8:30〜17:00', closed:'なし', price:'大人500円 / 小学生250円', desc:'渓谷沿いに48の滝が連なる名勝。ネイチャーウォークが楽しい。', keywords:['滝','渓谷','ネイチャー','サンショウウオ','ハイキング'], play:['滝めぐり','渓谷ウォーク','センター見学','忍者体験（隣接）'], highlight:'往復3時間程度。歩きやすい靴必須。夏は涼しい。', rating:4.5, galleryBg:'linear-gradient(135deg,#a0c0b0,#708890)', ageGroups:[4,5,6,7,8,9,10], lat:34.5592, lng:136.0917 },
+  { id:'nagashima_spa', emoji:'🎢', name:'ナガシマスパーランド', cat:'公園', catClass:'park', pref:'三重', loc:'桑名市', addr:'三重県桑名市長島町浦安333', hours:'9:30〜17:00（季節変動）', closed:'不定休', price:'大人3,500円 / 小学生2,400円 / 幼児1,300円', desc:'日本最大級の遊園地。絶叫マシン40種以上と夏のジャンボ海水プール。', keywords:['遊園地','絶叫マシン','プール','ジェットコースター'], play:['アトラクション','ジャンボ海水プール（夏）','キッズタウン','花火'], highlight:'小さい子向けキッズタウンも充実。1日遊べる。夏は水着持参。', rating:4.5, galleryBg:'linear-gradient(135deg,#f0a8a8,#c87878)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0288, lng:136.7305 },
   { id:'seki_shuku', emoji:'🏮', name:'関宿（東海道）', cat:'カフェ・レストラン', catClass:'cafe', pref:'三重', loc:'亀山市', addr:'三重県亀山市関町中町', hours:'散策自由', closed:'なし', price:'無料', desc:'東海道の宿場町がそのまま残る国の重要伝統的建造物群。', keywords:['東海道','宿場町','町並み','伝統','歴史'], play:['町並み散策','資料館','和菓子','カフェ'], highlight:'小規模だが時代タイムスリップ感。ベビーカーOK。', rating:4.3, galleryBg:'linear-gradient(135deg,#d0b898,#a08878)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.8581, lng:136.4161 },
-  { id:'mokumoku', emoji:'🐷', name:'伊賀の里モクモク手づくりファーム', cat:'公園', catClass:'park', pref:'三重', loc:'伊賀市', addr:'三重県伊賀市西湯舟3609', hours:'10:00〜17:00', closed:'不定休', price:'大人1,100円 / 小学生800円 / 3歳以上500円', desc:'地元野菜・ハム作り体験・動物ふれあいの体験型農場。', keywords:['農場','ハム作り','動物ふれあい','野菜','体験'], play:['動物ふれあい','ハム作り体験','野菜狩り','農場レストラン'], highlight:'体験プログラムは予約必須。バーベキューも人気。', rating:4.4, galleryBg:'linear-gradient(135deg,#c8d8b0,#909888)', ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:34.8000, lng:136.1833 },
-  { id:'aquaignis', emoji:'♨', name:'アクアイグニス', cat:'カフェ・レストラン', catClass:'cafe', pref:'三重', loc:'菰野町', addr:'三重県三重郡菰野町大羽根園松ケ枝町', hours:'10:00〜22:00', closed:'なし', price:'温泉大人600円 / カフェは別途', desc:'温泉・レストラン・スイーツ・農園が集まる総合複合施設。', keywords:['温泉','スイーツ','レストラン','複合施設','菰野'], play:['日帰り温泉','スイーツ','地産レストラン','ベーカリー'], highlight:'辻口博啓のスイーツが人気。御在所ロープウェイとセットも可能。', rating:4.3, galleryBg:'linear-gradient(135deg,#d8c0a8,#a89088)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.9389, lng:136.5244 },
-  { id:'yokkaichi_port', emoji:'🌃', name:'四日市港ポートビル（うみてらす14）', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'四日市市', addr:'三重県四日市市霞2-1-1', hours:'10:00〜17:00', closed:'月曜', price:'大人310円 / 小中150円', desc:'工場夜景で有名な四日市の港展望施設。夜は絶景。', keywords:['工場夜景','展望台','港','四日市','夜景'], play:['展望','工場夜景','コンビナート展望','ミニシアター'], highlight:'夕方〜夜がベスト。工場夜景は日本夜景遺産。', rating:4.1, galleryBg:'linear-gradient(135deg,#9098b0,#606878)', ageGroups:[4,5,6,7,8,9,10], lat:34.9640, lng:136.6325 },
+  { id:'mokumoku', emoji:'🐷', name:'伊賀の里モクモク手づくりファーム', cat:'公園', catClass:'park', pref:'三重', loc:'伊賀市', addr:'三重県伊賀市西湯舟3609', hours:'10:00〜17:00', closed:'不定休', price:'大人1,100円 / 小学生800円 / 3歳以上500円', desc:'地元野菜・ハム作り体験・動物ふれあいの体験型農場。', keywords:['農場','ハム作り','動物ふれあい','野菜','体験'], play:['動物ふれあい','ハム作り体験','野菜狩り','農場レストラン'], highlight:'体験プログラムは予約必須。バーベキューも人気。', rating:4.4, galleryBg:'linear-gradient(135deg,#c8d8b0,#909888)', ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:34.8570, lng:136.1852 },
+  { id:'aquaignis', emoji:'♨', name:'アクアイグニス', cat:'カフェ・レストラン', catClass:'cafe', pref:'三重', loc:'菰野町', addr:'三重県三重郡菰野町大羽根園松ケ枝町', hours:'10:00〜22:00', closed:'なし', price:'温泉大人600円 / カフェは別途', desc:'温泉・レストラン・スイーツ・農園が集まる総合複合施設。', keywords:['温泉','スイーツ','レストラン','複合施設','菰野'], play:['日帰り温泉','スイーツ','地産レストラン','ベーカリー'], highlight:'辻口博啓のスイーツが人気。御在所ロープウェイとセットも可能。', rating:4.3, galleryBg:'linear-gradient(135deg,#d8c0a8,#a89088)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0134, lng:136.4826 },
+  { id:'yokkaichi_port', emoji:'🌃', name:'四日市港ポートビル（うみてらす14）', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'四日市市', addr:'三重県四日市市霞2-1-1', hours:'10:00〜17:00', closed:'月曜', price:'大人310円 / 小中150円', desc:'工場夜景で有名な四日市の港展望施設。夜は絶景。', keywords:['工場夜景','展望台','港','四日市','夜景'], play:['展望','工場夜景','コンビナート展望','ミニシアター'], highlight:'夕方〜夜がベスト。工場夜景は日本夜景遺産。', rating:4.1, galleryBg:'linear-gradient(135deg,#9098b0,#606878)', ageGroups:[4,5,6,7,8,9,10], lat:34.9933, lng:136.6576 },
   { id:'mikimoto', emoji:'🦪', name:'ミキモト真珠島', cat:'ミュージアム・体験', catClass:'museum', pref:'三重', loc:'鳥羽市', addr:'三重県鳥羽市鳥羽1-7-1', hours:'9:00〜17:00', closed:'なし', price:'大人1,650円 / 小中800円', desc:'真珠養殖発祥の地。海女実演と真珠博物館がある。', keywords:['真珠','海女','博物館','鳥羽','実演'], play:['海女実演','真珠博物館','真珠ジュエリー','眺望'], highlight:'海女実演は時間指定あり。鳥羽水族館と合わせて1日コース。', rating:4.2, galleryBg:'linear-gradient(135deg,#d8c8d0,#a89890)', ageGroups:[4,5,6,7,8,9,10], lat:34.4872, lng:136.8353 },
   { id:'sakakibara', emoji:'♨', name:'榊原温泉', cat:'カフェ・レストラン', catClass:'cafe', pref:'三重', loc:'津市', addr:'三重県津市榊原町', hours:'店舗による', closed:'店舗による', price:'日帰り1,000円前後', desc:'清少納言の枕草子にも載る古湯。家族風呂のある旅館も。', keywords:['温泉','古湯','家族風呂','清少納言','日帰り'], play:['日帰り入浴','家族風呂','湯めぐり','周辺散策'], highlight:'家族風呂を選べば小さい子と安心。肌に優しい湯質。', rating:4.2, galleryBg:'linear-gradient(135deg,#d8c0c8,#a09098)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.7181, lng:136.3781 },
   { id:'tsu_kairakuen', emoji:'🌳', name:'津偕楽公園', cat:'公園', catClass:'park', pref:'三重', loc:'津市', addr:'三重県津市広明町', hours:'常時開放', closed:'なし', price:'無料', desc:'津藩主の別邸跡を公園化。桜と鉄道展示で地元に親しまれる。', keywords:['公園','桜','鉄道展示','散策','津市'], play:['散策','桜見物','鉄道展示','ベンチでのんびり'], highlight:'桜の季節（4月上旬）がベスト。駅近でアクセス良好。', rating:3.9, galleryBg:'linear-gradient(135deg,#f0c8d0,#c0a0a8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.7322, lng:136.5081 },
-  { id:'suzuka_mori', emoji:'🌸', name:'鈴鹿の森庭園', cat:'公園', catClass:'park', pref:'三重', loc:'鈴鹿市', addr:'三重県鈴鹿市山本町151', hours:'9:00〜16:00（開園期のみ）', closed:'開園期外', price:'大人1,000円〜 / 小中500円〜（時期変動）', desc:'しだれ梅200本の梅林。3月の開花時期のみ公開。', keywords:['しだれ梅','梅林','春','写真映え','開花時期限定'], play:['梅林散策','ライトアップ','写真撮影'], highlight:'3月の開花期のみ。夕方のライトアップが特に美しい。', rating:4.5, galleryBg:'linear-gradient(135deg,#f0c0d0,#c09098)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.9014, lng:136.4867 },
-  { id:'nagashima_spa_ami', emoji:'♨', name:'湯あみの島（長島温泉）', cat:'室内遊び場', catClass:'indoor', pref:'三重', loc:'桑名市', addr:'三重県桑名市長島町浦安333', hours:'9:30〜23:00', closed:'不定休', price:'大人1,650円 / 小学生1,100円 / 幼児600円', desc:'17種の露天風呂・内湯が楽しめる大型温泉施設。', keywords:['温泉','露天風呂','スパ','長島','家族風呂'], play:['露天風呂','サウナ','岩盤浴','キッズエリア'], highlight:'ナガシマスパーランドとセットで1日。温泉は入れ墨対応あり。', rating:4.2, galleryBg:'linear-gradient(135deg,#d0c0c8,#a09098)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0817, lng:136.7253 },
+  { id:'suzuka_mori', emoji:'🌸', name:'鈴鹿の森庭園', cat:'公園', catClass:'park', pref:'三重', loc:'鈴鹿市', addr:'三重県鈴鹿市山本町151', hours:'9:00〜16:00（開園期のみ）', closed:'開園期外', price:'大人1,000円〜 / 小中500円〜（時期変動）', desc:'しだれ梅200本の梅林。3月の開花時期のみ公開。', keywords:['しだれ梅','梅林','春','写真映え','開花時期限定'], play:['梅林散策','ライトアップ','写真撮影'], highlight:'3月の開花期のみ。夕方のライトアップが特に美しい。', rating:4.5, galleryBg:'linear-gradient(135deg,#f0c0d0,#c09098)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.9495, lng:136.4869 },
+  { id:'nagashima_spa_ami', emoji:'♨', name:'湯あみの島（長島温泉）', cat:'室内遊び場', catClass:'indoor', pref:'三重', loc:'桑名市', addr:'三重県桑名市長島町浦安333', hours:'9:30〜23:00', closed:'不定休', price:'大人1,650円 / 小学生1,100円 / 幼児600円', desc:'17種の露天風呂・内湯が楽しめる大型温泉施設。', keywords:['温泉','露天風呂','スパ','長島','家族風呂'], play:['露天風呂','サウナ','岩盤浴','キッズエリア'], highlight:'ナガシマスパーランドとセットで1日。温泉は入れ墨対応あり。', rating:4.2, galleryBg:'linear-gradient(135deg,#d0c0c8,#a09098)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0264, lng:136.7280 },
 
   // ═══════ 岐阜（近江境・大垣・関ヶ原・養老・岐阜市）═══════
   { id:'yorono_taki', emoji:'💦', name:'養老の滝', cat:'公園', catClass:'park', pref:'岐阜', loc:'養老町', addr:'岐阜県養老郡養老町高林1298-2', hours:'散策自由', closed:'なし', price:'無料', desc:'孝子伝説の滝。落差32mの名爆と渓谷公園。', keywords:['滝','渓谷','孝子伝説','公園','ハイキング'], play:['滝見物','渓谷ウォーク','養老公園','キャンプ'], highlight:'駐車場から徒歩30分程度。夏は涼しい。養老天命反転地も併設。', rating:4.2, galleryBg:'linear-gradient(135deg,#b0c8c0,#88a098)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.2936, lng:136.5564 },
@@ -996,41 +995,104 @@ window.KODOCO_SPOTS = (function(){
   { id:'ogaki_park', emoji:'🌳', name:'大垣公園', cat:'公園', catClass:'park', pref:'岐阜', loc:'大垣市', addr:'岐阜県大垣市郭町2', hours:'常時開放', closed:'なし', price:'無料', desc:'大垣城を囲む市民公園。大型遊具と桜が自慢。', keywords:['公園','大型遊具','桜','子連れ','大垣'], play:['大型遊具','芝生広場','桜見物','水遊び場（夏）'], highlight:'春は桜が見事。駐車場は城見学とセットで使える。', rating:4.1, galleryBg:'linear-gradient(135deg,#c8d8b0,#909888)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.3625, lng:136.6194 },
   { id:'suitopia', emoji:'🎭', name:'スイトピアセンター 大垣', cat:'ミュージアム・体験', catClass:'museum', pref:'岐阜', loc:'大垣市', addr:'岐阜県大垣市室本町5-51', hours:'9:00〜17:00', closed:'火曜', price:'プラネタリウム大人500円 / 小中250円', desc:'プラネタリウム・科学館・音楽堂を備えた複合施設。', keywords:['プラネタリウム','科学館','音楽堂','室内','雨の日'], play:['プラネタリウム','科学体験','展示見学'], highlight:'プラネタリウムは時間指定。雨の日の避難所として重宝。', rating:4.0, galleryBg:'linear-gradient(135deg,#c0b0d0,#908098)', ageGroups:[3,4,5,6,7,8,9,10], lat:35.3611, lng:136.6247 },
   { id:'nango_taisha', emoji:'⛩', name:'南宮大社', cat:'ミュージアム・体験', catClass:'museum', pref:'岐阜', loc:'垂井町', addr:'岐阜県不破郡垂井町宮代1734-1', hours:'8:30〜17:00', closed:'なし', price:'無料', desc:'美濃国一の宮。朱色の社殿が美しい金属の神様。', keywords:['神社','一の宮','金属','朱色','垂井'], play:['参拝','境内散策','御朱印'], highlight:'美しい朱色の建築。駐車場広く子連れでゆったり参拝可能。', rating:4.2, galleryBg:'linear-gradient(135deg,#e8a898,#c08078)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.3386, lng:136.5500 },
-  { id:'hirui_kofun', emoji:'🗿', name:'昼飯大塚古墳', cat:'ミュージアム・体験', catClass:'museum', pref:'岐阜', loc:'大垣市', addr:'岐阜県大垣市昼飯町', hours:'常時開放', closed:'なし', price:'無料', desc:'岐阜県最大の前方後円墳。公園整備で歩ける古墳。', keywords:['古墳','前方後円墳','歴史','公園','古代'], play:['古墳登り','歴史散策','芝生'], highlight:'古墳の上まで登れる珍しいスポット。子どもの学びに。', rating:3.8, galleryBg:'linear-gradient(135deg,#b0b088,#808068)', ageGroups:[4,5,6,7,8,9,10], lat:35.3833, lng:136.6333 },
+  { id:'hirui_kofun', emoji:'🗿', name:'昼飯大塚古墳', cat:'ミュージアム・体験', catClass:'museum', pref:'岐阜', loc:'大垣市', addr:'岐阜県大垣市昼飯町', hours:'常時開放', closed:'なし', price:'無料', desc:'岐阜県最大の前方後円墳。公園整備で歩ける古墳。', keywords:['古墳','前方後円墳','歴史','公園','古代'], play:['古墳登り','歴史散策','芝生'], highlight:'古墳の上まで登れる珍しいスポット。子どもの学びに。', rating:3.8, galleryBg:'linear-gradient(135deg,#b0b088,#808068)', ageGroups:[4,5,6,7,8,9,10], lat:35.3876, lng:136.5715 },
   { id:'sekigahara_warland', emoji:'🪖', name:'関ヶ原ウォーランド', cat:'ミュージアム・体験', catClass:'museum', pref:'岐阜', loc:'関ヶ原町', addr:'岐阜県不破郡関ヶ原町関ヶ原1701-6', hours:'9:30〜16:30', closed:'不定休', price:'大人500円 / 小人300円', desc:'コンクリートの武者像240体！ユニークなB級歴史テーマパーク。', keywords:['武者像','B級','関ヶ原','昭和','野外展示'], play:['武者像めぐり','記念撮影','歴史学習'], highlight:'B級スポットとして子連れ親子に密かに人気。関ヶ原記念館と併せて。', rating:4.0, galleryBg:"linear-gradient(135deg,#b8a8a0,#887870)", ageGroups:[3,4,5,6,7,8,9,10], lat:35.3778, lng:136.4683 },
   { id:'gifu_castle', emoji:'🏯', name:'岐阜城（金華山）', cat:'ミュージアム・体験', catClass:'museum', pref:'岐阜', loc:'岐阜市', addr:'岐阜県岐阜市金華山天守閣18', hours:'9:30〜17:30（季節変動）', closed:'なし', price:'大人200円 / 小中100円（ロープウェー別途）', desc:'織田信長の居城。金華山山頂からの眺望は絶景。', keywords:['城','信長','金華山','ロープウェー','眺望'], play:['ロープウェー','天守','城下眺望','リス村'], highlight:'ロープウェー往復1,300円別途。山頂リス村も子どもに人気。', rating:4.3, galleryBg:'linear-gradient(135deg,#c0b098,#908070)', ageGroups:[3,4,5,6,7,8,9,10], lat:35.4344, lng:136.7822 },
 
   // ═══════ 京都北部（亀岡・木津川・南山城） ═══════
-  { id:'hozugawa', emoji:'🚣', name:'保津川下り', cat:'ミュージアム・体験', catClass:'museum', pref:'京都', loc:'亀岡市', addr:'京都府亀岡市保津町下中島2', hours:'9:00〜15:30（最終便）', closed:'12-3月一部日程', price:'大人4,500円 / 4歳以上3,000円', desc:'亀岡から嵐山まで2時間の川下り。四季の渓谷美が絶景。', keywords:['川下り','保津川','亀岡','嵐山','船'], play:['川下り','渓谷景色','水しぶき','写真撮影'], highlight:'冬はこたつ船。雨天でも運航（要問合せ）。嵐山までの片道で帰りは電車。', rating:4.5, galleryBg:'linear-gradient(135deg,#a8c8c0,#7898a0)', ageGroups:[4,5,6,7,8,9,10], lat:35.0175, lng:135.5728 },
-  { id:'torokko_kameoka', emoji:'🚂', name:'トロッコ亀岡駅（嵯峨野観光鉄道）', cat:'ミュージアム・体験', catClass:'museum', pref:'京都', loc:'亀岡市', addr:'京都府亀岡市篠町山本地黒', hours:'列車時刻表に準拠', closed:'水曜（繁忙期運行）', price:'大人880円 / 小人440円', desc:'嵐山までの渓谷沿いを走るトロッコ列車の亀岡駅。', keywords:['トロッコ','列車','嵐山','渓谷','観光'], play:['トロッコ乗車','渓谷景色','保津川下りとセット'], highlight:'春の桜、秋の紅葉は大人気。事前予約推奨。', rating:4.5, galleryBg:'linear-gradient(135deg,#c0a890,#908070)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0178, lng:135.5700 },
+  { id:'hozugawa', emoji:'🚣', name:'保津川下り', cat:'ミュージアム・体験', catClass:'museum', pref:'京都', loc:'亀岡市', addr:'京都府亀岡市保津町下中島2', hours:'9:00〜15:30（最終便）', closed:'12-3月一部日程', price:'大人4,500円 / 4歳以上3,000円', desc:'亀岡から嵐山まで2時間の川下り。四季の渓谷美が絶景。', keywords:['川下り','保津川','亀岡','嵐山','船'], play:['川下り','渓谷景色','水しぶき','写真撮影'], highlight:'冬はこたつ船。雨天でも運航（要問合せ）。嵐山までの片道で帰りは電車。', rating:4.5, galleryBg:'linear-gradient(135deg,#a8c8c0,#7898a0)', ageGroups:[4,5,6,7,8,9,10], lat:35.0172, lng:135.5869 },
+  { id:'torokko_kameoka', emoji:'🚂', name:'トロッコ亀岡駅（嵯峨野観光鉄道）', cat:'ミュージアム・体験', catClass:'museum', pref:'京都', loc:'亀岡市', addr:'京都府亀岡市篠町山本地黒', hours:'列車時刻表に準拠', closed:'水曜（繁忙期運行）', price:'大人880円 / 小人440円', desc:'嵐山までの渓谷沿いを走るトロッコ列車の亀岡駅。', keywords:['トロッコ','列車','嵐山','渓谷','観光'], play:['トロッコ乗車','渓谷景色','保津川下りとセット'], highlight:'春の桜、秋の紅葉は大人気。事前予約推奨。', rating:4.5, galleryBg:'linear-gradient(135deg,#c0a890,#908070)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.0131, lng:135.6068 },
   { id:'keihanna', emoji:'🌳', name:'けいはんな記念公園', cat:'公園', catClass:'park', pref:'京都', loc:'精華町', addr:'京都府相楽郡精華町精華台6-1', hours:'9:00〜17:00', closed:'火曜', price:'無料（水景園400円）', desc:'広大な日本庭園と里山がある文化公園。子連れに優しい設計。', keywords:['日本庭園','里山','文化公園','芝生','ファミリー'], play:['芝生広場','観月橋','水景園','自然散策'], highlight:'広くてベビーカーOK。四季折々の景色が楽しめる。', rating:4.2, galleryBg:'linear-gradient(135deg,#c0d8b0,#909888)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.7492, lng:135.7797 },
   { id:'kizugawa_sports', emoji:'🌳', name:'山城総合運動公園（太陽が丘）', cat:'公園', catClass:'park', pref:'京都', loc:'宇治市', addr:'京都府宇治市広野町八軒屋谷1', hours:'9:00〜17:00', closed:'火曜', price:'入園無料（施設別途）', desc:'大型遊具・プール・アスレチックを備える京都府の大型公園。', keywords:['大型遊具','アスレチック','プール','太陽が丘','京都府'], play:['大型遊具','アスレチック','プール（夏）','芝生','BBQ'], highlight:'1日遊べる規模。夏の水遊び場が特に人気。', rating:4.3, galleryBg:'linear-gradient(135deg,#c8e0a8,#909888)', ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:34.8733, lng:135.7992 },
   { id:'wazuka_tea', emoji:'🍵', name:'和束町茶畑ハイキング', cat:'ミュージアム・体験', catClass:'museum', pref:'京都', loc:'和束町', addr:'京都府相楽郡和束町', hours:'散策自由', closed:'なし', price:'無料（体験別途）', desc:'宇治茶の産地で急斜面の茶畑を眺めるハイキング。', keywords:['茶畑','ハイキング','宇治茶','景色','和束'], play:['茶畑ハイキング','茶摘み体験（時期）','写真撮影','カフェ'], highlight:'新茶の5月、紅葉の11月が特に美しい。駐車場は道の駅で。', rating:4.3, galleryBg:'linear-gradient(135deg,#b0c890,#88a070)', ageGroups:[3,4,5,6,7,8,9,10], lat:34.7728, lng:135.9344 },
-  { id:'kasagi_camp', emoji:'⛺', name:'笠置キャンプ場', cat:'公園', catClass:'park', pref:'京都', loc:'笠置町', addr:'京都府相楽郡笠置町笠置河原地内', hours:'通年', closed:'なし', price:'区画料2,000円〜', desc:'木津川沿いの無料キャンプ場。デイキャンプ・川遊びに最適。', keywords:['キャンプ','川遊び','木津川','デイキャンプ','バーベキュー'], play:['キャンプ','川遊び','カヌー','バーベキュー','ハイキング'], highlight:'ペット連れOK。夏は水遊びに最適。事前予約推奨。', rating:4.2, galleryBg:'linear-gradient(135deg,#b0c0b0,#809078)', ageGroups:[3,4,5,6,7,8,9,10], lat:34.7670, lng:135.9481 },
+  { id:'kasagi_camp', emoji:'⛺', name:'笠置キャンプ場', cat:'公園', catClass:'park', pref:'京都', loc:'笠置町', addr:'京都府相楽郡笠置町笠置河原地内', hours:'通年', closed:'なし', price:'区画料2,000円〜', desc:'木津川沿いの無料キャンプ場。デイキャンプ・川遊びに最適。', keywords:['キャンプ','川遊び','木津川','デイキャンプ','バーベキュー'], play:['キャンプ','川遊び','カヌー','バーベキュー','ハイキング'], highlight:'ペット連れOK。夏は水遊びに最適。事前予約推奨。', rating:4.2, galleryBg:'linear-gradient(135deg,#b0c0b0,#809078)', ageGroups:[3,4,5,6,7,8,9,10], lat:34.7590, lng:135.9357 },
   { id:'minamiyamashiro', emoji:'🍵', name:'道の駅 お茶の京都みなみやましろ', cat:'カフェ・レストラン', catClass:'cafe', pref:'京都', loc:'南山城村', addr:'京都府相楽郡南山城村北大河原', hours:'9:00〜17:00', closed:'なし', price:'入場無料', desc:'宇治茶の産地・南山城の道の駅。抹茶スイーツと地元野菜が充実。', keywords:['道の駅','抹茶','宇治茶','地元野菜','スイーツ'], play:['抹茶スイーツ','地元野菜買い','レストラン','お土産'], highlight:'抹茶ソフトが絶品。車旅の途中立ち寄りに最適。', rating:4.2, galleryBg:'linear-gradient(135deg,#b8c890,#889870)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:34.7589, lng:136.0022 },
   { id:'kameoka_cosmos', emoji:'🌸', name:'亀岡夢コスモス園', cat:'公園', catClass:'park', pref:'京都', loc:'亀岡市', addr:'京都府亀岡市吉川町穴太', hours:'9:00〜17:00（10月のみ）', closed:'開園期外', price:'大人800円 / 小人500円', desc:'800万本のコスモスが咲く秋限定の花園。', keywords:['コスモス','花畑','秋','期間限定','亀岡'], play:['コスモス鑑賞','写真撮影','花摘み'], highlight:'10月のみ開園。週末混雑、平日推奨。', rating:4.3, galleryBg:'linear-gradient(135deg,#f0b8c8,#c09098)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0139, lng:135.5919 },
-  { id:'hiyoshidam', emoji:'💧', name:'日吉ダム（スプリングスひよし）', cat:'公園', catClass:'park', pref:'京都', loc:'南丹市', addr:'京都府南丹市日吉町中神子ヶ谷68', hours:'10:00〜21:00', closed:'木曜', price:'温泉大人900円 / 公園無料', desc:'温泉・プール・ダム散策が一度に楽しめる総合施設。', keywords:['ダム','温泉','プール','BBQ','南丹'], play:['ダム見学','温泉','プール','BBQ','公園'], highlight:'子連れで1日遊べる規模。プールは夏季のみ。', rating:4.2, galleryBg:'linear-gradient(135deg,#a8c0d0,#7890a8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1833, lng:135.5044 },
-  { id:'rurikeikogen', emoji:'🐑', name:'るり渓温泉（るり渓高原）', cat:'カフェ・レストラン', catClass:'cafe', pref:'京都', loc:'南丹市', addr:'京都府南丹市園部町大河内広谷1-14', hours:'10:00〜22:00', closed:'なし', price:'温泉大人1,700円 / 子ども1,000円', desc:'高原の温泉リゾート。イルミネーションと羊とのふれあいも。', keywords:['温泉','高原','イルミネーション','羊','リゾート'], play:['温泉','羊ふれあい','イルミネーション','BBQ'], highlight:'冬のイルミネーションが有名。日帰りでも宿泊でも楽しめる。', rating:4.3, galleryBg:"linear-gradient(135deg,#c0d0c8,#889898)", ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1444, lng:135.4250 },
+  { id:'hiyoshidam', emoji:'💧', name:'日吉ダム（スプリングスひよし）', cat:'公園', catClass:'park', pref:'京都', loc:'南丹市', addr:'京都府南丹市日吉町中神子ヶ谷68', hours:'10:00〜21:00', closed:'木曜', price:'温泉大人900円 / 公園無料', desc:'温泉・プール・ダム散策が一度に楽しめる総合施設。', keywords:['ダム','温泉','プール','BBQ','南丹'], play:['ダム見学','温泉','プール','BBQ','公園'], highlight:'子連れで1日遊べる規模。プールは夏季のみ。', rating:4.2, galleryBg:'linear-gradient(135deg,#a8c0d0,#7890a8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1477, lng:135.5172 },
+  { id:'rurikeikogen', emoji:'🐑', name:'るり渓温泉（るり渓高原）', cat:'カフェ・レストラン', catClass:'cafe', pref:'京都', loc:'南丹市', addr:'京都府南丹市園部町大河内広谷1-14', hours:'10:00〜22:00', closed:'なし', price:'温泉大人1,700円 / 子ども1,000円', desc:'高原の温泉リゾート。イルミネーションと羊とのふれあいも。', keywords:['温泉','高原','イルミネーション','羊','リゾート'], play:['温泉','羊ふれあい','イルミネーション','BBQ'], highlight:'冬のイルミネーションが有名。日帰りでも宿泊でも楽しめる。', rating:4.3, galleryBg:"linear-gradient(135deg,#c0d0c8,#889898)", ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0358, lng:135.4046 },
 
   // ═══════ 堅田近辺（大津市北部・湖西エリア）公園 ═══════
-  { id:'katata_central', emoji:'🌳', name:'堅田中央公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市堅田', addr:'滋賀県大津市本堅田2丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'堅田駅から徒歩圏のコンパクトな街区公園。複合遊具と広場がある。', keywords:['街区公園','複合遊具','堅田駅','ベンチ','砂場'], play:['複合遊具','砂場','ブランコ','広場'], highlight:'駅近で買い物帰りに立ち寄れる。日陰が少ないので夏は帽子推奨。', rating:4.0, galleryBg:'linear-gradient(135deg,#c8e0c0,#a0c898)', ageGroups:[0,1,2,3,4,5,6,7,8], lat:35.1253, lng:135.9129 },
-  { id:'katata_minato', emoji:'🏞', name:'堅田港緑地', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市堅田', addr:'滋賀県大津市今堅田3丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'琵琶湖畔・堅田港そばの芝生と遊具のある緑地。湖のビューが抜群。', keywords:['湖畔','芝生','堅田港','琵琶湖ビュー','満月寺近く'], play:['芝生広場','遊具','湖畔散歩','写真撮影'], highlight:'浮御堂（満月寺）と合わせて散策できる。ベビーカーOK。', rating:4.2, galleryBg:'linear-gradient(135deg,#b8d0d8,#8898a8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.127, lng:135.9135 },
-  { id:'imakatata', emoji:'🌳', name:'今堅田公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市堅田', addr:'滋賀県大津市今堅田2丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'今堅田エリアの住宅地にある小規模な児童公園。基本遊具あり。', keywords:['児童公園','住宅地','滑り台','ブランコ'], play:['滑り台','ブランコ','砂場','ベンチ'], highlight:'地元の未就学児の定番。住宅地内なので静か。', rating:3.8, galleryBg:'linear-gradient(135deg,#c0d8b0,#909888)', ageGroups:[0,1,2,3,4,5,6], lat:35.1249, lng:135.9114 },
-  { id:'ogoto_park', emoji:'🌳', name:'雄琴公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市雄琴', addr:'滋賀県大津市雄琴4丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'雄琴温泉街近くの街区公園。複合遊具と広めの広場。', keywords:['雄琴','複合遊具','広場','温泉街近く'], play:['複合遊具','ブランコ','砂場','広場'], highlight:'周辺に駐車場あり、温泉ついでに立ち寄りやすい。', rating:3.9, galleryBg:'linear-gradient(135deg,#c8d8c8,#98a098)', ageGroups:[1,2,3,4,5,6,7,8], lat:35.1053, lng:135.901 },
-  { id:'ogoto_minato', emoji:'🏞', name:'雄琴港湖岸緑地', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市雄琴', addr:'滋賀県大津市雄琴1丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'雄琴港のそばの琵琶湖畔緑地。芝生と遊具、湖の眺めが気持ちいい。', keywords:['湖岸緑地','雄琴港','芝生','琵琶湖','散歩'], play:['芝生広場','湖畔散歩','ベンチ','写真撮影'], highlight:'夕陽スポットとしても◎。BBQ禁止エリアなので注意。', rating:4.1, galleryBg:'linear-gradient(135deg,#b0c8d8,#8898a8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1075, lng:135.911 },
-  { id:'mano_park', emoji:'🌳', name:'真野公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市真野', addr:'滋賀県大津市真野1丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'真野小学校近くの地域の中核公園。大型遊具と運動場がある。', keywords:['真野','大型遊具','運動場','地域公園'], play:['大型遊具','滑り台','ブランコ','広場','運動場'], highlight:'子連れ家族に地元で愛されている。平日は空いている。', rating:4.0, galleryBg:'linear-gradient(135deg,#c0d8a8,#98b080)', ageGroups:[1,2,3,4,5,6,7,8,9], lat:35.1305, lng:135.9106 },
-  { id:'nagara_park', emoji:'🌳', name:'苗鹿児童公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市苗鹿', addr:'滋賀県大津市苗鹿', hours:'常時開放', closed:'なし', price:'無料', desc:'苗鹿エリアの住宅地公園。基本遊具と砂場、静かな環境。', keywords:['児童公園','住宅地','砂場','静か'], play:['滑り台','ブランコ','砂場','鉄棒'], highlight:'那波加神社が近い。参拝とセットで散策に。', rating:3.8, galleryBg:'linear-gradient(135deg,#c8d8b0,#a0b090)', ageGroups:[0,1,2,3,4,5,6,7], lat:35.1115, lng:135.8997 },
-  { id:'ogi_park', emoji:'🌳', name:'仰木公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市仰木', addr:'滋賀県大津市仰木4丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'仰木の里ニュータウン内の地域公園。広めの芝生と遊具。', keywords:['仰木の里','ニュータウン','芝生','大型遊具'], play:['複合遊具','芝生広場','砂場','ベンチ'], highlight:'ニュータウン内なので駐車場も周辺に。週末は賑やか。', rating:4.0, galleryBg:'linear-gradient(135deg,#c0d8b8,#90a890)', ageGroups:[0,1,2,3,4,5,6,7,8], lat:35.1075, lng:135.887 },
-  { id:'ogisato_central', emoji:'🌳', name:'仰木の里中央公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市仰木', addr:'滋賀県大津市仰木の里3丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'仰木の里の中央に位置する大型公園。多種の遊具とイベント広場。', keywords:['仰木の里','大型遊具','イベント広場','住宅地'], play:['複合遊具','ターザンロープ','芝生広場','散歩道'], highlight:'週末は地域イベントあり。広いので迷子注意。', rating:4.2, galleryBg:'linear-gradient(135deg,#c8e0b8,#98b088)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1051, lng:135.8975 },
-  { id:'ono_park', emoji:'🌳', name:'小野公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市小野', addr:'滋賀県大津市小野', hours:'常時開放', closed:'なし', price:'無料', desc:'JR小野駅近くのコンパクトな地域公園。基本遊具あり。', keywords:['小野駅','地域公園','滑り台','近隣公園'], play:['滑り台','ブランコ','砂場','鉄棒'], highlight:'小野神社が近い。駅利用者のちょい立ち寄りにも。', rating:3.8, galleryBg:'linear-gradient(135deg,#c0d0b0,#909880)', ageGroups:[0,1,2,3,4,5,6,7], lat:35.1555, lng:135.921 },
-  { id:'wani_park', emoji:'🌳', name:'和邇公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市和邇', addr:'滋賀県大津市和邇中', hours:'常時開放', closed:'なし', price:'無料', desc:'和邇川沿いの地域公園。遊具と散歩道、川のせせらぎ。', keywords:['和邇','川沿い','遊具','散歩道'], play:['複合遊具','砂場','川沿い散歩','広場'], highlight:'和邇川のせせらぎが気持ちいい。川遊びは深さ注意。', rating:3.9, galleryBg:'linear-gradient(135deg,#b8d0c0,#88a890)', ageGroups:[1,2,3,4,5,6,7,8,9], lat:35.161, lng:135.928 },
-  { id:'kita_wani', emoji:'🌳', name:'北小松公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市北小松', addr:'滋賀県大津市北小松', hours:'常時開放', closed:'なし', price:'無料', desc:'北小松エリアの海水浴場近くの公園。夏はビーチとセットで。', keywords:['北小松','海水浴場近く','夏','芝生'], play:['遊具','芝生','ビーチ散歩','休憩'], highlight:'夏は近くの北小松水泳場と合わせて1日遊べる。', rating:4.0, galleryBg:'linear-gradient(135deg,#c0d8d0,#88a8a0)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.246, lng:135.983 },
-  { id:'shiga_park', emoji:'🌳', name:'志賀中央公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市木戸', addr:'滋賀県大津市木戸', hours:'常時開放', closed:'なし', price:'無料', desc:'旧志賀町エリアの地域公園。比良山系の眺めが美しい。', keywords:['志賀','比良山系','地域公園','眺望'], play:['複合遊具','芝生','ベンチ','散歩道'], highlight:'西側は比良山系、東側は琵琶湖。眺めのいい公園。', rating:3.9, galleryBg:'linear-gradient(135deg,#c8d0b8,#98a090)', ageGroups:[1,2,3,4,5,6,7,8,9], lat:35.1903, lng:135.954 },
-  { id:'ikadachi_park', emoji:'🌿', name:'伊香立公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市伊香立', addr:'滋賀県大津市伊香立北在地町', hours:'常時開放', closed:'なし', price:'無料', desc:'伊香立エリアの自然豊かな地域公園。里山の景色に囲まれる。', keywords:['伊香立','里山','自然','地域公園'], play:['複合遊具','芝生','自然観察','散歩'], highlight:'田園風景に溶け込む落ち着いた公園。車でアクセス。', rating:3.8, galleryBg:'linear-gradient(135deg,#b8d8a8,#90a888)', ageGroups:[1,2,3,4,5,6,7,8], lat:35.192, lng:135.898 },
-  { id:'katata_station', emoji:'🚉', name:'堅田駅前公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市堅田', addr:'滋賀県大津市本堅田1丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'JR堅田駅前のコンパクトなポケット公園。待ち合わせと遊具。', keywords:['堅田駅','駅前','ポケット公園','待ち合わせ'], play:['小型遊具','ベンチ','広場'], highlight:'駅待ち時間のついでに。日陰少なめ。', rating:3.6, galleryBg:'linear-gradient(135deg,#c8d8c0,#a0a890)', ageGroups:[1,2,3,4,5,6], lat:35.1228, lng:135.904 },
-  { id:'kasuga_park', emoji:'⛩', name:'春日児童公園（春日神社前）', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市堅田', addr:'滋賀県大津市本堅田2丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'春日神社の隣にある小さな児童公園。地元の静かな遊び場。', keywords:['春日神社','児童公園','静か','地元'], play:['滑り台','ブランコ','砂場'], highlight:'神社の境内と合わせて散歩に。お参りついでに。', rating:3.7, galleryBg:'linear-gradient(135deg,#d0c8a8,#a89880)', ageGroups:[0,1,2,3,4,5,6], lat:35.1221, lng:135.9086 },
-  { id:'kurihara_park', emoji:'🌳', name:'栗原児童公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市栗原', addr:'滋賀県大津市栗原', hours:'常時開放', closed:'なし', price:'無料', desc:'栗原地区の住宅地にある児童公園。基本遊具あり。', keywords:['栗原','住宅地','児童公園'], play:['滑り台','ブランコ','砂場','鉄棒'], highlight:'住宅地のど真ん中、近所の子が集まる。', rating:3.6, galleryBg:'linear-gradient(135deg,#c0d0b8,#98a890)', ageGroups:[0,1,2,3,4,5,6], lat:35.0767, lng:135.8774 },
-  { id:'hiei_plaza', emoji:'🌲', name:'比叡平中央公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市比叡平', addr:'滋賀県大津市比叡平3丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'比叡平ニュータウンの中央公園。山の緑に囲まれた遊び場。', keywords:['比叡平','ニュータウン','山','緑豊か'], play:['複合遊具','芝生','散歩道','木陰'], highlight:'標高ある住宅地で夏でも比較的涼しい。車でアクセス。', rating:3.9, galleryBg:'linear-gradient(135deg,#b0c898,#88a070)', ageGroups:[1,2,3,4,5,6,7,8,9], lat:35.0567, lng:135.8425 }
+  { id:'katata_central', emoji:'🌳', name:'堅田中央公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市堅田', addr:'滋賀県大津市本堅田2丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'堅田駅から徒歩圏のコンパクトな街区公園。複合遊具と広場がある。', keywords:['街区公園','複合遊具','堅田駅','ベンチ','砂場'], play:['複合遊具','砂場','ブランコ','広場'], highlight:'駅近で買い物帰りに立ち寄れる。日陰が少ないので夏は帽子推奨。', rating:4.0, galleryBg:'linear-gradient(135deg,#c8e0c0,#a0c898)', ageGroups:[0,1,2,3,4,5,6,7,8], lat:35.1097, lng:135.9200 },
+  { id:'katata_minato', emoji:'🏞', name:'堅田港緑地', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市堅田', addr:'滋賀県大津市今堅田3丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'琵琶湖畔・堅田港そばの芝生と遊具のある緑地。湖のビューが抜群。', keywords:['湖畔','芝生','堅田港','琵琶湖ビュー','満月寺近く'], play:['芝生広場','遊具','湖畔散歩','写真撮影'], highlight:'浮御堂（満月寺）と合わせて散策できる。ベビーカーOK。', rating:4.2, galleryBg:'linear-gradient(135deg,#b8d0d8,#8898a8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1099, lng:135.9210 },
+  { id:'imakatata', emoji:'🌳', name:'今堅田公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市堅田', addr:'滋賀県大津市今堅田2丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'今堅田エリアの住宅地にある小規模な児童公園。基本遊具あり。', keywords:['児童公園','住宅地','滑り台','ブランコ'], play:['滑り台','ブランコ','砂場','ベンチ'], highlight:'地元の未就学児の定番。住宅地内なので静か。', rating:3.8, galleryBg:'linear-gradient(135deg,#c0d8b0,#909888)', ageGroups:[0,1,2,3,4,5,6], lat:35.1232, lng:135.9179 },
+  { id:'ogoto_park', emoji:'🌳', name:'雄琴公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市雄琴', addr:'滋賀県大津市雄琴4丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'雄琴温泉街近くの街区公園。複合遊具と広めの広場。', keywords:['雄琴','複合遊具','広場','温泉街近く'], play:['複合遊具','ブランコ','砂場','広場'], highlight:'周辺に駐車場あり、温泉ついでに立ち寄りやすい。', rating:3.9, galleryBg:'linear-gradient(135deg,#c8d8c8,#98a098)', ageGroups:[1,2,3,4,5,6,7,8], lat:35.0902, lng:135.8891 },
+  { id:'ogoto_minato', emoji:'🏞', name:'雄琴港湖岸緑地', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市雄琴', addr:'滋賀県大津市雄琴1丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'雄琴港のそばの琵琶湖畔緑地。芝生と遊具、湖の眺めが気持ちいい。', keywords:['湖岸緑地','雄琴港','芝生','琵琶湖','散歩'], play:['芝生広場','湖畔散歩','ベンチ','写真撮影'], highlight:'夕陽スポットとしても◎。BBQ禁止エリアなので注意。', rating:4.1, galleryBg:'linear-gradient(135deg,#b0c8d8,#8898a8)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0879, lng:135.8946 },
+  { id:'mano_park', emoji:'🌳', name:'真野公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市真野', addr:'滋賀県大津市真野1丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'真野小学校近くの地域の中核公園。大型遊具と運動場がある。', keywords:['真野','大型遊具','運動場','地域公園'], play:['大型遊具','滑り台','ブランコ','広場','運動場'], highlight:'子連れ家族に地元で愛されている。平日は空いている。', rating:4.0, galleryBg:'linear-gradient(135deg,#c0d8a8,#98b080)', ageGroups:[1,2,3,4,5,6,7,8,9], lat:35.1358, lng:135.9210 },
+  { id:'nagara_park', emoji:'🌳', name:'苗鹿児童公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市苗鹿', addr:'滋賀県大津市苗鹿', hours:'常時開放', closed:'なし', price:'無料', desc:'苗鹿エリアの住宅地公園。基本遊具と砂場、静かな環境。', keywords:['児童公園','住宅地','砂場','静か'], play:['滑り台','ブランコ','砂場','鉄棒'], highlight:'那波加神社が近い。参拝とセットで散策に。', rating:3.8, galleryBg:'linear-gradient(135deg,#c8d8b0,#a0b090)', ageGroups:[0,1,2,3,4,5,6,7], lat:35.0802, lng:135.8862 },
+  { id:'ogi_park', emoji:'🌳', name:'仰木公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市仰木', addr:'滋賀県大津市仰木4丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'仰木の里ニュータウン内の地域公園。広めの芝生と遊具。', keywords:['仰木の里','ニュータウン','芝生','大型遊具'], play:['複合遊具','芝生広場','砂場','ベンチ'], highlight:'ニュータウン内なので駐車場も周辺に。週末は賑やか。', rating:4.0, galleryBg:'linear-gradient(135deg,#c0d8b8,#90a890)', ageGroups:[0,1,2,3,4,5,6,7,8], lat:35.1055, lng:135.8990 },
+  { id:'ogisato_central', emoji:'🌳', name:'仰木の里中央公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市仰木', addr:'滋賀県大津市仰木の里3丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'仰木の里の中央に位置する大型公園。多種の遊具とイベント広場。', keywords:['仰木の里','大型遊具','イベント広場','住宅地'], play:['複合遊具','ターザンロープ','芝生広場','散歩道'], highlight:'週末は地域イベントあり。広いので迷子注意。', rating:4.2, galleryBg:'linear-gradient(135deg,#c8e0b8,#98b088)', ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1061, lng:135.8886 },
+  { id:'ono_park', emoji:'🌳', name:'小野公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市小野', addr:'滋賀県大津市小野', hours:'常時開放', closed:'なし', price:'無料', desc:'JR小野駅近くのコンパクトな地域公園。基本遊具あり。', keywords:['小野駅','地域公園','滑り台','近隣公園'], play:['滑り台','ブランコ','砂場','鉄棒'], highlight:'小野神社が近い。駅利用者のちょい立ち寄りにも。', rating:3.8, galleryBg:'linear-gradient(135deg,#c0d0b0,#909880)', ageGroups:[0,1,2,3,4,5,6,7], lat:35.1450, lng:135.9191 },
+  { id:'wani_park', emoji:'🌳', name:'和邇公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市和邇', addr:'滋賀県大津市和邇中', hours:'常時開放', closed:'なし', price:'無料', desc:'和邇川沿いの地域公園。遊具と散歩道、川のせせらぎ。', keywords:['和邇','川沿い','遊具','散歩道'], play:['複合遊具','砂場','川沿い散歩','広場'], highlight:'和邇川のせせらぎが気持ちいい。川遊びは深さ注意。', rating:3.9, galleryBg:'linear-gradient(135deg,#b8d0c0,#88a890)', ageGroups:[1,2,3,4,5,6,7,8,9], lat:35.1546, lng:135.9195 },
+  { id:'kita_wani', emoji:'🌳', name:'北小松公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市北小松', addr:'滋賀県大津市北小松', hours:'常時開放', closed:'なし', price:'無料', desc:'北小松エリアの海水浴場近くの公園。夏はビーチとセットで。', keywords:['北小松','海水浴場近く','夏','芝生'], play:['遊具','芝生','ビーチ散歩','休憩'], highlight:'夏は近くの北小松水泳場と合わせて1日遊べる。', rating:4.0, galleryBg:'linear-gradient(135deg,#c0d8d0,#88a8a0)', ageGroups:[2,3,4,5,6,7,8,9,10], lat:35.2594, lng:135.9617 },
+  { id:'shiga_park', emoji:'🌳', name:'志賀中央公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市木戸', addr:'滋賀県大津市木戸', hours:'常時開放', closed:'なし', price:'無料', desc:'旧志賀町エリアの地域公園。比良山系の眺めが美しい。', keywords:['志賀','比良山系','地域公園','眺望'], play:['複合遊具','芝生','ベンチ','散歩道'], highlight:'西側は比良山系、東側は琵琶湖。眺めのいい公園。', rating:3.9, galleryBg:'linear-gradient(135deg,#c8d0b8,#98a090)', ageGroups:[1,2,3,4,5,6,7,8,9], lat:35.2026, lng:135.9093 },
+  { id:'ikadachi_park', emoji:'🌿', name:'伊香立公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市伊香立', addr:'滋賀県大津市伊香立北在地町', hours:'常時開放', closed:'なし', price:'無料', desc:'伊香立エリアの自然豊かな地域公園。里山の景色に囲まれる。', keywords:['伊香立','里山','自然','地域公園'], play:['複合遊具','芝生','自然観察','散歩'], highlight:'田園風景に溶け込む落ち着いた公園。車でアクセス。', rating:3.8, galleryBg:'linear-gradient(135deg,#b8d8a8,#90a888)', ageGroups:[1,2,3,4,5,6,7,8], lat:35.1366, lng:135.8852 },
+  { id:'katata_station', emoji:'🚉', name:'堅田駅前公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市堅田', addr:'滋賀県大津市本堅田1丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'JR堅田駅前のコンパクトなポケット公園。待ち合わせと遊具。', keywords:['堅田駅','駅前','ポケット公園','待ち合わせ'], play:['小型遊具','ベンチ','広場'], highlight:'駅待ち時間のついでに。日陰少なめ。', rating:3.6, galleryBg:'linear-gradient(135deg,#c8d8c0,#a0a890)', ageGroups:[1,2,3,4,5,6], lat:35.1179, lng:135.9196 },
+  { id:'kasuga_park', emoji:'⛩', name:'春日児童公園（春日神社前）', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市堅田', addr:'滋賀県大津市本堅田2丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'春日神社の隣にある小さな児童公園。地元の静かな遊び場。', keywords:['春日神社','児童公園','静か','地元'], play:['滑り台','ブランコ','砂場'], highlight:'神社の境内と合わせて散歩に。お参りついでに。', rating:3.7, galleryBg:'linear-gradient(135deg,#d0c8a8,#a89880)', ageGroups:[0,1,2,3,4,5,6], lat:35.1227, lng:135.9038 },
+  { id:'kurihara_park', emoji:'🌳', name:'栗原児童公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市栗原', addr:'滋賀県大津市栗原', hours:'常時開放', closed:'なし', price:'無料', desc:'栗原地区の住宅地にある児童公園。基本遊具あり。', keywords:['栗原','住宅地','児童公園'], play:['滑り台','ブランコ','砂場','鉄棒'], highlight:'住宅地のど真ん中、近所の子が集まる。', rating:3.6, galleryBg:'linear-gradient(135deg,#c0d0b8,#98a890)', ageGroups:[0,1,2,3,4,5,6], lat:35.1746, lng:135.8851 },
+  { id:'hiei_plaza', emoji:'🌲', name:'比叡平中央公園', cat:'公園', catClass:'park', pref:'滋賀', loc:'大津市比叡平', addr:'滋賀県大津市比叡平3丁目', hours:'常時開放', closed:'なし', price:'無料', desc:'比叡平ニュータウンの中央公園。山の緑に囲まれた遊び場。', keywords:['比叡平','ニュータウン','山','緑豊か'], play:['複合遊具','芝生','散歩道','木陰'], highlight:'標高ある住宅地で夏でも比較的涼しい。車でアクセス。', rating:3.9, galleryBg:'linear-gradient(135deg,#b0c898,#88a070)', ageGroups:[1,2,3,4,5,6,7,8,9], lat:35.0327, lng:135.8285 },
+
+  // ── 新規追加スポット ────────────────────────────────────────
+  {
+    id:'moriyama_nagisa', emoji:'🌼', name:'守山なぎさ公園', cat:'公園', catClass:'park', pref:'滋賀',
+    loc:'守山市', addr:'滋賀県守山市今浜町地先（琵琶湖岸）', hours:'常時開放', closed:'なし', price:'無料',
+    desc:'琵琶湖岸に広がる草津〜守山エリアの定番スポット。早春は一面の菜の花、8月はひまわり畑が咲き誇り、季節ごとに違う顔を見せる。背景には比叡山と琵琶湖大橋が絵になる撮影スポットとしても有名。',
+    sense:['🌿 自然感あり','🏃 走り回れる','👶 抱っこでOK'],
+    keywords:['菜の花','ひまわり','琵琶湖岸','湖岸緑地','桜','撮影スポット','水遊び場（夏季）'],
+    facilities:['無料','駐車場あり','ベビーカーOK'],
+    play:['菜の花・ひまわり鑑賞（季節限定）','琵琶湖岸散歩','芝生でピクニック','夏の水遊び（じゃぶじゃぶ池）'],
+    highlight:'早春の菜の花シーズン（2〜3月）は混雑するので早朝がおすすめ。ベビーカーでも歩きやすい遊歩道あり。',
+    rating:4.4, galleryBg:'linear-gradient(135deg,#f0f0a8,#d8e890)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.0724, lng:135.9973,
+    parkingSpots:{count:200, free:true}, durationMin:90,
+    weatherProof:'open', reservation:'none',
+    accessibility:{wheelchair:true, stroller:'easy'}
+  },
+  {
+    id:'makino_beach', emoji:'🏖', name:'マキノサニービーチ高木浜', cat:'公園', catClass:'park', pref:'滋賀',
+    loc:'高島市', addr:'滋賀県高島市マキノ町知内（琵琶湖畔）', hours:'常時開放（海水浴場は7〜8月）', closed:'なし', price:'無料（海水浴場期間中：駐車場有料）',
+    desc:'透明度の高い琵琶湖の砂浜ビーチ。夏は海水浴場として開設され、浅瀬で小さな子でも安心して水遊びができる。周辺にはマキノ高原や浜茶屋も充実。メタセコイア並木へも車ですぐ。',
+    sense:['🌿 自然感あり','🏃 走り回れる','🔊 にぎやか'],
+    keywords:['水遊び','砂浜','琵琶湖ビーチ','じゃぶじゃぶ','海水浴','砂遊び','夏','川遊び','プール'],
+    facilities:['駐車場あり','飲食可'],
+    play:['水遊び・砂浜遊び（夏）','浜茶屋でかき氷','波打ち際で魚観察','メタセコイア並木とセット'],
+    highlight:'水が透き通っていて浅瀬が長く続く。小さい子の水遊びに最適。夏以外も砂浜散歩ができる。',
+    rating:4.4, galleryBg:'linear-gradient(135deg,#a8d8f0,#78c0e8)',
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.4762, lng:136.0245,
+    parkingSpots:{count:300, free:false, note:'海水浴期間中は有料（約500円）'}, durationMin:180,
+    weatherProof:'open', reservation:'none',
+    accessibility:{stroller:'hard'}
+  },
+  {
+    id:'ritto_nature', emoji:'🌲', name:'栗東自然観察の森', cat:'公園', catClass:'park', pref:'滋賀',
+    loc:'栗東市', addr:'滋賀県栗東市荒張890-1', hours:'9:00〜17:00（月〜土）・10:00〜17:00（日・祝）', closed:'月曜', price:'無料',
+    desc:'栗東市が運営する完全無料の自然体験施設。雑木林の中に整備された散策路でどんぐり拾いや昆虫観察が楽しめる。ネイチャーセンターには自然の展示や顕微鏡体験コーナーもあり、雨の日も一部楽しめる。',
+    sense:['🌿 自然感あり','🔇 静かめ','🏃 走り回れる'],
+    keywords:['どんぐり','昆虫観察','散策路','ネイチャーセンター','無料','自然体験','里山'],
+    facilities:['無料','駐車場あり','ベビーカーOK','雨の日OK（センター内）'],
+    play:['雑木林散策','どんぐり・木の実拾い','昆虫・野鳥観察','ネイチャーセンター展示'],
+    highlight:'完全無料なのに内容充実。秋のどんぐりシーズンが特に人気。ベビーカーは一部のコースで利用可能。',
+    rating:4.2, galleryBg:'linear-gradient(135deg,#c8e8b8,#a0d090)',
+    ageGroups:[1,2,3,4,5,6,7,8,9,10], lat:35.0162, lng:136.0126,
+    parkingSpots:{count:60, free:true}, durationMin:90,
+    weatherProof:'open', reservation:'none',
+    accessibility:{stroller:'moderate'}
+  },
+  {
+    id:'biwako_ohashi_plaza', emoji:'🍦', name:'道の駅 びわ湖大橋米プラザ', cat:'カフェ・レストラン', catClass:'cafe', pref:'滋賀',
+    loc:'大津市', addr:'滋賀県大津市今堅田3-1-1', hours:'9:00〜18:00', closed:'なし', price:'入場無料・食事700円〜',
+    desc:'琵琶湖大橋（西詰）のたもとにある道の駅。地元滋賀のお土産やグルメが充実し、近江牛バーガーやふなずしソフトなどユニークなB級グルメも。テラス席から琵琶湖大橋と湖面を一望できる。',
+    sense:['🌿 自然感あり','🔇 静かめ','👶 抱っこでOK'],
+    keywords:['道の駅','琵琶湖大橋','ソフトクリーム','近江牛','お土産','琵琶湖ビュー'],
+    facilities:['駐車場あり','飲食可','ベビーカーOK','おむつ替え'],
+    play:['滋賀グルメ体験','お土産購入','テラスからの琵琶湖ビュー','ドライブ途中の休憩'],
+    highlight:'ドライブ途中に絶対立ち寄りたい。ソフトクリームが子どもに大人気。授乳室・おむつ替えも完備。',
+    rating:4.1, galleryBg:'linear-gradient(135deg,#d0e8f8,#b0cce8)',
+    ageGroups:[0,1,2,3,4,5,6,7,8,9,10], lat:35.1051, lng:135.9290,
+    durationMin:45, officialUrl:'https://www.yoneplaza.com/',
+    weatherProof:'roof', reservation:'none',
+    accessibility:{wheelchair:true, stroller:'easy'},
+    toilets:{diaperChange:true, multipurpose:true}
+  }
 ];
   return SPOTS;
 })();
